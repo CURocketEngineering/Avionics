@@ -18,7 +18,8 @@ class FlightStatus {
   private:
     Stage flightStage;
     int hz;
-    double currentAccel;
+    int n;
+    std::deque<double> accelDeque;
     std::deque<double> altitudeDeque;
 
     double median(std::vector<double> vec);
