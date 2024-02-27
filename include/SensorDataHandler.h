@@ -1,4 +1,4 @@
-// Written by Ethan Anderson -- 2/17/2024
+// Orignally written by Ethan Anderson -- 2/17/2024
 // DataHandler.h
 
 #ifndef SensorDataHandler_H
@@ -52,6 +52,14 @@ public:
     TemporalCircularArray(uint16_t interval_ms, uint16_t size_ms);
     DataPoint getLatest();
     DataPoint getMedian();
+
+
+    /*
+     * @param milliseconds: The number of milliseconds older than the latest data point
+     * @return: The data point closest to the specified number of milliseconds
+     *         If the specified number of milliseconds is greater than the size of the array, the oldest data point is returned
+     */
+    DataPoint getHistoricalData(uint16_t milliseconds);
 };
 
 // This class is used to store data from a sensor
@@ -71,10 +79,18 @@ public:
 
     // Returns the median of the temporal array
     // This the value with the middle most value, not time
+    // If there are an even number of elements, the right middle element is returned
     DataPoint getTemporalArrayMedian();
 
     // Returns the latest data point from the read array
     DataPoint getLatestData();
+
+    /*
+    * Returns the newest datapoint that is at least milliseconds old
+    */
+    DataPoint getHistoricalData(uint16_t milliseconds) {
+        return temporalArray.getHistoricalData(milliseconds);
+    }
 private:
     ReadCircularArray readArray;
     TemporalCircularArray temporalArray;

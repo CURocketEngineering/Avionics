@@ -1,4 +1,4 @@
-// Written by Ethan Anderson -- 2/17/2024
+// Orignally written by Ethan Anderson -- 2/17/2024
 
 // Setting up the Serial port for debugging if the Arduino.h library is included
 #if __has_include(<Arduino.h>)
@@ -49,8 +49,8 @@ void addDatatoCircularArray(std::vector<DataPoint>& array,
         }
     }
     else{
-        array[head] = data;
         head = (head + 1) % maxSize;
+        array[head] = data;
     }
 }
 
@@ -110,6 +110,51 @@ DataPoint TemporalCircularArray::getMedian(){
         std::vector<DataPoint> dataCopy = this->data;
         std::sort(dataCopy.begin(), dataCopy.end(), [](DataPoint a, DataPoint b) -> bool {return a.data < b.data;});
         return dataCopy[dataCopy.size() / 2];
+    }
+}
+/*
+ * Returns the newest data point in the temporal array that is at least <milliseconds> older than the newest data point
+ * @param milliseconds: The number of milliseconds older than the latest data point
+ * @return: The data point closest to the specified number of milliseconds
+ *         If the specified number of milliseconds is greater than the size of the array, the oldest data point is returned
+ */
+DataPoint TemporalCircularArray::getHistoricalData(uint16_t milliseconds){
+    if(data.empty()){
+        return DataPoint();
+    }
+    else{
+
+        uint32_t targetTimestamp = data[head].timestamp_ms - milliseconds;
+        uint8_t index = head;
+
+        // The oldestIndex depends on the how much of the array is filled
+        uint8_t oldestIndex;
+        if (data.size() < maxSize){
+            oldestIndex = 0;
+        }
+        else{
+            oldestIndex = (head + 1) % maxSize;
+        }
+
+        // If the oldest value is newer than the target, then just return the oldest value
+        // Also if the milliseconds to go backwards is greater than the number of milliseconds since the oldest value
+        // then just return the oldest value
+        if (data[oldestIndex].timestamp_ms > targetTimestamp || data[head].timestamp_ms < milliseconds){
+            return data[oldestIndex];
+        }
+
+        // Moving the index back until the timestamp is less than the target
+        while(data[index].timestamp_ms > targetTimestamp){
+            // To move to to the previous index, we need to subtract 1
+            // If the index is 0, then we need to wrap around to the end of the array
+            if (index == 0){
+                index = maxSize - 1;
+            }
+            else{
+                index--;
+            }
+        }
+        return data[index];
     }
 }
 
@@ -191,9 +236,82 @@ void test_TemporalCircularArray(){
     assert(temporalArray.getLatest().data == 15.0);
     assert(temporalArray.getMedian().timestamp_ms == 2000);
     assert(temporalArray.getMedian().data == 10.0);
+
+    // Checking the historical data collection method
+    assert(temporalArray.getHistoricalData(0).timestamp_ms == 3000);
+    assert(temporalArray.getHistoricalData(100).timestamp_ms == 2000);
+    assert(temporalArray.getHistoricalData(200).timestamp_ms == 2000);
+    assert(temporalArray.getHistoricalData(1000).timestamp_ms == 2000);
+    assert(temporalArray.getHistoricalData(1100).timestamp_ms == 1000);
+    // A super large number should return the oldest data
+    assert(temporalArray.getHistoricalData(10000).timestamp_ms == 1000);
+
+    TemporalCircularArray temporalArray2 = TemporalCircularArray(100, 1000);
+    // Inserting 20 points and checking that each index is as expected
+    for (int i = 0; i < 20; i++){
+        DataPoint dataPoint = DataPoint(100 + i * 100, i);
+        addDatatoCircularArray(temporalArray2.data, temporalArray2.head, temporalArray2.maxSize, dataPoint);
+    }
+    assert(temporalArray2.data.size() == 10);
+
+    // Checking every index for the correct value
+    assert(temporalArray2.data[0].data == 10);
+    assert(temporalArray2.data[1].data == 11);
+    assert(temporalArray2.data[2].data == 12);
+    assert(temporalArray2.data[3].data == 13);
+    assert(temporalArray2.data[4].data == 14);
+    assert(temporalArray2.data[5].data == 15);
+    assert(temporalArray2.data[6].data == 16);
+    assert(temporalArray2.data[7].data == 17);
+    assert(temporalArray2.data[8].data == 18);
+    assert(temporalArray2.data[9].data == 19);
+    assert(temporalArray2.getLatest().data == 19);
 }
 
 
+void test_SensorData_historical_data(){
+    SensorData sensorData = SensorData(100, 1000);
+    DataPoint dataPoint = DataPoint(20, 5.0);
+
+    // Adding 20 data points that will all go into the temporal array
+    for (int i = 0; i < 20; i++){
+        DataPoint dataPoint = DataPoint(100 + i * 100, i);
+        assert(sensorData.addData(dataPoint) == true);
+    }
+
+    // Only the 10 most recent data points are still in the temporal array
+    // because this sensorData is only setup to hold 10 data points b/c of the interval and size
+    // i.e. 1000 / 100 = 10
+
+    // The values that should be in the temporal array are:
+    // (1100, 10), (1200, 11), (1300, 12), (1400, 13), (1500, 14), (1600, 15), (1700, 16), (1800, 17), (1900, 18), (2000, 19)
+    assert(sensorData.getTemporalArrayMedian().timestamp_ms == 1600);
+    assert(floatEqual(sensorData.getTemporalArrayMedian().data, 15.0));
+
+    assert(sensorData.getHistoricalData(0).timestamp_ms == 2000);
+    assert(sensorData.getHistoricalData(100).timestamp_ms == 1900);
+    assert(sensorData.getHistoricalData(200).timestamp_ms == 1800);
+    assert(sensorData.getHistoricalData(250).timestamp_ms == 1700);
+    assert(sensorData.getHistoricalData(10000).timestamp_ms == 1100);
+
+    // Doing a fresh sensorData
+    SensorData sensorData2 = SensorData(100, 1000);
+    // Adding 20 data points but only half should go into the temporal array
+    for (int i = 0; i < 20; i++){
+        // A spacing of 50ms between each data point, so only every other data point will go into the temporal array
+        DataPoint dataPoint = DataPoint(i * 50, i);
+        sensorData2.addData(dataPoint);
+    }
+    Serial.println("Checking half of the data points are in the temporal array");
+    // The values that should be in the temporal array are:
+    // (100, 2), (200, 4), (300, 6), (400, 8), (500, 10), (600, 12), (700, 14), (800, 16), (900, 18)
+    assert(sensorData2.getTemporalArrayMedian().timestamp_ms == 500);
+    assert(floatEqual(sensorData2.getTemporalArrayMedian().data, 10.0));
+    Serial.println("done");
+
+
+
+}
 
 
 void test_SensorData(){
@@ -244,15 +362,20 @@ void test_SensorData(){
     assert(sensorData.getTemporalArrayMedian().timestamp_ms == 101);
     assert(floatEqual(sensorData.getTemporalArrayMedian().data, 15));
 
-    // Adding 20 more data points with acending values which all go into the temporal array
+    // Adding 20 more data points with ascending values which all go into the temporal array
     for (int i = 0; i < 20; i++){
-        DataPoint dataPoint = DataPoint(400 + i * 101, i);
+        DataPoint dataPoint = DataPoint(400 + i * 100, i);
         sensorData.addData(dataPoint);
     }
 
+    assert(sensorData.getLatestData().timestamp_ms == 400 + 19 * 100);
+    assert(floatEqual(sensorData.getLatestData().data, 19));
+
     // The temporal array only holds 10 values, so the median should be #15
-    assert(sensorData.getTemporalArrayMedian().timestamp_ms == 400 + 15 * 101);
+    assert(sensorData.getTemporalArrayMedian().timestamp_ms == 400 + 15 * 100);
     assert(floatEqual(sensorData.getTemporalArrayMedian().data, 15));
+
+    test_SensorData_historical_data();
 }
 
 void test_DataHandler(){
