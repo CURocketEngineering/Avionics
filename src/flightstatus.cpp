@@ -1,18 +1,10 @@
 #include "flightstatus.h"
 
-FlightStatus::FlightStatus(int sensorHz = 32): altitudeDeque(128, 0), accelDeque(128,0) {
+FlightStatus::FlightStatus(int sensorHz): altitudeDeque(128, 0), accelDeque(128,0) {
     // Why 128 to 0 when passing in?
     flightStage = ARMED;
     hz = sensorHz;
     n = hz * 2; // revisit for sensitivity, 2 seconds is the duration of apogeee
-}
-
-double FlightStatus::median(std::vector<double> vec){
-    int size = vec.size();
-    sort(vec.begin(), vec.end());
-    if (size % 2 != 0)
-        return (double)vec[size/2];
-    return (double)(vec[(size-1)/2] + vec[size/2])/2.0;
 }
 
 bool FlightStatus::checkLaunch() {
