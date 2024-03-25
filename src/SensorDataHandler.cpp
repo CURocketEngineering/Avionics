@@ -26,9 +26,10 @@
 #endif
 
 // Check if floats are equal
-bool floatEqual(float a, float b){
+/* bool floatEqual(float a, float b){
     return fabs(a - b) < 0.0001;
 }
+*/
 
 DataPoint::DataPoint(uint32_t timestamp_ms, float data){
     this->timestamp_ms = timestamp_ms;
@@ -192,7 +193,7 @@ DataPoint SensorData::getLatestData(){
 /*
 * Testing Scripts are below
 */
-
+/*
 
 void test_DataPoint(){
     DataPoint dataPoint = DataPoint(1000, 5.0);
@@ -388,3 +389,4 @@ void test_DataHandler(){
     #endif
     exit(0);
 }
+*/

@@ -1,5 +1,5 @@
 #include "flightstatus.h"
-
+//Going to add globalHistoricalData
 
 FlightStatus::FlightStatus(int sensorHz): altitudeDeque(128, 0), accelDeque(128,0) {
     // Why 128 to 0 when passing in?
@@ -48,6 +48,21 @@ bool FlightStatus::checkApogee() {
     return lmMed < fmMed;
 }
 
+bool FlightStatus::checkDescent() {
+    // If acceleration starts to increase and launch is false,
+    // then rocket is descending
+    // Reads in acceleration as a deque
+    // If average of last 2 seconds suddenly drops --> coast
+    // also if rocket is not on ground and prior statement is true --> coast
+
+    std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
+    std::vector<double> fm(accelDeque.cend() - 3*n, accelDeque.cend() - n);
+
+    double lmMed = median(lm);
+    double fmMed = median(fm);
+    
+    return fmMed < lmMed && checkApogee;
+}
 
 bool FlightStatus::checkGround() {
     // If altitude is less than 0, then rocket has hit the ground
@@ -61,6 +76,8 @@ bool FlightStatus::checkGround() {
 }
 
 void FlightStatus::newTelemetry(double acceleration, double altitude) {
+    //Creating altitude and acceleration deques
+    //ascent -> coast -> apogee -> descent -> on ground must happen in order
     altitudeDeque.pop_front();
     altitudeDeque.push_back(altitude);
 
@@ -76,8 +93,9 @@ void FlightStatus::newTelemetry(double acceleration, double altitude) {
     if(checkApogee() && flightStage == COAST)
     {
         flightStage = APOGEE;
-    } // why no pause?
-    if(flightStage == APOGEE) {
+    } 
+    //adding checkdescent for time between apogee and desending
+    if(checkDescent() && flightStage == APOGEE) {
         flightStage = DESCENT;
     }
     if(checkGround() && flightStage == DESCENT) {

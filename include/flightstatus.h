@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 
+//enumeration decleration of rocket positions
 enum Stage {
     ARMED,
     ASCENT,
@@ -13,6 +14,7 @@ enum Stage {
     DESCENT,
     ONGROUND,
 };
+
 
 class FlightStatus {
   private:
@@ -26,6 +28,7 @@ class FlightStatus {
     bool checkLaunch();
     bool checkCoast();
     bool checkApogee();
+    bool checkDescent();
     bool checkGround();
   public:
     FlightStatus(int sensorHz = 32);

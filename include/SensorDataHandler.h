@@ -6,10 +6,13 @@
 
 #include <cstdint>
 #include <cstdlib>
+
 #include <vector>
 
 #define MAX_DATA_POINTS_READ_ARRAY 128
 #define MAX_DATA_POINTS_TEMPORAL_ARRAY 255
+
+
 
 // Holds a single data point
 // Contains a timestamp in milliseconds and a float data point

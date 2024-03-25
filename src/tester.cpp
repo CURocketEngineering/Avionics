@@ -1,5 +1,10 @@
-void passAccel () {
-    float accelCheck[] = {9.8345,
+#include "SensorDataHandler.h"
+//Call addData from SensorDataHandler for each data point 
+//then use those values as a globalHistoryData to flightStatus file
+void main(void){
+double i = 0;
+
+double accelCheck[] = {9.8345,
 9.8345,
 9.83928,
 9.86321,
@@ -350,9 +355,9 @@ void passAccel () {
 -13.6487,
 -7.37468,
 -7.89631};
-}
 
-void passAlt () {
+
+
     float altCheck[] = {2.49149,
 3.16757,
 2.49149,
@@ -704,4 +709,10 @@ void passAlt () {
 -12.2978,
 -16.9247,
 -20.8967};
+
+while (i < 351)
+{
+    addData(DataPoint accelCheck[i]);
+    i++;
+}
 }
