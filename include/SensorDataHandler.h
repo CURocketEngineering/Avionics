@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <vector>
+#include <string>
 
 #define MAX_DATA_POINTS_READ_ARRAY 128
 #define MAX_DATA_POINTS_TEMPORAL_ARRAY 255
@@ -71,6 +72,8 @@ public:
 class SensorData {
 public:
     // Constructor
+    SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, String name);
+    // No name constructor
     SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms);
 
     // Returns true when the temporal array is updated
@@ -91,6 +94,8 @@ public:
     DataPoint getHistoricalData(uint16_t milliseconds) {
         return temporalArray.getHistoricalData(milliseconds);
     }
+
+    String name;
 private:
     ReadCircularArray readArray;
     TemporalCircularArray temporalArray;

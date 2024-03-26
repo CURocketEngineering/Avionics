@@ -8,6 +8,8 @@
 
 #include "SensorDataHandler.h"
 #include <algorithm>
+#include <SPI.h>
+#include <SD.h>
 
 #ifdef DEBUG
 #define assert(condition) \
@@ -158,8 +160,31 @@ DataPoint TemporalCircularArray::getHistoricalData(uint16_t milliseconds){
     }
 }
 
+// Constructor without name 
 SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms) : temporalArray(temporalInterval_ms, temporalSize_ms){
+    this->name = "NA";
     readArray = ReadCircularArray();
+}
+
+SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, String name) : temporalArray(temporalInterval_ms, temporalSize_ms){
+    this->name = name;
+    readArray = ReadCircularArray();
+}
+
+bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
+    // Append the data to the file
+    File dataFile = SD.open(name + ".csv", FILE_WRITE);
+    if (dataFile){
+        dataFile.println(String(timestamp_ms) + "," + String(data));
+        dataFile.close();
+        return true;
+    }
+    else{
+        #ifdef DEBUG
+        DEBUG.println("Error opening file");
+        #endif
+        return false;
+    }
 }
 
 /*
@@ -167,6 +192,13 @@ SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms) :
 */
 bool SensorData::addData(DataPoint data){
     addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
+
+    // If a full cycle of the read array was just completed, then save all the data in the read array to the SD card
+    for (int i = 0; i < readArray.maxSize; i++){
+        dataToSDCard(name, readArray.data[i].timestamp_ms, readArray.data[i].data);
+    }
+
+
     if(data.timestamp_ms - temporalArray.getLatest().timestamp_ms >= temporalArray.interval_ms){
         addDatatoCircularArray(temporalArray.data, temporalArray.head, temporalArray.maxSize, data);
         return true;
@@ -192,6 +224,7 @@ DataPoint SensorData::getLatestData(){
 /*
 * Testing Scripts are below
 */
+#ifdef TESTING
 
 
 void test_DataPoint(){
@@ -388,3 +421,5 @@ void test_DataHandler(){
     #endif
     exit(0);
 }
+
+#endif
