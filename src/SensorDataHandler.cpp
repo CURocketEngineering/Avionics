@@ -173,7 +173,7 @@ SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, S
 
 bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
     // Append the data to the file
-    File dataFile = SD.open(name + ".csv", FILE_WRITE);
+    File dataFile = SD.open("hello.csv", FILE_WRITE);
     if (dataFile){
         dataFile.println(String(timestamp_ms) + "," + String(data));
         dataFile.close();
@@ -190,13 +190,18 @@ bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
 /*
 * Adds a datapoint to the read array, if the data is old enough, it is also added to the temporal array
 */
-bool SensorData::addData(DataPoint data){
+bool SensorData::addData(DataPoint data, HardwareSerial &SD_serial){
     addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
 
     // If a full cycle of the read array was just completed, then save all the data in the read array to the SD card
-    for (int i = 0; i < readArray.maxSize; i++){
-        dataToSDCard(name, readArray.data[i].timestamp_ms, readArray.data[i].data);
+    if (readArray.head == 0 && readArray.data.size() == readArray.maxSize){
+        // Send just the latest data point to the SD card
+        DataPoint latestData = readArray.getLatestData();
+        SD_serial.println(name + "," + String(latestData.timestamp_ms) + "," + String(latestData.data));
     }
+
+    // Save data to SD card via SPI
+    dataToSDCard(name, data.timestamp_ms, data.data);
 
 
     if(data.timestamp_ms - temporalArray.getLatest().timestamp_ms >= temporalArray.interval_ms){

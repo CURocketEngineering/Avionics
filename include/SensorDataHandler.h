@@ -78,7 +78,7 @@ public:
 
     // Returns true when the temporal array is updated
     // Returns false if the data was only put into the read array
-    bool addData(DataPoint data);
+    bool addData(DataPoint data, HardwareSerial &SD_serial);
 
     // Returns the median of the temporal array
     // This the value with the middle most value, not time
