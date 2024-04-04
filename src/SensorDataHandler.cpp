@@ -187,6 +187,28 @@ bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
     }
 }
 
+struct SerialData{
+    char name [5];
+    u_int16_t timestamp_ms;
+    float data; 
+};
+
+/*
+* Saves the data to the SD card via serial using base128 encoding to improve efficency
+*/
+void dataToSDCardSerial(String name, u_int16_t timestamp_ms, float data, HardwareSerial &SD_serial){
+    // Pack the data together 
+    struct SerialData theData = {"", timestamp_ms, data};
+    for (int i = 0; i < 4; i++){
+        theData.name[i] = name.charAt(i);
+    }
+    theData.name[4] = '\0';
+    Serial.println("Writing to SD Card");
+    SD_serial.write((uint8_t *) &theData, sizeof(theData));
+    // Write some sort of seperator
+    SD_serial.println("---");
+}
+
 /*
 * Adds a datapoint to the read array, if the data is old enough, it is also added to the temporal array
 */
@@ -195,13 +217,13 @@ bool SensorData::addData(DataPoint data, HardwareSerial &SD_serial){
 
     // If a full cycle of the read array was just completed, then save all the data in the read array to the SD card
     if (readArray.head == 0 && readArray.data.size() == readArray.maxSize){
-        // Send just the latest data point to the SD card
+        // Send just the latest data point to the SD card via Serial
         DataPoint latestData = readArray.getLatestData();
-        SD_serial.println(name + "," + String(latestData.timestamp_ms) + "," + String(latestData.data));
+        dataToSDCardSerial(this->name, data.data, data.timestamp_ms, SD_serial); 
     }
 
     // Save data to SD card via SPI
-    dataToSDCard(name, data.timestamp_ms, data.data);
+    // dataToSDCard(name, data.timestamp_ms, data.data);
 
 
     if(data.timestamp_ms - temporalArray.getLatest().timestamp_ms >= temporalArray.interval_ms){
@@ -225,6 +247,14 @@ DataPoint SensorData::getLatestData(){
     return readArray.getLatestData();
 }
 
+
+uint16_t SensorData::getInterval_ms(){
+    return this->temporalArray.interval_ms;
+}
+
+uint16_t SensorData::getMaxSize(){
+    return this->temporalArray.maxSize; 
+}
 
 /*
 * Testing Scripts are below

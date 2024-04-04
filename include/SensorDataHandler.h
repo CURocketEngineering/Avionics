@@ -76,6 +76,10 @@ public:
     // No name constructor
     SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms);
 
+    uint16_t getInterval_ms(); 
+    uint16_t getMaxSize(); 
+
+
     // Returns true when the temporal array is updated
     // Returns false if the data was only put into the read array
     bool addData(DataPoint data, HardwareSerial &SD_serial);
