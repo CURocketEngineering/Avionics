@@ -189,24 +189,21 @@ bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
 
 struct SerialData{
     char name [5];
-    u_int16_t timestamp_ms;
+    uint32_t timestamp_ms;
     float data; 
 };
 
 /*
 * Saves the data to the SD card via serial using base128 encoding to improve efficency
 */
-void dataToSDCardSerial(String name, u_int16_t timestamp_ms, float data, HardwareSerial &SD_serial){
+void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial){
     // Pack the data together 
     struct SerialData theData = {"", timestamp_ms, data};
-    for (int i = 0; i < 4; i++){
-        theData.name[i] = name.charAt(i);
-    }
+    strncpy(theData.name, name.c_str(), 4);
     theData.name[4] = '\0';
-    Serial.println("Writing to SD Card");
     SD_serial.write((uint8_t *) &theData, sizeof(theData));
-    // Write some sort of seperator
-    SD_serial.println("---");
+    SD_serial.write('\0\0');
+
 }
 
 /*
