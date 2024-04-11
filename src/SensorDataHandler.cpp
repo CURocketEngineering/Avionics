@@ -188,7 +188,7 @@ bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
 }
 
 struct SerialData{
-    char name [3]; // 2 characters for the name and 1 for the null terminator
+    char name [4]; // 3 chars for name and 1 for null
     uint32_t timestamp_ms;
     float data; 
 };
@@ -200,13 +200,11 @@ struct SerialData{
 void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial){
     // Pack the data together 
     struct SerialData theData = {"", timestamp_ms, data};
-    strncpy(theData.name, name.c_str(), 2);
-    theData.name[2] = '\0';
+    strncpy(theData.name, name.c_str(), 3);
+    theData.name[3] = '\0';
     SD_serial.write((uint8_t *) &theData, sizeof(theData));
-    SD_serial.write('\0\0');
-
-    // total size per send = 3 (name) + 4 (timestamp) + 4 (data) + 2 (null terminator) = 13 bytes
-
+    char dlim [3] = {'\0', '\r', '\n'};
+    SD_serial.write((uint8_t *) &dlim, sizeof(dlim));
 }
 
 /*
@@ -216,10 +214,9 @@ bool SensorData::addData(DataPoint data, HardwareSerial &SD_serial){
     addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
 
     // If a full cycle of the read array was just completed, then save all the data in the read array to the SD card
-    if (readArray.head == 0 && readArray.data.size() == readArray.maxSize){
+    if  (true){// (readArray.head == 0 && readArray.data.size() == readArray.maxSize){
         // Send just the latest data point to the SD card via Serial
-        DataPoint latestData = readArray.getLatestData();
-        dataToSDCardSerial(this->name, data.data, data.timestamp_ms, SD_serial); 
+        dataToSDCardSerial(this->name, data.timestamp_ms, data.data, SD_serial); 
     }
 
     // Save data to SD card via SPI
