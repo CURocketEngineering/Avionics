@@ -87,3 +87,13 @@ void FlightStatus::newTelemetry(double acceleration, double altitude) {
 Stage FlightStatus::getStage() {
     return flightStage;
 }
+
+double FlightStatus::median(std::vector<double> vec) {
+    std::sort(vec.begin(), vec.end());
+    size_t size = vec.size();
+    if (size % 2 == 0) {
+        return (vec[size / 2 - 1] + vec[size / 2]) / 2.0;
+    } else {
+        return vec[size / 2];
+    }
+}
