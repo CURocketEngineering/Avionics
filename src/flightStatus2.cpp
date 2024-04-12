@@ -13,7 +13,7 @@ void FlightStatus::frequencyCheck(SensorData someData){
 }
 
 //Set Flight Status value 
-FlightStatus::FlightStatus(int sensorHz): altitudeDeque(128, 0), accelDeque(128,0) {
+FlightStatus::FlightStatus(int sensorHz){
     flightStage = ARMED;
 }
 

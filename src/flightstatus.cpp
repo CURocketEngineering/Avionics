@@ -60,7 +60,7 @@ bool FlightStatus::checkGround() {
     return lmMed < 20;
 }
 
-void FlightStatus::newTelemetry(double acceleration, double altitude) {
+void FlightStatus::newTelemetry1(double acceleration, double altitude) {
     altitudeDeque.pop_front();
     altitudeDeque.push_back(altitude);
 
@@ -76,7 +76,7 @@ void FlightStatus::newTelemetry(double acceleration, double altitude) {
     if(checkApogee() && flightStage == COAST)
     {
         flightStage = APOGEE;
-    } // why no pause?
+    } 
     if(flightStage == APOGEE) {
         flightStage = DESCENT;
     }
