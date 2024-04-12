@@ -1,10 +1,10 @@
 #include "SensorDataHandler.h"
 //Call addData from SensorDataHandler for each data point 
 //then use those values as a globalHistoryData to flightStatus file
-void main(void){
-double i = 0;
+void main(){
+i = 0;
 
-double accelCheck[] = {9.8345,
+float accelCheck[] = {9.8345,
 9.8345,
 9.83928,
 9.86321,
@@ -712,7 +712,7 @@ double accelCheck[] = {9.8345,
 
 while (i < 351)
 {
-    addData(DataPoint accelCheck[i]);
+   SensorData::addData(accelCheck[i]);
     i++;
 }
 }

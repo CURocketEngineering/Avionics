@@ -1,88 +1,129 @@
 #include "flightstatus.h"
-//Going to add globalHistoricalData
+#include "SensorDataHandler.h"
 
+//Error checking the desired frequency and the data's timing
+void FlightStatus::frequencyCheck(SensorData someData){
+    float dataPointsDif = theData[1].timestamp_ms - theData[0].timestamp_ms;
+    float desiredFreq = someData.getinterval; //Need to define where the desired interval is
+
+    //if frequencies do not match, throws warning
+    if(1/dataPointsDif != desiredFreq){
+        Serial.println('Frequency between given values does not match desired frequency');
+    } 
+}
+
+//Set Flight Status value 
 FlightStatus::FlightStatus(int sensorHz): altitudeDeque(128, 0), accelDeque(128,0) {
-    // Why 128 to 0 when passing in?
     flightStage = ARMED;
-    hz = sensorHz;
-    n = hz * 2; // revisit for sensitivity, 2 seconds is the duration of apogeee
 }
 
+//Check Launch -> checks change in average from incoming values in specified frequency
 bool FlightStatus::checkLaunch() {
-    // If acceleration shoots up, then the rocket has launched
-    // Reads in acceleration as a deque
-    // If average of last 2 seconds are greater than 11 m/s^2 --> liftoff
-    std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
+    bool launch = false;
+    float add = 0;
+    float ave;
+    float aveNew;
 
-    double lmMed = median(lm);
+    ave = aveNew;
 
-    return lmMed > 11;
+    for(int i = 0; i = size(theData); i++){
+        add += theData[i].data;
+    }
+    aveNew = add/size(theData);
+
+    //check if difference in new data points average of acceleration is greater than 11
+    // 11 is based on previous data 
+    if(ave - aveNew > 11){
+        launch = true;
+    }
+
+return launch;
 }
 
+
+//Check coast with acceleration data
 bool FlightStatus::checkCoast() {
     // If acceleration suddenly drops, then the engines have cut off
-    // Reads in acceleration as a deque
     // If average of last 2 seconds suddenly drops --> coast
-    // also if rocket is not on ground and prior statement is true --> coast
+    bool coast = false;
+    float add = 0;
+    float ave;
+    float aveNew;
 
-    std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
-    std::vector<double> fm(accelDeque.cend() - 3*n, accelDeque.cend() - n);
+    ave = aveNew;
 
-    double lmMed = median(lm);
-    double fmMed = median(fm);
+    for(int i = 0; i = size(theData); i++){
+        add += theData[i].data;
+    }
+    aveNew = add/size(theData);
+
+    if(ave > aveNew){
+        coast = true;
+    }
+
+return coast;
     
-    return fmMed > lmMed && !checkGround;
 }
 
+
+//Check if rocket reached apogee using altitude
 bool FlightStatus::checkApogee() {
-    // If altitude stops increasing, then the rocket has reached apogee
-    // Reads in altitude as a deque
-    // If average of last two seconds is lower than recent average --> apogee
+    //if altitude starts decreasing -> apogee
+    bool apogee = false;
+    
 
-    std::vector<double> lm(altitudeDeque.cend() - n, altitudeDeque.cend());
-    std::vector<double> fm(altitudeDeque.cend() - 3* n, altitudeDeque.cend() - n);
+        if(theDataAlt[0].data > theDataAlt[size(theData)-1].data){
+        apogee = true;
+        }
 
-    double lmMed = median(lm);
-    double fmMed = median(fm);
-
-    return lmMed < fmMed;
+return apogee;
+    
 }
 
+
+
+//Check if rocket is descending
 bool FlightStatus::checkDescent() {
-    // If acceleration starts to increase and launch is false,
-    // then rocket is descending
-    // Reads in acceleration as a deque
     // If average of last 2 seconds suddenly drops --> coast
     // also if rocket is not on ground and prior statement is true --> coast
+    bool descent = false;
+    float add = 0;
+    float ave;
+    float aveNew;
 
-    std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
-    std::vector<double> fm(accelDeque.cend() - 3*n, accelDeque.cend() - n);
+    ave = aveNew;
 
-    double lmMed = median(lm);
-    double fmMed = median(fm);
-    
-    return fmMed < lmMed && checkApogee;
+    for(int i = 0; i = size(theData); i++){
+        add += theData[i].data;
+    }
+    aveNew = add/size(theData);
+
+    if(ave < aveNew && checkLaunch){
+        descent = true;
+    }
+
+return descent;
 }
 
+//Final check -> check if rocket reached the ground
 bool FlightStatus::checkGround() {
-    // If altitude is less than 0, then rocket has hit the ground
-    // Reads in altitude as a deque
-    // If average of last two seconds is lower than 20 --> ground
-    std::vector<double> lm(altitudeDeque.cend() - n, altitudeDeque.cend());
+    bool apogee = false;
 
-    double lmMed = median(lm);
+    if(theDataAlt[0].data < 12){
+        apogee = true;
+    }
 
-    return lmMed < 20;
+return apogee;
 }
 
-void FlightStatus::newTelemetry(double acceleration, double altitude) {
+
+//Telemetry brings in new measurements
+void FlightStatus::newTelemetry(SensorData* acceleration, SensorData* altitude) {
     //Creating altitude and acceleration deques
     //ascent -> coast -> apogee -> descent -> on ground must happen in order
-    altitudeDeque.pop_front();
-    altitudeDeque.push_back(altitude);
-
-    accelDeque.pop_front();
-    accelDeque.push_back(acceleration);
+    //do not make global
+    std::vector<DataPoint> theData = acceleration -> getInOrderData; //alcz is acceleration
+    std::vector<DataPoint> theDataAlt = altitude -> getInOrderData; //alt is altitude
 
     if(checkLaunch() && flightStage == ARMED) {
         flightStage = ASCENT;
@@ -103,6 +144,7 @@ void FlightStatus::newTelemetry(double acceleration, double altitude) {
     }
 }
 
+//returns what stage the rocket is in at time is ran
 Stage FlightStatus::getStage() {
     return flightStage;
 }
