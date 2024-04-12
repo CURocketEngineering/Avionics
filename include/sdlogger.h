@@ -17,18 +17,18 @@
          const char *magnetometerFile = "/magnetometer.curedf";
          const char *barometerFile = "/barometer.curedf";
          TelemetryData lastData;
-         void readFile(fs::FS &fs, const char * path);
          void writeFile(fs::FS &fs, const char * path, const char * message);
          bool appendFile(fs::FS &fs, const char * path, const char * message);
          void renameFile(fs::FS &fs, const char * path1, const char * path2);
          void deleteFile(fs::FS &fs, const char * path);
          bool appendFileData(fs::FS &fs, const char * path, const SensorData &data);
      public:
+         void readFile(fs::FS &fs, const char * path);
          SDLogger();
          SDLogger(std::string logFP, std::string telemFP);
          void setup();
          bool writeLog(std::string log);
-         bool writeData(TelemetryData data, int flightStatus);
+         bool writeData(TelemetryData data);
          void close();
  };
  #endif

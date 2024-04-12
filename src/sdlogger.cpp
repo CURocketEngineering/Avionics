@@ -15,7 +15,7 @@
    Serial.print("Initializing SD card...");
    pinMode(10, OUTPUT);
    while(!SD.begin(10)) {
-     Serial.println("Initialization failed!");
+     Serial.println("SD Initialization failed!");
      sleep(5);
    }
    Serial.println("Initialization done.");
@@ -26,8 +26,10 @@
      appendFile(SD, logFile, c_log);
      return true;
  }
- bool SDLogger::writeData(TelemetryData data, int flightStatus) {
+ bool SDLogger::writeData(TelemetryData data) {
+    Serial.println("Writing telemetry data to sd");
      if(data.timestamp == lastData.timestamp) {
+    Serial.println("Actually nevermind");
          return false;
      } else {
          // if(data.sensorData["acceleration"].timestamp != lastData.sensorData["acceleration"].timestamp) {
@@ -56,8 +58,9 @@
          appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.z) + ",").c_str());
          appendFile(SD, telemFile, (std::to_string(data.sensorData["temperature"].temperature) + ",").c_str());
          appendFile(SD, telemFile, (std::to_string(data.sensorData["pressure"].pressure) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(flightStatus) + ",").c_str());
+         //appendFile(SD, telemFile, (std::to_string(flightStatus) + ",").c_str());
          appendFile(SD, telemFile, (std::to_string(data.sensorData["altitude"].altitude) + "\n").c_str());
+        Serial.println("Done writing to telemetry.csv");
          return true;
      }
  }
@@ -89,6 +92,8 @@
      file.close();
  }
  bool SDLogger::appendFile(fs::FS &fs, const char * path, const char * message){
+    
+    Serial.printf("Appending %s", message);
      // Serial.printf("Appending to file: %s\n", path);
      File file = fs.open(path, FILE_APPEND);
      if(!file){
