@@ -8,6 +8,13 @@
  #include <vector>
  #include "telemetry.h"
  #include "ahrs.h"
+
+ struct KFData {
+    float acceleration;
+    float velocity;
+    float drift;
+ };
+
  class SDLogger {
      private:
          const char *logFile;
@@ -28,7 +35,7 @@
          SDLogger(std::string logFP, std::string telemFP);
          void setup();
          bool writeLog(std::string log);
-         bool writeData(TelemetryData data);
+         bool writeData(TelemetryData data, KFData kfData, AHRSMap ahrsData, double vAccel, double predApogee, std::string flightStatus);
          void close();
  };
  #endif

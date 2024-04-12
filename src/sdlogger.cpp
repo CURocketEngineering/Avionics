@@ -26,42 +26,62 @@
      appendFile(SD, logFile, c_log);
      return true;
  }
- bool SDLogger::writeData(TelemetryData data) {
+ bool SDLogger::writeData(TelemetryData data, KFData kfData, AHRSMap ahrsData, double vAccel, double predApogee, std::string flightStatus) {
     Serial.println("Writing telemetry data to sd");
      if(data.timestamp == lastData.timestamp) {
     Serial.println("Actually nevermind");
          return false;
      } else {
-         // if(data.sensorData["acceleration"].timestamp != lastData.sensorData["acceleration"].timestamp) {
-         //     appendFileData(SD, accelerometerFile, data.sensorData["acceleration"]);
-         // }
-         // if(data.sensorData["gyro"].timestamp != lastData.sensorData["gyro"].timestamp) {
-         //     appendFileData(SD, gyroscopeFile, data.sensorData["gyro"]);
-         // }
-         // if(data.sensorData["magnetometer"].timestamp != lastData.sensorData["magnetometer"].timestamp) {
-         //     appendFileData(SD, magnetometerFile, data.sensorData["magnetometer"]);
-         // }
-         // if(data.sensorData["pressure"].timestamp != lastData.sensorData["pressure"].timestamp) {
-         //     appendFileData(SD, barometerFile, data.sensorData["temperature"]);
-         //     appendFileData(SD, barometerFile, data.sensorData["pressure"]);
-         //     appendFileData(SD, barometerFile, data.sensorData["altitude"]);
-         // }
-         appendFile(SD, telemFile, (std::to_string(data.timestamp) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["acceleration"].acceleration.x) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["acceleration"].acceleration.y) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["acceleration"].acceleration.z) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["gyro"].gyro.x) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["gyro"].gyro.y) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["gyro"].gyro.z) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.x) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.y) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.z) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["temperature"].temperature) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["pressure"].pressure) + ",").c_str());
-         //appendFile(SD, telemFile, (std::to_string(flightStatus) + ",").c_str());
-         appendFile(SD, telemFile, (std::to_string(data.sensorData["altitude"].altitude) + "\n").c_str());
-        Serial.println("Done writing to telemetry.csv");
-         return true;
+        // if(data.sensorData["acceleration"].timestamp != lastData.sensorData["acceleration"].timestamp) {
+        //     appendFileData(SD, accelerometerFile, data.sensorData["acceleration"]);
+        // }
+        // if(data.sensorData["gyro"].timestamp != lastData.sensorData["gyro"].timestamp) {
+        //     appendFileData(SD, gyroscopeFile, data.sensorData["gyro"]);
+        // }
+        // if(data.sensorData["magnetometer"].timestamp != lastData.sensorData["magnetometer"].timestamp) {
+        //     appendFileData(SD, magnetometerFile, data.sensorData["magnetometer"]);
+        // }
+        // if(data.sensorData["pressure"].timestamp != lastData.sensorData["pressure"].timestamp) {
+        //     appendFileData(SD, barometerFile, data.sensorData["temperature"]);
+        //     appendFileData(SD, barometerFile, data.sensorData["pressure"]);
+        //     appendFileData(SD, barometerFile, data.sensorData["altitude"]);
+        // }
+        appendFile(SD, telemFile, (std::to_string(data.timestamp) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["acceleration"].acceleration.x) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["acceleration"].acceleration.y) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["acceleration"].acceleration.z) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["gyro"].gyro.x) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["gyro"].gyro.y) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["gyro"].gyro.z) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.x) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.y) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["magnetometer"].magnetic.z) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["temperature"].temperature) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["pressure"].pressure) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(flightStatus) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(data.sensorData["altitude"].altitude)).c_str());
+
+        // AHRS Data
+        appendFile(SD, telemFile, (std::to_string(ahrsData["rx"]) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(ahrsData["ry"]) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(ahrsData["rz"]) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(ahrsData["gx"]) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(ahrsData["gy"]) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(ahrsData["gz"]) + ",").c_str());
+        
+        // Kalman Filter Stuff
+        appendFile(SD, telemFile, (std::to_string(kfData.acceleration) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(kfData.velocity) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(kfData.drift) + ",").c_str());
+
+        appendFile(SD, telemFile, (std::to_string(vAccel) + ",").c_str());
+        appendFile(SD, telemFile, (std::to_string(predApogee) + ",").c_str());
+
+        appendFile(SD, telemFile, flightStatus.c_str());
+
+        appendFile(SD, telemFile, "\n");
+    Serial.println("Done writing to telemetry.csv");
+        return true;
      }
  }
  void SDLogger::readFile(fs::FS &fs, const char * path){
@@ -93,7 +113,7 @@
  }
  bool SDLogger::appendFile(fs::FS &fs, const char * path, const char * message){
     
-    Serial.printf("Appending %s", message);
+    // Serial.printf("Appending %s", message);
      // Serial.printf("Appending to file: %s\n", path);
      File file = fs.open(path, FILE_APPEND);
      if(!file){

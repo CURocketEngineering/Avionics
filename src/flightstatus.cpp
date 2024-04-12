@@ -1,10 +1,22 @@
 #include "flightstatus.h"
+#include <string>
+#include <Arduino.h>
+//Going to add globalHistoricalData
 
-FlightStatus::FlightStatus(int sensorHz): altitudeDeque(128, 0), accelDeque(128,0) {
+FlightStatus::FlightStatus(int sensorHz): altitudeDeque(512, 0), accelDeque(512,0) {
     // Why 128 to 0 when passing in?
     flightStage = ARMED;
     hz = sensorHz;
     n = hz * 2; // revisit for sensitivity, 2 seconds is the duration of apogeee
+}
+
+double FlightStatus::median(std::vector<double> vec) {
+    // Sorts the vector and returns the median
+    std::sort(vec.begin(), vec.end());
+    if(vec.size() % 2 == 0) {
+        return (vec[vec.size()/2 - 1] + vec[vec.size()/2]) / 2;
+    }
+    return vec[vec.size()/2];
 }
 
 bool FlightStatus::checkLaunch() {
@@ -22,9 +34,8 @@ bool FlightStatus::checkCoast() {
     // If acceleration suddenly drops, then the engines have cut off
     // Reads in acceleration as a deque
     // If average of last 2 seconds suddenly drops --> coast
+    // also if rocket is not on ground and prior statement is true --> coast
 
-    // rename lm/fm? what does that mean?
-    // smaller intervals?
     std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
     std::vector<double> fm(accelDeque.cend() - 3*n, accelDeque.cend() - n);
 
@@ -48,6 +59,22 @@ bool FlightStatus::checkApogee() {
     return lmMed < fmMed;
 }
 
+bool FlightStatus::checkDescent() {
+    // If acceleration starts to increase and launch is false,
+    // then rocket is descending
+    // Reads in acceleration as a deque
+    // If average of last 2 seconds suddenly drops --> coast
+    // also if rocket is not on ground and prior statement is true --> coast
+
+    std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
+    std::vector<double> fm(accelDeque.cend() - 3*n, accelDeque.cend() - n);
+
+    double lmMed = median(lm);
+    double fmMed = median(fm);
+    
+    return fmMed < lmMed;
+}
+
 bool FlightStatus::checkGround() {
     // If altitude is less than 0, then rocket has hit the ground
     // Reads in altitude as a deque
@@ -60,25 +87,35 @@ bool FlightStatus::checkGround() {
 }
 
 void FlightStatus::newTelemetry(double acceleration, double altitude) {
+    //Creating altitude and acceleration deques
+    //ascent -> coast -> apogee -> descent -> on ground must happen in order
     altitudeDeque.pop_front();
     altitudeDeque.push_back(altitude);
 
     accelDeque.pop_front();
     accelDeque.push_back(acceleration);
 
+    // std::string outStr = ("Acceleration: " + std::to_string(acceleration) + " Altitude: " + std::to_string(altitude));
+    // Serial.println(outStr.c_str());
+
     if(checkLaunch() && flightStage == ARMED) {
         flightStage = ASCENT;
     }
+    // Serial.println("Checking coast");
     if(checkCoast() && flightStage == ASCENT) {
         flightStage = COAST;
     }
+    // Serial.println("Checking apogee");
     if(checkApogee() && flightStage == COAST)
     {
         flightStage = APOGEE;
-    } // why no pause?
-    if(flightStage == APOGEE) {
+    }
+    // Serial.println("Checking descent");
+    //adding checkdescent for time between apogee and desending
+    if(checkDescent() && flightStage == APOGEE) {
         flightStage = DESCENT;
     }
+    // Serial.println("Checking ground");
     if(checkGround() && flightStage == DESCENT) {
         flightStage = ONGROUND;
     }
@@ -88,12 +125,20 @@ Stage FlightStatus::getStage() {
     return flightStage;
 }
 
-double FlightStatus::median(std::vector<double> vec) {
-    std::sort(vec.begin(), vec.end());
-    size_t size = vec.size();
-    if (size % 2 == 0) {
-        return (vec[size / 2 - 1] + vec[size / 2]) / 2.0;
-    } else {
-        return vec[size / 2];
+std::string FlightStatus::getStageString() {
+    switch(flightStage) {
+        case ARMED:
+            return "ARMED";
+        case ASCENT:
+            return "ASCENT";
+        case COAST:
+            return "COAST";
+        case APOGEE:
+            return "APOGEE";
+        case DESCENT:
+            return "DESCENT";
+        case ONGROUND:
+            return "ONGROUND";
     }
+    return "ERROR";
 }
