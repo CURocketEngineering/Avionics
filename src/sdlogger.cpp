@@ -26,8 +26,8 @@
      appendFile(SD, logFile, c_log);
      return true;
  }
- bool SDLogger::writeData(TelemetryData data, KFData kfData, AHRSMap ahrsData, double vAccel, double predApogee, std::string flightStatus) {
-    Serial.println("Writing telemetry data to sd");
+ bool SDLogger::writeData(TelemetryData data, KFData kfData, double vAccel, double predApogee, std::string flightStatus) {
+    //Serial.println("Writing telemetry data to sd");
      if(data.timestamp == lastData.timestamp) {
     Serial.println("Actually nevermind");
          return false;
@@ -62,12 +62,12 @@
         appendFile(SD, telemFile, (std::to_string(data.sensorData["altitude"].altitude)).c_str());
 
         // AHRS Data
-        appendFile(SD, telemFile, (std::to_string(ahrsData["rx"]) + ",").c_str());
-        appendFile(SD, telemFile, (std::to_string(ahrsData["ry"]) + ",").c_str());
-        appendFile(SD, telemFile, (std::to_string(ahrsData["rz"]) + ",").c_str());
-        appendFile(SD, telemFile, (std::to_string(ahrsData["gx"]) + ",").c_str());
-        appendFile(SD, telemFile, (std::to_string(ahrsData["gy"]) + ",").c_str());
-        appendFile(SD, telemFile, (std::to_string(ahrsData["gz"]) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(ahrsData["rx"]) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(ahrsData["ry"]) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(ahrsData["rz"]) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(ahrsData["gx"]) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(ahrsData["gy"]) + ",").c_str());
+        //appendFile(SD, telemFile, (std::to_string(ahrsData["gz"]) + ",").c_str());
         
         // Kalman Filter Stuff
         appendFile(SD, telemFile, (std::to_string(kfData.acceleration) + ",").c_str());
@@ -80,7 +80,7 @@
         appendFile(SD, telemFile, flightStatus.c_str());
 
         appendFile(SD, telemFile, "\n");
-    Serial.println("Done writing to telemetry.csv");
+    //Serial.println("Done writing to telemetry.csv");
         return true;
      }
  }

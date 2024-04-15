@@ -35,7 +35,7 @@
          SDLogger(std::string logFP, std::string telemFP);
          void setup();
          bool writeLog(std::string log);
-         bool writeData(TelemetryData data, KFData kfData, AHRSMap ahrsData, double vAccel, double predApogee, std::string flightStatus);
+         bool writeData(TelemetryData data, KFData kfData, double vAccel, double predApogee, std::string flightStatus);
          void close();
  };
  #endif
