@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-#define MAX_DATA_POINTS_READ_ARRAY 128
+#define MAX_DATA_POINTS_READ_ARRAY 16
 #define MAX_DATA_POINTS_TEMPORAL_ARRAY 255
 
 // Holds a single data point
@@ -69,6 +69,7 @@ public:
 //
 // @param temporalInterval_ms: The interval between each data point in the temporal array
 // @param temporalSize_ms: The size of the temporal array in milliseconds
+// @param name: The name of sensor, 3 char limit
 class SensorData {
 public:
     // Constructor
@@ -79,10 +80,12 @@ public:
     uint16_t getInterval_ms(); 
     uint16_t getMaxSize(); 
 
-
+    
     // Returns true when the temporal array is updated
     // Returns false if the data was only put into the read array
-    bool addData(DataPoint data, HardwareSerial &SD_serial);
+    // @param data: The data point to add
+    // @param SD_serial: Which serial to save the data to, default is nullptr to not save
+    bool addData(DataPoint data, HardwareSerial *SD_serial);
 
     // Returns the median of the temporal array
     // This the value with the middle most value, not time
@@ -99,10 +102,17 @@ public:
         return temporalArray.getHistoricalData(milliseconds);
     }
 
+    // Sets the minimum time between each data point that is saved to the SD card
+    void restrictSaveSpeed(uint16_t interval_ms);
+
     String name;
+    char error; // Error code, 0 is no error
 private:
     ReadCircularArray readArray;
     TemporalCircularArray temporalArray;
+
+    uint16_t saveInterval_ms; // The minimum time between each data point that is saved to the SD card
+    uint32_t lastSaveTime_ms; // The last time a data point was saved to the SD card
 };
 
 

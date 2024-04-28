@@ -41,6 +41,7 @@ void addDatatoCircularArray(std::vector<DataPoint>& array,
                             uint8_t &head,
                             uint8_t &maxSize,
                             DataPoint data){
+
     if (array.size() < maxSize){
         array.push_back(data);
         // If this is the first data point, now the array has 
@@ -160,15 +161,21 @@ DataPoint TemporalCircularArray::getHistoricalData(uint16_t milliseconds){
     }
 }
 
-// Constructor without name 
-SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms) : temporalArray(temporalInterval_ms, temporalSize_ms){
-    this->name = "NA";
-    readArray = ReadCircularArray();
-}
-
 SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, String name) : temporalArray(temporalInterval_ms, temporalSize_ms){
     this->name = name;
     readArray = ReadCircularArray();
+    this->saveInterval_ms = 0;
+    this->lastSaveTime_ms = 0;
+
+    // Verifying that both circular arrays are setup correctly
+    // Check that the amount of data reserved in the temporal array is correct
+    if (temporalArray.data.capacity() != temporalArray.maxSize){
+        error += 1;
+    }
+    // Check that the amount of data reserved in the read array is correct
+    if (readArray.data.capacity() != readArray.maxSize){
+        error += 2;
+    }
 }
 
 bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
@@ -199,6 +206,7 @@ struct SerialData{
 */
 void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial){
     // Pack the data together 
+    Serial.println(name);
     struct SerialData theData = {"", timestamp_ms, data};
     strncpy(theData.name, name.c_str(), 3);
     theData.name[3] = '\0';
@@ -207,23 +215,27 @@ void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, Hardware
     SD_serial.write((uint8_t *) &dlim, sizeof(dlim));
 }
 
+void SensorData::restrictSaveSpeed(uint16_t interval_ms){
+    this->saveInterval_ms = interval_ms;
+}
+
 /*
 * Adds a datapoint to the read array, if the data is old enough, it is also added to the temporal array
 */
-bool SensorData::addData(DataPoint data, HardwareSerial &SD_serial){
+bool SensorData::addData(DataPoint data, HardwareSerial *SD_serial=nullptr){
+
     addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
 
-    // If a full cycle of the read array was just completed, then save all the data in the read array to the SD card
-    if  (true){// (readArray.head == 0 && readArray.data.size() == readArray.maxSize){
-        // Send just the latest data point to the SD card via Serial
-        dataToSDCardSerial(this->name, data.timestamp_ms, data.data, SD_serial); 
+    // If an amount of time since the last data was saved is greater than the save interval, save the data
+    if (data.timestamp_ms - lastSaveTime_ms >= saveInterval_ms){
+        dataToSDCardSerial(this->name, data.timestamp_ms, data.data, *SD_serial); 
+        lastSaveTime_ms = data.timestamp_ms;
     }
 
-    // Save data to SD card via SPI
-    // dataToSDCard(name, data.timestamp_ms, data.data);
-
-
+    // If the data is old enough, add it to the temporal array
+    // Also save the data to the SD card
     if(data.timestamp_ms - temporalArray.getLatest().timestamp_ms >= temporalArray.interval_ms){
+        
         addDatatoCircularArray(temporalArray.data, temporalArray.head, temporalArray.maxSize, data);
         return true;
     }
