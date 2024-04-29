@@ -195,24 +195,26 @@ bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
 }
 
 struct SerialData{
-    char name [4]; // 3 chars for name and 1 for null
-    uint32_t timestamp_ms;
-    float data; 
+    char name [4]; // 3 chars for name
+    uint32_t timestamp_ms; // 4 bytes
+    float data; // 4 bytes
+    char dlim [3] = {'\0', '\r', '\n'}; // 3 chars for delimiter
 };
 
 /*
 * Saves the data to the SD card via serial
-* Only uses the first 2 characters of the name, so make sure the first 2 characters are unique
+* Only uses the first 3 characters of the name, so make sure the first 3 characters are unique
 */
 void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial){
-    // Pack the data together 
-    Serial.println(name);
-    struct SerialData theData = {"", timestamp_ms, data};
-    strncpy(theData.name, name.c_str(), 3);
-    theData.name[3] = '\0';
-    SD_serial.write((uint8_t *) &theData, sizeof(theData));
-    char dlim [3] = {'\0', '\r', '\n'};
-    SD_serial.write((uint8_t *) &dlim, sizeof(dlim));
+    // Optimize for speed
+    SerialData serialData;
+    serialData.timestamp_ms = timestamp_ms;
+    serialData.data = data;
+    serialData.name[0] = name[0];
+    serialData.name[1] = name[1];
+    serialData.name[2] = name[2];
+    serialData.name[3] = '\0';
+    SD_serial.write((uint8_t*)&serialData, sizeof(SerialData));
 }
 
 void SensorData::restrictSaveSpeed(uint16_t interval_ms){
@@ -221,13 +223,15 @@ void SensorData::restrictSaveSpeed(uint16_t interval_ms){
 
 /*
 * Adds a datapoint to the read array, if the data is old enough, it is also added to the temporal array
+* If a serial port is provided, the data is saved to the SD card
+* The rate at which the data is saved to the SD card can be restricted by the restrictSaveSpeed method
 */
 bool SensorData::addData(DataPoint data, HardwareSerial *SD_serial=nullptr){
 
     addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
 
     // If an amount of time since the last data was saved is greater than the save interval, save the data
-    if (data.timestamp_ms - lastSaveTime_ms >= saveInterval_ms){
+    if (SD_serial != nullptr && data.timestamp_ms - lastSaveTime_ms >= saveInterval_ms){
         dataToSDCardSerial(this->name, data.timestamp_ms, data.data, *SD_serial); 
         lastSaveTime_ms = data.timestamp_ms;
     }
@@ -235,7 +239,6 @@ bool SensorData::addData(DataPoint data, HardwareSerial *SD_serial=nullptr){
     // If the data is old enough, add it to the temporal array
     // Also save the data to the SD card
     if(data.timestamp_ms - temporalArray.getLatest().timestamp_ms >= temporalArray.interval_ms){
-        
         addDatatoCircularArray(temporalArray.data, temporalArray.head, temporalArray.maxSize, data);
         return true;
     }
@@ -268,6 +271,7 @@ uint16_t SensorData::getMaxSize(){
 /*
 * Testing Scripts are below
 */
+//#define TESTING
 #ifdef TESTING
 
 
@@ -347,7 +351,8 @@ void test_TemporalCircularArray(){
 
 
 void test_SensorData_historical_data(){
-    SensorData sensorData = SensorData(100, 1000);
+    Serial.println("Starting SensorData historical data tests");
+    SensorData sensorData = SensorData(100, 1000, "test2");
     DataPoint dataPoint = DataPoint(20, 5.0);
 
     // Adding 20 data points that will all go into the temporal array
@@ -372,7 +377,7 @@ void test_SensorData_historical_data(){
     assert(sensorData.getHistoricalData(10000).timestamp_ms == 1100);
 
     // Doing a fresh sensorData
-    SensorData sensorData2 = SensorData(100, 1000);
+    SensorData sensorData2 = SensorData(100, 1000, "test3");
     // Adding 20 data points but only half should go into the temporal array
     for (int i = 0; i < 20; i++){
         // A spacing of 50ms between each data point, so only every other data point will go into the temporal array
@@ -384,6 +389,34 @@ void test_SensorData_historical_data(){
     // (100, 2), (200, 4), (300, 6), (400, 8), (500, 10), (600, 12), (700, 14), (800, 16), (900, 18)
     assert(sensorData2.getTemporalArrayMedian().timestamp_ms == 500);
     assert(floatEqual(sensorData2.getTemporalArrayMedian().data, 10.0));
+
+
+    // Verify getHistoricalDataCount 
+    assert(sensorData2.getHistoricalDataCount(0).timestamp_ms == 900); // The most recent data point
+    assert(sensorData2.getHistoricalDataCount(1).timestamp_ms == 800);
+    assert(sensorData2.getHistoricalDataCount(2).timestamp_ms == 700);
+    assert(sensorData2.getHistoricalDataCount(3).timestamp_ms == 600);
+    assert(sensorData2.getHistoricalDataCount(4).timestamp_ms == 500);
+    assert(sensorData2.getHistoricalDataCount(5).timestamp_ms == 400);
+    assert(sensorData2.getHistoricalDataCount(6).timestamp_ms == 300);
+    assert(sensorData2.getHistoricalDataCount(7).timestamp_ms == 200);
+    assert(sensorData2.getHistoricalDataCount(8).timestamp_ms == 100);
+    assert(sensorData2.getHistoricalDataCount(0).timestamp_ms - sensorData2.getHistoricalDataCount(1).timestamp_ms == 100);
+
+    // Add one more datapoint and see if it all updates well
+    DataPoint dataPoint2 = DataPoint(1200, 19);
+    sensorData2.addData(dataPoint2);
+
+    assert(sensorData2.getHistoricalDataCount(0).timestamp_ms == 1200); // The most recent data point
+    assert(sensorData2.getHistoricalDataCount(1).timestamp_ms == 900);
+
+    // Add another data point that is old enough to be added to the temporal array
+    DataPoint dataPoint3 = DataPoint(1300, 20);
+    sensorData2.addData(dataPoint3);
+    assert(sensorData2.getHistoricalDataCount(0).timestamp_ms == 1300);
+    assert(sensorData2.getHistoricalDataCount(1).timestamp_ms == 1200);
+
+
     Serial.println("done");
 
 
@@ -392,14 +425,19 @@ void test_SensorData_historical_data(){
 
 
 void test_SensorData(){
-    SensorData sensorData = SensorData(100, 1000);
+    Serial.println("Starting SensorData tests");
+    SensorData sensorData = SensorData(100, 1000, "test");
     //                             timestamp, data
+    Serial.println("Constructed a SensorData Object");
     DataPoint dataPoint = DataPoint(20, 5.0);
     assert(sensorData.addData(dataPoint) == false);
+    Serial.println("Added Data");
     assert(sensorData.getLatestData().timestamp_ms == 20);
     assert(floatEqual(sensorData.getLatestData().data, 5.0));
     assert(sensorData.getTemporalArrayMedian().timestamp_ms == 0); // No data in temporal array
     assert(floatEqual(sensorData.getTemporalArrayMedian().data, 0)); // No data in temporal array
+
+    Serial.println("c1");
 
     DataPoint dataPoint2 = DataPoint(40, 10.0);
     assert(sensorData.addData(dataPoint2) == false);
@@ -407,6 +445,8 @@ void test_SensorData(){
     assert(sensorData.getLatestData().data == 10.0);
     assert(sensorData.getTemporalArrayMedian().timestamp_ms == 0); // No data in temporal array
     assert(floatEqual(sensorData.getTemporalArrayMedian().data, 0)); // No data in temporal array
+
+    Serial.println("c2");
 
     // First data point that is old enough to be added to the temporal array
     DataPoint dataPoint3 = DataPoint(101, 15.0);

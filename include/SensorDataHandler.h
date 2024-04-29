@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
+#include <Arduino.h>
 
 #define MAX_DATA_POINTS_READ_ARRAY 16
 #define MAX_DATA_POINTS_TEMPORAL_ARRAY 255
@@ -102,8 +103,21 @@ public:
         return temporalArray.getHistoricalData(milliseconds);
     }
 
+    /*
+    * Returns the count-th newest datapoint
+    * e.g. getHistoricalDataCount(0) returns the latest data point
+    */
+    DataPoint getHistoricalDataCount(uint16_t count) {
+        // Head and count are both unsigned
+        return temporalArray.data[(temporalArray.head + temporalArray.maxSize - count) % temporalArray.maxSize];
+    }
+
     // Sets the minimum time between each data point that is saved to the SD card
     void restrictSaveSpeed(uint16_t interval_ms);
+
+    bool isFull(){
+        return readArray.data.size() == readArray.maxSize;
+    }
 
     String name;
     char error; // Error code, 0 is no error
@@ -114,6 +128,8 @@ private:
     uint16_t saveInterval_ms; // The minimum time between each data point that is saved to the SD card
     uint32_t lastSaveTime_ms; // The last time a data point was saved to the SD card
 };
+
+void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial);
 
 
 // Testing scripts
