@@ -67,8 +67,6 @@ bool FlightStatus::checkLaunchSDH(HardwareSerial * SD_serial){
 
     // Check that the interval is between 50 and 500ms
     int32_t xac_interval = xac_0_time - xac_1_time;
-    Serial.print("Real Acl Interval: ");
-    Serial.println(xac_interval);
     if(xac_interval < 50 || xac_interval > 500){
         Serial.print("Real Acl Interval is not between 50 and 500ms, got: ");
         Serial.println(xac_interval);
