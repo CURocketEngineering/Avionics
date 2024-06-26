@@ -4,6 +4,7 @@
 #include <deque>
 #include <vector>
 #include <algorithm>
+#include "ArduinoHAL.h"
 #include "SensorDataHandler.h"
 
 enum Stage {

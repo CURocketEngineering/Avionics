@@ -1,5 +1,4 @@
 #include "flightstatus.h"
-#include "Arduino.h"
 
 FlightStatus::FlightStatus(SensorData * xac, SensorData * yac, SensorData * zac) {
     // Why 128 to 0 when passing in?
@@ -89,9 +88,6 @@ bool FlightStatus::checkLaunchSDH(HardwareSerial * SD_serial){
     // Calculate the magnitude of the acceleration without sqrt because sqrt is expensive
     float accel_mag_squared = xac_median * xac_median + yac_median * yac_median + zac_median * zac_median;
 
-    // Log
-    dataToSDCardSerial("ams", millis(), accel_mag_squared, *SD_serial);
-
     // Compare to threshold
     if(accel_mag_squared > 50*50){
         return true;
@@ -109,85 +105,8 @@ void FlightStatus::update(HardwareSerial * SD_serial) {
     if(flightStage == ARMED && checkLaunchSDH(SD_serial)) {
         Serial.println("Launch detected");
         flightStage = ASCENT;
-        dataToSDCardSerial("sta", millis(), flightStage, *SD_serial);
     }
 }
-// bool FlightStatus::checkLaunch() {
-//     // If acceleration shoots up, then the rocket has launched
-//     // Reads in acceleration as a deque
-//     // If average of last 2 seconds are greater than 11 m/s^2 --> liftoff
-//     std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
-
-//     double lmMed = median(lm);
-
-//     return lmMed > 11;
-// }
-
-// bool FlightStatus::checkCoast() {
-//     // If acceleration suddenly drops, then the engines have cut off
-//     // Reads in acceleration as a deque
-//     // If average of last 2 seconds suddenly drops --> coast
-
-//     // rename lm/fm? what does that mean?
-//     // smaller intervals?
-//     std::vector<double> lm(accelDeque.cend() - n, accelDeque.cend());
-//     std::vector<double> fm(accelDeque.cend() - 3*n, accelDeque.cend() - n);
-
-//     double lmMed = median(lm);
-//     double fmMed = median(fm);
-    
-//     return fmMed > lmMed;
-// }
-
-// bool FlightStatus::checkApogee() {
-//     // If altitude stops increasing, then the rocket has reached apogee
-//     // Reads in altitude as a deque
-//     // If average of last two seconds is lower than recent average --> apogee
-
-//     std::vector<double> lm(altitudeDeque.cend() - n, altitudeDeque.cend());
-//     std::vector<double> fm(altitudeDeque.cend() - 3* n, altitudeDeque.cend() - n);
-
-//     double lmMed = median(lm);
-//     double fmMed = median(fm);
-
-//     return lmMed < fmMed;
-// }
-
-// bool FlightStatus::checkGround() {
-//     // If altitude is less than 0, then rocket has hit the ground
-//     // Reads in altitude as a deque
-//     // If average of last two seconds is lower than 20 --> ground
-//     std::vector<double> lm(altitudeDeque.cend() - n, altitudeDeque.cend());
-
-//     double lmMed = median(lm);
-
-//     return lmMed < 20;
-// }
-
-// void FlightStatus::newTelemetry(double acceleration, double altitude) {
-//     altitudeDeque.pop_front();
-//     altitudeDeque.push_back(altitude);
-
-//     accelDeque.pop_front();
-//     accelDeque.push_back(acceleration);
-
-//     if(checkLaunch() && flightStage == ARMED) {
-//         flightStage = ASCENT;
-//     }
-//     if(checkCoast() && flightStage == ASCENT) {
-//         flightStage = COAST;
-//     }
-//     if(checkApogee() && flightStage == COAST)
-//     {
-//         flightStage = APOGEE;
-//     } // why no pause?
-//     if(flightStage == APOGEE) {
-//         flightStage = DESCENT;
-//     }
-//     if(checkGround() && flightStage == DESCENT) {
-//         flightStage = ONGROUND;
-//     }
-// }
 
 Stage FlightStatus::getStage() {
     return flightStage;

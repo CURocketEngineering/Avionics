@@ -130,8 +130,6 @@ private:
     uint32_t lastSaveTime_ms; // The last time a data point was saved to the SD card
 };
 
-void dataToSDCardSerial(std::string name, uint32_t timestamp_ms, float data);
-
 
 // Testing scripts
 void test_DataPoint();

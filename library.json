@@ -1,5 +1,12 @@
 {
-    "build": {
-      "flags": "-Ihal"
-    }
+  "name": "Avionics",
+  "export":{
+    "include": ["include", "hal"]
+  },
+  "build": {
+    "flags": [
+      "-I hal"
+    ]
+  }
+
 }
