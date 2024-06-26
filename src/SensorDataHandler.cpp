@@ -1,15 +1,6 @@
-// Orignally written by Ethan Anderson -- 2/17/2024
-
-// Setting up the Serial port for debugging if the Arduino.h library is included
-#if __has_include(<Arduino.h>)
-#include <Arduino.h>
-#define DEBUG Serial
-#endif
+// Originally written by Ethan Anderson -- 2/17/2024
 
 #include "SensorDataHandler.h"
-#include <algorithm>
-#include <SPI.h>
-#include <SD.h>
 
 #ifdef DEBUG
 #define assert(condition) \
@@ -161,7 +152,7 @@ DataPoint TemporalCircularArray::getHistoricalData(uint16_t milliseconds){
     }
 }
 
-SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, String name) : temporalArray(temporalInterval_ms, temporalSize_ms){
+SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, std::string name) : temporalArray(temporalInterval_ms, temporalSize_ms){
     this->name = name;
     readArray = ReadCircularArray();
     this->saveInterval_ms = 0;
@@ -178,45 +169,6 @@ SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, S
     }
 }
 
-bool dataToSDCard(String name, uint16_t timestamp_ms, float data){
-    // Append the data to the file
-    File dataFile = SD.open("hello.csv", FILE_WRITE);
-    if (dataFile){
-        dataFile.println(String(timestamp_ms) + "," + String(data));
-        dataFile.close();
-        return true;
-    }
-    else{
-        #ifdef DEBUG
-        DEBUG.println("Error opening file");
-        #endif
-        return false;
-    }
-}
-
-struct SerialData{
-    char name [4]; // 3 chars for name
-    uint32_t timestamp_ms; // 4 bytes
-    float data; // 4 bytes
-    char dlim [3] = {'\0', '\r', '\n'}; // 3 chars for delimiter
-};
-
-/*
-* Saves the data to the SD card via serial
-* Only uses the first 3 characters of the name, so make sure the first 3 characters are unique
-*/
-void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial){
-    // Optimize for speed
-    SerialData serialData;
-    serialData.timestamp_ms = timestamp_ms;
-    serialData.data = data;
-    serialData.name[0] = name[0];
-    serialData.name[1] = name[1];
-    serialData.name[2] = name[2];
-    serialData.name[3] = '\0';
-    SD_serial.write((uint8_t*)&serialData, sizeof(SerialData));
-}
-
 void SensorData::restrictSaveSpeed(uint16_t interval_ms){
     this->saveInterval_ms = interval_ms;
 }
@@ -226,15 +178,9 @@ void SensorData::restrictSaveSpeed(uint16_t interval_ms){
 * If a serial port is provided, the data is saved to the SD card
 * The rate at which the data is saved to the SD card can be restricted by the restrictSaveSpeed method
 */
-bool SensorData::addData(DataPoint data, HardwareSerial *SD_serial=nullptr){
+bool SensorData::addData(DataPoint data){
 
     addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
-
-    // If an amount of time since the last data was saved is greater than the save interval, save the data
-    if (SD_serial != nullptr && data.timestamp_ms - lastSaveTime_ms >= saveInterval_ms){
-        dataToSDCardSerial(this->name, data.timestamp_ms, data.data, *SD_serial); 
-        lastSaveTime_ms = data.timestamp_ms;
-    }
 
     // If the data is old enough, add it to the temporal array
     // Also save the data to the SD card

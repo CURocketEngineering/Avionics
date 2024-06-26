@@ -1,4 +1,4 @@
-// Orignally written by Ethan Anderson -- 2/17/2024
+// Originally written by Ethan Anderson -- 2/17/2024
 // DataHandler.h
 
 #ifndef SensorDataHandler_H
@@ -8,7 +8,8 @@
 #include <cstdlib>
 #include <vector>
 #include <string>
-#include <Arduino.h>
+#include <algorithm>
+#include <cmath>
 
 #define MAX_DATA_POINTS_READ_ARRAY 16
 #define MAX_DATA_POINTS_TEMPORAL_ARRAY 255
@@ -74,7 +75,7 @@ public:
 class SensorData {
 public:
     // Constructor
-    SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, String name);
+    SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, std::string name);
     // No name constructor
     SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms);
 
@@ -86,7 +87,7 @@ public:
     // Returns false if the data was only put into the read array
     // @param data: The data point to add
     // @param SD_serial: Which serial to save the data to, default is nullptr to not save
-    bool addData(DataPoint data, HardwareSerial *SD_serial);
+    bool addData(DataPoint data);
 
     // Returns the median of the temporal array
     // This the value with the middle most value, not time
@@ -119,7 +120,7 @@ public:
         return readArray.data.size() == readArray.maxSize;
     }
 
-    String name;
+    std::string name;
     char error; // Error code, 0 is no error
 private:
     ReadCircularArray readArray;
@@ -129,7 +130,7 @@ private:
     uint32_t lastSaveTime_ms; // The last time a data point was saved to the SD card
 };
 
-void dataToSDCardSerial(String name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial);
+void dataToSDCardSerial(std::string name, uint32_t timestamp_ms, float data);
 
 
 // Testing scripts
