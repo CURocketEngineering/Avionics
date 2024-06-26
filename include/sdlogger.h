@@ -37,5 +37,6 @@
          bool writeLog(std::string log);
          bool writeData(TelemetryData data, KFData kfData, double vAccel, double predApogee, std::string flightStatus);
          void close();
+         bool isInitialized() { return SD.begin(10); }
  };
  #endif

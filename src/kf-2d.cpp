@@ -109,11 +109,11 @@ void KF2D::Update(const MeasurementVector &measurement)
      lastTime = thisTime;
      //Serial.printf("dt=%f\t", delta_time);
 
-     A = {{1, 0, 0},
-          {delta_time, 1, 0},
-          {(float)(0.5 * delta_time * delta_time), delta_time, 1}};
+     //A = {{1, 0, 0},
+     //     {delta_time, 1, 0},
+     //     {(float)(0.5 * delta_time * delta_time), delta_time, 1}};
 
-     B = {(float)(0.5 * delta_time * delta_time), delta_time, 1};
+     //B = {(float)(0.5 * delta_time * delta_time), delta_time, 1};
 
      // Calculate the Kalman gain
      mat<float, 3, 2> K = mul(mul(P, transpose(H)), inverse(mul(mul(H, P), transpose(H)) + R)); // n,m
