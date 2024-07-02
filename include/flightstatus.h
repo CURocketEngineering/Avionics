@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include "ArduinoHAL.h"
-#include "SensorDataHandler.h"
+#include "data_handling/AdvancedSensorDataHandler.h"
 
 enum Stage {
     ARMED,
@@ -30,11 +30,11 @@ class FlightStatus {
     bool checkGround();
 
     int validatedSDHs = 0;
-    SensorData * xac;
-    SensorData * yac;
-    SensorData * zac;
+    AdvancedSensorDataHandler * xac;
+    AdvancedSensorDataHandler * yac;
+    AdvancedSensorDataHandler * zac;
   public:
-    FlightStatus(SensorData * xac, SensorData * yac, SensorData * zac);
+    FlightStatus(SensorDataHandler * xac, SensorDataHandler * yac, SensorDataHandler * zac);
     void setupSDHs();
     void update(HardwareSerial * SD_serial);
     Stage getStage();

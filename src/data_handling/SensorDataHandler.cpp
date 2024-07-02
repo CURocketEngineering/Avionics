@@ -1,217 +1,27 @@
 // Originally written by Ethan Anderson -- 2/17/2024
 
-#include "SensorDataHandler.h"
+#include "data_handling/SensorDataHandler.h"
 
-#ifdef DEBUG
-#define assert(condition) \
-    do { \
-        if (!(condition)) { \
-            DEBUG.print("Assertion failed in "); \
-            DEBUG.print(__FILE__); \
-            DEBUG.print(" ("); \
-            DEBUG.print(__LINE__); \
-            DEBUG.print("): "); \
-            DEBUG.println(__func__); \
-        } \
-    } while(0)
-#else
-#define assert(condition) ((void)0)
-#endif
-
-// Check if floats are equal
-bool floatEqual(float a, float b){
-    return fabs(a - b) < 0.0001;
-}
-
-DataPoint::DataPoint(uint32_t timestamp_ms, float data){
-    this->timestamp_ms = timestamp_ms;
-    this->data = data;
-}
-
-void addDatatoCircularArray(std::vector<DataPoint>& array,
-                            uint8_t &head,
-                            uint8_t &maxSize,
-                            DataPoint data){
-
-    if (array.size() < maxSize){
-        array.push_back(data);
-        // If this is the first data point, now the array has 
-        // a size of 1, so the head should be 0
-        // I.e. don't increment the head if the array size is 1
-        if (array.size() > 1){
-            head++;
-        }
-    }
-    else{
-        head = (head + 1) % maxSize;
-        array[head] = data;
-    }
-}
-
-ReadCircularArray::ReadCircularArray(){
-    head = 0;
-    maxSize = MAX_DATA_POINTS_READ_ARRAY;
-    data.reserve(maxSize);
-    data.clear();
-}
-
-DataPoint ReadCircularArray::getLatestData(){
-    if (data.empty()){
-        return DataPoint();
-    }
-    return data[head];
-}
-
-TemporalCircularArray::TemporalCircularArray(uint16_t interval_ms, uint16_t size_ms){
-    head = 0;
-
-    // Checking if size_ms / interval_ms is larger than the maximum size
-    if (size_ms / interval_ms > MAX_DATA_POINTS_TEMPORAL_ARRAY){
-        maxSize = MAX_DATA_POINTS_TEMPORAL_ARRAY;
-        #ifdef DEBUG
-        DEBUG.println("TemporalCircularArray size is too large. Setting to MAX_DATA_POINTS_TEMPORAL_ARRAY");
-        #endif
-    }
-    else{
-        maxSize = size_ms / interval_ms;
-    }
-
-    this->interval_ms = interval_ms;
-    data.reserve(maxSize);
-    data.clear();
-}
-
-
-DataPoint TemporalCircularArray::getLatest(){
-    if (data.empty()){
-        return DataPoint();
-    }
-    return data[head];
-}
-
-/*
-* Gets the median (by data) of the data array
-* Sorts by data and returns the middle element
-# If there are an even number of elements, the right middle element is returned
-* @return DataPoint median
-*/
-DataPoint TemporalCircularArray::getMedian(){
-    if(data.empty()){
-        return DataPoint();
-    }
-    else{
-        // Sorting the data array and save that to new array
-        std::vector<DataPoint> dataCopy = this->data;
-        std::sort(dataCopy.begin(), dataCopy.end(), [](DataPoint a, DataPoint b) -> bool {return a.data < b.data;});
-        return dataCopy[dataCopy.size() / 2];
-    }
-}
-/*
- * Returns the newest data point in the temporal array that is at least <milliseconds> older than the newest data point
- * @param milliseconds: The number of milliseconds older than the latest data point
- * @return: The data point closest to the specified number of milliseconds
- *         If the specified number of milliseconds is greater than the size of the array, the oldest data point is returned
- */
-DataPoint TemporalCircularArray::getHistoricalData(uint16_t milliseconds){
-    if(data.empty()){
-        return DataPoint();
-    }
-    else{
-
-        uint32_t targetTimestamp = data[head].timestamp_ms - milliseconds;
-        uint8_t index = head;
-
-        // The oldestIndex depends on the how much of the array is filled
-        uint8_t oldestIndex;
-        if (data.size() < maxSize){
-            oldestIndex = 0;
-        }
-        else{
-            oldestIndex = (head + 1) % maxSize;
-        }
-
-        // If the oldest value is newer than the target, then just return the oldest value
-        // Also if the milliseconds to go backwards is greater than the number of milliseconds since the oldest value
-        // then just return the oldest value
-        if (data[oldestIndex].timestamp_ms > targetTimestamp || data[head].timestamp_ms < milliseconds){
-            return data[oldestIndex];
-        }
-
-        // Moving the index back until the timestamp is less than the target
-        while(data[index].timestamp_ms > targetTimestamp){
-            // To move to to the previous index, we need to subtract 1
-            // If the index is 0, then we need to wrap around to the end of the array
-            if (index == 0){
-                index = maxSize - 1;
-            }
-            else{
-                index--;
-            }
-        }
-        return data[index];
-    }
-}
-
-SensorData::SensorData(uint16_t temporalInterval_ms, uint16_t temporalSize_ms, std::string name) : temporalArray(temporalInterval_ms, temporalSize_ms){
+SensorDataHandler::SensorDataHandler(std::string name, IDataSaver* ds) {
     this->name = name;
-    readArray = ReadCircularArray();
+    this->dataSaver = ds;
     this->saveInterval_ms = 0;
     this->lastSaveTime_ms = 0;
-
-    // Verifying that both circular arrays are setup correctly
-    // Check that the amount of data reserved in the temporal array is correct
-    if (temporalArray.data.capacity() != temporalArray.maxSize){
-        error += 1;
-    }
-    // Check that the amount of data reserved in the read array is correct
-    if (readArray.data.capacity() != readArray.maxSize){
-        error += 2;
-    }
 }
 
-void SensorData::restrictSaveSpeed(uint16_t interval_ms){
+void SensorDataHandler::restrictSaveSpeed(uint16_t interval_ms){
     this->saveInterval_ms = interval_ms;
 }
 
-/*
-* Adds a datapoint to the read array, if the data is old enough, it is also added to the temporal array
-* If a serial port is provided, the data is saved to the SD card
-* The rate at which the data is saved to the SD card can be restricted by the restrictSaveSpeed method
-*/
-bool SensorData::addData(DataPoint data){
 
-    addDatatoCircularArray(readArray.data, readArray.head, readArray.maxSize, data);
-
-    // If the data is old enough, add it to the temporal array
-    // Also save the data to the SD card
-    if(data.timestamp_ms - temporalArray.getLatest().timestamp_ms >= temporalArray.interval_ms){
-        addDatatoCircularArray(temporalArray.data, temporalArray.head, temporalArray.maxSize, data);
-        return true;
+int SensorDataHandler::addData(DataPoint data){
+    // Check if the data is old enough to be saved based on the interval
+    if (data.timestamp_ms - lastSaveTime_ms > saveInterval_ms){
+        dataSaver->saveDataPoint(data, name);
+        lastSaveTime_ms = data.timestamp_ms;
     }
-    else{
-        return false;
-    }
-}
 
-DataPoint SensorData::getTemporalArrayMedian(){
-    return temporalArray.getMedian();
-}
-
-/*
-* Get the latest data from the readArray
-* @return DataPoint
-*/
-DataPoint SensorData::getLatestData(){
-    return readArray.getLatestData();
-}
-
-
-uint16_t SensorData::getInterval_ms(){
-    return this->temporalArray.interval_ms;
-}
-
-uint16_t SensorData::getMaxSize(){
-    return this->temporalArray.maxSize; 
+    return 0;
 }
 
 /*
