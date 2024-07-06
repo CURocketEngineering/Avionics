@@ -13,7 +13,9 @@ class IDataSaver {
 
     public:
         virtual int saveDataPoint(DataPoint dp, std::string name) = 0;
-        int saveDataPoint(float data, uint32_t timestamp_ms, std::string name) {
+
+        // Overloaded function, which converts the data and timestamp to a DataPoint
+        virtual int saveDataPoint(float data, uint32_t timestamp_ms, std::string name) final {
             return saveDataPoint(DataPoint(timestamp_ms, data), name);
         }
 };
