@@ -100,6 +100,14 @@ class CircularArray {
         return quickSelect(copyArray, 0, maxSize - 1, maxSize / 2);
     }
 
+    void clear(){
+        head = 0;
+        pushCount = 0;
+        for (int i = 0; i < maxSize; i++){
+            array[i] = T();
+        }
+    }
+
 };
 
 
