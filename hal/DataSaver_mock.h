@@ -7,6 +7,7 @@
 #include "data_handling/DataSaver.h"
 
 class DataSaverMock: public IDataSaver {
+    // Mock class if a data saver is ever required but not the focus of the test
     public:
-        MOCK_METHOD(int, saveDataPoint, (DataPoint dp, std::string name), (override));
+        MOCK_METHOD(int, saveDataPoint, (DataPoint dp, uint8_t name), (override));
 };

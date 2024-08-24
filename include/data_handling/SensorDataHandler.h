@@ -21,11 +21,11 @@
 //
 // @param temporalInterval_ms: The interval between each data point in the temporal array
 // @param temporalSize_ms: The size of the temporal array in milliseconds
-// @param name: The name of sensor, 3 char limit
+// @param name: The name of sensor as an 8 bit unsigned integer
 class SensorDataHandler {
 public:
     // Constructor
-    SensorDataHandler(std::string name, IDataSaver* ds);
+    SensorDataHandler(uint8_t name, IDataSaver* ds);
     
     // Adds a data point to the sensor data handler
     // Will save it if the saveInterval_ms has passed
@@ -35,10 +35,13 @@ public:
     // Sets the minimum time between each data point that is saved to the SD card
     void restrictSaveSpeed(uint16_t interval_ms);
 
-    std::string name;
+    uint8_t getName() {return name;}
+
+ 
 protected:
     IDataSaver* dataSaver;
 private:
+    uint8_t name;
     uint16_t saveInterval_ms; // The minimum time between each data point that is saved to the SD card
     uint32_t lastSaveTime_ms; // The last time a data point was saved to the SD card
 };

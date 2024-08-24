@@ -22,6 +22,14 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
 
 bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
 {
+    // :xac: The x acceleration data point in ms^2
+    // :yac: The y acceleration data point in ms^2
+    // :zac: The z acceleration data point in ms^2 
+
+    // Return false if the data is ignored, true if the data is accepted
+    // Will set the launched flag if the data is accepted and the launch is detected
+
+
     // If launched, don't update
     if (launched)
     {
@@ -49,7 +57,7 @@ bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     }
 
 
-    // Make sure we are near the window interval += 10%
+    // Make sure we are near the window interval +- 10%
     uint32_t time_diff = time_ms - AclMagSqWindow_ms2.getFromHead(0).timestamp_ms;
 
     if (time_diff < windowInterval_ms - tenPercentWindowInterval_ms || time_diff > windowInterval_ms + tenPercentWindowInterval_ms)

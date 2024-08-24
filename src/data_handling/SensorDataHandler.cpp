@@ -2,7 +2,7 @@
 
 #include "data_handling/SensorDataHandler.h"
 
-SensorDataHandler::SensorDataHandler(std::string name, IDataSaver* ds) {
+SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* ds) {
     this->name = name;
     this->dataSaver = ds;
     this->saveInterval_ms = 0;
