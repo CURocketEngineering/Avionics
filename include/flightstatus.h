@@ -4,6 +4,8 @@
 #include <deque>
 #include <vector>
 #include <algorithm>
+#include "ArduinoHAL.h"
+#include "data_handling/AdvancedSensorDataHandler.h"
 
 enum Stage {
     ARMED,
@@ -17,20 +19,27 @@ enum Stage {
 class FlightStatus {
   private:
     Stage flightStage;
-    int hz;
-    int n;
-    std::deque<double> accelDeque;
-    std::deque<double> altitudeDeque;
-
     double median(std::vector<double> vec);
+
+    // Using SensorDataHandlers to check for launch
+    bool checkLaunchSDH(HardwareSerial * SD_serial); 
+
     bool checkLaunch();
     bool checkCoast();
     bool checkApogee();
     bool checkGround();
+
+    int validatedSDHs = 0;
+    AdvancedSensorDataHandler * xac;
+    AdvancedSensorDataHandler * yac;
+    AdvancedSensorDataHandler * zac;
   public:
-    FlightStatus(int sensorHz = 32);
-    void newTelemetry(double acceleration, double altitude);
+    FlightStatus(SensorDataHandler * xac, SensorDataHandler * yac, SensorDataHandler * zac);
+    void setupSDHs();
+    void update(HardwareSerial * SD_serial);
     Stage getStage();
+
+    
 };
 
 #endif
