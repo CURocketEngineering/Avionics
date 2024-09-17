@@ -1,8 +1,9 @@
 #ifndef CIRCULARARRAY_H
 #define CIRCULARARRAY_H
 
-#include "gtest/gtest.h"
 #include <vector>
+#include <algorithm>
+#include <cstdint>
 
 template<typename T>
 int partition(std::vector<T>& array, int left, int right, int pivotIndex) {

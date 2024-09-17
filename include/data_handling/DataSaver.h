@@ -2,8 +2,6 @@
 #define DATA_SAVER_H
 
 #include "data_handling/DataPoint.h"
-#include <string>
-#include <iostream>
 #include <cstdint>
 
 
@@ -21,16 +19,6 @@ class IDataSaver {
 
 };
 
-class printSaver : public IDataSaver {
-    // This is useful for debugging
-    // Just prints what would otherwise be saved to the terminal 
-
-    public:
-        int saveDataPoint(DataPoint dp, uint8_t name) override {
-            std::cout << name << " " << dp.timestamp_ms << " " << dp.data << std::endl;
-            return 0;
-        }
-};
 
 
 #endif

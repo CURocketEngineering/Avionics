@@ -1,8 +1,6 @@
 #ifndef ARDUINOHAL_H
 #define ARDUINOHAL_H
 
-#include <string>
-
 #ifdef ARDUINO
 #include "Arduino.h"
 #include <SPI.h>

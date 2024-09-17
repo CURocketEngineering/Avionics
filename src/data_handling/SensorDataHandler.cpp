@@ -1,6 +1,7 @@
 // Originally written by Ethan Anderson -- 2/17/2024
 
 #include "data_handling/SensorDataHandler.h"
+#include "ArduinoHAL.h"
 
 SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* ds) {
     this->name = name;
