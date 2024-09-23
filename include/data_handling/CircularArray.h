@@ -78,6 +78,16 @@ class CircularArray {
         pushCount++;
     }
 
+    T pop(){
+        if (pushCount == 0){
+            return T();
+        }
+        T data = array[head];
+        head = (head + maxSize - 1) % maxSize;
+        pushCount--;
+        return data;
+    }
+
     // How many indexes back from the head
     T getFromHead(uint8_t index){
         return array[(head + maxSize - index) % maxSize];
@@ -86,6 +96,10 @@ class CircularArray {
     // Has the circular array been filled          
     bool isFull(){
         return pushCount >= maxSize;
+    }
+    
+    bool isEmpty(){
+        return pushCount == 0;
     }
 
     uint8_t getHead(){
