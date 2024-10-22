@@ -172,15 +172,15 @@ void FlashDriver::writeDisable() {
 }
 
 FlashStatus FlashDriver::isValidPage(uint32_t page) {
-    return (page < (BLOCK_COUNT * SECTOR_COUNT_BLOCK)) ? FLASH_SUCCESS : static_cast<FlashStatus>(FLASH_INVALID); 
+    return (page < (BLOCK_COUNT * SECTOR_COUNT_BLOCK)) ? FLASH_SUCCESS : FLASH_INVALID; 
 }
 
 FlashStatus FlashDriver::isValidSector(uint32_t sector) {
-    return (sector < SECTOR_COUNT) ? FLASH_SUCCESS : static_cast<FlashStatus>(FLASH_INVALID); 
+    return (sector < SECTOR_COUNT) ? FLASH_SUCCESS : FLASH_INVALID; 
 }
 
 FlashStatus FlashDriver::isValidBlock(uint32_t block) {
-   return (block < BLOCK_COUNT) ? FLASH_SUCCESS : static_cast<FlashStatus>(FLASH_INVALID); 
+   return (block < BLOCK_COUNT) ? FLASH_SUCCESS : FLASH_INVALID; 
 }
 
 
