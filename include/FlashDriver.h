@@ -36,9 +36,9 @@
 
 
 enum FlashStatus {
-    SUCCESS,
-    FAILURE,
-    INVALID
+    FLASH_SUCCESS,
+    FLASH_FAILURE,
+    FLASH_INVALID
 };
 
 class FlashDriver {
@@ -64,6 +64,8 @@ private:
     FlashStatus isValidPage(uint32_t page);
     FlashStatus isValidSector(uint32_t sector);
     FlashStatus isValidBlock(uint32_t block);
+
+};
 
 #endif // FLASH_DRIVER_H
 
