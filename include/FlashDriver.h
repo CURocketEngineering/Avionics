@@ -1,10 +1,9 @@
 #ifndef FLASH_DRIVER_H
 #define FLASH_DRIVER_H
 
-#include "Adafruit_SPIDevice.h"
+#include "SPI.h"
 
-#define FLASH_CS                10
-#define FLASH_ID_ADDR           0x90
+#define FLASH_JEDEC_ID          0x9F
 #define MANUFACTURER_ID         0xEF
 #define MEMORY_TYPE             0x40
 #define MEMORY_CAPACITY         0x18
@@ -19,7 +18,7 @@
 #define SECTOR_ERASE            0x20  
 #define CHIP_ERASE              0x60
 #define ENABLE_RESET            0x66
-#define RESET_DEVICE             0x99
+#define RESET_DEVICE            0x99
 #define WRITE_DISABLE_FLASH     0x04
 #define WRITE_ENABLE_FLASH      0x06 
 #define READ_FLASH              0x03  
@@ -42,7 +41,6 @@ enum FlashStatus {
 };
 
 class FlashDriver {
-    Adafruit_SPIDevice flashSpi;
 
 public:
     FlashDriver();  // Constructor
@@ -68,4 +66,3 @@ private:
 };
 
 #endif // FLASH_DRIVER_H
-
