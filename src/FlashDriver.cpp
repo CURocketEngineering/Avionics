@@ -100,7 +100,7 @@ FlashStatus FlashDriver::writeFlash(uint32_t address, const uint8_t* data, size_
 
 
 uint32_t getPageAddress(uint32_t page) {
-    if (isValidPage(page) != SUCCESS) {
+    if (isValidPage(page) != FLASH_SUCCESS) {
 
         return 0xFFFFFF; 
     }
@@ -109,7 +109,7 @@ uint32_t getPageAddress(uint32_t page) {
 
 
 uint32_t getSectorAddress(uint32_t sector) {
-    if (isValidSector(sector) != SUCCESS) {
+    if (isValidSector(sector) != FLASH_SUCCESS) {
 
         return 0xFFFFFF; 
     }
@@ -118,7 +118,7 @@ uint32_t getSectorAddress(uint32_t sector) {
 
 
 uint32_t getBlockAddress(uint32_t block) {
-    if (isValidBlock(block) != SUCCESS) {
+    if (isValidBlock(block) != FLASH_SUCCESS) {
 
         return 0xFFFFFF; 
     }
