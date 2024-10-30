@@ -9,7 +9,7 @@ FlashDriver::~FlashDriver() {}
 FlashStatus FlashDriver::initFlash() {
 
     uint8_t rx_buf[3] = {0}; 
-    uint8_t tx_buf = 0x9F;   
+    uint8_t tx_buf = FLASH_JEDEC_ID;   
 
     flashSpi.begin();
 
