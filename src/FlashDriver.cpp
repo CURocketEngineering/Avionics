@@ -1,37 +1,39 @@
 #include "FlashDriver.h"
 
- // FLASH_CS is the Chip Select pin
- // 100000 is the clock speed (100kHz)
- // SPI_BITORDER_MSBFIRST sets the bit order
- // SPI_MODE1 sets the SPI mode
-FlashDriver::FlashDriver() : flashSpi(FLASH_CS, 100000, SPI_BITORDER_MSBFIRST, SPI_MODE1) {}
+
+SPIClass flashSpi(PB5, PB4, PB3, PA4);
+FlashDriver::FlashDriver() {}
 
 FlashDriver::~FlashDriver() {}
 
 FlashStatus FlashDriver::initFlash() {
 
-    if (!flashSpi.begin()) {
-        return FLASH_FAILURE;
-    }
+    uint8_t rx_buf[3] = {0}; 
+    uint8_t tx_buf = FLASH_JEDEC_ID;   
 
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(FLASH_ID_ADDR);  
+    flashSpi.begin();
 
-    // Read Manufacturer ID and Device ID
-    uint8_t manufacturerID = flashSpi.transfer(0x00);  // Read Manufacturer ID
-    uint8_t memoryType = flashSpi.transfer(0x00);      // Read Memory Type (should be 0x40 for W25Q128JV)
-    uint8_t capacity = flashSpi.transfer(0x00);        // Read Memory Capacity (should be 0x18 for W25Q128JV)
+    digitalWrite(PA4, LOW);
 
+    flashSpi.transfer(tx_buf, 1);
+    rx_buf[0] = flashSpi.transfer(0x00);
+    rx_buf[1] = flashSpi.transfer(0x00);
+    rx_buf[2] = flashSpi.transfer(0x00);
+ 
 
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+    digitalWrite(PA4, HIGH);
+
+    // Extract Manufacturer ID, Memory Type, and Capacity from rx_buf
+    uint8_t manufacturerID = rx_buf[0];  
+    uint8_t memoryType = rx_buf[1];      
+    uint8_t capacity = rx_buf[2];        
 
     if (manufacturerID == MANUFACTURER_ID && memoryType == MEMORY_TYPE && capacity == MEMORY_CAPACITY) {
         return FLASH_SUCCESS;
     } else {
         return FLASH_FAILURE;
     }
+    flashSpi.end();
 }
 
 FlashStatus FlashDriver::readFlash(uint32_t address, uint8_t* buffer, size_t length) {
@@ -39,22 +41,24 @@ FlashStatus FlashDriver::readFlash(uint32_t address, uint8_t* buffer, size_t len
         return FLASH_INVALID;
     }
 
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(READ_FLASH);                    // Send the Read command (0x03)    
-    flashSpi.transfer((address >> 16) & 0xFF);
-    flashSpi.transfer((address >> 8) & 0xFF);
-    flashSpi.transfer(address & 0xFF);
+    uint8_t tx_buf[4] = {
+        READ_FLASH,
+        static_cast<uint8_t>((address >> 16) & 0xFF),
+        static_cast<uint8_t>((address >> 8) & 0xFF),
+        static_cast<uint8_t>(address & 0xFF)
+    };
 
-    for (size_t i = 0; i < length; i++) {
-        buffer[i] = flashSpi.transfer(0x00);
-    }
+    flashSpi.begin();
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+    flashSpi.transfer(nullptr, buffer, length);
+    digitalWrite(PA4, HIGH);
 
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+    flashSpi.end();
 
     return FLASH_SUCCESS;
 }
+
 
 
 FlashStatus FlashDriver::writeFlash(uint32_t address, const uint8_t* data, size_t length) {
@@ -62,42 +66,72 @@ FlashStatus FlashDriver::writeFlash(uint32_t address, const uint8_t* data, size_
         return FLASH_INVALID;
     }
 
-    while(length > 0){
-
+    flashSpi.begin();
+    while (length > 0) {
         uint32_t currentPage = address / PAGE_SIZE_BYTES;
         uint32_t offsetInPage = address % PAGE_SIZE_BYTES;
         uint32_t bytesToEndOfPage = PAGE_SIZE_BYTES - offsetInPage;
         uint32_t bytesToWrite = (length < bytesToEndOfPage) ? length : bytesToEndOfPage;
 
-        digitalWrite(FLASH_CS, LOW);
-        flashSpi.beginTransaction();
-        flashSpi.transfer(WRITE_ENABLE_FLASH);                      // Send the Write command (0x06)
-        flashSpi.transfer((address >> 16) & 0xFF);
-        flashSpi.transfer((address >> 8) & 0xFF);
-        flashSpi.transfer(address & 0xFF);
+        uint8_t tx_buf[4] = {
+            PAGE_PROGRAM,
+            static_cast<uint8_t>((address >> 16) & 0xFF),
+            static_cast<uint8_t>((address >> 8) & 0xFF),
+            static_cast<uint8_t>(address & 0xFF)
+        };
 
-        for (size_t i = 0; i < bytesToWrite; i++) {
-            flashSpi.transfer(data[i]);
+        digitalWrite(PA4, LOW);
+        flashSpi.transfer(WRITE_ENABLE_FLASH);
+        digitalWrite(PA4, HIGH);
+
+        digitalWrite(PA4, LOW);
+        flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+        flashSpi.transfer(data, nullptr, bytesToWrite);
+        digitalWrite(PA4, HIGH);
+
+        if (!waitUntilNotBusy()) { 
+            return FLASH_FAILURE;
         }
 
-        flashSpi.endTransaction();
-        digitalWrite(FLASH_CS, HIGH);
 
-        // Move to the next page
         address += bytesToWrite;
         data += bytesToWrite;
         length -= bytesToWrite;
 
         writeDisable();
-
     }
+    flashSpi.end();
 
     return FLASH_SUCCESS;
 }
 
 
+uint8_t FlashDriver::readStatusReg1() {
+    
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(READ_STATUS_REG1); 
+    uint8_t status = flashSpi.transfer(0x00); 
+    digitalWrite(PA4, HIGH);
+
+    return status;
+}
+
+void FlashDriver::writeStatusReg1(uint8_t status) {
+    flashSpi.begin();
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(WRITE_ENABLE_FLASH);
+    digitalWrite(PA4, HIGH);
+
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(WRITE_STATUS_REG1); 
+    flashSpi.transfer(status);
+    digitalWrite(PA4, HIGH);
+    flashSpi.end();
+}
+
+
 uint32_t FlashDriver::getPageAddress(uint32_t page) {
-    if (isValidPage(page) != SUCCESS) {
+    if (isValidPage(page) != FLASH_SUCCESS) {
 
         return 0xFFFFFF; 
     }
@@ -106,7 +140,7 @@ uint32_t FlashDriver::getPageAddress(uint32_t page) {
 
 
 uint32_t FlashDriver::getSectorAddress(uint32_t sector) {
-    if (isValidSector(sector) != SUCCESS) {
+    if (isValidSector(sector) != FLASH_SUCCESS) {
 
         return 0xFFFFFF; 
     }
@@ -115,7 +149,7 @@ uint32_t FlashDriver::getSectorAddress(uint32_t sector) {
 
 
 uint32_t FlashDriver::getBlockAddress(uint32_t block) {
-    if (isValidBlock(block) != SUCCESS) {
+    if (isValidBlock(block) != FLASH_SUCCESS) {
 
         return 0xFFFFFF; 
     }
@@ -123,52 +157,89 @@ uint32_t FlashDriver::getBlockAddress(uint32_t block) {
 }
 
 
-void FlashDriver::eraseSector(uint32_t address){
+void FlashDriver::eraseSector(uint32_t address) {
+    uint8_t tx_buf[4] = {
+        SECTOR_ERASE,
+        static_cast<uint8_t>((address >> 16) & 0xFF),
+        static_cast<uint8_t>((address >> 8) & 0xFF),
+        static_cast<uint8_t>(address & 0xFF)
+    };
 
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(SECTOR_ERASE);                      
-    flashSpi.transfer((address >> 16) & 0xFF);
-    flashSpi.transfer((address >> 8) & 0xFF);
-    flashSpi.transfer(address & 0xFF);
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+    flashSpi.begin();
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(WRITE_ENABLE_FLASH);
+    digitalWrite(PA4, HIGH);
 
+
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+    digitalWrite(PA4, HIGH);
+
+    writeDisable();
+    flashSpi.end();
 }
 
-void FlashDriver::eraseFlash(){
 
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(CHIP_ERASE);                      
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+void FlashDriver::eraseFlash() {
+    uint8_t tx_buf[1] = {CHIP_ERASE};
 
+    flashSpi.begin();
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+    digitalWrite(PA4, HIGH);
+    flashSpi.end();
 }
 
-void FlashDriver::resetFlash(){
 
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(ENABLE_RESET);                      
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+void FlashDriver::resetFlash() {
+    uint8_t tx_buf[1] = {ENABLE_RESET};
 
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(RESET_DEVICE);                      
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+    flashSpi.begin();
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+    digitalWrite(PA4, HIGH);
 
+    tx_buf[0] = RESET_DEVICE;
+
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+    digitalWrite(PA4, HIGH);
+    flashSpi.end();
 }
 
+void FlashDriver::sendUnlockCommand() {
+    // Send the Global Block/Sector Unlock command
+    flashSpi.begin();
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(GLOBAL_UNLOCK_CMD);
+    digitalWrite(PA4, HIGH);
+    flashSpi.end();
+}
 
 void FlashDriver::writeDisable() {
-    digitalWrite(FLASH_CS, LOW);
-    flashSpi.beginTransaction();
-    flashSpi.transfer(WRITE_DISABLE_FLASH);     // Send the Write Diable command (0x04)
-    flashSpi.endTransaction();
-    digitalWrite(FLASH_CS, HIGH);
+    uint8_t tx_buf[1] = {WRITE_DISABLE_FLASH};
+
+    digitalWrite(PA4, LOW);
+    flashSpi.transfer(tx_buf, nullptr, sizeof(tx_buf));
+    digitalWrite(PA4, HIGH);
+}
+
+bool FlashDriver::checkWriteEnable() {
+    uint8_t status = readStatusReg1();
+
+    // Check if WEL (bit 1) is set
+    return (status & 0x02) != 0;
+}
+
+bool FlashDriver::waitUntilNotBusy() {
+    uint8_t status;
+
+    // Keep polling until BUSY (bit 0) is cleared
+    do {
+        status = readStatusReg1();
+    } while (status & 0x01); 
+
+    return true;  
 }
 
 FlashStatus FlashDriver::isValidPage(uint32_t page) {
@@ -182,8 +253,3 @@ FlashStatus FlashDriver::isValidSector(uint32_t sector) {
 FlashStatus FlashDriver::isValidBlock(uint32_t block) {
    return (block < BLOCK_COUNT) ? FLASH_SUCCESS : FLASH_INVALID; 
 }
-
-
-
-
-

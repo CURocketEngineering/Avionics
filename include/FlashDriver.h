@@ -1,10 +1,9 @@
 #ifndef FLASH_DRIVER_H
 #define FLASH_DRIVER_H
 
-#include "Adafruit_SPIDevice.h"
+#include "SPI.h"
 
-#define FLASH_CS                10
-#define FLASH_ID_ADDR           0x90
+#define FLASH_JEDEC_ID          0x9F
 #define MANUFACTURER_ID         0xEF
 #define MEMORY_TYPE             0x40
 #define MEMORY_CAPACITY         0x18
@@ -19,10 +18,14 @@
 #define SECTOR_ERASE            0x20  
 #define CHIP_ERASE              0x60
 #define ENABLE_RESET            0x66
-#define RESET_DEVICE             0x99
+#define RESET_DEVICE            0x99
 #define WRITE_DISABLE_FLASH     0x04
 #define WRITE_ENABLE_FLASH      0x06 
-#define READ_FLASH              0x03  
+#define READ_FLASH              0x03 
+#define PAGE_PROGRAM            0x02
+#define GLOBAL_UNLOCK_CMD       0x98 
+#define READ_STATUS_REG1        0x05
+#define WRITE_STATUS_REG1       0x01
 
 // Calculate the address of a specific page
 #define PAGE_ADDRESS(page)     ((page) * PAGE_SIZE_BYTES)
@@ -42,7 +45,6 @@ enum FlashStatus {
 };
 
 class FlashDriver {
-    Adafruit_SPIDevice flashSpi;
 
 public:
     FlashDriver();  // Constructor
@@ -51,16 +53,21 @@ public:
     FlashStatus initFlash();
     FlashStatus readFlash(uint32_t address, uint8_t* buffer, size_t length);
     FlashStatus writeFlash(uint32_t address, const uint8_t* data, size_t length);
+    void writeStatusReg1(uint8_t status);
+    uint8_t readStatusReg1();
     uint32_t getPageAddress(uint32_t page);
     uint32_t getSectorAddress(uint32_t sector);
     uint32_t getBlockAddress(uint32_t block);
     void eraseSector(uint32_t address);
     void eraseFlash();
     void resetFlash();
+    void sendUnlockCommand();
 
     
 private:
     void writeDisable();
+    bool checkWriteEnable();
+    bool waitUntilNotBusy();
     FlashStatus isValidPage(uint32_t page);
     FlashStatus isValidSector(uint32_t sector);
     FlashStatus isValidBlock(uint32_t block);
@@ -68,4 +75,3 @@ private:
 };
 
 #endif // FLASH_DRIVER_H
-
