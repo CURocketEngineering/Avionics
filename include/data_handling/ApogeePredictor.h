@@ -26,7 +26,6 @@ class ApogeePredictor
 public:
     /**
      * Constructor
-     * @param accelerationThreshold_ms2: The threshold for acceleration to be considered a launch
      * @param windowSize_ms: The size of the window to calculate the median acceleration.
      *                       The delay in launch detection will equal half the window size
      *                       A window too small will cause false positives.
@@ -34,8 +33,7 @@ public:
      *                           You must be able to update the predictor faster than this interval
      *                           The predictor will reject data that comes in faster than this interval to maintain this interval or slower
      */
-    ApogeePredictor(float accelerationThreshold_ms2,
-                    uint16_t windowSize_ms,
+    ApogeePredictor(uint16_t windowSize_ms,
                     uint16_t windowInterval_ms,
                     uint16_t direction);
     /**

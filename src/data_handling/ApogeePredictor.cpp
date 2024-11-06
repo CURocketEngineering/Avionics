@@ -7,13 +7,11 @@
 #include "ArduinoHAL.h"
 #endif
 
-ApogeePredictor::ApogeePredictor(float accelerationThreshold_ms2,
-                                 uint16_t windowSize_ms,
+ApogeePredictor::ApogeePredictor(uint16_t windowSize_ms,
                                  uint16_t windowInterval_ms,
                                  uint16_t direction)
     : AclMagSqWindow_ms2(windowSize_ms / windowInterval_ms), VelocityWindow_ms2(windowSize_ms / windowInterval_ms)
 {
-    accelerationThresholdSq_ms2 = accelerationThreshold_ms2 * accelerationThreshold_ms2;
     this->windowInterval_ms = windowInterval_ms;
     this->direction = direction;
     apogee = false;
@@ -88,7 +86,7 @@ bool ApogeePredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
 
     // Maybe should be if the acceleration is 0 but more testing needs to be done
     // or velocity is 0
-    if (VelocityWindow_ms2.getMedian().data == 0) {
+    if (VelocityWindow_ms2.getMedian().data < 0.1) {
         #ifdef DEBUG
         Serial.println("ApogeePredictor: Velocity is 0");
         Serial.println("Current time: %d", time_ms);
@@ -97,7 +95,7 @@ bool ApogeePredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     }
 
     // Check if the median is equal to 0, acceleration is 0
-    if (AclMagSqWindow_ms2.getMedian().data == 0)
+    if (AclMagSqWindow_ms2.getMedian().data < 0.1)
     {
         #ifdef DEBUG
         Serial.println("ApogeePredictor: acceleration is 0");
@@ -106,6 +104,15 @@ bool ApogeePredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
         #endif
         apogee = true;
         apogeeTime_ms = time_ms;
+    }
+    if (apogee) {
+        #ifdef DEBUG
+        Serial.println("ApogeePredictor: acceleration is 0");
+        Serial.println("Current time: %d", time_ms);
+        Serial.println("Current velocity: %f", velocity);
+        Serial.println("Current accel: %f", accel);
+        Serial.println("Current median from acl sq: %f", AclMagSqWindow_ms2.getMedian().data);
+        #endif
     }
 
     return true;
