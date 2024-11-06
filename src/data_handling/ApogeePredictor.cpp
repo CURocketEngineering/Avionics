@@ -39,7 +39,10 @@ bool ApogeePredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     // Calculate the magnitude of the acceleration squared
     // May only want to use the z acceleration as y and x could move around at apogee
     float aclMagSq = xac.data * xac.data + yac.data * yac.data + zac.data * zac.data;
-    float accel = direction == 0 ? xac.data : direction == 1 ? yac.data : zac.data;
+    // Seeing what happens if the greatest value is taken instead of using all three directions
+    float absmax = max(abs(xac.data), abs(yac.data), abs(zac.data));
+    float accel = xac.data ? absmax == abs(xac.data): yac.data ? absmax == abs(yac.data): zac.data;
+
 
     // Take the average of the timestamps
     // Ideally these should all be the same

@@ -64,7 +64,7 @@ private:
     uint16_t windowInterval_ms;
     uint16_t tenPercentWindowInterval_ms;
     CircularArray<DataPoint> AclMagSqWindow_ms2;
-    uint16_t direction;
+    // uint16_t direction;
 };
 
 
