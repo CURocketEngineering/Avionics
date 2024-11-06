@@ -95,9 +95,11 @@ bool ApogeePredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
         Serial.println("Current time: %d", time_ms);
         Serial.println("Current accel: %f", accel);
         #endif
+        apogee = true;
+        apogeeTime_ms = time_ms;
     }
 
-    // Check if the median is equal to 0, acceleration is 0
+    // Check if the median is close to 0, acceleration is 0
     if (AclMagSqWindow_ms2.getMedian().data < 0.1)
     {
         #ifdef DEBUG
@@ -108,9 +110,10 @@ bool ApogeePredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
         apogee = true;
         apogeeTime_ms = time_ms;
     }
+    // Storing data if apogee is detected 
     if (apogee) {
         #ifdef DEBUG
-        Serial.println("ApogeePredictor: acceleration is 0");
+        Serial.println("ApogeePredictor: apogee detected");
         Serial.println("Current time: %d", time_ms);
         Serial.println("Current velocity: %f", velocity);
         Serial.println("Current accel: %f", accel);

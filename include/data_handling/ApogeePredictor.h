@@ -4,20 +4,20 @@
  * new acceleration data as often as possible.
  */
 
-#ifndef LAUNCH_PREDICTOR_H
-#define LAUNCH_PREDICTOR_H
+#ifndef APOGEE_PREDICTOR_H
+#define APOGEE_PREDICTOR_H
 
 #include "CircularArray.h"
 #include "DataPoint.h"
 
 /**
- * Predicts launch by looking for a sustained acceleration above a threshold
+ * Predicts apogee by looking for a sustained acceleration above a threshold
  * It takes the median acceleration magnitude over a window of time and compares it
  * to the threshold. Because of the size of the window, short spikes are ignored.
  *
  * The window is a circular array / rolling window of acceleration magnitudes squared
  *
- * The delay in launch detection will equal half the window size because
+ * The delay in apogee detection will equal half the window size because
  * the median will only be high once half the window is high
  */
 
