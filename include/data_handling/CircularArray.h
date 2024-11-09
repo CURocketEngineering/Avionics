@@ -56,14 +56,7 @@ class CircularArray {
         this->maxSize = maxSize;
         this->head = 0;
         this->pushCount = 0;
-        this->array = std::vector<T>(maxSize);
-        // Reserve space for the vector
-        array.reserve(maxSize);
-
-        // Populate the vector with default values
-        for (int i = 0; i < maxSize; i++){
-            array.push_back(T());
-        }
+        this->array = std::vector<T>(maxSize, T());
     }
 
     ~CircularArray(){

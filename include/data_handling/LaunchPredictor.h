@@ -64,6 +64,11 @@ private:
     // The threshold for acceleration to be considered a launch squared
     float accelerationThresholdSq_ms2;
     uint16_t windowInterval_ms;
+
+    // Min and max window sizes calculated as +- 10% of the window size
+    uint16_t min_window_size_ms; // If the calculated time range is less than this, don't try to detect launch
+    uint16_t max_window_size_ms; // If the calculated time range is greater than this, don't try to detect launch
+
     float tenPercentWindowInterval_ms;
     // The window holding the acceleration magnitude squared b/c sqrt is expensive
     CircularArray<DataPoint> AclMagSqWindow_ms2;
