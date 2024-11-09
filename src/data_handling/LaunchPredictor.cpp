@@ -1,7 +1,5 @@
 #include "data_handling/LaunchPredictor.h"
 
-#define DEBUG
-
 #ifdef DEBUG
 #include "ArduinoHAL.h"
 #endif
@@ -21,6 +19,7 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
     launched = false;
     launchedTime_ms = 0;
     tenPercentWindowInterval_ms = windowInterval_ms * 0.1;
+    median_acceleration_squared = 0;
 }
 
 bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
@@ -85,8 +84,10 @@ bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
 
         // If the time_diff is greater than the window interval, we need to clear the window
         if (time_diff > max_window_size_ms)
-        {
+        {   
+            #ifdef DEBUG
             Serial.println("LaunchPredictor: Clearing window");
+            #endif
             AclMagSqWindow_ms2.clear();
         }
         return false;
@@ -116,16 +117,21 @@ bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
         return true;
     }
 
+    this->median_acceleration_squared = AclMagSqWindow_ms2.getMedian().data;
+
     // Check if the median is above the threshold
-    if (AclMagSqWindow_ms2.getMedian().data > accelerationThresholdSq_ms2)
+    if (median_acceleration_squared > accelerationThresholdSq_ms2)
     {
         launched = true;
         launchedTime_ms = time_ms;
     } else {
         #ifdef DEBUG
         Serial.println("LaunchPredictor: Median below threshold");
-        Serial.printf("Median: %f\n", AclMagSqWindow_ms2.getMedian().data);
-        // Serial.printf("Threshold: %f\n", accelerationThresholdSq_ms2);
+        // Print the median without being able to use %f because of the Arduino
+        Serial.print("Median: ");
+        Serial.println(median_acceleration_squared);
+        Serial.print("Threshold: ");
+        Serial.println(accelerationThresholdSq_ms2);
         #endif
     }
 

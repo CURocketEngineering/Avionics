@@ -47,6 +47,7 @@ public:
     bool update(DataPoint xac, DataPoint yac, DataPoint zac);
     bool isLaunched() {return launched;}
     float getLaunchedTime() {return launchedTime_ms;}
+    float getMedianAccelerationSquared() {return median_acceleration_squared;}
     void reset();
 
     // --------------
@@ -74,6 +75,8 @@ private:
     CircularArray<DataPoint> AclMagSqWindow_ms2;
     bool launched;
     uint32_t launchedTime_ms;
+
+    float median_acceleration_squared;
 };
 
 #endif

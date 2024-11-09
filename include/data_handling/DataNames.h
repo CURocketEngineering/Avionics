@@ -16,6 +16,10 @@
 #define MAGNETOMETER_Y 10
 #define MAGNETOMETER_Z 11
 
+// Metrics
+#define MEDIAN_ACCELERATION_SQUARED 12
+#define AVERAGE_CYCLE_RATE 13
+
 
 
 
