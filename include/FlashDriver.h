@@ -47,7 +47,8 @@ enum FlashStatus {
 class FlashDriver {
 
 public:
-    FlashDriver();  // Constructor
+    FlashDriver(uint32_t mosi, uint32_t miso,
+                uint32_t sclk, uint32_t ssel);  // Constructor
     ~FlashDriver(); // Destructor
 
     FlashStatus initFlash();
@@ -65,6 +66,8 @@ public:
 
     
 private:
+    SPIClass flashSpi;
+    uint32_t cs; 
     void writeDisable();
     bool checkWriteEnable();
     bool waitUntilNotBusy();
