@@ -117,6 +117,14 @@ public:
         lastTimestamp_ms = 0;
     }
 
+    /**
+     * @brief Returns whether the flash chip is in post-launch mode
+     *       without updating the postLaunchMode flag or reading from flash.
+     */
+    bool quickGetPostLaunchMode() {
+        return this->postLaunchMode;
+    }
+
 private:
     // Interval at which to store the timestamp in flash
     uint16_t timestampInterval_ms;

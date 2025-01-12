@@ -43,15 +43,17 @@ int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
 
 bool DataSaverSPI::begin() {
     if (!flash) return false;
-    postLaunchMode = isPostLaunchMode();
-    return flash->begin();
+    if (!flash->begin()) return false;
+
+    this->postLaunchMode = isPostLaunchMode();
+    return true;
 }
 
 bool DataSaverSPI::isPostLaunchMode() {
     uint8_t flag;
     flash->readBuffer(0, &flag, sizeof(flag));
-    postLaunchMode = (flag == 1);
-    return postLaunchMode;
+    this->postLaunchMode = (flag == 1);
+    return this->postLaunchMode;
 }
 
 void DataSaverSPI::clearPostLaunchMode() {

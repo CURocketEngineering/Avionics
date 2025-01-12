@@ -18,7 +18,7 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
 
     launched = false;
     launchedTime_ms = 0;
-    tenPercentWindowInterval_ms = windowInterval_ms * 0.1;
+    twentyPercentWindowInterval_ms = windowInterval_ms * 0.2;
     median_acceleration_squared = 0;
 }
 
@@ -72,14 +72,20 @@ bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     // Make sure we are near the window interval +- 10%
     uint32_t time_diff = time_ms - AclMagSqWindow_ms2.getFromHead(0).timestamp_ms;
 
-    if (time_diff < windowInterval_ms - tenPercentWindowInterval_ms || time_diff > windowInterval_ms + tenPercentWindowInterval_ms)
+    if (time_diff < windowInterval_ms - twentyPercentWindowInterval_ms || time_diff > windowInterval_ms + twentyPercentWindowInterval_ms)
     {
         #ifdef DEBUG
-        // Serial.println("LaunchPredictor: Data point ignored because of time difference");
-        // Serial.printf("Time diff: %d\n", time_diff);
-        // Serial.printf("Window interval: %d\n", windowInterval_ms);
-        // Serial.printf("Incoming time: %d\n", time_ms);
-        // Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
+        if (time_diff > windowInterval_ms + twentyPercentWindowInterval_ms)
+        {
+            Serial.println("LaunchPredictor: DATA TOO LATE");
+            Serial.printf("Time diff: %d\n", time_diff);
+            Serial.printf("Window interval: %d\n", windowInterval_ms);
+            Serial.printf("Incoming time: %d\n", time_ms);
+            Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
+        }  else if (time_diff < windowInterval_ms - twentyPercentWindowInterval_ms)
+        {
+            Serial.println("LaunchPredictor: Too close to the last data point");
+        }
         #endif
 
         // If the time_diff is greater than the window interval, we need to clear the window
@@ -94,6 +100,11 @@ bool LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     }
 
     // Push the new data point
+    #ifdef DEBUG
+    Serial.print("LaunchPredictor: Pushing timestamp: ");
+    Serial.println(time_ms);
+    #endif
+
     AclMagSqWindow_ms2.push(DataPoint(time_ms, aclMagSq));
 
     uint32_t time_range = AclMagSqWindow_ms2.getFromHead(0).timestamp_ms - AclMagSqWindow_ms2.getFromHead(AclMagSqWindow_ms2.getMaxSize() - 1).timestamp_ms;
