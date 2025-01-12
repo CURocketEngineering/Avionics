@@ -8,8 +8,15 @@
 #include <cstdlib>
 #include <Adafruit_SPIFlash.h>
 
+#define DATA_START_ADDRESS 0x001000  // Start writing data after 1 sector (4kB) of metadata
+#define POST_LAUNCH_FLAG_ADDRESS 0x000000  // Address of the post-launch flag
+#define LAUNCH_START_ADDRESS_ADDRESS 0x000001  // Address of the launch start address (32 bits)
+
 class DataSaverSPI : public IDataSaver {
 public:
+
+    static constexpr size_t BUFFER_SIZE = 256; 
+
     /**
      * @brief Construct a new DataSaverSPI object
      * 
@@ -80,6 +87,12 @@ public:
      * 
      */
     void dumpData(Stream &serial);
+
+    /**
+     * @brief Resets all internal state values (buffer, lastDataPoint, nextWriteAddress, lastTimestamp_ms)
+     * Does not erase the flash chip
+     */
+    void clearInternalState();
 
     /**
      * @brief Clears/erases the entire flash chip to start fresh
@@ -157,6 +170,48 @@ private:
      * @brief Helper to read a block of bytes from flash (updates read pointer externally).
      */
     bool readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length);
+
+    // Write buffer to improve write performance
+    uint8_t buffer[BUFFER_SIZE];
+    size_t bufferIndex = 0;
+    uint32_t bufferFlushes = 0; // Keep track of how many times the buffer has been flushed
+
+public:
+    /**
+     * @brief Returns the current buffer index
+     * Useful for testing
+     */
+    size_t getBufferIndex() const {
+        return bufferIndex;
+    }
+
+    /**
+     * @brief Returns the current buffer flush count
+     * Useful for testing
+     */
+    uint32_t getBufferFlushes() const {
+        return bufferFlushes;
+    }
+
+private:
+
+    /**
+     * @brief Flushes the buffer to flash
+     * 
+     * Returns 0 on success
+     * Returns 1 if the buffer is empty
+     * Returns -1 on error
+     */
+    int flushBuffer();
+
+    /**
+     * @brief Adds data to the buffer
+     * 
+     * @param data   The data to add
+     * @param length The length of the data
+     * @return int   0 on success; non-zero on error
+     */
+    int addDataToBuffer(const uint8_t* data, size_t length);
 };
 
 #endif // DATA_SAVER_SPI_H
