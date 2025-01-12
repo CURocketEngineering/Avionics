@@ -1,213 +1,162 @@
 #include "data_handling/DataSaverSPI.h"
-#include "FlashDriver.h"
-#include "ArduinoHAL.h"
+#include "data_handling/DataNames.h"
 
+DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash)
+    : timestampInterval_ms(timestampInterval_ms), flash(flash), nextWriteAddress(1), lastTimestamp_ms(0), postLaunchMode(false), launchWriteAddress(0) {}
 
+int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
+    if (!flash || !flash->begin()) return -1;
 
-// --------------------------------------------------------------------------
-// Data Format Layout in Flash
-// --------------------------------------------------------------------------
-/**
- * We’ll use a simple marker-based layout:
- *   [ 1 byte  : flags ]
- *   [ optional 4 bytes of timestamp (if flags & 0x01 != 0) ]
- *   [ 1 byte  : name ]
- *   [ 4 bytes : float value (DataPoint.value) ]
- *
- *  flags bit 0 (0x01) indicates if timestamp is included.
- */
-
-// A helper constant so we can identify the "timestamp included" bit
-static const uint8_t FLAG_TIMESTAMP_INCLUDED = 0x01;
-
-// --------------------------------------------------------------------------
-// Constructor
-// --------------------------------------------------------------------------
-DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, int mosi, int miso, int sck, int cs)
-    : timestampInterval_ms(timestampInterval_ms),
-      lastTimestamp_ms(0),
-      lastDataPoint({0, 0.0f}),
-      mosiPin(mosi),
-      misoPin(miso),
-      sckPin(sck),
-      csPin(cs),
-      flash(mosi, miso, sck, cs),
-      nextWriteAddress(0)
-{}
-
-bool DataSaverSPI::begin(){
-    // pinMode(csPin, OUTPUT);
-    bool success = true;
-    
-    // Initialize the flash
-    success = flash.initFlash() == FLASH_SUCCESS;
-    if (!success) {
-        Serial.println("Failed to initialize flash");
+    // Stop saving only if we wrapped back and hit the sacred address
+    if (postLaunchMode && nextWriteAddress <= launchWriteAddress && nextWriteAddress + sizeof(DataPoint) > launchWriteAddress) {
+        return 1; // Indicate no write due to post-launch protection
     }
 
-    // Add any other initialization code here with each step checking for success
+    // Write timestamp if enough time has passed since the last one
+    uint32_t timestamp = dp.timestamp_ms;
+    if (timestamp - lastTimestamp_ms > timestampInterval_ms) {
+        // Write the name
+        if (!writeToFlash(reinterpret_cast<uint8_t*>(&name), sizeof(name))) return -1;
 
-    return success;
-}
+        // Write the timestamp
+        if (!writeToFlash(reinterpret_cast<uint8_t*>(&timestamp), sizeof(timestamp))) return -1;
 
-// --------------------------------------------------------------------------
-// Save a single data point
-// --------------------------------------------------------------------------
-int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name)
-{
-    // Decide if we need to store the timestamp
-    bool shouldWriteTimestamp = false;
-    if ((dp.timestamp_ms - lastTimestamp_ms) >= timestampInterval_ms) {
-        shouldWriteTimestamp = true;
-        lastTimestamp_ms = dp.timestamp_ms;  // Update stored "lastTimestamp_ms"
+
+        lastTimestamp_ms = timestamp;  // Everything after this timestamp until the next timestamp will use this timestamp when reconstructed
     }
 
-    // Build up the data to write
-    // 1. flags
-    uint8_t flags = 0;
-    if (shouldWriteTimestamp) {
-        flags |= FLAG_TIMESTAMP_INCLUDED;
-    }
+    // Write the name
+    if (!writeToFlash(reinterpret_cast<uint8_t*>(&name), sizeof(name))) return -1;
 
-    // Write out flags
-    if (!writeToFlash(&flags, sizeof(flags))) {
-        return -1; // error
-    }
+    // Write the value
+    if (!writeToFlash(reinterpret_cast<uint8_t*>(&dp.data), sizeof(dp.data))) return -1;
 
-    // 2. optionally write timestamp
-    if (shouldWriteTimestamp) {
-        if (!writeToFlash(&dp.timestamp_ms, sizeof(dp.timestamp_ms))) {
-            return -2; // error
-        }
-    }
-
-    // 3. write name
-    if (!writeToFlash(&name, sizeof(name))) {
-        return -3; // error
-    }
-
-    // 4. write the data portion of DataPoint (minus the timestamp, if you want to avoid duplication)
-    if (!writeToFlash(&dp.data, sizeof(dp.data))) {
-        return -4; // error
-    }
-
-    // Save the last data point (for quick retrieval)
     lastDataPoint = dp;
 
-    return 0; // success
-}
-
-// --------------------------------------------------------------------------
-// Dump data from flash
-// --------------------------------------------------------------------------
-void DataSaverSPI::dumpData()
-{
-    Serial.println("==== Dumping SPI Flash Data ====");
-
-    uint32_t readAddress = 0;
-    while (true) {
-        // 1. Read flags
-        uint8_t flags;
-        if (!readFromFlash(readAddress, &flags, sizeof(flags))) {
-            // Either we reached the end of written data or a read error
-            break;
-        }
-
-        // If flags byte is 0xFF (erased flash often reads as 0xFF),
-        // we can assume there's no more data
-        if (flags == 0xFF) {
-            break;
-        }
-
-        bool hasTimestamp = (flags & FLAG_TIMESTAMP_INCLUDED) != 0;
-        uint32_t timestamp = 0;
-        if (hasTimestamp) {
-            // 2. read timestamp
-            if (!readFromFlash(readAddress, &timestamp, sizeof(timestamp))) {
-                break;
-            }
-        }
-
-        // 3. read name
-        uint8_t name;
-        if (!readFromFlash(readAddress, &name, sizeof(name))) {
-            break;
-        }
-
-        // 4. read value
-        float value;
-        if (!readFromFlash(readAddress, &value, sizeof(value))) {
-            break;
-        }
-
-        // Now do something with the data
-        if (hasTimestamp) {
-            Serial.print("[T=");
-            Serial.print(timestamp);
-            Serial.print("] ");
-        } else {
-            Serial.print("[no TS] ");
-        }
-
-        Serial.print("Name: ");
-        Serial.print(name);
-        Serial.print(", Value: ");
-        Serial.println(value);
+    // Handle circular buffer wrapping
+    if (nextWriteAddress >= flash->size()) {
+        nextWriteAddress = 1; // Wrap around to start after metadata
     }
 
-    Serial.println("==== End of Data Dump ====");
+    return 0;
 }
 
-// --------------------------------------------------------------------------
-// Erase entire flash
-// --------------------------------------------------------------------------
-void DataSaverSPI::eraseAllData()
-{
-    flash.eraseFlash();
-    nextWriteAddress = 0;   // reset the pointer
-    lastTimestamp_ms = 0;   // reset our last timestamp
-    // Optionally reset lastDataPoint as well
-    lastDataPoint = {0, 0.0f};
-    Serial.println("Flash erased. nextWriteAddress reset to 0.");
+bool DataSaverSPI::begin() {
+    if (!flash) return false;
+    postLaunchMode = isPostLaunchMode();
+    return flash->begin();
 }
 
-// --------------------------------------------------------------------------
-// Helper: Write data to flash at `nextWriteAddress`, then advance
-// --------------------------------------------------------------------------
-bool DataSaverSPI::writeToFlash(const void* data, size_t length)
-{
-    if (!data || length == 0) {
-        return false;
-    }
+bool DataSaverSPI::isPostLaunchMode() {
+    uint8_t flag;
+    flash->readBuffer(0, &flag, sizeof(flag));
+    postLaunchMode = (flag == 1);
+    return postLaunchMode;
+}
 
-    FlashStatus status = flash.writeFlash(nextWriteAddress,
-                                          static_cast<const uint8_t*>(data),
-                                          length);
-    if (status == FLASH_SUCCESS) {
-        nextWriteAddress += length;
-        return true;
-    } else {
-        return false;
+void DataSaverSPI::clearPostLaunchMode() {
+    uint8_t flag = 0;
+    flash->writeBuffer(0, &flag, sizeof(flag));
+    postLaunchMode = false;
+}
+
+void DataSaverSPI::dumpData(Stream &serial) {
+    uint32_t readAddress = 1; // Start reading after metadata
+    // Write each byte to serial
+    while (readAddress < flash->size()) {
+        uint8_t byte;
+        if (!readFromFlash(readAddress, &byte, sizeof(byte))) {
+            serial.println("Error reading from flash");
+            return;
+        }
+        serial.write(byte);
     }
 }
 
-// --------------------------------------------------------------------------
-// Helper: Read data from flash at `readAddress` into `buffer`
-//          Advances readAddress only if successful
-// --------------------------------------------------------------------------
-bool DataSaverSPI::readFromFlash(uint32_t& readAddress, void* buffer, size_t length)
-{
-    if (!buffer || length == 0) {
-        return false;
+void DataSaverSPI::eraseAllData() {
+    flash->eraseChip();
+    nextWriteAddress = 1;
+    lastTimestamp_ms = 0;
+    postLaunchMode = false;
+}
+
+void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
+    // 1) Set the post-launch flag in metadata so we don't overwrite post-launch data.
+    uint8_t flag = 1;
+    flash->writeBuffer(0, &flag, sizeof(flag));
+    postLaunchMode = true;
+
+    // 2) Compute how many bytes we want to roll back to capture ~1 minute of pre-launch data.
+    //    If you always store timestamps + name + DataPoint, factor that in:
+    //
+    //    struct DataRecord {
+    //        uint8_t  name;
+    //        DataPoint data;
+    //        // occasionally 4 more bytes for a timestamp if we cross the interval threshold
+    //    };
+    //
+    //    For simplicity, let's assume worst-case all data points have the 4-byte timestamp:
+    //      size_t recordSize = sizeof(uint32_t) // timestamp
+    //                        + sizeof(uint8_t)  // name
+    //                        + sizeof(DataPoint); 
+    //
+    //    If you only occasionally store the timestamp, you might want a more nuanced approach.
+    // 
+    size_t recordSize = sizeof(uint32_t) + sizeof(uint8_t) + sizeof(DataPoint);
+    uint32_t oneMinuteInMs = 60000;
+    uint32_t dataPointsPerMinute = oneMinuteInMs / timestampInterval_ms; 
+    uint32_t rollbackBytes       = dataPointsPerMinute * recordSize;
+
+    // 3) Clamp rollbackBytes to something reasonable. We must not exceed
+    //    the usable flash region (from address=1 to address=flash->size()-1).
+    uint32_t maxUsable = flash->size() - 1;
+    if (rollbackBytes > maxUsable) {
+        // If we can't keep an entire minute, just keep as much as we can
+        rollbackBytes = maxUsable;
     }
 
-    uint8_t* out = static_cast<uint8_t*>(buffer);
-    FlashStatus status = flash.readFlash(readAddress, out, length);
+    // 4) Next, we do ring-buffer math to find our new launchWriteAddress
+    //    which is "1 minute's worth of data behind nextWriteAddress" *in a circular sense*.
 
-    if (status == FLASH_SUCCESS) {
-        readAddress += length;
-        return true;
-    } else {
-        return false;
+    //    Because nextWriteAddress can be anywhere in [1, flash->size()-1],
+    //    let’s do a safe modular subtraction:
+    //
+    //       newAddr = ( nextWriteAddress + flash->size() - rollbackBytes ) 
+    //                                % flash->size()
+    //
+    //    Then we ensure it’s never 0 because 0 is used for metadata.
+
+    uint32_t sizeOfFlash = flash->size();
+    // Make sure nextWriteAddress is at least 1 (just in case)
+    if (nextWriteAddress == 0) {
+        nextWriteAddress = 1;
     }
+
+    // Use 64-bit to avoid any negative wrap during the subtraction.
+    int64_t potentialAddr = static_cast<int64_t>(nextWriteAddress)
+                          + static_cast<int64_t>(sizeOfFlash)  // ensure positivity
+                          - static_cast<int64_t>(rollbackBytes);
+
+    // Modulo by sizeOfFlash to bring it back into [0, sizeOfFlash-1].
+    potentialAddr = potentialAddr % sizeOfFlash;
+
+    // If result is 0 or negative after mod, clamp to 1
+    // (0 is for metadata, negative shouldn’t happen after mod but let’s be safe).
+    if (potentialAddr < 1) {
+        potentialAddr = 1;
+    }
+
+    launchWriteAddress = static_cast<uint32_t>(potentialAddr);
+}
+
+bool DataSaverSPI::writeToFlash(const uint8_t* data, size_t length) {
+    if (!flash->writeBuffer(nextWriteAddress, data, length)) return false;
+    nextWriteAddress += length;
+    return true;
+}
+
+bool DataSaverSPI::readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length) {
+    if (!flash->readBuffer(readAddress, buffer, length)) return false;
+    readAddress += length;
+    return true;
 }
