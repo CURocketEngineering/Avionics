@@ -56,14 +56,7 @@ class CircularArray {
         this->maxSize = maxSize;
         this->head = 0;
         this->pushCount = 0;
-        this->array = std::vector<T>(maxSize);
-        // Reserve space for the vector
-        array.reserve(maxSize);
-
-        // Populate the vector with default values
-        for (int i = 0; i < maxSize; i++){
-            array.push_back(T());
-        }
+        this->array = std::vector<T>(maxSize, T());
     }
 
     ~CircularArray(){
@@ -111,8 +104,21 @@ class CircularArray {
     }
 
     T getMedian(){
-        std::vector<T> copyArray = array;
-        return quickSelect(copyArray, 0, maxSize - 1, maxSize / 2);
+        if (pushCount == 0) {
+        // Handle the case when the array is empty
+        return T();
+        }
+
+        size_t count = std::min(static_cast<size_t>(pushCount), static_cast<size_t>(maxSize));
+        std::vector<T> copyArray(count);
+
+        // Collect the valid elements from the circular array
+        for (size_t i = 0; i < count; ++i) {
+            copyArray[i] = array[(head + maxSize - i) % maxSize];
+        }
+
+        // Find the median
+        return quickSelect(copyArray, 0, count - 1, count / 2);
     }
 
     void clear(){
