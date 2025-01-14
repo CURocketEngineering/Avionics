@@ -1,7 +1,7 @@
 #ifndef FLASH_DRIVER_H
 #define FLASH_DRIVER_H
 
-#include "SPI.h"
+#include <SPI.h>
 
 #define FLASH_JEDEC_ID          0x9F
 #define MANUFACTURER_ID         0xEF
@@ -65,6 +65,9 @@ public:
 
     
 private:
+
+    SPIClass *_spi = &SPI;
+
     void writeDisable();
     bool checkWriteEnable();
     bool waitUntilNotBusy();
