@@ -52,6 +52,10 @@ public:
         printfCalls.clear();
     }
 
+    // write
+    size_t write(uint8_t) { return 0; }
+    size_t write(const uint8_t *buffer, size_t size) { return size; }
+
     // Assertions
     void assertPrintCalledWith(const std::string& expected) {
         TEST_ASSERT_TRUE(std::find(printCalls.begin(), printCalls.end(), expected) != printCalls.end());
