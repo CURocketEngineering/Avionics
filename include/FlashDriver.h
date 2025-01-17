@@ -1,7 +1,7 @@
 #ifndef FLASH_DRIVER_H
 #define FLASH_DRIVER_H
 
-#include "SPI.h"
+#include <SPI.h>
 
 #define FLASH_JEDEC_ID          0x9F
 #define MANUFACTURER_ID         0xEF
@@ -47,8 +47,7 @@ enum FlashStatus {
 class FlashDriver {
 
 public:
-    FlashDriver(uint32_t mosi, uint32_t miso,
-                uint32_t sclk, uint32_t ssel);  // Constructor
+    FlashDriver();  // Constructor
     ~FlashDriver(); // Destructor
 
     FlashStatus initFlash();
@@ -66,8 +65,9 @@ public:
 
     
 private:
-    SPIClass flashSpi;
-    uint32_t cs; 
+
+    SPIClass *_spi = &SPI;
+
     void writeDisable();
     bool checkWriteEnable();
     bool waitUntilNotBusy();
