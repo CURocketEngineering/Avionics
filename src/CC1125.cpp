@@ -1,6 +1,6 @@
 #include "CC1125.h"
 
-CC1125::CC1125(uint32_t debugLedPin) : _debugLedPin(debugLedPin) {}
+CC1125::CC1125(uint32_t debugLedPin, uint32_t cs) : _debugLedPin(debugLedPin), _cs(cs) {}
 CC1125::~CC1125() {}
 
 CC1125Status CC1125::initCC1125() 
@@ -202,19 +202,19 @@ void CC1125::cc1125spi_TX_FIFO(uint8_t *data, size_t length)
 {
    uint8_t address = CC1125_FIFO;
    address |= 0x7F;
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    _spi->transfer(address);
    _spi->transfer(data, length, 1);
-   digitalWrite(PB12, HIGH);
+   digitalWrite(_cs, HIGH);
 }
 
 void CC1125::cc1125spi_RX_FIFO(uint8_t *data, size_t length)
 {
    uint8_t address = CC1125_FIFO;
    address |= 0xFF;
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    _spi->transfer(&address, data, length);
-   digitalWrite(PB12, HIGH);
+   digitalWrite(_cs, HIGH);
 }
 
 void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool TX)
@@ -222,7 +222,7 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
 
    volatile uint8_t address_temp = 0x00;
    uint8_t address = (uint8_t)(addr & 0xFF);
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    if((addr >> 8) == 0x2F)
    {
       address_temp = 0x2F;
@@ -256,7 +256,7 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
       _spi->transfer(data, length, 1);
    }
    
-   digitalWrite(PB12, HIGH);
+   digitalWrite(_cs, HIGH);
 }
 
 void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX)
@@ -265,7 +265,7 @@ void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX
    volatile uint8_t address_temp = 0x00;
    uint8_t address = (uint8_t)(addr & 0xFF);
 
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    if((addr >> 8) == 0x2F)
    {
       address_temp = 0x2F;
@@ -296,6 +296,6 @@ void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX
       address |= 0xC0;
       _spi->transfer(&address, data, length);
    }
-    digitalWrite(PB12, HIGH);
+    digitalWrite(_cs, HIGH);
 
 }
