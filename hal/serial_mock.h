@@ -3,31 +3,67 @@
 #pragma once
 
 #include <iostream>
-#include "stdio.h"
+#include <stdio.h>
 #include <cstdarg>
-#include <gmock/gmock.h>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include "unity.h"
 
 class MockSerial {
-  public:
-    
+public:
+    // Store the calls and their parameters
+    std::vector<std::string> printCalls;
+    std::vector<std::string> printlnCalls;
+    std::vector<std::string> printfCalls;
+
     template<typename T>
     void print(const T& message) {
+        std::ostringstream oss;
+        oss << message;
+        printCalls.push_back(oss.str());
         std::cout << message;
     }
 
     template<typename T>
     void println(const T& message) {
+        std::ostringstream oss;
+        oss << message;
+        printlnCalls.push_back(oss.str());
         std::cout << message << std::endl;
     }
 
     // printf
     void printf(const char *fmt, ...) {
+        char buffer[256];
         va_list args;
         va_start(args, fmt);
-        vprintf(fmt, args);
+        vsnprintf(buffer, sizeof(buffer), fmt, args);
         va_end(args);
+        printfCalls.push_back(buffer);
+        std::cout << buffer;
     }
 
+    // Clear the stored calls
+    void clear() {
+        printCalls.clear();
+        printlnCalls.clear();
+        printfCalls.clear();
+    }
+
+    // Assertions
+    void assertPrintCalledWith(const std::string& expected) {
+        TEST_ASSERT_TRUE(std::find(printCalls.begin(), printCalls.end(), expected) != printCalls.end());
+    }
+
+    void assertPrintlnCalledWith(const std::string& expected) {
+        TEST_ASSERT_TRUE(std::find(printlnCalls.begin(), printlnCalls.end(), expected) != printlnCalls.end());
+    }
+
+    void assertPrintfCalledWith(const std::string& expected) {
+        TEST_ASSERT_TRUE(std::find(printfCalls.begin(), printfCalls.end(), expected) != printfCalls.end());
+    }
 };
 
 MockSerial Serial;
@@ -37,3 +73,35 @@ class MockHardwareSerial : public MockSerial{
 };
 
 typedef MockHardwareSerial HardwareSerial;
+
+
+// Mock Stream class
+class Stream {
+public:
+    virtual int available() { return 0; }
+    virtual int read() { return -1; }
+    virtual int peek() { return -1; }
+    virtual void flush() {}
+    virtual size_t write(uint8_t) { return 0; }
+    virtual size_t write(const uint8_t *buffer, size_t size) { return size; }
+
+    // Read a string until a newline character
+    std::string readStringUntil(char terminator) {
+        std::string result;
+        char c;
+        while ((c = read()) != terminator && c != -1) {
+            result += c;
+        }
+        return result;
+    }
+
+    // Read a string
+    std::string readString() {
+        std::string result;
+        char c;
+        while ((c = read()) != -1) {
+            result += c;
+        }
+        return result;
+    }
+};
