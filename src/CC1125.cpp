@@ -1,6 +1,6 @@
 #include "CC1125.h"
 
-CC1125::CC1125() {}
+CC1125::CC1125(uint32_t debugLedPin) : _debugLedPin(debugLedPin) {}
 CC1125::~CC1125() {}
 
 CC1125Status CC1125::initCC1125() 
@@ -14,9 +14,9 @@ CC1125Status CC1125::initCC1125()
 
    // Reset radio
    //ARE strobe commands actaully working ????
-   pinMode(PB15, OUTPUT);
-   digitalWrite(PB15, LOW);
-   digitalWrite(PB15, HIGH);
+   pinMode(_debugLedPin, OUTPUT);
+   digitalWrite(_debugLedPin, LOW);
+   digitalWrite(_debugLedPin, HIGH);
    // cc1125spi_read(CC1125_SRES, &rx_buf, 1);
 
 
