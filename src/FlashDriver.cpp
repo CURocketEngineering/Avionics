@@ -1,7 +1,7 @@
 #include "FlashDriver.h"
 
 
-FlashDriver::FlashDriver() {}
+FlashDriver::FlashDriver(uint32_t cs) : _cs(cs) {}
 
 FlashDriver::~FlashDriver() {}
 
@@ -12,7 +12,7 @@ FlashStatus FlashDriver::initFlash() {
 
     _spi->begin();
 
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
 
     _spi->transfer(tx_buf, 1);
     rx_buf[0] = _spi->transfer(0x00);
@@ -20,7 +20,7 @@ FlashStatus FlashDriver::initFlash() {
     rx_buf[2] = _spi->transfer(0x00);
  
 
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
     // Extract Manufacturer ID, Memory Type, and Capacity from rx_buf
     uint8_t manufacturerID = rx_buf[0];  
@@ -48,10 +48,10 @@ FlashStatus FlashDriver::readFlash(uint32_t address, uint8_t* buffer, size_t len
     };
 
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
     _spi->transfer(nullptr, buffer, length);
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
 
     return FLASH_SUCCESS;
@@ -78,14 +78,14 @@ FlashStatus FlashDriver::writeFlash(uint32_t address, const uint8_t* data, size_
             static_cast<uint8_t>(address & 0xFF)
         };
 
-        digitalWrite(PB1, LOW);
+        digitalWrite(_cs, LOW);
         _spi->transfer(WRITE_ENABLE_FLASH);
-        digitalWrite(PB1, HIGH);
+        digitalWrite(_cs, HIGH);
 
-        digitalWrite(PB1, LOW);
+        digitalWrite(_cs, LOW);
         _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
         _spi->transfer(data, nullptr, bytesToWrite);
-        digitalWrite(PB1, HIGH);
+        digitalWrite(_cs, HIGH);
 
         if (!waitUntilNotBusy()) { 
             return FLASH_FAILURE;
@@ -106,24 +106,24 @@ FlashStatus FlashDriver::writeFlash(uint32_t address, const uint8_t* data, size_
 
 uint8_t FlashDriver::readStatusReg1() {
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(READ_STATUS_REG1); 
     uint8_t status = _spi->transfer(0x00); 
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
     return status;
 }
 
 void FlashDriver::writeStatusReg1(uint8_t status) {
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(WRITE_ENABLE_FLASH);
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(WRITE_STATUS_REG1); 
     _spi->transfer(status);
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
     
 }
 
@@ -164,14 +164,14 @@ void FlashDriver::eraseSector(uint32_t address) {
     };
 
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(WRITE_ENABLE_FLASH);
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
 
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
     writeDisable();
     
@@ -182,9 +182,9 @@ void FlashDriver::eraseFlash() {
     uint8_t tx_buf[1] = {CHIP_ERASE};
 
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
     
 }
 
@@ -193,33 +193,33 @@ void FlashDriver::resetFlash() {
     uint8_t tx_buf[1] = {ENABLE_RESET};
 
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 
     tx_buf[0] = RESET_DEVICE;
 
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
     
 }
 
 void FlashDriver::sendUnlockCommand() {
     // Send the Global Block/Sector Unlock command
     
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(GLOBAL_UNLOCK_CMD);
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
     
 }
 
 void FlashDriver::writeDisable() {
     uint8_t tx_buf[1] = {WRITE_DISABLE_FLASH};
 
-    digitalWrite(PB1, LOW);
+    digitalWrite(_cs, LOW);
     _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
-    digitalWrite(PB1, HIGH);
+    digitalWrite(_cs, HIGH);
 }
 
 bool FlashDriver::checkWriteEnable() {

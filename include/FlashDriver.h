@@ -1,7 +1,7 @@
 #ifndef FLASH_DRIVER_H
 #define FLASH_DRIVER_H
 
-#include <SPI.h>
+#include "ArduinoHAL.h" // Includes SPI.h when running on real hardware
 
 #define FLASH_JEDEC_ID          0x9F
 #define MANUFACTURER_ID         0xEF
@@ -47,7 +47,7 @@ enum FlashStatus {
 class FlashDriver {
 
 public:
-    FlashDriver();  // Constructor
+    FlashDriver(uint32_t cs);  // Constructor
     ~FlashDriver(); // Destructor
 
     FlashStatus initFlash();
@@ -67,6 +67,7 @@ public:
 private:
 
     SPIClass *_spi = &SPI;
+    uint32_t _cs;
 
     void writeDisable();
     bool checkWriteEnable();
