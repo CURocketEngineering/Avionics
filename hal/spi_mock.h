@@ -38,6 +38,6 @@ public:
     SPIClass() : MockSPIClass() {} // Forwarding constructor
 };
 
-SPIClass SPI; // This is the mock SPI object
+extern SPIClass SPI; // This is the mock SPI object
 
 #endif
