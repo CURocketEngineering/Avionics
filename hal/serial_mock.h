@@ -70,7 +70,8 @@ public:
     }
 };
 
-MockSerial Serial;
+extern MockSerial Serial;
+extern MockSerial Serial1;
 
 class MockHardwareSerial : public MockSerial{
     
@@ -107,5 +108,9 @@ public:
             result += c;
         }
         return result;
+    }
+
+    void println(const char* message) {
+        std::cout << message << std::endl;
     }
 };
