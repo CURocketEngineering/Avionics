@@ -10,6 +10,23 @@
 #include "data_handling/CircularArray.h"
 #include "data_handling/DataPoint.h"
 
+// Potential returns from the update function
+// Positive values are errors
+// Negative values are warnings
+enum LaunchPredictorStatus {
+    LP_LAUNCH_DETECTED = 0,
+    LP_ALREADY_LAUNCHED = -1,
+    LP_YOUNGER_TIMESTAMP = -2, // The timestamp is younger than the last timestamp
+    LP_INITIAL_POPULATION = -3, // The window is not full yet
+    LP_DATA_TOO_FAST = -4, // The data came in faster than the desired window
+    LP_WINDOW_DATA_STALE = 1, // The data given makes the window data relatively too old, resets the window
+    LP_WINDOW_TIME_RANGE_TOO_SMALL = -5, // The window is full, but the time difference between the head and the tail is too little
+    LP_WINDOW_TIME_RANGE_TOO_LARGE = -6, // The window is full, but the time difference between the head and the tail is too large
+    LP_WINDOW_NOT_FULL = -7, // The window is not full yet
+    LP_ACL_TOO_LOW = -8, // The acceleration is too low for launch
+    LP_DEFAULT_FAIL = 2,
+};
+
 /**
  * Predicts launch by looking for a sustained acceleration above a threshold
  * It takes the median acceleration magnitude over a window of time and compares it
@@ -44,7 +61,7 @@ public:
      * @param zac: The z acceleration data point in ms^2
      * @return: False if the data is ignored, true if the data is accepted
      */
-    bool update(DataPoint xac, DataPoint yac, DataPoint zac);
+    int update(DataPoint xac, DataPoint yac, DataPoint zac);
     bool isLaunched() {return launched;}
     float getLaunchedTime() {return launchedTime_ms;}
     float getMedianAccelerationSquared() {return median_acceleration_squared;}
