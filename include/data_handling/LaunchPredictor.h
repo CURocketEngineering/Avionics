@@ -70,7 +70,7 @@ private:
     uint16_t min_window_size_ms; // If the calculated time range is less than this, don't try to detect launch
     uint16_t max_window_size_ms; // If the calculated time range is greater than this, don't try to detect launch
 
-    float tenPercentWindowInterval_ms;
+    float twentyPercentWindowInterval_ms;
     // The window holding the acceleration magnitude squared b/c sqrt is expensive
     CircularArray<DataPoint> AclMagSqWindow_ms2;
     bool launched;

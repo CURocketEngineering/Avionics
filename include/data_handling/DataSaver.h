@@ -17,6 +17,11 @@ class IDataSaver {
             return saveDataPoint(DataPoint(timestamp_ms, data), name);
         }
 
+        // Default begin method that does nothing, can be overridden
+        virtual bool begin() {
+            return true;
+        }
+
 };
 
 

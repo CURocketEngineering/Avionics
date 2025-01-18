@@ -20,6 +20,9 @@
 #define MEDIAN_ACCELERATION_SQUARED 12
 #define AVERAGE_CYCLE_RATE 13
 
+// Metadata
+#define TIMESTAMP 14
+
 
 
 
