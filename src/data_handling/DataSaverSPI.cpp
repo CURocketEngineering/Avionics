@@ -1,6 +1,8 @@
 #include "data_handling/DataSaverSPI.h"
 #include "data_handling/DataNames.h"
 
+#include <cstring>
+
 DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash)
     : timestampInterval_ms(timestampInterval_ms),
       flash(flash), nextWriteAddress(DATA_START_ADDRESS), bufferIndex(0),

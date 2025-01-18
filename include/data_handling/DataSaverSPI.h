@@ -1,12 +1,14 @@
 #ifndef DATASAVERSPI_H
 #define DATASAVERSPI_H
 
+#include "ArduinoHAL.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 #include "FlashDriver.h"
 #include <array>
 #include <cstdlib>
-#include <Adafruit_SPIFlash.h>
+
+
 
 #define DATA_START_ADDRESS 0x001000  // Start writing data after 1 sector (4kB) of metadata
 #define POST_LAUNCH_FLAG_ADDRESS 0x000000  // Address of the post-launch flag
