@@ -84,7 +84,8 @@ FlashStatus FlashDriver::writeFlash(uint32_t address, const uint8_t* data, size_
 
         digitalWrite(_cs, LOW);
         _spi->transfer(tx_buf, nullptr, sizeof(tx_buf));
-        _spi->transfer(data, nullptr, bytesToWrite);
+        uint8_t* modifiableData = const_cast<uint8_t*>(data);
+        _spi->transfer(modifiableData, nullptr, bytesToWrite);
         digitalWrite(_cs, HIGH);
 
         if (!waitUntilNotBusy()) { 
