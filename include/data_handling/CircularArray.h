@@ -113,6 +113,7 @@ class CircularArray {
         std::vector<T> copyArray(count);
 
         // Collect the valid elements from the circular array
+        // TODO: Optimize (or just copy everything and restrict this function to only running when the array is full)
         for (size_t i = 0; i < count; ++i) {
             copyArray[i] = array[(head + maxSize - i) % maxSize];
         }

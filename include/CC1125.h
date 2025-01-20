@@ -1,7 +1,7 @@
 #ifndef CC1125_H
 #define CC1125_H
 
-#include <SPI.h>
+#include "ArduinoHAL.h"
 
 #define CC1125_ID                       0x58 
 
@@ -298,7 +298,7 @@ enum CC1125Status {
 class CC1125 {
 
 public:
-    CC1125();  // Constructor
+    CC1125(uint32_t debugLedPin, uint32_t cs);  // Constructor
     ~CC1125(); // Destructor
 
     CC1125Status initCC1125();
@@ -310,6 +310,8 @@ private:
 
     SPIClass *_spi = &SPI;
     uint8_t packetCounter = 0;
+    uint32_t _debugLedPin;
+    uint32_t _cs;
     
     CC1125Status registerConfig(void);
     void createPacket(uint8_t *txBuffer);
