@@ -1,13 +1,15 @@
 #include "UARTCommandHandler.h"
-#include <HardwareSerial.h>
 
-// Initialize the UART hardware serial interface
-HardwareSerial UART(PB7, PB6);
 // Constructor: Initializes the CommandLine object
 CommandLine::CommandLine() {
     UART.begin(115200);
-    UART.println("CL> "); 
 }
+
+void CommandLine::begin() {
+    help();
+    UART.print("CL> "); 
+}
+
 
 // Function to read UART input byte by byte, with support for arrow and backspace
 void CommandLine::readInput() {
@@ -55,10 +57,10 @@ void CommandLine::readInput() {
             }
             inputBuffer = "";  // Clear the buffer for the next input
             UART.println();  // Move to a new line
-            UART.println("CL> "); 
+            UART.print("CL> "); 
         } else {
             // Add the incoming byte to the buffer, and update the UART display
-            if (inputBuffer.length() < BUFFER_SIZE - 1) {  // Ensure we don't overflow the buffer
+            if (inputBuffer.length() < UART_BUFFER_SIZE - 1) {  // Ensure we don't overflow the buffer
                 inputBuffer += incomingByte;
                 UART.print(incomingByte);  // Echo the character to the terminal
             } else {
@@ -82,10 +84,6 @@ void CommandLine::displayCommandFromHistory() {
 
 // Function to process the command in the buffer
 void CommandLine::processCommand(const std::string& command) {
-    // You can execute or parse the command here, for example:
-    UART.println("Received command: " + String(command.c_str()));
-
-    // Execute the command if it matches a known command
     executeCommand(command);
 }
 
@@ -106,23 +104,27 @@ void CommandLine::executeCommand(const std::string& command) {
     // Search for the command in the list
     for (const auto& cmd : commands) {
         if (cmd.longName == command || cmd.shortName == command) {
+            // Need to change LongName to arugments you have after 
+            // command name
+            //shortname will be a response that people can recieved
+            //not necesarry
             cmd.funcPtr(cmd.longName, cmd.shortName);
             return;
         }
     }
 
-   UART.println("Command not found: " + String(command.c_str()));
+   UART.println("\nCommand not found");
 
 }
 
 // Help function to list all commands with their long and short names
 void CommandLine::help(){
     if (commands.empty()) {
-        UART.println("No commands available.");  
+        UART.println("\nNo commands available.");  
         return;
     }
 
-    UART.println("Available commands:");  
+    UART.println("\nAvailable commands:");  
     for (const auto& cmd : commands) {
         UART.println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
     }

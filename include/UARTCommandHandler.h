@@ -1,13 +1,16 @@
 #ifndef UARTCOMMANDHANDLER_H
 #define UARTCOMMANDHANDLER_H
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include <functional>
+#include <HardwareSerial.h>
 
+extern HardwareSerial UART;
 
-#define BUFFER_SIZE 128
+#define UART_BUFFER_SIZE 128
+
+// Initialize the UART hardware serial interface
 
 class CommandLine {
 
@@ -17,11 +20,12 @@ public:
     void executeCommand(const std::string& command);
     void readInput();
     void processCommand(const std::string& command);
+    void begin();
 
 private:
     struct Command {
-        std::string longName;             // The command string
-        std::string shortName;            // The response string
+        std::string longName;             
+        std::string shortName;           
         std::function<void(const std::string&, const std::string&)> funcPtr; // Function pointer to the command handler
     };
     std::vector<Command> commands;  // Vector to store the list of commands

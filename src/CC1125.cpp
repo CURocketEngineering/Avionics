@@ -204,7 +204,7 @@ void CC1125::cc1125spi_TX_FIFO(uint8_t *data, size_t length)
    address |= 0x7F;
    digitalWrite(_cs, LOW);
    _spi->transfer(address);
-   _spi->transfer(data, nullptr, length, SPI_LAST);
+   _spi->transfer(data, nullptr, length);
    digitalWrite(_cs, HIGH);
 }
 
@@ -230,12 +230,12 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
       address = (address & 0xFF);
       _spi->transfer(address_temp);
       _spi->transfer(address);
-      _spi->transfer(data, nullptr, length, SPI_LAST);
+      _spi->transfer(data, nullptr, length);
    }
    else if(address >= 0x30 && address <= 0x3D)
    {
       _spi->transfer(address);
-      _spi->transfer(data, nullptr, length, SPI_LAST);
+      _spi->transfer(data, nullptr, length);
    }
    else if(address == 0x3E)
    {
@@ -247,13 +247,13 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
       else
          address = 0x00;
       _spi->transfer(address);
-      _spi->transfer(data, nullptr, length, SPI_LAST);
+      _spi->transfer(data, nullptr, length);
    }
    else 
    {
       address |= 0x40;
       _spi->transfer(address);
-      _spi->transfer(data, nullptr, length, SPI_LAST);
+      _spi->transfer(data, nullptr, length);
    }
    
    digitalWrite(_cs, HIGH);
