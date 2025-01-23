@@ -49,6 +49,7 @@ void CommandLine::readInput() {
         }
         // Handle normal character input
         else if (incomingByte == '\n' || incomingByte == '\r') {
+            UART.print("\r\n");
             // If it's a newline, process the current buffer and add to history
             if (!inputBuffer.empty()) {
                 processCommand(inputBuffer);
@@ -56,7 +57,6 @@ void CommandLine::readInput() {
                 historyIndex = commandHistory.size();  // Reset history index
             }
             inputBuffer = "";  // Clear the buffer for the next input
-            UART.println();  // Move to a new line
             UART.print("CL> "); 
         } else {
             // Add the incoming byte to the buffer, and update the UART display
@@ -113,18 +113,18 @@ void CommandLine::executeCommand(const std::string& command) {
         }
     }
 
-   UART.println("\nCommand not found");
+   UART.println("Command not found");
 
 }
 
 // Help function to list all commands with their long and short names
 void CommandLine::help(){
     if (commands.empty()) {
-        UART.println("\nNo commands available.");  
+        UART.println("No commands available.");  
         return;
     }
 
-    UART.println("\nAvailable commands:");  
+    UART.println("Available commands:");  
     for (const auto& cmd : commands) {
         UART.println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
     }
