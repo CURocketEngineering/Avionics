@@ -1,6 +1,7 @@
 #include "UARTCommandHandler.h"
+#include "ArduinoHAL.h"
+#include <algorithm>
 
-// Constructor: Initializes the CommandLine object
 CommandLine::CommandLine() {
     UART.begin(115200);
 }
@@ -11,63 +12,107 @@ void CommandLine::begin() {
 }
 
 
-// Function to read UART input byte by byte, with support for arrow and backspace
 void CommandLine::readInput() {
+
     while (UART.available() > 0) {
-        char incomingByte = UART.read();  // Read the incoming byte
+        char incomingByte = UART.read(); 
 
-        // Handle the Up Arrow key (ASCII 27 + [A])
+        // Handle the Up Arrow key (ASCII 27 + [ + ([A] || [B]))
         if (incomingByte == 27) {  // ASCII ESC (start of escape sequence)
-            if (UART.available() > 0 && UART.read() == '[') {
-                if (UART.available() > 0) {
-                    char arrowKey = UART.read();  // Read the arrow key (A = up, B = down)
-                    if (arrowKey == 'A') {
-                        // Up Arrow: Show the previous command from history
-                        if (historyIndex > 0) {
-                            historyIndex--;
-                        }
-
-                        displayCommandFromHistory();
-
-                    } else if (arrowKey == 'B') {
-                        // Down Arrow: Show the next command in history (if needed)
-                        if (historyIndex < commandHistory.size() - 1) {
-                            historyIndex++;  // Move to the next command in history
-                        }
-                        displayCommandFromHistory();  // Display the command
+            // Read the escape sequence buffer
+            delay(2);
+            incomingByte = UART.read();  
+            if(incomingByte == '[')
+            {
+                delay(2);
+                incomingByte = UART.read(); 
+                // Check if the full sequence matches an arrow key
+                if (incomingByte == 'A') {
+                    // Up Arrow
+                    if (historyIndex > 0) {
+                        historyIndex--;
                     }
-                    
+                    displayCommandFromHistory();
+                } else if (incomingByte == 'B') {
+                    // Down Arrow
+                    if (historyIndex < commandHistory.size() - 1) {
+                        historyIndex++;
+                    }
+                    displayCommandFromHistory();
+                } else {
+                    // Handle other escape sequences or ignore unknown ones
+                    UART.println("Unknown escape sequence: ");
                 }
             }
         }
-        // Handle Backspace key
-        else if (incomingByte == 8 || incomingByte == 127) {  // 8 = Backspace, 127 = Delete
+        else if (incomingByte == 8 || incomingByte == 127)  // 8 = Backspace, 127 = Delete
+        { 
             if (!inputBuffer.empty()) {
                 inputBuffer.pop_back();  // Remove the last character from the buffer
                 UART.print("\b \b");  // Move cursor back, print a space, and move cursor back again
             }
         }
-        // Handle normal character input
-        else if (incomingByte == '\n' || incomingByte == '\r') {
-            UART.print("\r\n");
+        else if (incomingByte == ' ')
+        {
+            UART.print(incomingByte);
+            if (!inputBuffer.empty() || !argBuffer.empty()) {
+                if (!isCommandParsed) {
+                    command = inputBuffer;
+                    isCommandParsed = true;
+                } else {
+                    
+                    argumentQueue.push(argBuffer);  // Push subsequent words as arguments
+                }
+                argBuffer.clear();  // Clear buffer for the next input
+            }
+            inputBuffer += incomingByte;
+        }
+        else if (incomingByte == '\n' || incomingByte == '\r') 
+        {
             // If it's a newline, process the current buffer and add to history
             if (!inputBuffer.empty()) {
-                processCommand(inputBuffer);
-                commandHistory.push_back(inputBuffer);  // Add command to history
-                historyIndex = commandHistory.size();  // Reset history index
+                if(isCommandParsed)
+                    argumentQueue.push(argBuffer);
+                else
+                    command = inputBuffer;
+                UART.println();
+                executeCommand(command, argumentQueue);
+                commandHistory.push_back(command);
+                historyIndex = commandHistory.size();
+
+                newComandLine = true;
             }
-            inputBuffer = "";  // Clear the buffer for the next input
-            UART.print("CL> "); 
+
+            inputBuffer.clear();  // Clear the buffer for the next input
+            command.clear();
+            isCommandParsed = false;
+            while (!argumentQueue.empty()) {
+                argumentQueue.pop();  // Clear the argument queue
+            }
+            if(incomingByte == '\n')
+            {
+                UART.println();
+                UART.print("CL> "); 
+            }
+            
         } else {
             // Add the incoming byte to the buffer, and update the UART display
             if (inputBuffer.length() < UART_BUFFER_SIZE - 1) {  // Ensure we don't overflow the buffer
-                inputBuffer += incomingByte;
-                UART.print(incomingByte);  // Echo the character to the terminal
+                if(isCommandParsed == false){
+                    inputBuffer += incomingByte;
+                    UART.print(incomingByte);  // Echo the character to the terminal
+                }
+                else
+                {
+                    argBuffer += incomingByte;
+                    inputBuffer += incomingByte;
+                    UART.print(incomingByte);
+                }
             } else {
-                // Buffer overflow warning
                 UART.println("Buffer overflow, input ignored.");
             }
         }
+
     }
 }
 
@@ -76,39 +121,34 @@ void CommandLine::displayCommandFromHistory() {
         // Clear current input and display the previous/next command from history
         inputBuffer = commandHistory[historyIndex];
         UART.print("\r");  // Move the cursor to the beginning of the line
-        UART.print("                ");  // Clear the current line (clear any previous characters)
+        for(int len = 0; len < inputBuffer.length() + 5 - 1; len++)
+            UART.print(" ");  // Clear the current line (clear any previous characters)
         UART.print("\r");  // Move back to the beginning of the line
+        UART.print("CL> "); 
+        trimSpaces(inputBuffer);
         UART.print(inputBuffer.c_str());  // Print the command from history
     }
 }
 
-// Function to process the command in the buffer
-void CommandLine::processCommand(const std::string& command) {
-    executeCommand(command);
-}
-
 // Add a command with its long name, short name, and function pointer
-void CommandLine::addCommand(const std::string& longName, const std::string& shortName, std::function<void(const std::string&, const std::string&)> funcPtr) {
+void CommandLine::addCommand(const string& longName, const string& shortName, function<void(queue<string>, string&)> funcPtr) {
     Command newCommand{ longName, shortName, funcPtr };
     commands.push_back(newCommand);
 }
 
 // Execute a command based on its long name or short name
-void CommandLine::executeCommand(const std::string& command) {
+void CommandLine::executeCommand(const string& command, queue<string> arugments) {
     // Check if the user entered "help" or "?"
     if (command == "help" || command == "?") {
         help();
         return;
     }
 
-    // Search for the command in the list
+    string response;
     for (const auto& cmd : commands) {
         if (cmd.longName == command || cmd.shortName == command) {
-            // Need to change LongName to arugments you have after 
-            // command name
-            //shortname will be a response that people can recieved
-            //not necesarry
-            cmd.funcPtr(cmd.longName, cmd.shortName);
+
+            cmd.funcPtr(arugments, response);
             return;
         }
     }
@@ -121,11 +161,27 @@ void CommandLine::executeCommand(const std::string& command) {
 void CommandLine::help(){
     if (commands.empty()) {
         UART.println("No commands available.");  
+        UART.println("help<?>"); 
         return;
     }
-
-    UART.println("Available commands:");  
+ 
     for (const auto& cmd : commands) {
         UART.println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
+    }
+    UART.println("help<?>"); 
+
+}
+
+void CommandLine::trimSpaces(std::string& str) {
+    // Remove leading spaces
+    size_t start = str.find_first_not_of(" ");
+    // If there's any non-space character
+    if (start != std::string::npos) {
+        // Remove trailing spaces
+        size_t end = str.find_last_not_of(" ");
+        str = str.substr(start, end - start + 1);
+    } else {
+        // If there are only spaces, clear the string
+        str.clear();
     }
 }
