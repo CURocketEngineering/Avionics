@@ -1,38 +1,39 @@
-#ifndef UART_COMMAND_HANDLER_H
-#define UART_COMMAND_HANDLER_H
+#ifndef UARTCOMMANDHANDLER_H
+#define UARTCOMMANDHANDLER_H
 
-#include "ArduinoHAL.h"
-#include "CommandNames.h"
-#include "data_handling/CircularArray.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <functional>
 
-#include <stdint.h>
-#include <stdbool.h>
 
-struct Command {
-  uint8_t command;
-  uint8_t value;
-};
+#define BUFFER_SIZE 128
 
-class UartCommandHandler {
-  public:
-    // Construct with the usb-port to use, however, it should match Arduino's default Serial for sending debug info
-    UartCommandHandler(Stream &port);
+class CommandLine {
 
-    void update(); // Update the command handler, checks for new commands and sends out the queued ones
-    
-    Command popCommand(); // Get the oldest unread command that's been received
-    void pushCommand(Command &command); // Send a command out the uart
+public:
+    CommandLine();  // Constructor
+    void addCommand(const std::string& longName, const std::string& shortName, std::function<void(const std::string&, const std::string&)> funcPtr);
+    void executeCommand(const std::string& command);
+    void readInput();
+    void processCommand(const std::string& command);
 
-  private:
-    Stream& port;  
-    
-    // Circular Arrays for storing in and out commands
-    CircularArray<Command> inCommands;
-    CircularArray<Command> outCommands;
+private:
+    struct Command {
+        std::string longName;             // The command string
+        std::string shortName;            // The response string
+        std::function<void(const std::string&, const std::string&)> funcPtr; // Function pointer to the command handler
+    };
+    std::vector<Command> commands;  // Vector to store the list of commands
 
-    // All the different command handlers
-    // Returns true if the command was handled
-    bool handlePing(Command &command);
+    // Class member variables for buffering and history
+    std::string inputBuffer = "";  // Current input buffer
+    std::vector<std::string> commandHistory;  // Stores previous commands for up-arrow navigation
+    int historyIndex = -1;  // Keeps track of the current position in the command history
+
+
+    void help();
+    void displayCommandFromHistory();
 };
 
 #endif
