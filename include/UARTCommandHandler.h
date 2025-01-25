@@ -8,21 +8,29 @@
 #include <HardwareSerial.h>
 
 #define UART_BUFFER_SIZE 128
-extern HardwareSerial UART;
 
 using namespace std;
 
 class CommandLine {
 
 public:
-    CommandLine();  // Constructor
+    CommandLine(Stream * UART);  // Constructor
     void addCommand(const string& longName, const string& shortName, function<void(queue<string> argumentQueue , string&)> funcPtr);
     void executeCommand(const string& command, queue<string> arugments);
     void readInput();
     void processCommand(const string& command);
     void begin();
 
+    // Pass-through functions for the UART object
+    void println(const string& message){
+        UART->println(message.c_str());
+    }
+    void print(const string& message){
+        UART->print(message.c_str());
+    }
+
 private:
+    Stream * UART;  // Pointer to the UART object
     struct Command {
         string longName;             
         string shortName;           

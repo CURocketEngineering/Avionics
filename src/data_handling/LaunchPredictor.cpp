@@ -1,6 +1,6 @@
 #include "data_handling/LaunchPredictor.h"
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #include "ArduinoHAL.h"
