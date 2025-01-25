@@ -1,38 +1,50 @@
-#ifndef UART_COMMAND_HANDLER_H
-#define UART_COMMAND_HANDLER_H
+#ifndef UARTCOMMANDHANDLER_H
+#define UARTCOMMANDHANDLER_H
 
-#include "ArduinoHAL.h"
-#include "CommandNames.h"
-#include "data_handling/CircularArray.h"
+#include <string>
+#include <queue>
+#include <vector>
+#include <functional>
+#include <HardwareSerial.h>
 
-#include <stdint.h>
-#include <stdbool.h>
+#define UART_BUFFER_SIZE 128
+extern HardwareSerial UART;
 
-struct Command {
-  uint8_t command;
-  uint8_t value;
-};
+using namespace std;
 
-class UartCommandHandler {
-  public:
-    // Construct with the usb-port to use, however, it should match Arduino's default Serial for sending debug info
-    UartCommandHandler(Stream &port);
+class CommandLine {
 
-    void update(); // Update the command handler, checks for new commands and sends out the queued ones
-    
-    Command popCommand(); // Get the oldest unread command that's been received
-    void pushCommand(Command &command); // Send a command out the uart
+public:
+    CommandLine();  // Constructor
+    void addCommand(const string& longName, const string& shortName, function<void(queue<string> argumentQueue , string&)> funcPtr);
+    void executeCommand(const string& command, queue<string> arugments);
+    void readInput();
+    void processCommand(const string& command);
+    void begin();
 
-  private:
-    Stream& port;  
-    
-    // Circular Arrays for storing in and out commands
-    CircularArray<Command> inCommands;
-    CircularArray<Command> outCommands;
+private:
+    struct Command {
+        string longName;             
+        string shortName;           
+        function<void(queue<string>, string&)> funcPtr; // Function pointer to the command handler
+    };
+    vector<Command> commands;  // Vector to store the list of commands
 
-    // All the different command handlers
-    // Returns true if the command was handled
-    bool handlePing(Command &command);
+    // Class member variables for buffering and history
+    string inputBuffer = "";  // Current input buffer
+    string argBuffer = "";
+    string command = "";
+    vector<string> commandHistory;  // Stores previous commands for up-arrow navigation
+    int historyIndex = -1;  // Keeps track of the current position in the command history
+    queue<string> argumentQueue;
+    bool isCommandParsed = false;
+    bool newComandLine = false;
+
+
+    void help();
+    void displayCommandFromHistory();
+    string combineArguments(queue<string> arguments);
+    void trimSpaces(std::string& str);
 };
 
 #endif
