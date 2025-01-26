@@ -14,6 +14,19 @@
 #define POST_LAUNCH_FLAG_ADDRESS 0x000000  // Address of the post-launch flag
 #define LAUNCH_START_ADDRESS_ADDRESS 0x000001  // Address of the launch start address (32 bits)
 
+
+#pragma pack(push, 1)  // Pack the struct to avoid padding between the name and datas
+typedef struct {
+    uint8_t name;
+    float data;
+} Record_t; 
+
+typedef struct {
+    uint8_t name;
+    uint32_t timestamp_ms;
+} TimestampRecord_t;
+#pragma pack(pop)  // Stop packing from here on out
+
 class DataSaverSPI : public IDataSaver {
 public:
 
@@ -214,6 +227,17 @@ private:
      * @return int   0 on success; non-zero on error
      */
     int addDataToBuffer(const uint8_t* data, size_t length);
+
+
+    // Overloaded functions to add data to the buffer from a Record_t or TimestampRecord_t
+    // More efficient than callling addDataToBuffer with each part of the record
+    int addRecordToBuffer(Record_t * record) {
+        return addDataToBuffer(reinterpret_cast<const uint8_t*>(record), 5);
+    }
+
+    int addRecordToBuffer(TimestampRecord_t * record) {
+        return addDataToBuffer(reinterpret_cast<const uint8_t*>(record), 5);
+    }
 };
 
 #endif // DATA_SAVER_SPI_H

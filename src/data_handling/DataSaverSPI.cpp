@@ -3,6 +3,7 @@
 
 #include <cstring>
 
+
 DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash)
     : timestampInterval_ms(timestampInterval_ms),
       flash(flash), nextWriteAddress(DATA_START_ADDRESS), bufferIndex(0),
@@ -22,20 +23,14 @@ int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
     // Write timestamp if enough time has passed since the last one
     uint32_t timestamp = dp.timestamp_ms;
     if (timestamp - lastTimestamp_ms > timestampInterval_ms) {
-        // Add name to buffer
-        if (!addDataToBuffer(&name, sizeof(name)) == 0) return -1; 
-
-        // Add timestamp to buffer
-        if (!addDataToBuffer(reinterpret_cast<uint8_t*>(&timestamp), sizeof(timestamp)) == 0) return -1;
+        TimestampRecord_t tr = {TIMESTAMP, timestamp};
+        if (!addRecordToBuffer(&tr) == 0) return -1;
 
         lastTimestamp_ms = timestamp;  // Everything after this timestamp until the next timestamp will use this timestamp when reconstructed
     }
 
-    // Write the name to buffer
-    if (!addDataToBuffer(&name, sizeof(name)) == 0) return -1;
-
-    // Write the value to buffer
-    if (!addDataToBuffer(reinterpret_cast<uint8_t*>(&dp.data), sizeof(dp.data)) == 0) return -1;
+    Record_t record = {name, dp.data};
+    if (addRecordToBuffer(&record) < 0) return -1;
 
     lastDataPoint = dp;
     return 0;
@@ -53,6 +48,7 @@ int DataSaverSPI::addDataToBuffer(const uint8_t* data, size_t length) {
     return 0;
 }
 
+// Write the entire buffer to flash
 int DataSaverSPI::flushBuffer() {
     if (bufferIndex == 0) return 1; // Nothing to flush
 
@@ -62,12 +58,14 @@ int DataSaverSPI::flushBuffer() {
         nextWriteAddress = DATA_START_ADDRESS;
     }   
 
-    if (!flash->writeBuffer(nextWriteAddress, buffer, bufferIndex)) {
+    if (!flash->writeBuffer(nextWriteAddress, buffer, BUFFER_SIZE)) {
         return -1;
     }
 
-    nextWriteAddress += bufferIndex;
+    nextWriteAddress += BUFFER_SIZE;  // keep it aligned to the buffer size or page size
     bufferIndex = 0; // Reset the buffer
+    // Fill the buffer with 0s
+    memset(buffer, 0, BUFFER_SIZE);
     bufferFlushes++;
     return 0;
 }
@@ -109,6 +107,7 @@ void DataSaverSPI::dumpData(Stream &serial) {
 
 void DataSaverSPI::clearInternalState() {
     bufferIndex = 0;
+    memset(buffer, 0, BUFFER_SIZE);
     lastDataPoint = {0, 0};
     nextWriteAddress = DATA_START_ADDRESS;
     lastTimestamp_ms = 0;
