@@ -9,7 +9,6 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "unity.h"
 
 class MockSerial {
 public:
@@ -55,19 +54,6 @@ public:
     // write
     size_t write(uint8_t) { return 0; }
     size_t write(const uint8_t *buffer, size_t size) { return size; }
-
-    // Assertions
-    void assertPrintCalledWith(const std::string& expected) {
-        TEST_ASSERT_TRUE(std::find(printCalls.begin(), printCalls.end(), expected) != printCalls.end());
-    }
-
-    void assertPrintlnCalledWith(const std::string& expected) {
-        TEST_ASSERT_TRUE(std::find(printlnCalls.begin(), printlnCalls.end(), expected) != printlnCalls.end());
-    }
-
-    void assertPrintfCalledWith(const std::string& expected) {
-        TEST_ASSERT_TRUE(std::find(printfCalls.begin(), printfCalls.end(), expected) != printfCalls.end());
-    }
 };
 
 extern MockSerial Serial;
