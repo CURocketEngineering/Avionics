@@ -86,6 +86,20 @@ public:
         return result;
     }
 
+    template<typename T>
+    void print(const T& message) {
+        std::cout << message;
+    }
+
+    template<typename T>
+    void println(const T& message) {
+        std::cout << message << std::endl;
+    }
+
+    void println() {
+        std::cout << std::endl;
+    }
+
     // Read a string
     std::string readString() {
         std::string result;
