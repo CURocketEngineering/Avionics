@@ -8,6 +8,8 @@
 #include <HardwareSerial.h>
 
 #define UART_BUFFER_SIZE 128
+#define MAX_HISTORY      20
+#define MAX_ARGUMENTS    5
 
 using namespace std;
 
@@ -39,14 +41,17 @@ private:
     vector<Command> commands;  // Vector to store the list of commands
 
     // Class member variables for buffering and history
+    string fullLine = {""}; 
     string inputBuffer = "";  // Current input buffer
     string argBuffer = "";
     string command = "";
-    vector<string> commandHistory;  // Stores previous commands for up-arrow navigation
-    int historyIndex = -1;  // Keeps track of the current position in the command history
+    string fullLineHistory[MAX_HISTORY] = {""}; 
+    string commandHistory[MAX_HISTORY];  // Stores previous commands for up-arrow navigation
+    int historyIndex = 0;  // Keeps track of the current position in the command history
     queue<string> argumentQueue;
+    string argumentHistory[MAX_HISTORY][MAX_ARGUMENTS];
+    int argSize[MAX_HISTORY];
     bool isCommandParsed = false;
-    bool newComandLine = false;
 
 
     void help();
