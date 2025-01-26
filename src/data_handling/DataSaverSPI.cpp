@@ -4,6 +4,7 @@
 #include <cstring>
 
 
+
 DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash)
     : timestampInterval_ms(timestampInterval_ms),
       flash(flash), nextWriteAddress(DATA_START_ADDRESS), bufferIndex(0),
@@ -82,12 +83,14 @@ bool DataSaverSPI::begin() {
 bool DataSaverSPI::isPostLaunchMode() {
     uint8_t flag;
     flash->readBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
-    this->postLaunchMode = (flag == 1);
+    this->postLaunchMode = (flag == POST_LAUNCH_FLAG_TRUE);
     return this->postLaunchMode;
 }
 
 void DataSaverSPI::clearPostLaunchMode() {
-    uint8_t flag = 0;
+    flash->eraseSector(METADATA_START_ADDRESS / SFLASH_SECTOR_SIZE);
+    
+    uint8_t flag = POST_LAUNCH_FLAG_FALSE;
     flash->writeBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
     postLaunchMode = false;
 }
@@ -124,14 +127,12 @@ void DataSaverSPI::eraseAllData() {
 
     // Clear the launchWriteAddress
     launchWriteAddress = 0;
-    flash->writeBuffer(LAUNCH_START_ADDRESS_ADDRESS, reinterpret_cast<uint8_t*>(&launchWriteAddress),
-                                                     sizeof(launchWriteAddress));
 
 }
 
 void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
     // 1) Set the post-launch flag in metadata so we don't overwrite post-launch data.
-    uint8_t flag = 1;
+    uint8_t flag = POST_LAUNCH_FLAG_TRUE;
     flash->writeBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
     postLaunchMode = true;
 

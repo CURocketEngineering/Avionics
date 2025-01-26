@@ -9,10 +9,13 @@
 #include <cstdlib>
 
 
-
+#define METADATA_START_ADDRESS 0x000000  // Start writing metadata at the beginning of the flash
 #define DATA_START_ADDRESS 0x001000  // Start writing data after 1 sector (4kB) of metadata
 #define POST_LAUNCH_FLAG_ADDRESS 0x000000  // Address of the post-launch flag
 #define LAUNCH_START_ADDRESS_ADDRESS 0x000001  // Address of the launch start address (32 bits)
+
+#define POST_LAUNCH_FLAG_TRUE 0x00 // Flag to indicate post-launch mode is active
+#define POST_LAUNCH_FLAG_FALSE 0x01 // Flag to indicate post-launch mode is not active
 
 
 #pragma pack(push, 1)  // Pack the struct to avoid padding between the name and datas
