@@ -36,6 +36,10 @@ public:
 
     uint8_t getName() {return name;}
 
+    DataPoint getLastDataPointSaved() const {
+        return lastDataPointSaved;
+    }
+
  
 protected:
     IDataSaver* dataSaver;
@@ -43,6 +47,8 @@ private:
     uint8_t name;
     uint16_t saveInterval_ms; // The minimum time between each data point that is saved to the SD card
     uint32_t lastSaveTime_ms; // The last time a data point was saved to the SD card
+
+    DataPoint lastDataPointSaved;
 };
 
 #endif // DATAHANDLER_H
