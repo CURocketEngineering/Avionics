@@ -1,7 +1,11 @@
 #include "CC1125.h"
 
-CC1125::CC1125(Adafruit_LSM6DSOX *SOX, Adafruit_LIS3MDL *MAG, Adafruit_BMP3XX *BMP): 
-sox(SOX), mag(MAG), bmp(BMP) {}
+CC1125::CC1125(uint32_t resetPin,
+               uint32_t cs,
+               Adafruit_LSM6DSOX *SOX, 
+               Adafruit_LIS3MDL *MAG,
+               Adafruit_BMP3XX *BMP)
+: _resetPin(resetPin), _cs(cs), sox(SOX), mag(MAG), bmp(BMP) {}
 
 CC1125::~CC1125() {}
 
@@ -15,9 +19,10 @@ CC1125Status CC1125::initCC1125()
    _spi->begin();
 
    // Reset radio
-   pinMode(PB15, OUTPUT);
-   digitalWrite(PB15, LOW);
-   digitalWrite(PB15, HIGH);
+   //ARE strobe commands actaully working ????
+   pinMode(_resetPin, OUTPUT);
+   digitalWrite(_resetPin, LOW);
+   digitalWrite(_resetPin, HIGH);
    // cc1125spi_read(CC1125_SRES, &rx_buf, 1);
 
 
@@ -305,19 +310,19 @@ void CC1125::cc1125spi_TX_FIFO(uint8_t *data, size_t length)
 {
    uint8_t address = CC1125_FIFO;
    address |= 0x7F;
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    _spi->transfer(address);
-   _spi->transfer(data, length, 1);
-   digitalWrite(PB12, HIGH);
+   _spi->transfer(data, nullptr, length);
+   digitalWrite(_cs, HIGH);
 }
 
 void CC1125::cc1125spi_RX_FIFO(uint8_t *data, size_t length)
 {
    uint8_t address = CC1125_FIFO;
    address |= 0xFF;
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    _spi->transfer(&address, data, length);
-   digitalWrite(PB12, HIGH);
+   digitalWrite(_cs, HIGH);
 }
 
 void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool TX)
@@ -325,7 +330,7 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
 
    volatile uint8_t address_temp = 0x00;
    uint8_t address = (uint8_t)(addr & 0xFF);
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    if((addr >> 8) == 0x2F)
    {
       address_temp = 0x2F;
@@ -333,12 +338,12 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
       address = (address & 0xFF);
       _spi->transfer(address_temp);
       _spi->transfer(address);
-      _spi->transfer(data, length, 1);
+      _spi->transfer(data, nullptr, length);
    }
    else if(address >= 0x30 && address <= 0x3D)
    {
       _spi->transfer(address);
-      _spi->transfer(data, length, 1);
+      _spi->transfer(data, nullptr, length);
    }
    else if(address == 0x3E)
    {
@@ -350,16 +355,16 @@ void CC1125::cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool T
       else
          address = 0x00;
       _spi->transfer(address);
-      _spi->transfer(data, length, 1);
+      _spi->transfer(data, nullptr, length);
    }
    else 
    {
       address |= 0x40;
       _spi->transfer(address);
-      _spi->transfer(data, length, 1);
+      _spi->transfer(data, nullptr, length);
    }
    
-   digitalWrite(PB12, HIGH);
+   digitalWrite(_cs, HIGH);
 }
 
 void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX)
@@ -368,14 +373,15 @@ void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX
    volatile uint8_t address_temp = 0x00;
    uint8_t address = (uint8_t)(addr & 0xFF);
 
-   digitalWrite(PB12, LOW);
+   digitalWrite(_cs, LOW);
    if((addr >> 8) == 0x2F)
    {
       address_temp = 0x2F;
       address_temp |= 0xC0;
       _spi->transfer(address_temp);
       _spi->transfer(address);
-      _spi->transfer(0x00, data, length);
+      uint8_t dummy = 0x00;
+      _spi->transfer(&dummy, data, length);
    }
    else if(address >= 0x30 && address <= 0x3D)
    {
@@ -399,6 +405,6 @@ void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX
       address |= 0xC0;
       _spi->transfer(&address, data, length);
    }
-    digitalWrite(PB12, HIGH);
+    digitalWrite(_cs, HIGH);
 
 }

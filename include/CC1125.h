@@ -326,7 +326,11 @@ enum CC1125Status {
 class CC1125 {
 
 public:
-    CC1125(Adafruit_LSM6DSOX *SOX, Adafruit_LIS3MDL *MAG, Adafruit_BMP3XX *BMP);  
+    CC1125(uint32_t resetPin, 
+           uint32_t cs, 
+           Adafruit_LSM6DSOX *SOX, 
+           Adafruit_LIS3MDL *MAG, 
+           Adafruit_BMP3XX *BMP);  
     ~CC1125(); // Destructor
 
     CC1125Status initCC1125();
@@ -344,6 +348,8 @@ private:
     Adafruit_BMP3XX *bmp;
     SPIClass *_spi = &SPI;
     uint8_t packetCounter = 0;
+    uint32_t _resetPin;
+    uint32_t _cs;
     
     CC1125Status registerConfig(void);
     uint8_t* createPacket(uint8_t *data, size_t len);
