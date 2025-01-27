@@ -1,11 +1,11 @@
 #include "CC1125.h"
 
-CC1125::CC1125(uint32_t resetPin,
-               uint32_t cs,
+CC1125::CC1125(uint8_t resetPin,
+               uint8_t cs,
                Adafruit_LSM6DSOX *SOX, 
                Adafruit_LIS3MDL *MAG,
-               Adafruit_BMP3XX *BMP)
-: _resetPin(resetPin), _cs(cs), sox(SOX), mag(MAG), bmp(BMP) {}
+               Adafruit_BMP3XX *BMP): 
+               _resetPin(resetPin), _cs(cs), sox(SOX), mag(MAG), bmp(BMP) {}
 
 CC1125::~CC1125() {}
 
@@ -57,18 +57,45 @@ CC1125Status CC1125::init()
    return status;
 }
 
+CC1125Status CC1125::registerConfig() 
+{
+   CC1125Status status = CC1125_INVALID;
+   uint8_t writeByte;
+
+   // Write registers to radio
+   for(uint16_t i = 0;
+   i < (sizeof(preferredSettings)/sizeof(registerSetting_t)); i++) {
+      writeByte = preferredSettings[i].data;
+      cc1125spi_write(preferredSettings[i].addr, &writeByte, 1);
+   }
+
+   for(uint16_t i = 0;
+   i < (sizeof(preferredSettings)/sizeof(registerSetting_t)); i++) {
+      writeByte = preferredSettings[i].data;
+      cc1125spi_read(preferredSettings[i].addr, &writeByte, 1);
+      if(preferredSettings[i].data != writeByte)
+      {
+         status = CC1125_FAILURE;
+         break;
+      }
+      status = CC1125_SUCCESS;
+   }
+
+   return status;
+}
+
 void CC1125::runTX(uint8_t* data, size_t len)
 {
 
-   uint8_t* txBuffer;
-   uint8_t rxBuffer[len];
+   uint8_t txBuffer[len + 1];
+   uint8_t rxBuffer[len + 1];
    uint8_t statusBits = 0;
    uint8_t txbytes = 0;
    uint8_t marcstate = 0;
    uint8_t element = 0;
    bool match = true;
 
-   txBuffer = createPacket(data, len);
+   createPacket(txBuffer, data, len);
 
    // Write packet to TX FIFO
    //Max is 0x80
@@ -111,7 +138,6 @@ void CC1125::runTX(uint8_t* data, size_t len)
 
 void CC1125::runRX(uint8_t *rxBuffer)
 {
-   uint8_t rxBuffer[111] = {0};
    uint8_t rxbytes = 0;
    uint8_t marcstate = 0;
    uint8_t statusBits = 0;
@@ -143,37 +169,15 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
 }
 
-CC1125Status CC1125::registerConfig() 
-{
-   CC1125Status status = CC1125_INVALID;
-   uint8_t writeByte;
-
-   // Write registers to radio
-   for(uint16_t i = 0;
-   i < (sizeof(preferredSettings)/sizeof(registerSetting_t)); i++) {
-      writeByte = preferredSettings[i].data;
-      cc1125spi_write(preferredSettings[i].addr, &writeByte, 1);
-   }
-
-   for(uint16_t i = 0;
-   i < (sizeof(preferredSettings)/sizeof(registerSetting_t)); i++) {
-      writeByte = preferredSettings[i].data;
-      cc1125spi_read(preferredSettings[i].addr, &writeByte, 1);
-      if(preferredSettings[i].data != writeByte)
-      {
-         status = CC1125_FAILURE;
-         break;
-      }
-      status = CC1125_SUCCESS;
-   }
-
-   return status;
-}
-
  void CC1125::telemetryGroundStation()
  {
-   uint8_t command = {CC1125_TELEMTRY_GS};
+   uint8_t command[] = {
+    (CC1125_TELEMTRY_GS >> 16) & 0xFF,  // Most significant byte (0x54)
+    (CC1125_TELEMTRY_GS >> 8) & 0xFF,   // Middle byte (0x45)
+    CC1125_TELEMTRY_GS & 0xFF           // Least significant byte (0x4C)
+   };
    uint8_t received[0x80];
+   uint32_t commandreceived;
    DataPoints_t data;
 
    // should send until we recieve, add a time out
@@ -181,17 +185,20 @@ CC1125Status CC1125::registerConfig()
 
    unsigned long startTime = millis();
    while (true) {
-        runTX(&command, sizeof(command));
-        runRX(received);
+         runTX(command, sizeof(command));
+         runRX(received);
 
-        if ((millis() - startTime) >= TIMEOUT_MS) {
+         if ((millis() - startTime) >= TIMEOUT_MS) {
             Serial.println("Timeout waiting for acknowledgment from rocket.");
             return;
-        }
-
-        if (received[0] == CC1125_ACKNOWLEDGE) {
+         }
+         
+         commandreceived = received[0] << 16 |
+                           received[1] << 8 |
+                           received[2];
+         if (commandreceived == CC1125_ACKNOWLEDGE) {
             break;
-        }
+         }
     }
 
 
@@ -200,12 +207,16 @@ CC1125Status CC1125::registerConfig()
 
       // Check for timeout or quit condition
       if (0/* Check for inactivity timeout or 'q' command */) {
-            command = CC1125_QUIT;
-            runTX(&command, sizeof(command));
+            command[0] = (CC1125_QUIT >> 16) & 0xFF; 
+            command[1] = (CC1125_QUIT >> 8) & 0xFF;   
+            command[2] = CC1125_QUIT & 0xFF;  
+            runTX(command, sizeof(command));
             break;
       } else {
-            command = CC1125_ACKNOWLEDGE;
-            runTX(&command, sizeof(command));
+            command[0] = (CC1125_ACKNOWLEDGE >> 16) & 0xFF; 
+            command[1] = (CC1125_ACKNOWLEDGE >> 8) & 0xFF;   
+            command[2] = CC1125_ACKNOWLEDGE & 0xFF;  
+            runTX(command, sizeof(command));
       }
 
       // Cast received buffer to DataPoints_t
@@ -237,7 +248,12 @@ CC1125Status CC1125::registerConfig()
 
  void CC1125::telemetryRocket()
  {
-   uint8_t command = CC1125_ACKNOWLEDGE;
+   uint8_t command[] = {
+    (CC1125_ACKNOWLEDGE >> 16) & 0xFF,  // Most significant byte (0x54)
+    (CC1125_ACKNOWLEDGE >> 8) & 0xFF,   // Middle byte (0x45)
+    CC1125_ACKNOWLEDGE & 0xFF           // Least significant byte (0x4C)
+   };
+   uint32_t commandreceived;
    uint8_t received[0x80];
    DataPoints_t data;
 
@@ -251,15 +267,18 @@ CC1125Status CC1125::registerConfig()
          Serial.println("Timeout waiting for telemetry command.");
          return;
       }
-
-      if (received[0] == CC1125_TELEMTRY_GS) {
+               
+      commandreceived = received[0] << 16 |
+                        received[1] << 8 |
+                        received[2];
+      if (commandreceived == CC1125_TELEMTRY_GS) {
          break;
       }
    }
    
 
    // Acknowledge telemetry command
-   runTX(&command, sizeof(command));
+   runTX(command, sizeof(command));
 
    // Start transmitting data 
    while (true) {
@@ -300,12 +319,11 @@ CC1125Status CC1125::registerConfig()
     data->temp_bmp = bmp->temperature;
  }
 
-uint8_t* CC1125::createPacket(uint8_t *data, size_t len) 
+void CC1125::createPacket(uint8_t *txBuffer, uint8_t *data, size_t len) 
 {
-   uint8_t txBuffer[len];
-   txBuffer[0] = len;                       
 
-   return txBuffer;
+    txBuffer[0] = len;
+    memcpy(&txBuffer[1], data, len);
 }
 
 void CC1125::cc1125spi_TX_FIFO(uint8_t *data, size_t length)

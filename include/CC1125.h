@@ -224,9 +224,9 @@ using namespace std;
 #define CC1125_FIFO_NUM_TXBYTES         0x2FD8  
 #define CC1125_FIFO_NUM_RXBYTES         0x2FD9 
 
-#define CC1125_TELEMTRY_GS              0x54454C45 // TELE
-#define CC1125_ACKNOWLEDGE              0x41434B4E // ACKN
-#define CC1125_QUIT                     0x51554954 // QUIT
+#define CC1125_TELEMTRY_GS              0x54454C   // TEL
+#define CC1125_ACKNOWLEDGE              0x41434B   // ACK
+#define CC1125_QUIT                     0x515554   // QUT
 #define TIMEOUT_MS                      100
 
 typedef struct
@@ -325,8 +325,8 @@ enum CC1125Status {
 class CC1125 {
 
 public:
-    CC1125(uint32_t resetPin, 
-           uint32_t cs, 
+    CC1125(uint8_t resetPin, 
+           uint8_t cs, 
            Adafruit_LSM6DSOX *SOX, 
            Adafruit_LIS3MDL *MAG, 
            Adafruit_BMP3XX *BMP);  
@@ -351,7 +351,7 @@ private:
     uint32_t _cs;
     
     CC1125Status registerConfig(void);
-    uint8_t* createPacket(uint8_t *data, size_t len);
+    void createPacket(uint8_t *txBuffer, uint8_t *data, size_t len);
     void retriveData(DataPoints_t *data);
     void cc1125spi_TX_FIFO(uint8_t *data, size_t length);
     void cc1125spi_RX_FIFO(uint8_t *data, size_t length);
