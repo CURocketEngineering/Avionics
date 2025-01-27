@@ -211,6 +211,14 @@ public:
         return bufferFlushes;
     }
 
+    bool getIsChipFullDueToPostLaunchProtection() const {
+        return isChipFullDueToPostLaunchProtection;
+    }
+
+    bool getRebootedInPostLaunchMode() const {
+        return rebootedInPostLaunchMode;
+    }
+
 private:
 
     /**
@@ -241,6 +249,14 @@ private:
     int addRecordToBuffer(TimestampRecord_t * record) {
         return addDataToBuffer(reinterpret_cast<const uint8_t*>(record), 5);
     }
+
+    // The chip will keep overwriting data forever unless post launch data is being protected.
+    // Once it wraps back around to the launchWriteAddress, it will stop writing data.
+    bool isChipFullDueToPostLaunchProtection;
+
+    // If the fc boots and is already in post launch mode, then do not write to flash
+    // calling clearPostLaunchMode() will allow writing to flash again after a reboot
+    bool rebootedInPostLaunchMode = false;
 };
 
 #endif // DATA_SAVER_SPI_H
