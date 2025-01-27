@@ -9,7 +9,7 @@ CC1125::CC1125(uint32_t resetPin,
 
 CC1125::~CC1125() {}
 
-CC1125Status CC1125::initCC1125() 
+CC1125Status CC1125::init() 
 {
    CC1125Status status = CC1125_INVALID;
    uint8_t marcstate = 0;
@@ -19,7 +19,6 @@ CC1125Status CC1125::initCC1125()
    _spi->begin();
 
    // Reset radio
-   //ARE strobe commands actaully working ????
    pinMode(_resetPin, OUTPUT);
    digitalWrite(_resetPin, LOW);
    digitalWrite(_resetPin, HIGH);
@@ -91,6 +90,7 @@ void CC1125::runTX(uint8_t* data, size_t len)
    {
 
       cc1125spi_read(CC1125_STX, &statusBits, 1);
+      //idle
       while(marcstate != 0x41 )
       { 
          while(marcstate < 19){cc1125spi_read(CC1125_MARCSTATE, &marcstate, 1);};
@@ -123,7 +123,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
    while((marcstate & 0x1F) == 0xD)
    {
-      Serial1.println("RX State");
+      Serial.println("RX State");
       cc1125spi_read(CC1125_MARCSTATE, &marcstate, 1);
    }
    
@@ -131,10 +131,12 @@ void CC1125::runRX(uint8_t *rxBuffer)
    if(rxbytes > 0)
    {
       cc1125spi_RX_FIFO(rxBuffer, rxbytes);
+      cc1125spi_read(CC1125_SFRX, &statusBits, 1);
    }
 
    while(marcstate == 17)
    {
+      //error handling
       cc1125spi_read(CC1125_SFRX, &statusBits, 1);
       cc1125spi_read(CC1125_MARCSTATE, &marcstate, 1);
    }
@@ -183,7 +185,7 @@ CC1125Status CC1125::registerConfig()
         runRX(received);
 
         if ((millis() - startTime) >= TIMEOUT_MS) {
-            Serial1.println("Timeout waiting for acknowledgment from rocket.");
+            Serial.println("Timeout waiting for acknowledgment from rocket.");
             return;
         }
 
@@ -209,23 +211,23 @@ CC1125Status CC1125::registerConfig()
       // Cast received buffer to DataPoints_t
       memcpy(&data, received, sizeof(DataPoints_t));
       // Process the received data here, if necessary
-      Serial1.print("BMP390 DATA:\r\n");
-      Serial1.print("Pressure: "); Serial1.print(data.altitude); Serial1.print(" Pa\t");
-      Serial1.print("Altitude: "); Serial1.print(data.pressure); Serial1.println(" m\n");
-      Serial1.print("Temperature: "); Serial1.print(data.temp_bmp); Serial1.println(" d/s\n");
+      Serial.print("BMP390 DATA:\r\n");
+      Serial.print("Pressure: "); Serial.print(data.altitude); Serial.print(" Pa\t");
+      Serial.print("Altitude: "); Serial.print(data.pressure); Serial.println(" m\n");
+      Serial.print("Temperature: "); Serial.print(data.temp_bmp); Serial.println(" d/s\n");
 
-      Serial1.print("LSM6DSOX DATA:\r\n");
-      Serial1.print("X: "); Serial1.print(data.acceleration_x); Serial1.print(" m/s^2\t");
-      Serial1.print("Y: "); Serial1.print(data.acceleration_y); Serial1.print(" m/s^2\t");
-      Serial1.print("Z: "); Serial1.print(data.acceleration_z); Serial1.println(" m/s^2");
-      Serial1.print("X: "); Serial1.print(data.gyro_x); Serial1.print(" d/s\t");
-      Serial1.print("Y: "); Serial1.print(data.gyro_y); Serial1.print(" d/s\t");
-      Serial1.print("Z: "); Serial1.print(data.gyro_z); Serial1.println(" d/s\n");
+      Serial.print("LSM6DSOX DATA:\r\n");
+      Serial.print("X: "); Serial.print(data.acceleration_x); Serial.print(" m/s^2\t");
+      Serial.print("Y: "); Serial.print(data.acceleration_y); Serial.print(" m/s^2\t");
+      Serial.print("Z: "); Serial.print(data.acceleration_z); Serial.println(" m/s^2");
+      Serial.print("X: "); Serial.print(data.gyro_x); Serial.print(" d/s\t");
+      Serial.print("Y: "); Serial.print(data.gyro_y); Serial.print(" d/s\t");
+      Serial.print("Z: "); Serial.print(data.gyro_z); Serial.println(" d/s\n");
 
-      Serial1.print("LIS3MDL DATA:\r\n");
-      Serial1.print("X: "); Serial1.print(data.magnetic_x); Serial1.print(" µT\t");
-      Serial1.print("Y: "); Serial1.print(data.magnetic_y); Serial1.print(" µT\t");
-      Serial1.print("Z: "); Serial1.print(data.magnetic_z); Serial1.println(" µT\n");
+      Serial.print("LIS3MDL DATA:\r\n");
+      Serial.print("X: "); Serial.print(data.magnetic_x); Serial.print(" µT\t");
+      Serial.print("Y: "); Serial.print(data.magnetic_y); Serial.print(" µT\t");
+      Serial.print("Z: "); Serial.print(data.magnetic_z); Serial.println(" µT\n");
 
     }
 
@@ -246,7 +248,7 @@ CC1125Status CC1125::registerConfig()
       runRX(received);
 
       if ((millis() - startTime) >= TIMEOUT_MS) {
-         Serial1.println("Timeout waiting for telemetry command.");
+         Serial.println("Timeout waiting for telemetry command.");
          return;
       }
 

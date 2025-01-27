@@ -2,7 +2,6 @@
 #define CC1125_H
 
 #include <SPI.h>
-#include <string>
 #include <Adafruit_BMP3XX.h>
 #include "Adafruit_LSM6DSOX.h"
 #include "Adafruit_LIS3MDL.h"
@@ -333,7 +332,7 @@ public:
            Adafruit_BMP3XX *BMP);  
     ~CC1125(); // Destructor
 
-    CC1125Status initCC1125();
+    CC1125Status init();
     void runTX(uint8_t* data, size_t len);
     void runRX(uint8_t *rxBuffer);
 
