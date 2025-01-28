@@ -53,7 +53,7 @@ int DataSaverSPI::flushBuffer() {
     if (bufferIndex == 0) return 1; // Nothing to flush
 
     // Check if we need to wrap around
-    if (nextWriteAddress + bufferIndex > flash->size()) { // TODO: REMOVE /16 this is for testing
+    if (nextWriteAddress + bufferIndex > flash->size()) {
         // Wrap around
         nextWriteAddress = DATA_START_ADDRESS;
     }   
@@ -62,6 +62,13 @@ int DataSaverSPI::flushBuffer() {
     if (postLaunchMode && nextWriteAddress <= launchWriteAddress && nextWriteAddress + BUFFER_SIZE * 2 > launchWriteAddress) {
         isChipFullDueToPostLaunchProtection = true;
         return -1; // Indicate no write due to post-launch protection
+    }
+
+    // If we just entered a new sector, erase it
+    if (nextWriteAddress % SFLASH_SECTOR_SIZE == 0) {
+        if (!flash->eraseSector(nextWriteAddress / SFLASH_SECTOR_SIZE)) {
+            return -1;
+        }
     }
 
     if (!flash->writeBuffer(nextWriteAddress, buffer, BUFFER_SIZE)) {
@@ -85,6 +92,7 @@ bool DataSaverSPI::begin() {
         rebootedInPostLaunchMode = true;
         return -1; 
     }
+
     return true;
 }
 
@@ -104,16 +112,30 @@ void DataSaverSPI::clearPostLaunchMode() {
 }
 
 void DataSaverSPI::dumpData(Stream &serial) {
-    uint32_t readAddress = 1; // Start reading after metadata
-    // Write each byte to serial
-    while (readAddress < flash->size()) {
-        uint8_t byte;
-        if (!readFromFlash(readAddress, &byte, sizeof(byte))) {
-            serial.println("Error reading from flash");
+    uint32_t readAddress = DATA_START_ADDRESS;
+    // For each page write 51 sets of 5 bytes to serial with a newline
+    uint8_t buffer[SFLASH_PAGE_SIZE];
+    size_t recordSize = sizeof(Record_t);
+    size_t numRecordsPerPage = SFLASH_PAGE_SIZE / recordSize;
+
+    // To ensure it's lined-up let's set a '\n' , '\r' and a 's' at the start
+    serial.write('a');
+    serial.write('b');
+    serial.write('c');
+   
+    while (readAddress < flash->size()) { // just flash 1 page
+        if (!readFromFlash(readAddress, buffer, SFLASH_PAGE_SIZE)) {
             return;
         }
-        serial.write(byte);
+        for (size_t i = 0; i < numRecordsPerPage; i++) {
+            serial.write(buffer + i * recordSize, recordSize);
+            // serial.write('\n');
+        }
+        readAddress += SFLASH_PAGE_SIZE;
     }
+
+    // Write "done"
+    serial.write("done\n");
 }
 
 void DataSaverSPI::clearInternalState() {
