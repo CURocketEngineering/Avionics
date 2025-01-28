@@ -19,6 +19,7 @@ CC1125Status CC1125::init()
    _spi->begin();
 
    // Reset radio
+   pinMode(_cs, OUTPUT);
    pinMode(_resetPin, OUTPUT);
    digitalWrite(_resetPin, LOW);
    digitalWrite(_resetPin, HIGH);
@@ -68,7 +69,7 @@ CC1125Status CC1125::registerConfig()
       writeByte = preferredSettings[i].data;
       cc1125spi_write(preferredSettings[i].addr, &writeByte, 1);
    }
-
+   delay(100);
    for(uint16_t i = 0;
    i < (sizeof(preferredSettings)/sizeof(registerSetting_t)); i++) {
       writeByte = preferredSettings[i].data;
@@ -87,8 +88,8 @@ CC1125Status CC1125::registerConfig()
 void CC1125::runTX(uint8_t* data, size_t len)
 {
 
-   uint8_t txBuffer[len + 1];
-   uint8_t rxBuffer[len + 1];
+   uint8_t* txBuffer = new uint8_t[len + 1];
+   uint8_t* rxBuffer = new uint8_t[len + 1];
    uint8_t statusBits = 0;
    uint8_t txbytes = 0;
    uint8_t marcstate = 0;
@@ -100,7 +101,7 @@ void CC1125::runTX(uint8_t* data, size_t len)
    // Write packet to TX FIFO
    //Max is 0x80
    cc1125spi_TX_FIFO(txBuffer, len);
-   cc1125spi_read(CC1125_FIFO_DIRECT,  rxBuffer, sizeof(rxBuffer));
+   cc1125spi_read(CC1125_FIFO_DIRECT,  rxBuffer, len);
    cc1125spi_read(CC1125_NUM_TXBYTES, &txbytes, 1);
 
    for(int i = 0; i < len; i++)
@@ -108,6 +109,8 @@ void CC1125::runTX(uint8_t* data, size_t len)
       if(rxBuffer[i] != txBuffer[i])
       {
          match = false;
+         element = i;
+         break;
       }
    }
 
@@ -132,6 +135,9 @@ void CC1125::runTX(uint8_t* data, size_t len)
 
    cc1125spi_read(CC1125_SFTX, &statusBits, 1);
 
+   delete[] txBuffer;
+   delete[] rxBuffer;
+
    delay(100);
 
 }
@@ -149,14 +155,14 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
    while((marcstate & 0x1F) == 0xD)
    {
-      Serial.println("RX State");
+      // Serial.println("RX State");
       cc1125spi_read(CC1125_MARCSTATE, &marcstate, 1);
    }
    
    cc1125spi_read(CC1125_NUM_RXBYTES, &rxbytes, 1);
    if(rxbytes > 0)
    {
-      cc1125spi_RX_FIFO(rxBuffer, rxbytes);
+      cc1125spi_RX_FIFO(rxBuffer, 56);
       cc1125spi_read(CC1125_SFRX, &statusBits, 1);
    }
 
@@ -169,6 +175,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
 }
 
+// For Command Response
  void CC1125::telemetryGroundStation()
  {
    uint8_t command[] = {
@@ -245,7 +252,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
  }
 
-
+// For Command Response
  void CC1125::telemetryRocket()
  {
    uint8_t command[] = {
@@ -422,7 +429,8 @@ void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX
    }
    else
    {
-      address |= 0xC0;
+      address |= 0x80;
+      _spi->transfer(address);
       _spi->transfer(&address, data, length);
    }
     digitalWrite(_cs, HIGH);

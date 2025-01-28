@@ -338,6 +338,7 @@ public:
 
     void telemetryGroundStation();
     void telemetryRocket();
+    void retriveData(DataPoints_t *data);
 
 
     
@@ -352,7 +353,6 @@ private:
     
     CC1125Status registerConfig(void);
     void createPacket(uint8_t *txBuffer, uint8_t *data, size_t len);
-    void retriveData(DataPoints_t *data);
     void cc1125spi_TX_FIFO(uint8_t *data, size_t length);
     void cc1125spi_RX_FIFO(uint8_t *data, size_t length);
     void cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
