@@ -229,6 +229,7 @@ using namespace std;
 #define CC1125_QUIT                     0x515554   // QUT
 #define TIMEOUT_MS                      100
 
+
 typedef struct
 {
     float acceleration_x;
@@ -241,8 +242,9 @@ typedef struct
     float magnetic_y;
     float magnetic_z;
     float altitude;
-    double pressure;
-    float temp_bmp;
+    float pressure;
+    double temp_bmp;
+    float reserved;
 } DataPoints_t;
 
 
@@ -359,4 +361,4 @@ private:
     void cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
 };
 
-#endif // FLASH_DRIVER_H
+#endif 

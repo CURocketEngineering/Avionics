@@ -88,15 +88,17 @@ CC1125Status CC1125::registerConfig()
 void CC1125::runTX(uint8_t* data, size_t len)
 {
 
-   uint8_t* txBuffer = new uint8_t[len + 1];
-   uint8_t* rxBuffer = new uint8_t[len + 1];
+   uint8_t txBuffer[len+1];
+   uint8_t rxBuffer[len+1];
+
    uint8_t statusBits = 0;
    uint8_t txbytes = 0;
    uint8_t marcstate = 0;
    uint8_t element = 0;
    bool match = true;
 
-   createPacket(txBuffer, data, len);
+   // createPacket(txBuffer, data, len);
+   memcpy(txBuffer, data, len);
 
    // Write packet to TX FIFO
    //Max is 0x80
@@ -104,12 +106,14 @@ void CC1125::runTX(uint8_t* data, size_t len)
    cc1125spi_read(CC1125_FIFO_DIRECT,  rxBuffer, len);
    cc1125spi_read(CC1125_NUM_TXBYTES, &txbytes, 1);
 
+   Serial.flush(); 
    for(int i = 0; i < len; i++)
    {
       if(rxBuffer[i] != txBuffer[i])
       {
          match = false;
          element = i;
+
          break;
       }
    }
@@ -135,8 +139,6 @@ void CC1125::runTX(uint8_t* data, size_t len)
 
    cc1125spi_read(CC1125_SFTX, &statusBits, 1);
 
-   delete[] txBuffer;
-   delete[] rxBuffer;
 
    delay(100);
 
@@ -162,8 +164,25 @@ void CC1125::runRX(uint8_t *rxBuffer)
    cc1125spi_read(CC1125_NUM_RXBYTES, &rxbytes, 1);
    if(rxbytes > 0)
    {
-      cc1125spi_RX_FIFO(rxBuffer, 56);
+      cc1125spi_RX_FIFO(rxBuffer, rxbytes);
       cc1125spi_read(CC1125_SFRX, &statusBits, 1);
+
+      Serial.println("RX Buffer Contents:");
+
+    for (size_t i = 0; i < rxbytes; i++) {
+        // Print each byte in hexadecimal format
+        Serial.print("0x");
+        if (rxBuffer[i] < 0x10) {
+            Serial.print("0"); // Add leading zero for single-digit hex numbers
+        }
+        Serial.print(rxBuffer[i], HEX);
+        Serial.print(" ");
+
+        // Add a newline after every 8 bytes
+        if ((i + 1) % 8 == 0) {
+            Serial.println();
+        }
+    }
    }
 
    while(marcstate == 17)
@@ -302,34 +321,61 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
  void CC1125::retriveData(DataPoints_t *data)
  {
-    sensors_event_t accel;
-    sensors_event_t gyro;
-    sensors_event_t temp;
-    sensors_event_t mag_event; 
+   //  sensors_event_t accel;
+   //  sensors_event_t gyro;
+   //  sensors_event_t temp;
+   //  sensors_event_t mag_event; 
 
-    mag->getEvent(&mag_event);
-    data->magnetic_x = mag_event.magnetic.x;
-    data->magnetic_y = mag_event.magnetic.y;
-    data->magnetic_z = mag_event.magnetic.z;
+   // mag->getEvent(&mag_event);
+   // data->magnetic_x = mag_event.magnetic.x;
+   // data->magnetic_y = mag_event.magnetic.y;
+   // data->magnetic_z = mag_event.magnetic.z;
+   // // data->magnetic_x = 0x10;
+   // // data->magnetic_y = 0x20; 
+   // // data->magnetic_z = 0x30;
+   // sox->getEvent(&accel, &gyro, &temp);
+   // data->acceleration_x = accel.acceleration.x;
+   // data->acceleration_y = accel.acceleration.y;
+   // data->acceleration_z = accel.acceleration.z;
+   // // data->acceleration_x = 0x40;
+   // // data->acceleration_y = 0x50;
+   // // data->acceleration_z = 0x60;
+   // data->gyro_x = gyro.gyro.x;
+   // data->gyro_y = gyro.gyro.y;
+   // data->gyro_z = gyro.gyro.z;
+   // // data->gyro_x = 0x70;
+   // // data->gyro_y = 0x80;
+   // // data->gyro_z = 0x90;
 
-    sox->getEvent(&accel, &gyro, &temp);
-    data->acceleration_x = accel.acceleration.x;
-    data->acceleration_y = accel.acceleration.y;
-    data->acceleration_z = accel.acceleration.z;
-    data->gyro_x = gyro.gyro.x;
-    data->gyro_y = gyro.gyro.y;
-    data->gyro_z = gyro.gyro.z;
 
-    bmp->performReading();
-    data->altitude = bmp->readAltitude(1013.25);
-    data->pressure = bmp->pressure;
-    data->temp_bmp = bmp->temperature;
+   // bmp->performReading();
+   // data->altitude = bmp->readAltitude(1013.25);
+   // data->pressure = bmp->pressure;
+   // data->temp_bmp = bmp->temperature;
+
+   // // data->altitude = 0xAE;
+   // // data->pressure = 0x99;
+   // // data->temp_bmp = 0x24;
+
+   data->acceleration_x = 1.1f;
+   data->acceleration_y = 2.2f;
+   data->acceleration_z = 3.3f;
+   data->gyro_x = 4.4f;
+   data->gyro_y = 5.5f;
+   data->gyro_z = 6.6f;
+   data->magnetic_x = 7.7f;
+   data->magnetic_y = 8.8f;
+   data->magnetic_z = 9.9f;
+   data->altitude = 10.1f;
+   data->pressure = 1013.25f;
+   data->temp_bmp = 25.5;  // Double value
+   data->reserved = 0.0f;
  }
 
 void CC1125::createPacket(uint8_t *txBuffer, uint8_t *data, size_t len) 
 {
 
-    txBuffer[0] = len;
+    txBuffer[0] = len+5;
     memcpy(&txBuffer[1], data, len);
 }
 
