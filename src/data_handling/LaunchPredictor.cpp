@@ -15,13 +15,17 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
     accelerationThresholdSq_ms2 = accelerationThreshold_ms2 * accelerationThreshold_ms2;
     this->windowInterval_ms = windowInterval_ms;
 
-    this->min_window_size_ms = windowSize_ms - windowSize_ms * 0.1;
-    this->max_window_size_ms = windowSize_ms + windowSize_ms * 0.1;
+    
 
     launched = false;
     launchedTime_ms = 0;
-    twentyPercentWindowInterval_ms = windowInterval_ms * 0.2;
+    twentyPercentWindowInterval_ms = windowInterval_ms * 0.2;  // Defines the radius of acceptable time differences between entries in the window
     median_acceleration_squared = 0;
+
+    // The minimum window size should occur when all data comes in at the smallest possible intervals
+    // The maximum window size should occur when all data comes in at the largest possible intervals
+    this->min_window_size_ms = (windowInterval_ms - twentyPercentWindowInterval_ms) * AclMagSqWindow_ms2.getMaxSize();
+    this->max_window_size_ms = (windowInterval_ms + twentyPercentWindowInterval_ms) * AclMagSqWindow_ms2.getMaxSize();
 }
 
 int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)

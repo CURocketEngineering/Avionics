@@ -3,39 +3,34 @@
 
 #include <cstring>
 
+
+
 DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash)
     : timestampInterval_ms(timestampInterval_ms),
       flash(flash), nextWriteAddress(DATA_START_ADDRESS), bufferIndex(0),
       lastTimestamp_ms(0),
       postLaunchMode(false),
-      launchWriteAddress(0)
-    {}
+      launchWriteAddress(0),
+      isChipFullDueToPostLaunchProtection(false),
+      rebootedInPostLaunchMode(false) {
+    
+    clearInternalState();
+}
 
 int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
-    if (!flash || !flash->begin()) return -1;
-
-    // Stop saving only if we wrapped back and hit the sacred address
-    if (postLaunchMode && nextWriteAddress <= launchWriteAddress && nextWriteAddress + sizeof(DataPoint) > launchWriteAddress) {
-        return 1; // Indicate no write due to post-launch protection
-    }
+    if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) return 1; // Do not save if we rebooted in post-launch mode
 
     // Write timestamp if enough time has passed since the last one
     uint32_t timestamp = dp.timestamp_ms;
     if (timestamp - lastTimestamp_ms > timestampInterval_ms) {
-        // Add name to buffer
-        if (!addDataToBuffer(&name, sizeof(name)) == 0) return -1; 
-
-        // Add timestamp to buffer
-        if (!addDataToBuffer(reinterpret_cast<uint8_t*>(&timestamp), sizeof(timestamp)) == 0) return -1;
+        TimestampRecord_t tr = {TIMESTAMP, timestamp};
+        if (!addRecordToBuffer(&tr) == 0) return -1;
 
         lastTimestamp_ms = timestamp;  // Everything after this timestamp until the next timestamp will use this timestamp when reconstructed
     }
 
-    // Write the name to buffer
-    if (!addDataToBuffer(&name, sizeof(name)) == 0) return -1;
-
-    // Write the value to buffer
-    if (!addDataToBuffer(reinterpret_cast<uint8_t*>(&dp.data), sizeof(dp.data)) == 0) return -1;
+    Record_t record = {name, dp.data};
+    if (addRecordToBuffer(&record) < 0) return -1;
 
     lastDataPoint = dp;
     return 0;
@@ -53,6 +48,7 @@ int DataSaverSPI::addDataToBuffer(const uint8_t* data, size_t length) {
     return 0;
 }
 
+// Write the entire buffer to flash
 int DataSaverSPI::flushBuffer() {
     if (bufferIndex == 0) return 1; // Nothing to flush
 
@@ -62,11 +58,24 @@ int DataSaverSPI::flushBuffer() {
         nextWriteAddress = DATA_START_ADDRESS;
     }   
 
-    if (!flash->writeBuffer(nextWriteAddress, buffer, bufferIndex)) {
+    // Check that we haven't wrapped around to the launch address while in post-launch mode
+    if (postLaunchMode && nextWriteAddress <= launchWriteAddress && nextWriteAddress + BUFFER_SIZE * 2 > launchWriteAddress) {
+        isChipFullDueToPostLaunchProtection = true;
+        return -1; // Indicate no write due to post-launch protection
+    }
+
+    // If we just entered a new sector, erase it
+    if (nextWriteAddress % SFLASH_SECTOR_SIZE == 0) {
+        if (!flash->eraseSector(nextWriteAddress / SFLASH_SECTOR_SIZE)) {
+            return -1;
+        }
+    }
+
+    if (!flash->writeBuffer(nextWriteAddress, buffer, BUFFER_SIZE)) {
         return -1;
     }
 
-    nextWriteAddress += bufferIndex;
+    nextWriteAddress += BUFFER_SIZE;  // keep it aligned to the buffer size or page size
     bufferIndex = 0; // Reset the buffer
     bufferFlushes++;
     return 0;
@@ -78,43 +87,67 @@ bool DataSaverSPI::begin() {
     if (!flash->begin()) return false;
 
     this->postLaunchMode = isPostLaunchMode();
+    if (postLaunchMode) {
+        // If we are already in post-launch mode, then don't write to flash at all
+        rebootedInPostLaunchMode = true;
+        return -1; 
+    }
+
     return true;
 }
 
 bool DataSaverSPI::isPostLaunchMode() {
     uint8_t flag;
     flash->readBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
-    this->postLaunchMode = (flag == 1);
+    this->postLaunchMode = (flag == POST_LAUNCH_FLAG_TRUE);
     return this->postLaunchMode;
 }
 
 void DataSaverSPI::clearPostLaunchMode() {
-    uint8_t flag = 0;
+    flash->eraseSector(METADATA_START_ADDRESS / SFLASH_SECTOR_SIZE);
+    
+    uint8_t flag = POST_LAUNCH_FLAG_FALSE;
     flash->writeBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
-    postLaunchMode = false;
+    clearInternalState();
 }
 
 void DataSaverSPI::dumpData(Stream &serial) {
-    uint32_t readAddress = 1; // Start reading after metadata
-    // Write each byte to serial
-    while (readAddress < flash->size()) {
-        uint8_t byte;
-        if (!readFromFlash(readAddress, &byte, sizeof(byte))) {
-            serial.println("Error reading from flash");
+    uint32_t readAddress = DATA_START_ADDRESS;
+    // For each page write 51 sets of 5 bytes to serial with a newline
+    uint8_t buffer[SFLASH_PAGE_SIZE];
+    size_t recordSize = sizeof(Record_t);
+    size_t numRecordsPerPage = SFLASH_PAGE_SIZE / recordSize;
+
+    // To ensure it's lined-up let's set a '\n' , '\r' and a 's' at the start
+    serial.write('a');
+    serial.write('b');
+    serial.write('c');
+   
+    while (readAddress < flash->size()) { // just flash 1 page
+        if (!readFromFlash(readAddress, buffer, SFLASH_PAGE_SIZE)) {
             return;
         }
-        serial.write(byte);
+        for (size_t i = 0; i < numRecordsPerPage; i++) {
+            serial.write(buffer + i * recordSize, recordSize);
+            // serial.write('\n');
+        }
+        readAddress += SFLASH_PAGE_SIZE;
     }
+
+    // Write "done"
+    serial.write("done\n");
 }
 
 void DataSaverSPI::clearInternalState() {
     bufferIndex = 0;
+    memset(buffer, 0, BUFFER_SIZE);
     lastDataPoint = {0, 0};
     nextWriteAddress = DATA_START_ADDRESS;
     lastTimestamp_ms = 0;
     postLaunchMode = false;
     launchWriteAddress = 0;
     bufferFlushes = 0;
+    isChipFullDueToPostLaunchProtection = false;
 }
 
 void DataSaverSPI::eraseAllData() {
@@ -125,14 +158,18 @@ void DataSaverSPI::eraseAllData() {
 
     // Clear the launchWriteAddress
     launchWriteAddress = 0;
-    flash->writeBuffer(LAUNCH_START_ADDRESS_ADDRESS, reinterpret_cast<uint8_t*>(&launchWriteAddress),
-                                                     sizeof(launchWriteAddress));
 
 }
 
 void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
+    // 0) Stop if we are already in post-launch mode
+    if (postLaunchMode) return;
+
+    // 0.5) Clear the metadata sector to avoid 0 --> 1 inabilites
+    flash->eraseSector(METADATA_START_ADDRESS / SFLASH_SECTOR_SIZE);
+
     // 1) Set the post-launch flag in metadata so we don't overwrite post-launch data.
-    uint8_t flag = 1;
+    uint8_t flag = POST_LAUNCH_FLAG_TRUE;
     flash->writeBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
     postLaunchMode = true;
 

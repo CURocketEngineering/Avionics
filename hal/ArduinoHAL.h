@@ -7,6 +7,11 @@
 #include <Adafruit_SPIFlash.h>
 #else // Everything below will only be compiled if we are not on an Arduino
 
+#include <string>
+using String = std::string;
+
+#include <iostream>
+
 #include <chrono>
 
 #include "spi_mock.h"
