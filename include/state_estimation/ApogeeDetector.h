@@ -63,6 +63,12 @@ public:
     /// Get the current estimated vertical velocity (m/s) from the Kalman filter.
     float getEstimatedVelocity() const;
 
+    float getInertialVerticalAcceleration() const;
+
+    int8_t getVerticalAxis() const;
+
+    int8_t getVerticalDirection() const;
+
 private:
     // Kalman filter state (altitude and vertical velocity)
     float state_alt; // altitude (meters)
@@ -89,6 +95,15 @@ private:
 
     // Gravitational acceleration constant (m/s²)
     const float g = 9.81f;
+
+
+    int8_t verticalDirection;  // +1 or -1  (-1 when the vertical axis is inverted)
+    int8_t verticalAxis;  // Index from 0 to 2 (x, y, z)
+    bool verticalAxisDetermined;
+
+    void determineVerticalAxis(const float rawAcl[3]);
+
+    float intertialVerticalAccleration;
 
     // Maximum altitude reached so far (and its timestamp)
     float maxAltitude;
