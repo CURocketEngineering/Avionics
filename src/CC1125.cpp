@@ -157,7 +157,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
    while((marcstate & 0x1F) == 0xD)
    {
-      // Serial.println("RX State");
+      DEBUG_PRINTLN("RX State");
       cc1125spi_read(CC1125_MARCSTATE, &marcstate, 1);
    }
    

@@ -5,6 +5,7 @@
 #include <Adafruit_BMP3XX.h>
 #include "Adafruit_LSM6DSOX.h"
 #include "Adafruit_LIS3MDL.h"
+#include "pins.h"
 
 using namespace std;
 
