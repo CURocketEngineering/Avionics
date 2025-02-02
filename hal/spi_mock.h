@@ -3,6 +3,7 @@
 
 #include <array>
 #include <cstdint>
+#include <cstddef>
 
 #define MSBFIRST 0
 #define SPI_MODE0 0
