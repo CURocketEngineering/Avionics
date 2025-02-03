@@ -222,7 +222,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
       }
 
       // Cast received buffer to DataPoints_t
-      memcpy(&data, received, len);
+      memcpy(data, received, len);
 
     }
 
