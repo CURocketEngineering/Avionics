@@ -5,7 +5,7 @@
 #include <Adafruit_BMP3XX.h>
 #include "Adafruit_LSM6DSOX.h"
 #include "Adafruit_LIS3MDL.h"
-#include "pins.h"
+#include "../../../include/pins.h"
 
 using namespace std;
 
@@ -244,8 +244,10 @@ typedef struct
     float magnetic_z;
     float altitude;
     float pressure;
+    uint32_t   padding1;
     double temp_bmp;
-    float reserved;
+    uint32_t   padding2;
+    uint32_t   padding3;
 } DataPoints_t;
 
 
@@ -361,5 +363,8 @@ private:
     void cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
     void cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
 };
+
+void printStructBytes(const DataPoints_t* data);
+void printBytes(uint8_t *rxBuffer, size_t rxbytes);
 
 #endif 
