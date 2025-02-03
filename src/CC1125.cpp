@@ -1,11 +1,8 @@
 #include "CC1125.h"
 
 CC1125::CC1125(uint8_t resetPin,
-               uint8_t cs,
-               Adafruit_LSM6DSOX *SOX, 
-               Adafruit_LIS3MDL *MAG,
-               Adafruit_BMP3XX *BMP): 
-               _resetPin(resetPin), _cs(cs), sox(SOX), mag(MAG), bmp(BMP) {}
+               uint8_t cs): 
+               _resetPin(resetPin), _cs(cs) {}
 
 CC1125::~CC1125() {}
 
@@ -152,7 +149,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
    while((marcstate & 0x1F) == 0xD)
    {
-      DEBUG_PRINTLN("RX State");
+      //RX State
       cc1125spi_read(CC1125_MARCSTATE, &marcstate, 1);
    }
    
@@ -174,7 +171,8 @@ void CC1125::runRX(uint8_t *rxBuffer)
 }
 
 // For Command Response
- void CC1125::telemetryGroundStation()
+// Rough Layout for now
+ void CC1125::telemetryGroundStation(uint8_t *data, size_t len)
  {
    uint8_t command[] = {
     (CC1125_TELEMTRY_GS >> 16) & 0xFF,  // Most significant byte (0x54)
@@ -183,7 +181,6 @@ void CC1125::runRX(uint8_t *rxBuffer)
    };
    uint8_t received[0x80];
    uint32_t commandreceived;
-   DataPoints_t data;
 
    // should send until we recieve, add a time out
    // nneed to add if 'q' then stop, flush everything before quitting
@@ -225,25 +222,7 @@ void CC1125::runRX(uint8_t *rxBuffer)
       }
 
       // Cast received buffer to DataPoints_t
-      memcpy(&data, received, sizeof(DataPoints_t));
-      // Process the received data here, if necessary
-      Serial.print("BMP390 DATA:\r\n");
-      Serial.print("Pressure: "); Serial.print(data.altitude); Serial.print(" Pa\t");
-      Serial.print("Altitude: "); Serial.print(data.pressure); Serial.println(" m\n");
-      Serial.print("Temperature: "); Serial.print(data.temp_bmp); Serial.println(" d/s\n");
-
-      Serial.print("LSM6DSOX DATA:\r\n");
-      Serial.print("X: "); Serial.print(data.acceleration_x); Serial.print(" m/s^2\t");
-      Serial.print("Y: "); Serial.print(data.acceleration_y); Serial.print(" m/s^2\t");
-      Serial.print("Z: "); Serial.print(data.acceleration_z); Serial.println(" m/s^2");
-      Serial.print("X: "); Serial.print(data.gyro_x); Serial.print(" d/s\t");
-      Serial.print("Y: "); Serial.print(data.gyro_y); Serial.print(" d/s\t");
-      Serial.print("Z: "); Serial.print(data.gyro_z); Serial.println(" d/s\n");
-
-      Serial.print("LIS3MDL DATA:\r\n");
-      Serial.print("X: "); Serial.print(data.magnetic_x); Serial.print(" µT\t");
-      Serial.print("Y: "); Serial.print(data.magnetic_y); Serial.print(" µT\t");
-      Serial.print("Z: "); Serial.print(data.magnetic_z); Serial.println(" µT\n");
+      memcpy(&data, received, len);
 
     }
 
@@ -251,7 +230,8 @@ void CC1125::runRX(uint8_t *rxBuffer)
  }
 
 // For Command Response
- void CC1125::telemetryRocket()
+// Rough Layout for now
+ void CC1125::telemetryRocket(uint8_t *data, size_t len)
  {
    uint8_t command[] = {
     (CC1125_ACKNOWLEDGE >> 16) & 0xFF,  // Most significant byte (0x54)
@@ -260,7 +240,6 @@ void CC1125::runRX(uint8_t *rxBuffer)
    };
    uint32_t commandreceived;
    uint8_t received[0x80];
-   DataPoints_t data;
 
 
    // need to recieve untill we get the TELEMTRY command
@@ -287,8 +266,8 @@ void CC1125::runRX(uint8_t *rxBuffer)
 
    // Start transmitting data 
    while (true) {
-      retriveData(&data); // Populate data
-      runTX(reinterpret_cast<uint8_t*>(&data), sizeof(DataPoints_t));
+      // 
+      runTX(data, len);
       runRX(received);
 
       if (/* Check for acknowledgment timeout or quit command */0) {
@@ -296,38 +275,6 @@ void CC1125::runRX(uint8_t *rxBuffer)
       }
    }
 
- }
-
- void CC1125::retriveData(DataPoints_t *data)
- {
-    sensors_event_t accel;
-    sensors_event_t gyro;
-    sensors_event_t temp;
-    sensors_event_t mag_event; 
-
-   mag->getEvent(&mag_event);
-   data->magnetic_x = mag_event.magnetic.x;
-   data->magnetic_y = mag_event.magnetic.y;
-   data->magnetic_z = mag_event.magnetic.z;
-
-   sox->getEvent(&accel, &gyro, &temp);
-   data->acceleration_x = accel.acceleration.x;
-   data->acceleration_y = accel.acceleration.y;
-   data->acceleration_z = accel.acceleration.z;
-
-   data->gyro_x = gyro.gyro.x;
-   data->gyro_y = gyro.gyro.y;
-   data->gyro_z = gyro.gyro.z;
-
-
-   bmp->performReading();
-   data->altitude = bmp->readAltitude(1013.25);
-   data->pressure = bmp->pressure;
-   data->temp_bmp = bmp->temperature;
-
-   data->padding1 = 0;
-   data->padding2 = 0;
-   data->padding3 = 0;
  }
 
 void CC1125::createPacket(uint8_t *txBuffer, uint8_t *data, size_t len) 
@@ -439,45 +386,4 @@ void CC1125::cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX
    }
     digitalWrite(_cs, HIGH);
 
-}
-
-void printStructBytes(const DataPoints_t* data)
-{
-    // Cast the struct pointer to a uint8_t pointer (byte pointer)
-    uint8_t* bytePtr = (uint8_t*)data;
-
-    // Print each byte in hexadecimal format
-    size_t structSize = sizeof(DataPoints_t);
-    for (size_t i = 0; i < structSize; i++)
-    {
-        // Print each byte in the format "Byte 0: 0xXX"
-        Serial.print("Byte ");
-        Serial.print(i);
-        Serial.print(": 0x");
-        if (bytePtr[i] < 0x10) {
-            Serial.print("0"); // Print leading zero for single-digit hex values
-        }
-        Serial.print(bytePtr[i], HEX);
-        Serial.println(); // Move to the next line after each byte
-    }
-}
-
-void printBytes(uint8_t *rxBuffer, size_t rxbytes)
-{
-      Serial.println("RX Buffer Contents:");
-
-    for (size_t i = 0; i < rxbytes; i++) {
-        // Print each byte in hexadecimal format
-        Serial.print("0x");
-        if (rxBuffer[i] < 0x10) {
-            Serial.print("0"); // Add leading zero for single-digit hex numbers
-        }
-        Serial.print(rxBuffer[i], HEX);
-        Serial.print(" ");
-
-        // Add a newline after every 8 bytes
-        if ((i + 1) % 8 == 0) {
-            Serial.println();
-        }
-    }
 }

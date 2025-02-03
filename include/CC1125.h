@@ -2,10 +2,6 @@
 #define CC1125_H
 
 #include <SPI.h>
-#include <Adafruit_BMP3XX.h>
-#include "Adafruit_LSM6DSOX.h"
-#include "Adafruit_LIS3MDL.h"
-#include "../../../include/pins.h"
 
 using namespace std;
 
@@ -231,26 +227,6 @@ using namespace std;
 #define TIMEOUT_MS                      100
 
 
-typedef struct
-{
-    float acceleration_x;
-    float acceleration_y;
-    float acceleration_z;
-    float gyro_x;
-    float gyro_y;
-    float gyro_z;
-    float magnetic_x;
-    float magnetic_y;
-    float magnetic_z;
-    float altitude;
-    float pressure;
-    uint32_t   padding1;
-    double temp_bmp;
-    uint32_t   padding2;
-    uint32_t   padding3;
-} DataPoints_t;
-
-
 // Address Config = No address check 
 // Bit Rate = 1.2 
 // Carrier Frequency = 910.000000 (0x5B0000) / 915 (0x5B8000)
@@ -331,26 +307,20 @@ class CC1125 {
 
 public:
     CC1125(uint8_t resetPin, 
-           uint8_t cs, 
-           Adafruit_LSM6DSOX *SOX, 
-           Adafruit_LIS3MDL *MAG, 
-           Adafruit_BMP3XX *BMP);  
+           uint8_t cs);  
     ~CC1125(); // Destructor
 
     CC1125Status init();
     void runTX(uint8_t* data, size_t len);
     void runRX(uint8_t *rxBuffer);
 
-    void telemetryGroundStation();
-    void telemetryRocket();
-    void retriveData(DataPoints_t *data);
+    void telemetryGroundStation(uint8_t *data, size_t len);
+    void telemetryRocket(uint8_t *data, size_t len);
+    
 
 
     
 private:
-    Adafruit_LSM6DSOX *sox; 
-    Adafruit_LIS3MDL *mag;
-    Adafruit_BMP3XX *bmp;
     SPIClass *_spi = &SPI;
     uint8_t packetCounter = 0;
     uint32_t _resetPin;
@@ -363,8 +333,5 @@ private:
     void cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
     void cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
 };
-
-void printStructBytes(const DataPoints_t* data);
-void printBytes(uint8_t *rxBuffer, size_t rxbytes);
 
 #endif 
