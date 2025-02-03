@@ -19,7 +19,7 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
 
     launched = false;
     launchedTime_ms = 0;
-    twentyPercentWindowInterval_ms = windowInterval_ms * 0.2;  // Defines the radius of acceptable time differences between entries in the window
+    twentyPercentWindowInterval_ms = windowInterval_ms * 0.5;  // Defines the radius of acceptable time differences between entries in the window
     median_acceleration_squared = 0;
 
     // The minimum window size should occur when all data comes in at the smallest possible intervals
@@ -68,7 +68,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (!AclMagSqWindow_ms2.isFull())
     {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: Populating initial window");
+        // Serial.println("LaunchPredictor: Populating initial window");
         #endif
         AclMagSqWindow_ms2.push(DataPoint(time_ms, aclMagSq));
         
