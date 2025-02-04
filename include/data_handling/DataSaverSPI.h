@@ -104,7 +104,7 @@ public:
      * @brief Dumps all data from flash to Serial
      * 
      */
-    void dumpData(Stream &serial);
+    void dumpData(Stream &serial, bool ignoreEmptyPages);
 
     /**
      * @brief Resets all internal state values (buffer, lastDataPoint, nextWriteAddress, lastTimestamp_ms)
