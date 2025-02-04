@@ -57,6 +57,8 @@ public:
      */
     virtual int saveDataPoint(DataPoint dp, uint8_t name) override;
 
+    int saveTimestamp(uint32_t timestamp_ms, uint8_t name);
+
     virtual bool begin() override;
 
     /**

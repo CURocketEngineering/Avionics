@@ -20,21 +20,26 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *fla
 int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
     if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) return 1; // Do not save if we rebooted in post-launch mode
 
-    // Write timestamp if enough time has passed since the last one
-    Serial.println(dp.timestamp_ms);
+    // Write a timestamp automatically if enough time has passed since the last one
     uint32_t timestamp = dp.timestamp_ms;
     if (timestamp - lastTimestamp_ms > timestampInterval_ms) {
-        Serial.println("Saving timestamp");
-        TimestampRecord_t tr = {TIMESTAMP, timestamp};
-        if (!addRecordToBuffer(&tr) == 0) return -1;
-
-        lastTimestamp_ms = timestamp;  // Everything after this timestamp until the next timestamp will use this timestamp when reconstructed
+        if (saveTimestamp(timestamp, name) < 0) return -1;
     }
 
     Record_t record = {name, dp.data};
     if (addRecordToBuffer(&record) < 0) return -1;
 
     lastDataPoint = dp;
+    return 0;
+}
+
+int DataSaverSPI::saveTimestamp(uint32_t timestamp_ms, uint8_t name){
+    if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) return 1; // Do not save if we rebooted in post-launch mode
+
+    TimestampRecord_t tr = {TIMESTAMP, timestamp_ms};
+    if (!addRecordToBuffer(&tr) == 0) return -1;
+
+    lastTimestamp_ms = timestamp_ms; 
     return 0;
 }
 
