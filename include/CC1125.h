@@ -1,7 +1,7 @@
 #ifndef CC1125_H
 #define CC1125_H
 
-#include <SPI.h>
+#include "ArduinoHAL.h"
 
 using namespace std;
 
