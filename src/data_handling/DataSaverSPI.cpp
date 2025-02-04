@@ -127,7 +127,8 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
 
     // If not in post-launch mode, erase the next sector after nextWriteAddress
     // This ensures that we don't accidentally dump old data from previous flights
-    if (!postLaunchMode) {
+    // If ignoreEmptyPages is true, then we don't need to erase the next sector
+    if (!postLaunchMode && !ignoreEmptyPages) {
         flash->eraseSector(nextWriteAddress / SFLASH_SECTOR_SIZE + 1);
     }
 
@@ -140,19 +141,23 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
     serial.write('f');
 
     bool done = false;
+    bool timedOut = false;
+    bool stoppedFromEmptyPage = false;
+    bool badRead = false;
    
     while (readAddress < flash->size()) { 
         if (!readFromFlash(readAddress, buffer, SFLASH_PAGE_SIZE)) {
+            badRead = true;
             return;
         }
 
         // If the first name of this page is 255 then break
         if (buffer[0] == 255) {
             if (ignoreEmptyPages) {
-                readAddress += SFLASH_PAGE_SIZE;
                 continue;
             }
             done = true;
+            stoppedFromEmptyPage = true;
             break;
         }
 
@@ -167,12 +172,12 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
             serial.write(buffer + i * recordSize, recordSize);
             // serial.write('\n');
         }
-        readAddress += SFLASH_PAGE_SIZE;
 
         // Wait for a 'n' character to be received before continuing (10 second timeout)
         uint32_t timeout = millis() + 10000;
         while (serial.read() != 'n') {
             if (millis() > timeout) {
+                timedOut = true;
                 return;
             }
         }
@@ -181,6 +186,21 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
     for (int i = 0; i < 255; i++){
         char doneLine[3] = {'E', 'O', 'F'};
         serial.write(doneLine, 3);
+        if (done){
+            serial.write('D');
+        }
+        if (timedOut){
+            serial.write('T');
+        }
+        if (stoppedFromEmptyPage){
+            serial.write('P');
+        }
+        if (badRead){
+            serial.write('B');
+        }
+        if (readAddress >= flash->size()){
+            serial.write('F');
+        }
     }
 }
 
