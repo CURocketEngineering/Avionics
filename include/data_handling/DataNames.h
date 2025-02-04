@@ -22,6 +22,7 @@
 
 // Metadata
 #define TIMESTAMP 14
+#define STATE_CHANGE 15
 
 
 
