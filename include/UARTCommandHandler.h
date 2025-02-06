@@ -5,7 +5,7 @@
 #include <queue>
 #include <vector>
 #include <functional>
-#include <HardwareSerial.h>
+#include "ArduinoHAL.h"
 
 #define UART_BUFFER_SIZE 128
 #define MAX_HISTORY      20

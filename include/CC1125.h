@@ -3,6 +3,8 @@
 
 #include "ArduinoHAL.h"
 
+using namespace std;
+
 #define CC1125_ID                       0x58 
 
 /* Command strobe registers */
@@ -219,6 +221,12 @@
 #define CC1125_FIFO_NUM_TXBYTES         0x2FD8  
 #define CC1125_FIFO_NUM_RXBYTES         0x2FD9 
 
+#define CC1125_TELEMTRY_GS              0x54454C   // TEL
+#define CC1125_ACKNOWLEDGE              0x41434B   // ACK
+#define CC1125_QUIT                     0x515554   // QUT
+#define TIMEOUT_MS                      100
+
+
 // Address Config = No address check 
 // Bit Rate = 1.2 
 // Carrier Frequency = 910.000000 (0x5B0000) / 915 (0x5B8000)
@@ -298,27 +306,32 @@ enum CC1125Status {
 class CC1125 {
 
 public:
-    CC1125(uint32_t debugLedPin, uint32_t cs);  // Constructor
+    CC1125(uint8_t resetPin, 
+           uint8_t cs);  
     ~CC1125(); // Destructor
 
-    CC1125Status initCC1125();
-    void runTX(void);
-    void runRX(void);
+    CC1125Status init();
+    void runTX(uint8_t* data, size_t len);
+    void runRX(uint8_t *rxBuffer);
+
+    void telemetryGroundStation(uint8_t *data, size_t len);
+    void telemetryRocket(uint8_t *data, size_t len);
+    
+
 
     
 private:
-
     SPIClass *_spi = &SPI;
     uint8_t packetCounter = 0;
-    uint32_t _debugLedPin;
+    uint32_t _resetPin;
     uint32_t _cs;
     
     CC1125Status registerConfig(void);
-    void createPacket(uint8_t *txBuffer);
+    void createPacket(uint8_t *txBuffer, uint8_t *data, size_t len);
     void cc1125spi_TX_FIFO(uint8_t *data, size_t length);
     void cc1125spi_RX_FIFO(uint8_t *data, size_t length);
     void cc1125spi_write(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
     void cc1125spi_read(uint16_t addr, uint8_t *data, size_t length, bool TX = true);
 };
 
-#endif // FLASH_DRIVER_H
+#endif 

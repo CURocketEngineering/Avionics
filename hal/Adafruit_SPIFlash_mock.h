@@ -5,6 +5,9 @@
 #include <stddef.h>
 
 #define FAKE_MEMORY_SIZE_BYTES 16777216 // 16MB
+#define SFLASH_SECTOR_SIZE 4096
+#define SFLASH_BLOCK_SIZE 65536
+#define SFLASH_PAGE_SIZE 256
 
 class Adafruit_SPIFlash {
     public:
