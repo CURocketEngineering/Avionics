@@ -163,7 +163,7 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
 
         // At the start of each page, write some alignment characters
         char startLine[3] = {'l', 's', 'h'};
-        serial.write(startLine, 3);
+        serial.write(reinterpret_cast<uint8_t*>(startLine), 3);
 
 
 
@@ -185,7 +185,7 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
     }
     for (int i = 0; i < 255; i++){
         char doneLine[3] = {'E', 'O', 'F'};
-        serial.write(doneLine, 3);
+        serial.write(reinterpret_cast<uint8_t*>(doneLine), 3);
         if (done){
             serial.write('D');
         }
