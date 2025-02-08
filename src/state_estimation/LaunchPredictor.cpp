@@ -19,13 +19,13 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
 
     launched = false;
     launchedTime_ms = 0;
-    twentyPercentWindowInterval_ms = windowInterval_ms * 0.5;  // Defines the radius of acceptable time differences between entries in the window
+    acceptableTimeDifference_ms = windowInterval_ms * 0.5;  // Defines the radius of acceptable time differences between entries in the window
     median_acceleration_squared = 0;
 
     // The minimum window size should occur when all data comes in at the smallest possible intervals
     // The maximum window size should occur when all data comes in at the largest possible intervals
-    this->min_window_size_ms = (windowInterval_ms - twentyPercentWindowInterval_ms) * AclMagSqWindow_ms2.getMaxSize();
-    this->max_window_size_ms = (windowInterval_ms + twentyPercentWindowInterval_ms) * AclMagSqWindow_ms2.getMaxSize();
+    this->min_window_size_ms = (windowInterval_ms - acceptableTimeDifference_ms) * (AclMagSqWindow_ms2.getMaxSize() - 1);
+    this->max_window_size_ms = (windowInterval_ms + acceptableTimeDifference_ms) * (AclMagSqWindow_ms2.getMaxSize() - 1);
 }
 
 int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
@@ -79,7 +79,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     uint32_t time_diff = time_ms - AclMagSqWindow_ms2.getFromHead(0).timestamp_ms;
 
     // Check that the data didn't come in too fast
-    if (time_diff < windowInterval_ms - twentyPercentWindowInterval_ms){
+    if (time_diff < windowInterval_ms - acceptableTimeDifference_ms){
         #ifdef DEBUG
         Serial.println("LaunchPredictor: DATA TOO EARLY");
         Serial.printf("Time diff: %d\n", time_diff);
@@ -90,7 +90,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
         return LP_DATA_TOO_FAST;
     }
 
-    if (time_diff > windowInterval_ms + twentyPercentWindowInterval_ms)
+    if (time_diff > windowInterval_ms + acceptableTimeDifference_ms)
     {
         #ifdef DEBUG
         Serial.println("LaunchPredictor: DATA TOO LATE");
@@ -120,7 +120,8 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     {
         #ifdef DEBUG
         Serial.println("LaunchPredictor: Time range too small, waiting...");
-        Serial.printf("Time range: %d\n", time_range);
+        Serial.printf("Time range:     %d\n", time_range);
+        Serial.printf("Min Time Range: %d\n", min_window_size_ms);
         Serial.printf("Incoming time: %d\n", time_ms);
         Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
         Serial.printf("Tail time: %d\n", AclMagSqWindow_ms2.getFromHead(AclMagSqWindow_ms2.getMaxSize() - 1).timestamp_ms);
@@ -134,7 +135,8 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     {
         #ifdef DEBUG
         Serial.println("LaunchPredictor: Time range too large, waiting...");
-        Serial.printf("Time range: %d\n", time_range);
+        Serial.printf("Time range:     %d\n", time_range);
+        Serial.printf("Max Time Range: %d\n", max_window_size_ms);
         Serial.printf("Incoming time: %d\n", time_ms);
         Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
         Serial.printf("Tail time: %d\n", AclMagSqWindow_ms2.getFromHead(AclMagSqWindow_ms2.getMaxSize() - 1).timestamp_ms);
