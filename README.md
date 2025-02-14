@@ -60,6 +60,10 @@ Unit tests are managed by the [Native](https://github.com/CURocketEngineering/Na
 
 The following rocket flights have successfully utilized this avionics system (most recent first):
 
+- **[MARTHA 1.3 Feb 8th 2025 Test Vehicle Launch Attempt](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.0)**
+ MARTHA was mounted to the Active Aero test vehicle, but it never launched. Data was collected for 14.18 hours before the 9V battery died. The data was successfully dumped, and the last hour of data before shutdown was recorded. A consistent 100Hz loop speed was achieved. During a rough assembly, the LaunchPredictor never had a false positive, even though it detected large acceleration values.
+
+
 - **[MARTHA 1.1 Nov 9th L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.1.0):**  
   Launch detection and SD card data logging performed as expected. Note: No altitude data was recorded due to issues with sensor drivers or hardware damage.
 

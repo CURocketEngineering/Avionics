@@ -11,10 +11,12 @@ StateMachine::StateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredict
 
 int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt) {
     // Update the state
+    int lpStatus = LP_DEFAULT_FAIL; 
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            launchPredictor->update(aclX, aclY, aclZ);
+            lpStatus = launchPredictor->update(aclX, aclY, aclZ);
+            // Serial.println(lpStatus);
             if (launchPredictor->isLaunched()) {
                 // Change state to ascent
                 state = STATE_ASCENT;
