@@ -42,7 +42,6 @@ public:
     void readIncomingData()
     {
         incomingData = SUART1.readStringUntil('\n');
-        idx = 0;
     }
 
     bool serialAvalible(void){
@@ -73,13 +72,21 @@ public:
         mag->magnetic.z = parseNextFloat(incomingData);
     }
 
-    void updateAltPres(float &alt, float pres){
+    void updateAlt(float &alt){
         alt = parseNextFloat(incomingData);
+    }
+
+    void updatePres(float &pres){
         pres = parseNextFloat(incomingData);
     }
 
     void updateTemp(sensors_event_t &temp){
         temp.temperature = incomingData.toFloat();
+    }
+
+    void ack(){
+        incomingData = "";
+        SUART1.write('A');
     }
 
 
@@ -93,7 +100,6 @@ private:
     SerialSim& operator=(const SerialSim&) = delete;
 
     String incomingData;
-    int idx;
 
     float parseNextFloat(String& data) {
         float value = data.substring(0, data.indexOf(',')).toFloat();  // Extract value as float

@@ -19,10 +19,16 @@ public:
 
 
 
-    float getPressure(){
+    float getAlt(){
         float alt;
+        SerialSim::getInstance().updateAlt(alt);
+        delay(10);
+        return alt;
+    }
+
+    float getPressure(){
         float pressure;
-        SerialSim::getInstance().updateAltPres(alt, pressure);
+        SerialSim::getInstance().updatePres(pressure);
         return pressure;
     }
 
@@ -32,7 +38,6 @@ public:
 
         SerialSim::getInstance().updateTemp(temp);
         temp_f = temp.temperature;
-
         return temp_f;
     }
 
