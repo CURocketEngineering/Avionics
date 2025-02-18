@@ -19,14 +19,13 @@ public:
     int getAccelDataRate() { return 104; } // Mock as 104 Hz
     int getGyroDataRate() { return 104; } // Mock as 104 Hz
 
-    void getEvent(sensors_event_t &accel, sensors_event_t &gyro, sensors_event_t &temp) {
-        SimSerial->updateAcl(accel);
-        SimSerial->updateGyro(gyro);
+    void getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp) {
+        SerialSim::getInstance().updateAcl(accel);
+        SerialSim::getInstance().updateGyro(gyro);
 
     }
 
-private:
-    SerialSim *SimSerial = SimSerialSingleton;
+
 };
 
 #endif // SERIAL_SIM_LSM6DSOX_H

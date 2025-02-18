@@ -22,7 +22,7 @@ public:
     float getPressure(){
         float alt;
         float pressure;
-        SimSerial->updateAltPres(alt, pressure);
+        SerialSim::getInstance().updateAltPres(alt, pressure);
         return pressure;
     }
 
@@ -30,14 +30,13 @@ public:
         sensors_event_t temp;
         float temp_f;
 
-        SimSerial->updateTemp(temp);
+        SerialSim::getInstance().updateTemp(temp);
         temp_f = temp.temperature;
 
         return temp_f;
     }
 
-private:
-    SerialSim *SimSerial = SimSerialSingleton;
+
 };
 
 #endif // SERIAL_SIM_BMP3_H

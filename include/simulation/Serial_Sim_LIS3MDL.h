@@ -16,13 +16,11 @@ public:
 
     int getDataRate() { return 155; } // Mock as 155 Hz
 
-    void getEvent(sensors_event_t &mag) {
-        SimSerial->updateMag(mag);
+    void getEvent(sensors_event_t *mag) {
+        SerialSim::getInstance().updateMag(mag);
 
     }
 
-private:
-    SerialSim *SimSerial = SimSerialSingleton;
 };
 
 #endif // SERIAL_SIM_LIS3MDL_H
