@@ -1,9 +1,7 @@
 #ifndef SERIAL_SIM_H
 #define SERIAL_SIM_H
 
-#include <string>
-#include <HardwareSerial.h>
-#include <Adafruit_Sensor.h>
+#include "ArduinoHAL.h"
 
 #define LSM6DS_ACCEL_RANGE_16_G         0x03  
 #define LSM6DS_GYRO_RANGE_2000_DPS      0x03  
@@ -19,7 +17,6 @@
 #define BMP3_IIR_FILTER_COEFF_3         0x03  
 #define BMP3_ODR_100_HZ                 0x05 
 
-HardwareSerial SUART1(PB7, PB6);
 
 class SerialSim {
 public:
@@ -28,65 +25,82 @@ public:
         return instance;
     }
 
-    void begin() {
-        SUART1.begin(115200);
-        while (!SUART1);
-        SUART1.write('S'); 
-        SUART1.write('T'); 
-        SUART1.write('A'); 
-        SUART1.write('R'); 
-        SUART1.write('T');
+    void begin(HardwareSerial *Stream) {
+        serial = Stream;
+        serial->begin(115200);
+        while (!serial);
+        serial->write('S'); 
+        serial->write('T'); 
+        serial->write('A'); 
+        serial->write('R'); 
+        serial->write('T');
 
     }
 
     void readIncomingData()
     {
-        incomingData = SUART1.readStringUntil('\n');
+        incomingData = serial->readStringUntil('\n');
     }
 
     bool serialAvalible(void){
-        return SUART1.available();
+        return serial->available();
+    }
+
+    void update(){
+        _timestamp = parseNextFloat(incomingData);
+        accel_x = parseNextFloat(incomingData);
+        accel_y = parseNextFloat(incomingData);
+        accel_z = parseNextFloat(incomingData);
+        gyro_x =parseNextFloat(incomingData);
+        gyro_y = parseNextFloat(incomingData);
+        gyro_z = parseNextFloat(incomingData);
+        magnetic_x = parseNextFloat(incomingData);
+        magnetic_y = parseNextFloat(incomingData);
+        magnetic_z = parseNextFloat(incomingData);
+        _alt = parseNextFloat(incomingData);
+        _pres = parseNextFloat(incomingData);
+        _temp = incomingData.toFloat();
     }
 
     void updateTimeStamp(float &timestamp)
     {
-        timestamp = parseNextFloat(incomingData);
+        timestamp = _timestamp;
     }
 
     void updateAcl(sensors_event_t *accel) {
-        accel->acceleration.x = parseNextFloat(incomingData);
-        accel->acceleration.y = parseNextFloat(incomingData);
-        accel->acceleration.z = parseNextFloat(incomingData);
+        accel->acceleration.x = accel_x;
+        accel->acceleration.y = accel_y;
+        accel->acceleration.z = accel_z;
 
     }
 
     void updateGyro(sensors_event_t *gyro) {
-        gyro->gyro.x = parseNextFloat(incomingData);
-        gyro->gyro.y = parseNextFloat(incomingData);
-        gyro->gyro.z = parseNextFloat(incomingData);
+        gyro->gyro.x = gyro_x;
+        gyro->gyro.y = gyro_y;
+        gyro->gyro.z = gyro_z;
     }
 
     void updateMag(sensors_event_t *mag) {
-        mag->magnetic.x = parseNextFloat(incomingData);
-        mag->magnetic.y = parseNextFloat(incomingData);
-        mag->magnetic.z = parseNextFloat(incomingData);
+        mag->magnetic.x = magnetic_x;
+        mag->magnetic.y = magnetic_y;
+        mag->magnetic.z = magnetic_z;
     }
 
     void updateAlt(float &alt){
-        alt = parseNextFloat(incomingData);
+        alt = _alt;
     }
 
     void updatePres(float &pres){
-        pres = parseNextFloat(incomingData);
+        pres = _pres;
     }
 
     void updateTemp(sensors_event_t &temp){
-        temp.temperature = incomingData.toFloat();
+        temp.temperature = _temp;
     }
 
     void ack(){
         incomingData = "";
-        SUART1.write('A');
+        serial->write('A');
     }
 
 
@@ -100,6 +114,23 @@ private:
     SerialSim& operator=(const SerialSim&) = delete;
 
     String incomingData;
+
+    HardwareSerial *serial;
+
+    float _timestamp;
+    float accel_x;
+    float accel_y;
+    float accel_z;
+    float gyro_x;
+    float gyro_y;
+    float gyro_z;
+    float magnetic_x;
+    float magnetic_y;
+    float magnetic_z;
+    float _alt;
+    float _pres;
+    float _temp;
+
 
     float parseNextFloat(String& data) {
         float value = data.substring(0, data.indexOf(',')).toFloat();  // Extract value as float
