@@ -15,6 +15,9 @@ public:
     void setOutputDataRate(int rate) {}
     void setConversionDelay(int delay) {}
     void startConversion() {}
+    bool updateConversion(){return true;}
+
+
 
     float getPressure(){
         float alt;
