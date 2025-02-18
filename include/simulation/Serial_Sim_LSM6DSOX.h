@@ -21,7 +21,6 @@ public:
 
     void getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp) {
         SerialSim::getInstance().updateAcl(accel);
-        delay(2);
         SerialSim::getInstance().updateGyro(gyro);
 
     }
