@@ -13,7 +13,7 @@
 // Potential returns from the update function
 // Positive values are errors
 // Negative values are warnings
-enum LaunchPredictorStatus {
+enum LaunchDetectorStatus {
     LP_LAUNCH_DETECTED = 0,
     LP_ALREADY_LAUNCHED = -1,
     LP_YOUNGER_TIMESTAMP = -2, // The timestamp is younger than the last timestamp
@@ -37,7 +37,7 @@ enum LaunchPredictorStatus {
  * The delay in launch detection will equal half the window size because
  * the median will only be high once half the window is high
  */
-class LaunchPredictor
+class LaunchDetector
 {
 public:
     /**
@@ -50,7 +50,7 @@ public:
      *                           You must be able to update the predictor faster than this interval
      *                           The predictor will reject data that comes in faster than this interval to maintain this interval or slower
      */
-    LaunchPredictor(float accelerationThreshold_ms2,
+    LaunchDetector(float accelerationThreshold_ms2,
                     uint16_t windowSize_ms,
                     uint16_t windowInterval_ms);
 
