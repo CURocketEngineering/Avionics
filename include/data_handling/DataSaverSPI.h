@@ -57,6 +57,8 @@ public:
      */
     virtual int saveDataPoint(DataPoint dp, uint8_t name) override;
 
+    int saveTimestamp(uint32_t timestamp_ms, uint8_t name);
+
     virtual bool begin() override;
 
     /**
@@ -104,7 +106,7 @@ public:
      * @brief Dumps all data from flash to Serial
      * 
      */
-    void dumpData(Stream &serial);
+    void dumpData(Stream &serial, bool ignoreEmptyPages);
 
     /**
      * @brief Resets all internal state values (buffer, lastDataPoint, nextWriteAddress, lastTimestamp_ms)

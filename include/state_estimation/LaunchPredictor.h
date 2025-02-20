@@ -76,6 +76,7 @@ public:
     float getThreshold() {return accelerationThresholdSq_ms2;}
     // Gives the window interval in ms
     uint16_t getWindowInterval() {return windowInterval_ms;}
+    uint16_t getAcceptableTimeDifference() {return acceptableTimeDifference_ms;}
  
 
 private:
@@ -87,7 +88,7 @@ private:
     uint16_t min_window_size_ms; // If the calculated time range is less than this, don't try to detect launch
     uint16_t max_window_size_ms; // If the calculated time range is greater than this, don't try to detect launch
 
-    float twentyPercentWindowInterval_ms;
+    float acceptableTimeDifference_ms;
     // The window holding the acceleration magnitude squared b/c sqrt is expensive
     CircularArray<DataPoint> AclMagSqWindow_ms2;
     bool launched;

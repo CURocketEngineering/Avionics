@@ -20,19 +20,26 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *fla
 int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
     if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) return 1; // Do not save if we rebooted in post-launch mode
 
-    // Write timestamp if enough time has passed since the last one
+    // Write a timestamp automatically if enough time has passed since the last one
     uint32_t timestamp = dp.timestamp_ms;
     if (timestamp - lastTimestamp_ms > timestampInterval_ms) {
-        TimestampRecord_t tr = {TIMESTAMP, timestamp};
-        if (!addRecordToBuffer(&tr) == 0) return -1;
-
-        lastTimestamp_ms = timestamp;  // Everything after this timestamp until the next timestamp will use this timestamp when reconstructed
+        if (saveTimestamp(timestamp, name) < 0) return -1;
     }
 
     Record_t record = {name, dp.data};
     if (addRecordToBuffer(&record) < 0) return -1;
 
     lastDataPoint = dp;
+    return 0;
+}
+
+int DataSaverSPI::saveTimestamp(uint32_t timestamp_ms, uint8_t name){
+    if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) return 1; // Do not save if we rebooted in post-launch mode
+
+    TimestampRecord_t tr = {TIMESTAMP, timestamp_ms};
+    if (!addRecordToBuffer(&tr) == 0) return -1;
+
+    lastTimestamp_ms = timestamp_ms; 
     return 0;
 }
 
@@ -64,13 +71,13 @@ int DataSaverSPI::flushBuffer() {
         return -1; // Indicate no write due to post-launch protection
     }
 
-    // If we just entered a new sector, erase it
     if (nextWriteAddress % SFLASH_SECTOR_SIZE == 0) {
         if (!flash->eraseSector(nextWriteAddress / SFLASH_SECTOR_SIZE)) {
             return -1;
         }
     }
 
+    // Write 1 page of data
     if (!flash->writeBuffer(nextWriteAddress, buffer, BUFFER_SIZE)) {
         return -1;
     }
@@ -111,31 +118,90 @@ void DataSaverSPI::clearPostLaunchMode() {
     clearInternalState();
 }
 
-void DataSaverSPI::dumpData(Stream &serial) {
+void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
     uint32_t readAddress = DATA_START_ADDRESS;
     // For each page write 51 sets of 5 bytes to serial with a newline
     uint8_t buffer[SFLASH_PAGE_SIZE];
     size_t recordSize = sizeof(Record_t);
     size_t numRecordsPerPage = SFLASH_PAGE_SIZE / recordSize;
 
+    // If not in post-launch mode, erase the next sector after nextWriteAddress
+    // This ensures that we don't accidentally dump old data from previous flights
+    // If ignoreEmptyPages is true, then we don't need to erase the next sector
+    if (!postLaunchMode && !ignoreEmptyPages) {
+        flash->eraseSector(nextWriteAddress / SFLASH_SECTOR_SIZE + 1);
+    }
+
     // To ensure it's lined-up let's set a '\n' , '\r' and a 's' at the start
     serial.write('a');
     serial.write('b');
     serial.write('c');
+    serial.write('d');
+    serial.write('e');
+    serial.write('f');
+
+    bool done = false;
+    bool timedOut = false;
+    bool stoppedFromEmptyPage = false;
+    bool badRead = false;
    
-    while (readAddress < flash->size()) { // just flash 1 page
+    while (readAddress < flash->size()) { 
         if (!readFromFlash(readAddress, buffer, SFLASH_PAGE_SIZE)) {
+            badRead = true;
             return;
         }
+
+        // If the first name of this page is 255 then break
+        if (buffer[0] == 255) {
+            if (ignoreEmptyPages) {
+                continue;
+            }
+            done = true;
+            stoppedFromEmptyPage = true;
+            break;
+        }
+
+        // At the start of each page, write some alignment characters
+        char startLine[3] = {'l', 's', 'h'};
+        serial.write(reinterpret_cast<uint8_t*>(startLine), 3);
+
+
+
         for (size_t i = 0; i < numRecordsPerPage; i++) {
+
             serial.write(buffer + i * recordSize, recordSize);
             // serial.write('\n');
         }
-        readAddress += SFLASH_PAGE_SIZE;
-    }
 
-    // Write "done"
-    serial.write("done\n");
+        // Wait for a 'n' character to be received before continuing (10 second timeout)
+        uint32_t timeout = millis() + 10000;
+        while (serial.read() != 'n') {
+            if (millis() > timeout) {
+                timedOut = true;
+                return;
+            }
+        }
+
+    }
+    for (int i = 0; i < 255; i++){
+        char doneLine[3] = {'E', 'O', 'F'};
+        serial.write(reinterpret_cast<uint8_t*>(doneLine), 3);
+        if (done){
+            serial.write('D');
+        }
+        if (timedOut){
+            serial.write('T');
+        }
+        if (stoppedFromEmptyPage){
+            serial.write('P');
+        }
+        if (badRead){
+            serial.write('B');
+        }
+        if (readAddress >= flash->size()){
+            serial.write('F');
+        }
+    }
 }
 
 void DataSaverSPI::clearInternalState() {
