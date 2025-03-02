@@ -2,6 +2,7 @@
 #define SERIAL_SIM_H
 
 #include "ArduinoHAL.h"
+#include "Adafruit_Sensor.h"
 
 #define LSM6DS_ACCEL_RANGE_16_G         0x03  
 #define LSM6DS_GYRO_RANGE_2000_DPS      0x03  
