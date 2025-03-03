@@ -22,7 +22,6 @@ public:
     float getAlt(){
         float alt;
         SerialSim::getInstance().updateAlt(alt);
-        delay(10);
         return alt;
     }
 
