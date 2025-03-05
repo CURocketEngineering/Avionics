@@ -56,6 +56,6 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
     return 0;
 }
 
-uint16_t StateMachine::getState() {
+uint8_t StateMachine::getState() {
     return state;
 }
