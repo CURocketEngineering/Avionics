@@ -18,53 +18,54 @@
 #define BMP3_IIR_FILTER_COEFF_3         0x03  
 #define BMP3_ODR_100_HZ                 0x05 
 
-
 class SerialSim {
 public:
     static SerialSim& getInstance() {
-        static SerialSim instance;  // Single instance
+        static SerialSim instance;  // Singleton
         return instance;
     }
 
-    void begin(HardwareSerial *Stream) {
-        serial = Stream;
-        serial->begin(115200);
-        while (!serial);
-        serial->write('S'); 
-        serial->write('T'); 
-        serial->write('A'); 
-        serial->write('R'); 
-        serial->write('T');
+    void begin(Stream *inStream) {
+        serial = inStream;
 
+        // Handshake: send "START\n" until we get ACK (0x06)
+        uint8_t ack = 0;
+        while (ack != 0x06) {
+            serial->write("START\n");
+            delay(100);
+            if (serial->available() > 0) {
+                ack = serial->read();
+            }
+        }
     }
 
-    void readIncomingData()
-    {
-        incomingData = serial->readStringUntil('\n');
+    // Non‐blocking update: 
+    // 1) Read as many characters as available
+    // 2) If we detect a newline, parse that line
+    void update() {
+        int availableBytes = serial->available();
+
+        while (serial->available() > 0) {
+            char c = static_cast<char>(serial->read());
+
+            // If we get a newline, parse the line
+            if (c == '\n') {
+                // We have a full line in _partialLine
+                handleIncomingLine(_partialLine);
+                _partialLine = "";  // Clear for the next line
+            } 
+            else {
+                _partialLine += c;
+            }
+        }
     }
 
-    bool serialAvalible(void){
-        return serial->available();
+    bool serialAvailable(void){
+        return serial->available() > 0;
     }
 
-    void update(){
-        _timestamp = parseNextFloat(incomingData);
-        accel_x = parseNextFloat(incomingData);
-        accel_y = parseNextFloat(incomingData);
-        accel_z = parseNextFloat(incomingData);
-        gyro_x =parseNextFloat(incomingData);
-        gyro_y = parseNextFloat(incomingData);
-        gyro_z = parseNextFloat(incomingData);
-        magnetic_x = parseNextFloat(incomingData);
-        magnetic_y = parseNextFloat(incomingData);
-        magnetic_z = parseNextFloat(incomingData);
-        _alt = parseNextFloat(incomingData);
-        _pres = parseNextFloat(incomingData);
-        _temp = incomingData.toFloat();
-    }
-
-    void updateTimeStamp(float &timestamp)
-    {
+    // These next update functions provide the sensor data to calling code
+    void updateTimeStamp(float &timestamp) {
         timestamp = _timestamp;
     }
 
@@ -72,7 +73,6 @@ public:
         accel->acceleration.x = accel_x;
         accel->acceleration.y = accel_y;
         accel->acceleration.z = accel_z;
-
     }
 
     void updateGyro(sensors_event_t *gyro) {
@@ -99,46 +99,73 @@ public:
         temp.temperature = _temp;
     }
 
-    void ack(){
-        incomingData = "";
-        serial->write('A');
-    }
-
-
 private:
-
-    // Private constructor to enforce singleton pattern
-    SerialSim() {}
-
-    // Private copy constructor and assignment operator to prevent copying
+    SerialSim() {}  // Private constructor for singleton
     SerialSim(const SerialSim&) = delete;
     SerialSim& operator=(const SerialSim&) = delete;
 
-    String incomingData;
+    // Called once a full line of data is received
+    void handleIncomingLine(String &line) {
+        Serial.println("Handling line: " + line);
+        if (line.length() < 5) {
+            Serial.println("Line too short");
+            return; // not enough data to parse anything meaningful
+        }
 
-    HardwareSerial *serial;
+        // We'll parse each comma‐separated float in the line
+        _timestamp   = parseNextFloat(line);
+        accel_x      = parseNextFloat(line);
+        accel_y      = parseNextFloat(line);
+        accel_z      = parseNextFloat(line);
+        // gyro_x       = parseNextFloat(line);
+        // gyro_y       = parseNextFloat(line);
+        // gyro_z       = parseNextFloat(line);
+        // magnetic_x   = parseNextFloat(line);
+        // magnetic_y   = parseNextFloat(line);
+        // magnetic_z   = parseNextFloat(line);
+        // _alt         = parseNextFloat(line);
+        // _pres        = parseNextFloat(line);
+        // _temp        = line.toFloat(); // The remaining chunk is the last float
 
-    float _timestamp;
-    float accel_x;
-    float accel_y;
-    float accel_z;
-    float gyro_x;
-    float gyro_y;
-    float gyro_z;
-    float magnetic_x;
-    float magnetic_y;
-    float magnetic_z;
-    float _alt;
-    float _pres;
-    float _temp;
+        Serial.println("Parsed Data!");
 
+        // After parsing the line, send an ACK
+        ack();
+    }
 
-    float parseNextFloat(String& data) {
-        float value = data.substring(0, data.indexOf(',')).toFloat();  // Extract value as float
-        data = data.substring(data.indexOf(',') + 1);  // Update data by removing the parsed value
+    float parseNextFloat(String &data) {
+        int commaIndex = data.indexOf(',');
+        if (commaIndex == -1) {
+            // If there's no comma, parse as much as we can
+            float val = data.toFloat();
+            data = "";
+            return val;
+        }
+
+        // Parse substring up to the comma
+        float value = data.substring(0, commaIndex).toFloat();
+        // Remove parsed portion (including the comma)
+        data = data.substring(commaIndex + 1);
         return value;
     }
 
+    // Send ACK (0x06) to confirm we received and parsed
+    void ack(){
+        serial->write(0x06);
+    }
+
+private:
+    Stream* serial = nullptr;
+    String  _partialLine;  // used to accumulate characters until newline
+
+    // Parsed sensor data
+    float _timestamp = 0;
+    float accel_x = 0, accel_y = 0, accel_z = 0;
+    float gyro_x  = 0, gyro_y  = 0, gyro_z  = 0;
+    float magnetic_x = 0, magnetic_y = 0, magnetic_z = 0;
+    float _alt  = 0;
+    float _pres = 0;
+    float _temp = 0;
 };
 
 #endif // SERIAL_SIM_H

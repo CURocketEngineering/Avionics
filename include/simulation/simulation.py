@@ -1,10 +1,15 @@
 import serial
 import time
-import csv
+import pandas as pd 
+import matplotlib as plt
 
 # Set up the serial connection (adjust the port to your system)
-ser = serial.Serial('/dev/tty.usbserial-B003B38N', 115200, timeout=1)  # Replace 'COM3' with your port name
+ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Replace 'COM3' with your port name
 time.sleep(2)  # Allow time for the connection to be established
+
+# Clear the buffer
+if ser.in_waiting > 0:
+    ser.reset_input_buffer()
 
 # Function to wait for the start command
 def wait_for_start_command():
@@ -12,7 +17,10 @@ def wait_for_start_command():
     while True:
         if ser.in_waiting > 0:
             command = ser.readline().strip().decode('utf-8')
+            print(command)
             if command == "START":
+                # Send ack to the client
+                ser.write(b'\x06')
                 print("Received start command, beginning data transmission.")
                 break
 
@@ -41,37 +49,73 @@ def interpolate_data(row1, row2, target_timestamp):
     temp = temp1 + alpha * (temp2 - temp1)
 
     # Return the interpolated data as a string
-    return f"{target_timestamp},{accelX},{accelY},{accelZ},{gyroX},{gyroY},{gyroZ},{magX},{magY},{magZ},{altitude},{pressure},{temp}\n"
+    # return f"{target_timestamp},{accelX},{accelY},{accelZ},{gyroX},{gyroY},{gyroZ},{magX},{magY},{magZ},{altitude},{pressure},{temp}\n"
+
+    # Try just sending accel
+    return f"{target_timestamp: .3f},{accelX: 3f},{accelY: .3f},{accelZ :.3f}\n"
 
 # Function to read data from CSV and stream it over serial with interpolation
 def stream_csv_data(csv_file):
-    with open(csv_file, 'r') as file:
-        reader = csv.reader(file)
-        next(reader)  # Skip the header row if it exists
+    
+    # Open the CSV file and save all the data into a 2D list (rows)
+    data = pd.read_csv(csv_file)
+    rows = data.values.tolist()
 
-        prev_row = next(reader)  # Get the first row
-        prev_timestamp = float(prev_row[0])
+    
 
-        for current_row in reader:
-            current_timestamp = float(current_row[0])
+    first_row_time_ms = rows[0][0]
+    start_real_time_ms = time.time() * 1000
 
-            # Interpolate based on the current timestamp and send the data
-            interpolated_data = interpolate_data(prev_row, current_row, current_timestamp)
-            ser.write(interpolated_data.encode())  
-            print(f"Sent interpolated data: {interpolated_data.strip()}")
+    sent_data = [] 
 
-            # Wait for acknowledgment before continuing
-            while True:
-                if ser.in_waiting > 0:
-                    ack = ser.read(1)  # Read 1 byte for acknowledgment
-                    if ack == b'A':  # Assuming STM32 sends 'A' for acknowledgment
-                        print("Received acknowledgment, continuing...")
-                        break
-                    else:
-                        print("Waiting for acknowledgment...")
+    # Build a map of timestamp to row index
+    timestamp_to_row = {}
+    for i, row in enumerate(rows):
+        timestamp = row[0] - first_row_time_ms
+        timestamp_to_row[timestamp] = i
 
-            prev_row = current_row  # Update previous row
-            prev_timestamp = current_timestamp  # Update previous timestamp
+    print("First row time: ", first_row_time_ms)
+    print("Start Real time: ", start_real_time_ms)
+
+    current_row = 0
+
+    while True: 
+        # Based on how much time has passed since the start_real_time_ms, send the interpolated data
+        # from the CSV
+        real_elapsed_time_ms = time.time() * 1000 - start_real_time_ms
+
+        # Find the two rows to interpolate between
+        # While the timestamp is too small, keep incrementing the row index
+        while current_row < len(rows) - 1 and rows[current_row][0] - first_row_time_ms < real_elapsed_time_ms:
+            current_row += 1
+
+        prev_row = current_row - 1
+
+        # Check if we have reached the end of the CSV
+        if current_row == len(rows) - 1:
+            break
+
+        # Interpolate between the two rows
+        interpolated_data = interpolate_data(rows[prev_row], rows[current_row], real_elapsed_time_ms + first_row_time_ms)
+
+
+        # Send the interpolated data over serial
+        ser.write(interpolated_data.encode())
+        sent_data.append(interpolated_data.split(','))
+        print(f"Sent: {interpolated_data.strip()}", "Current row: ", current_row)
+
+        # Wait for acknowledgment before continuing
+        while True:
+            if ser.in_waiting > 0:
+                data = ser.read_all()
+                if b'\x06' in data:
+                    # print("Received acknowledgment, continuing... line was: ", data)
+                    break
+                else:
+                    pass 
+                    # print("Waiting for acknowledgment got: ", data)
+
+    print("Done after ", real_elapsed_time_ms, " ms")
 
 try:
     # Wait for the start command before streaming
