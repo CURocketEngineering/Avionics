@@ -3,6 +3,7 @@
 
 #include "ArduinoHAL.h"
 #include "Adafruit_Sensor.h"
+#include "state_estimation/StateMachine.h"
 
 #define LSM6DS_ACCEL_RANGE_16_G         0x03  
 #define LSM6DS_GYRO_RANGE_2000_DPS      0x03  
@@ -25,8 +26,9 @@ public:
         return instance;
     }
 
-    void begin(Stream *inStream) {
+    void begin(Stream *inStream, StateMachine *stateMachine) {
         serial = inStream;
+        this->stateMachine = stateMachine;
 
         // Handshake: send "START\n" until we get ACK (0x06)
         uint8_t ack = 0;
@@ -117,13 +119,14 @@ private:
         accel_x      = parseNextFloat(line);
         accel_y      = parseNextFloat(line);
         accel_z      = parseNextFloat(line);
+        _alt         = parseNextFloat(line);
         // gyro_x       = parseNextFloat(line);
         // gyro_y       = parseNextFloat(line);
         // gyro_z       = parseNextFloat(line);
         // magnetic_x   = parseNextFloat(line);
         // magnetic_y   = parseNextFloat(line);
         // magnetic_z   = parseNextFloat(line);
-        // _alt         = parseNextFloat(line);
+       
         // _pres        = parseNextFloat(line);
         // _temp        = line.toFloat(); // The remaining chunk is the last float
 
@@ -149,13 +152,15 @@ private:
         return value;
     }
 
-    // Send ACK (0x06) to confirm we received and parsed
+    // Send ACK (0x06) alongside the current state to the serial port
     void ack(){
+        serial->write(stateMachine->getState());
         serial->write(0x06);
     }
 
 private:
     Stream* serial = nullptr;
+    StateMachine* stateMachine = nullptr;
     String  _partialLine;  // used to accumulate characters until newline
 
     // Parsed sensor data
