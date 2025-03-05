@@ -3,9 +3,9 @@
 
 #include "Serial_Sim.h"
 
-class SerialSimLIS3MDL {
+class Adafruit_LIS3MDL {
 public:
-    SerialSimLIS3MDL (){}
+    Adafruit_LIS3MDL (){}
 
     bool begin_SPI(int cs) { return true; } // Mock successful initialization
 

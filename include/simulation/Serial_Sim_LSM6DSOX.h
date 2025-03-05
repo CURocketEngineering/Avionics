@@ -3,9 +3,9 @@
 
 #include "Serial_Sim.h"
 
-class SerialSimLSM6DSOX {
+class Adafruit_LSM6DSOX {
 public:
-    SerialSimLSM6DSOX (){}
+    Adafruit_LSM6DSOX (){}
 
     bool begin_SPI(int cs) { return true; } // Mock successful initialization
 

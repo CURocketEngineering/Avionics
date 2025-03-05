@@ -3,9 +3,9 @@
 
 #include "Serial_Sim.h"
 
-class SerialSimBMP390 {
+class Adafruit_BMP3XX  {
 public:
-    SerialSimBMP390 (){}
+    Adafruit_BMP3XX  (){}
 
     bool begin_SPI(int cs) { return true; } // Mock successful initialization
 
@@ -16,7 +16,6 @@ public:
     void setConversionDelay(int delay) {}
     void startConversion() {}
     bool updateConversion(){return true;}
-
 
 
     float getAlt(){
