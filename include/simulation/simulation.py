@@ -1,7 +1,7 @@
 import serial
 import time
 import pandas as pd 
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 # Set up the serial connection (adjust the port to your system)
 ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Replace 'COM3' with your port name
@@ -52,7 +52,7 @@ def interpolate_data(row1, row2, target_timestamp):
     # return f"{target_timestamp},{accelX},{accelY},{accelZ},{gyroX},{gyroY},{gyroZ},{magX},{magY},{magZ},{altitude},{pressure},{temp}\n"
 
     # Try just sending accel
-    return f"{target_timestamp: .3f},{accelX: 3f},{accelY: .3f},{accelZ :.3f}\n"
+    return f"{target_timestamp: .3f},{accelX: 3f},{accelY: .3f},{accelZ :.3f},{altitude}\n"
 
 # Function to read data from CSV and stream it over serial with interpolation
 def stream_csv_data(csv_file):
@@ -101,21 +101,59 @@ def stream_csv_data(csv_file):
 
         # Send the interpolated data over serial
         ser.write(interpolated_data.encode())
-        sent_data.append(interpolated_data.split(','))
         print(f"Sent: {interpolated_data.strip()}", "Current row: ", current_row)
 
         # Wait for acknowledgment before continuing
+        buffer = b''
         while True:
             if ser.in_waiting > 0:
-                data = ser.read_all()
-                if b'\x06' in data:
-                    # print("Received acknowledgment, continuing... line was: ", data)
+                buffer += ser.read_all()   
+                if b'\x06' in buffer:
+                    # The byte after ack is the current state of the rocket
+                    loc = buffer.index(b'\x06')
+                    print("Received acknowledgment: ", buffer)
+                    state = buffer[loc - 1]
                     break
                 else:
                     pass 
                     # print("Waiting for acknowledgment got: ", data)
 
+        sent_data.append(interpolated_data.split(',') + [state])
+
     print("Done after ", real_elapsed_time_ms, " ms")
+
+    # Graph the sent data
+    headers = ['timestamp', 'accelX', 'accelY', 'accelZ', 'altitude', 'state']
+    df = pd.DataFrame(sent_data, columns=headers)
+
+    # Convert every column to float
+    df = df.astype(float)
+
+    # Normalize timestamps to start at zero and convert to seconds
+    df['timestamp'] = df['timestamp'] - df['timestamp'].iloc[0]
+    df['timestamp'] = df['timestamp'] / 1000
+
+    # Detect state changes
+    state_changes = df['state'].diff().fillna(0) != 0  # Boolean mask for state changes
+    state_change_timestamps = df.loc[state_changes, 'timestamp'].tolist()
+
+    # Create the plot
+    plt.figure(figsize=(10, 6))
+    plt.plot(df['timestamp'], df['accelX'], label='AccelX')
+    plt.plot(df['timestamp'], df['accelY'], label='AccelY')
+    plt.plot(df['timestamp'], df['accelZ'], label='AccelZ')
+    plt.plot(df['timestamp'], df['altitude'], label='Altitude')
+
+    # Add vertical lines for state changes
+    for timestamp in state_change_timestamps:
+        plt.axvline(x=timestamp, color='red', linestyle='--', alpha=0.7, label='State Change' if timestamp == state_change_timestamps[0] else "")
+
+    # Labels and legend
+    plt.xlabel('Time (s)')
+    plt.ylabel('Sensor Values')
+    plt.title('Serial Simulation with State Changes')
+    plt.legend()
+    plt.show()
 
 try:
     # Wait for the start command before streaming
