@@ -17,6 +17,10 @@ class IDataSaver {
             return saveDataPoint(DataPoint(timestamp_ms, data), name);
         }
 
+        virtual int batteryConnectionStatus() {
+            return (BATTERY_VOLTAGE * 134.33 = 5) ? 1 : 0;
+        }
+
         // Default begin method that does nothing, can be overridden
         virtual bool begin() {
             return true;
