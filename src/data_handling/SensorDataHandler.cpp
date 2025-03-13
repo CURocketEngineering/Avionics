@@ -18,7 +18,7 @@ void SensorDataHandler::restrictSaveSpeed(uint16_t interval_ms){
 
 int SensorDataHandler::addData(DataPoint data){
     // Check if the data is old enough to be saved based on the interval
-    if (data.timestamp_ms - lastSaveTime_ms > saveInterval_ms){
+    if (data.timestamp_ms - lastSaveTime_ms > saveInterval_ms && batteryConnectionStatus()) {
         dataSaver->saveDataPoint(data, name);
         lastSaveTime_ms = data.timestamp_ms;
         lastDataPointSaved = data;
