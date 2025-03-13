@@ -15,10 +15,10 @@ class StateMachine {
 
     int update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt);
 
-    uint16_t getState();
+    uint8_t getState();
 
   private:
-    uint16_t state;
+    uint8_t state;
     IDataSaver* dataSaver;
     LaunchPredictor* launchPredictor;
     ApogeeDetector* apogeeDetector;
