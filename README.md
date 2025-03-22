@@ -60,8 +60,13 @@ Unit tests are managed by the [Native](https://github.com/CURocketEngineering/Na
 
 The following rocket flights have successfully utilized this avionics system (most recent first):
 
-- **[MARTHA 1.3 Feb 8th 2025 Test Vehicle Launch Attempt](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.0)**
- MARTHA was mounted to the Active Aero test vehicle, but it never launched. Data was collected for 14.18 hours before the 9V battery died. The data was successfully dumped, and the last hour of data before shutdown was recorded. A consistent 100Hz loop speed was achieved. During a rough assembly, the LaunchPredictor never had a false positive, even though it detected large acceleration values.
+- **[MARTHA 1.3 Mar 8th 2025 L1 Cert Launches](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**
+The MARTHA 1.3 system successfully completed its first altitude data collection and apogee detection. Two separate MARTHA 1.3 boards, B1 and B2, were flown on different rockets, each accurately detecting both launch and apogee.
+For this test, MARTHA was used exclusively for data collection, while parachute deployment was handled by a Stratologger. Notably, B1’s rocket did not experience a deployment event, whereas B2’s rocket did. Since both units successfully detected apogee regardless of deployment status, we can confidently conclude that MARTHA’s apogee detection operates independently of the Stratologger's deployment event.
+ 
+
+- **[MARTHA 1.3 Feb 8th 2025 Test Vehicle Launch Attempt](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.0):**
+ MARTHA was mounted to the Active Aero test vehicle, but it never launched (wasn't fully assembled in time). Data was collected for 14.18 hours before the 9V battery died. The data was successfully dumped, and the last hour of data before shutdown was recorded. A consistent 100Hz loop speed was achieved. During a rough assembly, the LaunchPredictor never had a false positive, even though it detected large acceleration values.
 
 
 - **[MARTHA 1.1 Nov 9th L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.1.0):**  
