@@ -15,28 +15,61 @@ KF2D::KF2D() {} // default constructor, don't want a static KF
 void KF2D::InitializeKalmanFilter(const MeasurementVector &measurement)
 {
 
-     Update(measurement);
-
-     // Initialize P, A, H, R, Q with appropriate values //NEEDS TO BE DONE
+     // Initialize P, A, H, R, Q with appropriate values //NEEDS TO BE DONE: P, R, Q
      // dt will NOT be consistent between updates, so they need to be replaced every update
      // This depends on the specifics of the system and sensor characteristics
 
-     // P is symmetric, no need to col maj (for now)
-     P = {{1, 1, 1},
-          {1, 1, 1},
-          {1, 1, 1}};
+     //function to update covariance matrices (PQR)
 
-     /* //this is what it SHOULD look like written out by hand, but linalg is col maj
-     A = {{1,    delta_time,    0.5 * delta_time * delta_time},
-          {0,    1,             delta_time},
-          {0,    0,             1}};
-          */
+     // Michel van Biezen Kalman Filter #19, 20, 21, 22, 23, 24 (P), 25 (Q), 
 
-     A = {{1, 0, 0},
-          {0, 1, 0},
-          {0, 0, 1}};
+     // State covariance matrix (error in the estimate)
+     // If P->0, then measurement updates are mostly ignored
+     //  P is symmetric, no need to col maj (for now)
+     P = {{0.99, 0.9, 0.9},
+          {0.9, 0.9, 0.55},
+          {0.9, 0.55, 0.1}}; 
+
+          //P = {{0.99, 0.9, 0.9},
+          //{0.9, 0.9, 0.8,
+          //{0.9, 0.8, 0.1}};
+
+          /*huge on 1
+          P = {{0.99, 0.9, 0.9},
+          {0.9, 0.9, 0.7},
+          {0.9, 0.7, 0.1}};  */ 
+
+     // Process noise covariance matrix (keeps the state covariance matrix, P, from becoming too small or going to 0)
+     Q = {{0.9, 0.4, 0.2},
+          {0.4, 0.4, 0.15},
+          {0.2, 0.15, 0.3}};
+
+          //Q = {{0.9, 0.5, 0.1},
+          //{0.5, 0.2, 0.15},
+          //{0.1, 0.15, 0.3}};
+
+          /*Huge on 1
+          Q = {{0.9, 0.5, 0.2},
+          {0.5, 0.4, 0.15},
+          {0.2, 0.15, 0.3}};*/
+
+     // Measurement covariance matrix (error in the measurement)
+     //  R is symmetric if and only if covariances are equal, so be careful
+     // If R->0, then K->1 (trust bias to measurement update)
+     // If R->INF, then K->0 (trust bias to predicted state)
+     R = {{0.5, 0.0},  // ay
+          {0.0, 0.5}}; // y
+     // will be 0.1,0,0 ; 0,0.1,0 ; 0,0,0.1 in 3d, or whatever R float instead of 0.1
+
+     //rocket is 2.5676298406m
+
+     // Initialize the state vector with initial values
+     x_hat = {measurement[0], 0, measurement[1]}; // Initial posititon, velocity, acceleration (y, vy, ay)
+     //should eventually be [0] [1] [2] with a pitot
 
      /*
+     //State to measurement matrix
+     //basically picks which state variables refer to which measurements 
      //this is what it SHOULD look like written out by hand, but linalg is col maj
         H = {{1.0, 0.0, 0.0},
             {0.0, 0.0, 1.0}};
@@ -47,22 +80,11 @@ void KF2D::InitializeKalmanFilter(const MeasurementVector &measurement)
            0 0 1
             */
      H = {{1, 0}, {0, 0}, {0, 1}};
-
-     // R is symmetric, no need to col maj (for now)
-     R = {{0.1, 0},
-          {0, 0.1}}; // will be 0.1,0,0 ; 0,0.1,0 ; 0,0,0.1 in 3d, or whatever R float instead of 0.1
-
-     // Q is symmetric, no need to col maj (for now)
-     Q = {{0.1, 0.1, 0.1},
-          {0.1, 0.1, 0.1},
-          {0.1, 0.1, 0.1}};
-
-     // B is really just a vector in our example because it is being added to the state vector and multiplied by the scalar control variable
-     B = {0, 0, 1};
-
-     // Initialize the state vector with initial values
-     x_hat = {0, 0, 0}; // Initial posititon, velocity, acceleration (y, vy, ay)
+     //Update(measurement, 0);
 }
+
+
+
 
 // Predict the next state using the process model
 void KF2D::Predict()
@@ -85,13 +107,13 @@ void KF2D::Update(const MeasurementVector &measurement)
      auto thisTime = duration_cast<nanoseconds>(system_clock::now().time_since_epoch()).count();
      float delta_time = (thisTime - lastTime) / 1E9; // convert nanoseconds to seconds
      lastTime = thisTime;
-     Serial.printf("dt=%f\t", delta_time);
+     //Serial.printf("dt=%f\t", delta_time);
 
-     A = {{1, 0, 0},
-          {delta_time, 1, 0},
-          {(float)(0.5 * delta_time * delta_time), delta_time, 1}};
+     //A = {{1, 0, 0},
+     //     {delta_time, 1, 0},
+     //     {(float)(0.5 * delta_time * delta_time), delta_time, 1}};
 
-     B = {(float)(0.5 * delta_time * delta_time), delta_time, 1};
+     //B = {(float)(0.5 * delta_time * delta_time), delta_time, 1};
 
      // Calculate the Kalman gain
      mat<float, 3, 2> K = mul(mul(P, transpose(H)), inverse(mul(mul(H, P), transpose(H)) + R)); // n,m
