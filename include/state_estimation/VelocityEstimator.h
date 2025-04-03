@@ -1,0 +1,117 @@
+#ifndef VELOCITY_ESTIMATOR_H
+#define VELOCITY_ESTIMATOR_H
+
+#include <cstdint>
+#include "data_handling/DataPoint.h"
+
+/**
+ * VelocityEstimator provides a 1D Kalman filter that fuses altimeter and acceleration
+ * data to estimate altitude and vertical velocity. It is adapted from the logic in 
+ * ApogeeDetector but excludes the apogee detection mechanism. 
+ *
+ * Assumptions:
+ *  - The state is [altitude, vertical velocity] (in SI units).
+ *  - The process model uses the vertical acceleration as a control input.
+ *  - The accelerometer outputs roughly +9.81 m/s² when at rest (measuring gravity).
+ *    In free fall it reads ~0 m/s². Hence we subtract g (9.81 m/s²) from the raw 
+ *    accelerometer reading to get the rocket’s inertial acceleration.
+ *  - The altimeter measurement is used to correct the altitude.
+ *
+ * The user of this class may simply call update(...) whenever new sensor readings 
+ * arrive and retrieve the current altitude and velocity estimates.
+ */
+class VelocityEstimator {
+public:
+    /**
+     * Constructor.
+     * @param accelNoiseVariance    Process noise variance due to unknown acceleration 
+     *                             changes (e.g. (0.5 m/s²)² = 0.25).
+     * @param altimeterNoiseVariance Measurement noise variance of the altimeter 
+     *                             (e.g. 1.0 for 1m²).
+     */
+    VelocityEstimator(float accelNoiseVariance = 0.25f, float altimeterNoiseVariance = 1.0f);
+
+    /**
+     * Initialize the filter with an initial altitude and timestamp.
+     * @param initialAltitude  in meters.
+     * @param initialTimestamp in milliseconds.
+     */
+    void init(float initialAltitude, uint32_t initialTimestamp);
+
+    /**
+     * Update the estimator with new sensor data.
+     *
+     * The three acceleration DataPoints correspond to x, y, and z (vertical) axes.
+     * The altimeter DataPoint contains the altitude measurement.
+     *
+     * @param accelX    Accelerometer reading for the x-axis.
+     * @param accelY    Accelerometer reading for the y-axis.
+     * @param accelZ    Accelerometer reading for the z-axis (vertical).
+     * @param altimeter Altimeter reading.
+     */
+    void update(const DataPoint &accelX, const DataPoint &accelY, const DataPoint &accelZ,
+                const DataPoint &altimeter);
+
+    /**
+     * @return Current estimated altitude (meters).
+     */
+    float getEstimatedAltitude() const;
+
+    /**
+     * @return Current estimated vertical velocity (m/s).
+     */
+    float getEstimatedVelocity() const;
+
+    /**
+     * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - g.
+     */
+    float getInertialVerticalAcceleration() const;
+
+    /**
+     * @return The index of the axis determined to be vertical (0 = x, 1 = y, 2 = z).
+     */
+    int8_t getVerticalAxis() const;
+
+    /**
+     * @return The direction along that axis (+1 if positive direction is “up,” -1 if negative).
+     */
+    int8_t getVerticalDirection() const;
+
+private:
+    /**
+     * Determine which of the three accelerometer axes is vertical, based on the largest
+     * magnitude reading. Also sets the direction (+1 or -1) depending on the sign.
+     */
+    void determineVerticalAxis(const float rawAcl[3]);
+
+private:
+    // Kalman filter state: altitude (m), vertical velocity (m/s).
+    float state_alt;
+    float state_vel;
+
+    // Covariance matrix (2x2).
+    float P[2][2];
+
+    // Time of last update (milliseconds).
+    uint32_t lastTimestamp;
+
+    // True after init() has been called.
+    bool initialized;
+
+    // Noise parameters.
+    float accelNoiseVariance;      // Acceleration noise variance (process noise).
+    float altimeterNoiseVariance;  // Altimeter noise variance (measurement noise).
+
+    // Gravity constant (m/s²).
+    const float g = 9.81f;
+
+    // Which axis is vertical, and in what direction?
+    int8_t verticalAxis;  
+    int8_t verticalDirection;  
+    bool verticalAxisDetermined;
+
+    // Latest computed inertial acceleration along the vertical axis.
+    float inertialVerticalAcceleration;
+};
+
+#endif // VELOCITY_ESTIMATOR_H
