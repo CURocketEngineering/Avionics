@@ -1,9 +1,9 @@
 #ifndef KF2D_H
 #define KF2D_H
 
-#include <linalg.h>  //matrix declaration is column major
+#include "linalg.h"  //matrix declaration is column major
 #include <chrono>    //for keeping track of dt between updates
-#include <Arduino.h> //serial printf
+//#include <Arduino.h> //serial printf
 using namespace linalg::aliases;
 using namespace linalg;
 using namespace std::chrono;

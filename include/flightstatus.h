@@ -19,7 +19,7 @@ enum Stage {
 
 class FlightStatus {
   private:
-    Stage flightStage;
+    //Stage flightStage;
     int hz;
     int n;
     std::deque<double> accelDeque;
@@ -32,6 +32,7 @@ class FlightStatus {
     bool checkDescent();
     bool checkGround();
   public:
+  Stage flightStage;
     FlightStatus(int sensorHz = 32);
     void newTelemetry(double acceleration, double altitude);
     Stage getStage();

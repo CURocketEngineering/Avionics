@@ -15,8 +15,8 @@
  }
  void SDLogger::setup() {
    Serial.print("Initializing SD card...");
-   pinMode(10, OUTPUT);
-   while(!SD.begin(10)) {
+   pinMode(5, OUTPUT);
+   while(!SD.begin(5)) {
      Serial.println("SD Initialization failed!");
      sleep(5);
    }
