@@ -5,7 +5,7 @@
 #include "data_handling/DataPoint.h"
 
 /**
- * VelocityEstimator provides a 1D Kalman filter that fuses altimeter and acceleration
+ * VerticalVelocityEstimator provides a 1D Kalman filter that fuses altimeter and acceleration
  * data to estimate altitude and vertical velocity. It is adapted from the logic in 
  * ApogeeDetector but excludes the apogee detection mechanism. 
  *
@@ -20,7 +20,7 @@
  * The user of this class may simply call update(...) whenever new sensor readings 
  * arrive and retrieve the current altitude and velocity estimates.
  */
-class VelocityEstimator {
+class VerticalVelocityEstimator {
 public:
     /**
      * Constructor.
@@ -29,7 +29,7 @@ public:
      * @param altimeterNoiseVariance Measurement noise variance of the altimeter 
      *                             (e.g. 1.0 for 1m²).
      */
-    VelocityEstimator(float accelNoiseVariance = 0.25f, float altimeterNoiseVariance = 1.0f);
+    VerticalVelocityEstimator(float accelNoiseVariance = 0.25f, float altimeterNoiseVariance = 1.0f);
 
     /**
      * Initialize the filter with an initial altitude and timestamp.
