@@ -1,4 +1,4 @@
-#include "state_estimation/VelocityEstimator.h"
+#include "state_estimation/VerticalVelocityEstimator.h"
 #include <cmath>
 
 VerticalVelocityEstimator::VerticalVelocityEstimator(float accelNoiseVar, float altimeterNoiseVar)
@@ -158,4 +158,8 @@ int8_t VerticalVelocityEstimator::getVerticalAxis() const {
 
 int8_t VerticalVelocityEstimator::getVerticalDirection() const {
     return verticalDirection;
+}
+
+uint32_t VerticalVelocityEstimator::getTimestamp() const {
+    return lastTimestamp;
 }

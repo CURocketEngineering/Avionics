@@ -2,16 +2,21 @@
 #include "data_handling/DataNames.h"
 #include "ArduinoHAL.h"
 
-StateMachine::StateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector) {
+StateMachine::StateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector, 
+                           VerticalVelocityEstimator* verticalVelocityEstimator) {
     this->dataSaver = dataSaver;
     this->launchPredictor = launchPredictor;
     this->apogeeDetector = apogeeDetector;
+    this->verticalVelocityEstimator = verticalVelocityEstimator;
     this->state = STATE_ARMED;
 }
 
 int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt) {
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
+
+    // Update the vertical velocity estimator
+    verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
@@ -36,7 +41,7 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
             break;
         case STATE_ASCENT:
             // Serial.println("apogee update");
-            apogeeDetector->update(aclX, aclY, aclZ, alt);
+            apogeeDetector->update(verticalVelocityEstimator);
             if (apogeeDetector->isApogeeDetected()) {
                 state = STATE_DESCENT;
 

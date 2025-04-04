@@ -63,6 +63,11 @@ public:
     float getEstimatedVelocity() const;
 
     /**
+     * @return The timestamp of the last update (milliseconds).
+     */
+    uint32_t getTimestamp() const;
+
+    /**
      * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - g.
      */
     float getInertialVerticalAcceleration() const;
