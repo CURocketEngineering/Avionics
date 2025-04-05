@@ -11,7 +11,8 @@
 
 class BurnoutStateMachine {
   public: 
-    BurnoutStateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector);
+    BurnoutStateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector,
+      VerticalVelocityEstimator* verticalVelocityEstimator);
 
     int update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt);
 
@@ -22,6 +23,7 @@ class BurnoutStateMachine {
     IDataSaver* dataSaver;
     LaunchPredictor* launchPredictor;
     ApogeeDetector* apogeeDetector;
+    VerticalVelocityEstimator* verticalVelocityEstimator;
 };
 
 
