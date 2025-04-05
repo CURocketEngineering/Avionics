@@ -20,7 +20,8 @@ public:
 
     void update(float gx, float gy, float gz, float ax, float ay, float az, float mx, float my, float mz)
     {
-        interface.update(gx, gy, gz, ax, ay, az, my*-1, mx, mz); //align physically with the sensors //will have to change with a new board
+        //interface.update(gx, gy, gz, ax, ay, az, my*-1, mx, mz); //align physically with the sensors //will have to change with a new board
+        interface.update(gx, gy, gz, ax, ay, az, mx, my, mz); // assuming the magnetometer is aligned with the accelerometer
     }
 
     void begin(float sampleFrequency = 115200.0F)
@@ -34,12 +35,12 @@ public:
 
     void getRotationVector(float *x, float *y, float *z)
     {
-        //interface.getRotationVector(x, y, z);
+        interface.getRotationVector(x, y, z);
     }
 
     void setRotationVector(float x, float y, float z)
     {
-        //interface.setRotationVector(x, y, z);
+        interface.setRotationVector(x, y, z);
     }
 
     float getRoll() { return interface.getRoll(); }
