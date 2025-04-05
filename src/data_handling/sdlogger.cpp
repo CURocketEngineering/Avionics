@@ -1,4 +1,5 @@
- #include "sdlogger.h"
+ #include "data_handling/sdlogger.h"
+ 
  SDLogger::SDLogger() {
      logFile = "/logs.txt";
      telemFile = "/telemetry.csv";

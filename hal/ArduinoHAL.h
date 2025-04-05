@@ -6,6 +6,8 @@
 #include <SPI.h>
 #include <Adafruit_SPIFlash.h>
 #include <Adafruit_Sensor.h>
+#include <FS.h>
+#include <SD.h>
 #else // Everything below will only be compiled if we are not on an Arduino
 
 #include <string>

@@ -1,6 +1,6 @@
  #ifndef SDLOGGER_H
  #define SDLOGGER_H
- #include <Arduino.h>
+ #include "ArduinoHAL.h"
  #include <FS.h> // Add missing include path for FS library
  #include <SPI.h>
  #include <SD.h>
