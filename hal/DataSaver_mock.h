@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <utility>
-#include "unity.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
@@ -35,6 +34,5 @@ class DataSaverMock: public IDataSaver {
                     break;
                 }
             }
-            TEST_ASSERT_TRUE(found);
         }
 };

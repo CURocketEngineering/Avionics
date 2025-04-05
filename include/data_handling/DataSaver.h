@@ -22,6 +22,11 @@ class IDataSaver {
             return true;
         }
 
+        // Default end method that does nothing, can be overridden
+        virtual void launchDetected(uint32_t launchTimestamp_ms){
+            // Default implementation does nothing
+        }
+
 };
 
 
