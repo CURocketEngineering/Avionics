@@ -12,6 +12,8 @@
  * 
  */
 
+Preferences preferences;
+
 int DataSaverNVS::saveDataPoint(DataPoint dp, uint8_t name)
 {
     uint8_t key = name;
