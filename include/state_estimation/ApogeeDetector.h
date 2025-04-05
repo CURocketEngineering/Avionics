@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "data_handling/DataPoint.h"
+#include "state_estimation/VerticalVelocityEstimator.h"
 
 /*
  * ApogeeDetector uses a simple Kalman filter for fusing acceleration and altimeter data.
@@ -19,13 +20,10 @@
  */
 class ApogeeDetector {
 public:
-    /**
-     * Constructor.
-     * @param accelNoiseVariance Process noise variance due to acceleration noise (default 0.25, e.g. (0.5 m/s²)²).
-     * @param altimeterNoiseVariance Measurement noise variance of the altimeter (default 1.0).
-     * @param apogeeThreshold Minimum drop (in meters) from the maximum altitude to flag apogee (default 1.0 m).
-     */
-    ApogeeDetector(float accelNoiseVariance = 0.25f, float altimeterNoiseVariance = 1.0f, float apogeeThreshold = 1.0f);
+
+    ApogeeDetector(float apogeeThreshold_m);
+    // Default constructor with 1.0 m threshold
+    ApogeeDetector() : ApogeeDetector(1.0f) {}
 
     /**
      * Initialize the filter with an initial altitude and timestamp.
@@ -35,17 +33,10 @@ public:
     void init(float initialAltitude, uint32_t initialTimestamp);
 
     /**
-     * Update the detector with new sensor data.
-     *
-     * The three acceleration DataPoints correspond to x, y, and z (vertical) axes.
-     * The altimeter DataPoint contains the altitude measurement.
-     *
-     * @param accelX Accelerometer reading for the x-axis.
-     * @param accelY Accelerometer reading for the y-axis.
-     * @param accelZ Accelerometer reading for the z-axis (vertical).
-     * @param altimeter Altimeter reading.
+     * Reads the VerticalVelocityEstimator and checks if apogee has occurred.
+     * @param verticalVelocityEstimator the VerticalVelocityEstimator to read velocity and altitude from.
      */
-    void update(const DataPoint &accelX, const DataPoint &accelY, const DataPoint &accelZ, const DataPoint &altimeter);
+    void update(VerticalVelocityEstimator * verticalVelocityEstimator);
 
     /// Returns true if apogee has been detected.
     bool isApogeeDetected() const;
@@ -70,40 +61,11 @@ public:
     int8_t getVerticalDirection() const;
 
 private:
-    // Kalman filter state (altitude and vertical velocity)
-    float state_alt; // altitude (meters)
-    float state_vel; // vertical velocity (m/s)
-
-    // Covariance matrix (2x2)
-    float P[2][2];
-
-    // Last update timestamp (ms)
-    uint32_t lastTimestamp;
-
-    // Has the filter been initialized?
-    bool initialized;
-
     // Has apogee been detected?
     bool apogee_flag;
 
-    // Noise parameters
-    float accelNoiseVariance;    // acceleration noise variance (process noise)
-    float altimeterNoiseVariance; // measurement noise variance
-
     // Apogee detection threshold (meters)
-    float apogeeThreshold;
-
-    // Gravitational acceleration constant (m/s²)
-    const float g = 9.81f;
-
-
-    int8_t verticalDirection;  // +1 or -1  (-1 when the vertical axis is inverted)
-    int8_t verticalAxis;  // Index from 0 to 2 (x, y, z)
-    bool verticalAxisDetermined;
-
-    void determineVerticalAxis(const float rawAcl[3]);
-
-    float intertialVerticalAccleration;
+    float apogeeThreshold_m;
 
     // Maximum altitude reached so far (and its timestamp)
     float maxAltitude;
