@@ -1,7 +1,7 @@
-#include "state_estimation/VelocityEstimator.h"
+#include "state_estimation/VerticalVelocityEstimator.h"
 #include <cmath>
 
-VelocityEstimator::VelocityEstimator(float accelNoiseVar, float altimeterNoiseVar)
+VerticalVelocityEstimator::VerticalVelocityEstimator(float accelNoiseVar, float altimeterNoiseVar)
     : state_alt(0.0f),
       state_vel(0.0f),
       lastTimestamp(0),
@@ -18,7 +18,7 @@ VelocityEstimator::VelocityEstimator(float accelNoiseVar, float altimeterNoiseVa
     P[1][0] = 0.0f;  P[1][1] = 1.0f;
 }
 
-void VelocityEstimator::init(float initialAltitude, uint32_t initialTimestamp) {
+void VerticalVelocityEstimator::init(float initialAltitude, uint32_t initialTimestamp) {
     state_alt = initialAltitude;
     state_vel = 0.0f;
     lastTimestamp = initialTimestamp;
@@ -34,7 +34,7 @@ void VelocityEstimator::init(float initialAltitude, uint32_t initialTimestamp) {
     P[1][0] = 0.0f;  P[1][1] = 1.0f;
 }
 
-void VelocityEstimator::determineVerticalAxis(const float rawAcl[3]) {
+void VerticalVelocityEstimator::determineVerticalAxis(const float rawAcl[3]) {
     // Check the magnitude of each axis reading.
     float mag[3] = { std::fabs(rawAcl[0]), std::fabs(rawAcl[1]), std::fabs(rawAcl[2]) };
 
@@ -51,7 +51,7 @@ void VelocityEstimator::determineVerticalAxis(const float rawAcl[3]) {
     verticalDirection = (rawAcl[verticalAxis] > 0.0f) ? 1 : -1;
 }
 
-void VelocityEstimator::update(const DataPoint &accelX, const DataPoint &accelY, 
+void VerticalVelocityEstimator::update(const DataPoint &accelX, const DataPoint &accelY, 
                                const DataPoint &accelZ, const DataPoint &altimeter) 
 {
     // Use the altimeter timestamp as the reference for this update.
@@ -140,22 +140,26 @@ void VelocityEstimator::update(const DataPoint &accelX, const DataPoint &accelY,
     lastTimestamp = currentTimestamp;
 }
 
-float VelocityEstimator::getEstimatedAltitude() const {
+float VerticalVelocityEstimator::getEstimatedAltitude() const {
     return state_alt;
 }
 
-float VelocityEstimator::getEstimatedVelocity() const {
+float VerticalVelocityEstimator::getEstimatedVelocity() const {
     return state_vel;
 }
 
-float VelocityEstimator::getInertialVerticalAcceleration() const {
+float VerticalVelocityEstimator::getInertialVerticalAcceleration() const {
     return inertialVerticalAcceleration;
 }
 
-int8_t VelocityEstimator::getVerticalAxis() const {
+int8_t VerticalVelocityEstimator::getVerticalAxis() const {
     return verticalAxis;
 }
 
-int8_t VelocityEstimator::getVerticalDirection() const {
+int8_t VerticalVelocityEstimator::getVerticalDirection() const {
     return verticalDirection;
+}
+
+uint32_t VerticalVelocityEstimator::getTimestamp() const {
+    return lastTimestamp;
 }
