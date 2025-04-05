@@ -1,30 +1,32 @@
-/************************  DataSaverBigSD.cpp  ************************/
+#include "ArduinoHAL.h"          // for Serial
 #include "data_handling/DataSaverBigSD.h"
-#include "ArduinoHAL.h"      // For Serial on ESP32 / STM32‑Arduino, etc.
 
-DataSaverBigSD::DataSaverBigSD(uint8_t csPin) : _csPin(csPin) {}
+static SdFat sd;                 // single global SdFat instance
+
+using SdFile_t = File32;
 
 /* ------------------------------------------------------------------ */
+DataSaverBigSD::DataSaverBigSD(uint8_t csPin) : _csPin(csPin) {}
+
+/* ----------  begin()  ---------- */
 bool DataSaverBigSD::begin()
 {
-    Serial.print("Initialising SD card … ");
+    Serial.print("Initialising SD (SdFat)… ");
     pinMode(_csPin, OUTPUT);
-    if (!SD.begin(_csPin)) {
+    if (!sd.begin(_csPin, SD_SCK_MHZ(25))) {
         Serial.println("failed!");
         return false;
     }
     Serial.println("done.");
 
-    _filePath = nextFreeFilePath();                 // e.g. “/stream‑3.csv”
+    _filePath = nextFreeFilePath();          // e.g. “/stream‑3.csv”
 
-    // Create the file (so later FILE_APPEND is guaranteed to succeed).
-    File f = SD.open(_filePath.c_str(), FILE_WRITE);
+    SdFile_t f = sd.open(_filePath.c_str(), O_WRITE | O_CREAT);
     if (!f) {
         Serial.println("Could not create data file!");
         return false;
     }
-    // Optional header row – comment out if you don’t want it.
-    // f.println("idx,name,value");
+    // f.println("idx,name,value");          // optional header
     f.close();
 
     Serial.print("Logging to ");
@@ -34,30 +36,32 @@ bool DataSaverBigSD::begin()
     return true;
 }
 
+
 /* ------------------------------------------------------------------ */
-std::string DataSaverBigSD::nextFreeFilePath() const
+std::string DataSaverBigSD::nextFreeFilePath()
 {
-    char path[24];
+    char path[32];
     uint16_t n = 0;
-    do {
-        snprintf(path, sizeof(path), "/stream-%u.csv", n++);
-    } while (SD.exists(path));
+    while (true) {
+        snprintf(path, sizeof(path), "/stream-%u.csv", n);
+        if (!sd.exists(path)) break;
+        ++n;
+    }
     return std::string(path);
 }
 
 /* ------------------------------------------------------------------ */
 int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name)
 {
-    if (!_ready)              return -1;            // not initialised
-    File f = SD.open(_filePath.c_str(), FILE_APPEND);
-    if (!f)                   return -2;            // open error
+    if (!_ready) return -1;                       // not initialised
 
-    /* ----‑‑ build the CSV line ----‑‑
-       Adjust the field names to match your DataPoint definition.        */
-    f.print(dp.idx);          f.print(',');
-    f.print(name);            f.print(',');
-    f.println(dp.value);
+    SdFile_t f = sd.open(_filePath.c_str(), O_WRITE | O_APPEND);
+    if (!f)      return -2;                       // open error
+
+    f.print(dp.timestamp_ms);   f.print(',');
+    f.print(name);     f.print(',');
+    f.println(dp.data);
 
     f.close();
-    return 0;                                       // success
+    return 0;                                    // success
 }
