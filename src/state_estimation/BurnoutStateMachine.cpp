@@ -4,6 +4,9 @@
 
 #define GRAVITY 9.8
 
+int ts =0;
+int count = 0;
+
 BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector,
                                         VerticalVelocityEstimator* verticalVelocityEstimator) {
     this->dataSaver = dataSaver;
@@ -19,7 +22,16 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
 
     // Update the vertical velocity estimator
     verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
-    
+    if(count == 0)
+    {
+        ts = aclX.timestamp_ms;
+        count++;
+    }
+    Serial.print("EA: ");
+    Serial.println(verticalVelocityEstimator->getEstimatedAltitude());
+    Serial.print("Ts: ");
+    Serial.println(aclX.timestamp_ms);
+
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
@@ -30,6 +42,9 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
                 state = STATE_POWERED_ASCENT;
 
                 // Log the state change
+                Serial.println("To pa (launch detected)");
+                Serial.print("PA timestamp: ");
+                Serial.println(aclX.timestamp_ms);
                 dataSaver->saveDataPoint(
                     DataPoint(aclX.timestamp_ms, STATE_POWERED_ASCENT),
                     STATE_CHANGE
@@ -45,10 +60,14 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
 
         case STATE_POWERED_ASCENT:
             // Serial.println("apogee update");
-            if (aclY.data <= GRAVITY) { // when acceleration returns to less than gravity after launch, we're coasting
+            Serial.println(verticalVelocityEstimator->getInertialVerticalAcceleration());
+            if (verticalVelocityEstimator->getInertialVerticalAcceleration() <= 0) { // when acceleration returns to less than gravity after launch, we're coasting
                 state = STATE_COAST_ASCENT;
 
                 // Log the state change
+                Serial.println("To ca");
+                Serial.print("CA timestamp: ");
+                Serial.println(aclY.timestamp_ms);
                 dataSaver->saveDataPoint(
                     DataPoint(aclY.timestamp_ms, STATE_COAST_ASCENT),
                     STATE_CHANGE
@@ -57,11 +76,14 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
             break;
 
         case STATE_COAST_ASCENT:
-            // Serial.println("apogee update");
+            apogeeDetector->update(verticalVelocityEstimator);
             if (apogeeDetector->isApogeeDetected()) {
                 state = STATE_DESCENT;
 
                 // Log the state change
+                Serial.println("To descent");
+                Serial.print("Descent timestamp: ");
+                Serial.println(aclX.timestamp_ms);
                 dataSaver->saveDataPoint(
                     DataPoint(aclX.timestamp_ms, STATE_DESCENT),
                     STATE_CHANGE
@@ -71,6 +93,9 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
 
         case STATE_DESCENT:
             // Do nothing
+            // Serial.println("in descent");
+            Serial.print("Timestamp: ");
+            Serial.println(ts);
             break;
     }
 
