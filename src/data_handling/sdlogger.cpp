@@ -1,0 +1,225 @@
+//  #include "data_handling/sdlogger.h"
+ 
+//  SDLogger::SDLogger() {
+//      logFile = "/logs.txt";
+//      telemFile = "/telemetry.csv";
+ 
+//      // gyroscopeFile = "/gyroscope.curedf";
+//      // accelerometerFile = "/accelerometer.curedf";
+//      // magnetometerFile = "/magnetometer.curedf";
+//      // barometerFile = "/barometer.curedf";
+
+//  }
+//  SDLogger::SDLogger(std::string logFP = "/logs.txt", std::string telemFP = "/telemetry.csv") {
+//      logFile = logFP.c_str();
+//      telemFile = telemFP.c_str();
+//  }
+//  void SDLogger::setup() {
+//    Serial.print("Initializing SD card...");
+//    pinMode(5, OUTPUT);
+//    while(!SD.begin(5)) {
+//      Serial.println("SD Initialization failed!");
+//      sleep(5);
+//    }
+//    initTelemetryFile();
+
+
+//    Serial.println("Initialization done.");
+//    Serial.println("Finished SD Setup!");
+//  }
+//  bool SDLogger::writeLog(std::string log) {
+//      const char* c_log = (log + '\n').c_str();
+//      appendFile(SD, logFile, c_log);
+//      return true;
+//  }
+//  bool SDLogger::writeData(TelemetryData data, KFData kfData, double vAccel, double predApogee, std::string flightStatus, int sAngle) {
+//     //Serial.println("Writing telemetry data to sd");
+
+//      if(data.timestamp == lastData.timestamp) {
+//     Serial.println("Actually nevermind");
+//          return false;
+//      } else {
+//         // if(data.sensorData["acceleration"].timestamp != lastData.sensorData["acceleration"].timestamp) {
+//         //     appendFileData(SD, accelerometerFile, data.sensorData["acceleration"]);
+//         // }
+//         // if(data.sensorData["gyro"].timestamp != lastData.sensorData["gyro"].timestamp) {
+//         //     appendFileData(SD, gyroscopeFile, data.sensorData["gyro"]);
+//         // }
+//         // if(data.sensorData["magnetometer"].timestamp != lastData.sensorData["magnetometer"].timestamp) {
+//         //     appendFileData(SD, magnetometerFile, data.sensorData["magnetometer"]);
+//         // }
+//         // if(data.sensorData["pressure"].timestamp != lastData.sensorData["pressure"].timestamp) {
+//         //     appendFileData(SD, barometerFile, data.sensorData["temperature"]);
+//         //     appendFileData(SD, barometerFile, data.sensorData["pressure"]);
+//         //     appendFileData(SD, barometerFile, data.sensorData["altitude"]);
+//         // }
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.timestamp) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["acceleration"].acceleration.x) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["acceleration"].acceleration.y) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["acceleration"].acceleration.z) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["gyro"].gyro.x) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["gyro"].gyro.y) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["gyro"].gyro.z) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["magnetometer"].magnetic.x) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["magnetometer"].magnetic.y) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["magnetometer"].magnetic.z) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["temperature"].temperature) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["pressure"].pressure) + ",").c_str());
+//         //appendFile(SD, telemFile, (std::to_string(flightStatus) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(data.sensorData["altitude"].altitude) + ",").c_str());
+
+//         // AHRS Data
+//         //appendFile(SD, telemFile, (std::to_string(ahrsData["rx"]) + ",").c_str());
+//         //appendFile(SD, telemFile, (std::to_string(ahrsData["ry"]) + ",").c_str());
+//         //appendFile(SD, telemFile, (std::to_string(ahrsData["rz"]) + ",").c_str());
+//         //appendFile(SD, telemFile, (std::to_string(ahrsData["gx"]) + ",").c_str());
+//         //appendFile(SD, telemFile, (std::to_string(ahrsData["gy"]) + ",").c_str());
+//         //appendFile(SD, telemFile, (std::to_string(ahrsData["gz"]) + ",").c_str());
+        
+//         // Kalman Filter Stuff
+//         appendFile(SD, telemFile.c_str(), (std::to_string(kfData.acceleration) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(kfData.velocity) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(kfData.drift) + ",").c_str());
+
+//         appendFile(SD, telemFile.c_str(), (std::to_string(vAccel) + ",").c_str());
+//         appendFile(SD, telemFile.c_str(), (std::to_string(predApogee) + ",").c_str());
+
+//         appendFile(SD, telemFile.c_str(), (flightStatus + ",").c_str());
+
+//         // Servo Angle
+//         appendFile(SD, telemFile.c_str(), (std::to_string(sAngle)).c_str());
+
+//         appendFile(SD, telemFile.c_str(), "\n");
+//     //Serial.println("Done writing to telemetry.csv");
+//         return true;
+//      }
+//  }
+//  void SDLogger::readFile(fs::FS &fs, const char * path){
+//      Serial.printf("Reading file: %s\n", path);
+//      File file = fs.open(path);
+//      if(!file){
+//          Serial.println("Failed to open file for reading");
+//          return;
+//      }
+//      Serial.print("Read from file: ");
+//      while(file.available()){
+//          Serial.write(file.read());
+//      }
+//      file.close();
+//  }
+//  void SDLogger::writeFile(fs::FS &fs, const char * path, const char * message){
+//      Serial.printf("Writing file: %s\n", path);
+//      File file = fs.open(path, FILE_WRITE);
+//      if(!file){
+//          Serial.println("Failed to open file for writing");
+//          return;
+//      }
+//      if(file.print(message)){
+//          Serial.println("File written");
+//      } else {
+//          Serial.println("Write failed");
+//      }
+//      file.close();
+//  }
+//  bool SDLogger::appendFile(fs::FS &fs, const char * path, const char * message){
+    
+//     // Serial.printf("Appending %s", message);
+//      // Serial.printf("Appending to file: %s\n", path);
+//      File file = fs.open(path, FILE_APPEND);
+//      if(!file){
+//          // Serial.println("Failed to open file for appending");
+//          return false;
+//      }
+//      if(file.print(message)){
+//          // Serial.println("Message appended");
+//          return true;
+//      } else {
+//          // Serial.println("Append failed");
+//          return false;
+//      }
+//      file.close();
+//  }
+//  void SDLogger::renameFile(fs::FS &fs, const char * path1, const char * path2){
+//      Serial.printf("Renaming file %s to %s\n", path1, path2);
+//      if (fs.rename(path1, path2)) {
+//          Serial.println("File renamed");
+//      } else {
+//          Serial.println("Rename failed");
+//      }
+//  }
+//  void SDLogger::deleteFile(fs::FS &fs, const char * path){
+//      Serial.printf("Deleting file: %s\n", path);
+//      if(fs.remove(path)){
+//          Serial.println("File deleted");
+//      } else {
+//          Serial.println("Delete failed");
+//      }
+//  }
+//  bool SDLogger::appendFileData(fs::FS &fs, const char *path, const SensorData &data) {
+//      File file = fs.open(path, FILE_APPEND);
+//      if (!file) {
+//          // Serial.println("Failed to open file for appending");
+//          return false;
+//      }
+//      // Convert SensorData to bytes
+//      const byte* bytes = reinterpret_cast<const byte*>(&data);
+//      size_t dataSize = sizeof(data);
+//      // Append the bytes to the file
+//      bool successful = file.write(bytes, dataSize) == dataSize;
+//      file.close();
+  
+//      return successful;
+//  }
+
+//   // void createDir(fs::FS &fs, const char * path){
+//  //     Serial.printf("Creating Dir: %s\n", path);
+//  //     if(fs.mkdir(path)){
+//  //         Serial.println("Dir created");
+//  //     } else {
+//  //         Serial.println("mkdir failed");
+//  //     }
+//  // }
+//  // void removeDir(fs::FS &fs, const char * path){
+//  //     Serial.printf("Removing Dir: %s\n", path);
+//  //     if(fs.rmdir(path)){
+//  //         Serial.println("Dir removed");
+//  //     } else {
+//  //         Serial.println("rmdir failed");
+//  //     }
+//  // }
+
+
+// int SDLogger::readLaunchNumber() {
+//     const char *launchFileName = "/launch.txt";
+//     int launchNumber = 0;
+
+//     File launchFile = SD.open(launchFileName, FILE_READ);
+//     if (launchFile) {
+//         if (launchFile.available()) {
+//             launchNumber = launchFile.parseInt();
+//         }
+//         launchFile.close();
+//     } else {
+//         Serial.println("Failed to open launch.txt for reading. Starting from launch number 0.");
+//     }
+
+//     launchNumber++;
+
+//     File writeFile = SD.open(launchFileName, FILE_WRITE);
+//     if (writeFile) {
+//         writeFile.print(launchNumber);
+//         writeFile.close();
+//     } else {
+//         Serial.println("Failed to open launch.txt for writing.");
+//     }
+
+//     return launchNumber;
+// }
+
+// void SDLogger::initTelemetryFile() {
+    
+//         int launchNumber = readLaunchNumber();
+//         telemFile = "/telem-" + std::to_string(launchNumber) + ".csv";
+//         Serial.println("Telemetry file initialized: " + String(telemFile.c_str()));
+    
+// }
