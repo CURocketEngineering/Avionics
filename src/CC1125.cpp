@@ -1,7 +1,6 @@
 /* ------------------------------------------------------------ *
  *  Low‑level SPI helpers – ESP32‑Arduino (v2.x) compatible
  * ------------------------------------------------------------ */
-#include <SPI.h>          // make sure this stays above the driver
 #include "ArduinoHAL.h"
 #include "CC1125.h"
 
