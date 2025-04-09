@@ -4,19 +4,12 @@
 #ifdef ARDUINO
 #include "Arduino.h"
 #include <SPI.h>
-#include <Adafruit_SPIFlash.h>
 #include <Adafruit_Sensor.h>
-#include <FS.h>
-#include <SD.h>
 
-#ifdef FILE_READ
-#undef FILE_READ
-#endif
-#ifdef FILE_WRITE
-#undef FILE_WRITE
-#endif
-
+#include <Adafruit_SPIFlash.h>
 #include <SdFat.h>
+#include <SdFatConfig.h>
+
 #else // Everything below will only be compiled if we are not on an Arduino
 
 #include <string>
