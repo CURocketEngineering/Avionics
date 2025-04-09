@@ -25,9 +25,12 @@
 #define STATE_CHANGE 15
 #define FLIGHT_ID 16
 
+// State Estimation
+#define EST_APOGEE 17
+#define EST_VERTICAL_VELOCITY 18
+#define EST_ALTITUDE 19
 
-
-
-
+// Power
+#define BATTERY_VOLTAGE 20
 
 #endif
