@@ -3,6 +3,8 @@
 #include "data_handling/SensorDataHandler.h"
 #include "ArduinoHAL.h"
 
+// Here should continually check the battery voltage and determine if the voltage should be stored
+// If it needs to be stored, then it should be stored in the data saver
 SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* ds) {
     this->name = name;
     this->dataSaver = ds;
@@ -18,7 +20,7 @@ void SensorDataHandler::restrictSaveSpeed(uint16_t interval_ms){
 
 int SensorDataHandler::addData(DataPoint data){
     // Check if the data is old enough to be saved based on the interval
-    if (data.timestamp_ms - lastSaveTime_ms > saveInterval_ms){
+    if (data.timestamp_ms - lastSaveTime_ms > saveInterval_ms && batteryConnectionStatus()) {
         dataSaver->saveDataPoint(data, name);
         lastSaveTime_ms = data.timestamp_ms;
         lastDataPointSaved = data;
