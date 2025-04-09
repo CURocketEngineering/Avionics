@@ -17,8 +17,10 @@ class IDataSaver {
             return saveDataPoint(DataPoint(timestamp_ms, data), name);
         }
 
+        // Determine if the data saver is in post launch mode
+        // Pointer to main to determine if the voltage is usb powered or not
         virtual int batteryConnectionStatus() {
-            return (BATTERY_VOLTAGE * 134.33 = 5) ? 1 : 0;
+            return (BATTERY_VOLTAGE * 134.33 == 5) ? 1 : 0;
         }
 
         // Default begin method that does nothing, can be overridden

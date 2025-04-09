@@ -3,6 +3,8 @@
 #include "data_handling/SensorDataHandler.h"
 #include "ArduinoHAL.h"
 
+// Here should continually check the battery voltage and determine if the voltage should be stored
+// If it needs to be stored, then it should be stored in the data saver
 SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* ds) {
     this->name = name;
     this->dataSaver = ds;
