@@ -20,8 +20,6 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 
-    // Update the vertical velocity estimator
-    verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
     if(count == 0)
     {
         ts = aclX.timestamp_ms;
@@ -53,13 +51,18 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
                 // Put the data saver into post-launch mode
                 dataSaver->launchDetected(launchPredictor->getLaunchedTime());
                 
+                // Start the vertical velocity estimator
+                verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
+
                 // Start the apogee detection system
                 apogeeDetector->init(alt.data, alt.timestamp_ms);
+                 
             }
             break;
 
         case STATE_POWERED_ASCENT:
             // Serial.println("apogee update");
+            verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
             Serial.println(verticalVelocityEstimator->getInertialVerticalAcceleration());
             if (verticalVelocityEstimator->getInertialVerticalAcceleration() <= 0) { // when acceleration returns to less than gravity after launch, we're coasting
                 state = STATE_COAST_ASCENT;
@@ -76,6 +79,7 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
             break;
 
         case STATE_COAST_ASCENT:
+            verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
             apogeeDetector->update(verticalVelocityEstimator);
             if (apogeeDetector->isApogeeDetected()) {
                 state = STATE_DESCENT;

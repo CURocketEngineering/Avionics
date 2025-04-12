@@ -32,7 +32,7 @@ void ApogeePredictor::update()
     /* ----- compute a deceleration sample ----- */
     float decelSample = std::max(0.0f, -acc);   // |a| from IMU
 
-    /* fallback / cross‑check using Δv / Δt */
+    /* fallback / cross‑check using Δv / Δt */ // ------- take avg between actual and theoretical to avoid mess up
     if (ts > lastTs_) {
         const float dt = (ts - lastTs_) * 1e-3f;
         const float dv = vel - lastVel_;        // typically negative while climbing
@@ -41,7 +41,7 @@ void ApogeePredictor::update()
         decelSample = 0.5f * (decelSample + dvDecel);
     }
 
-    /* ----- low‑pass filter to tame noise ----- */
+    /* ----- low‑pass filter to tame noise ----- */  // ------- bc applies to instance, applies to entire flight
     filteredDecel_ = alpha_ * decelSample + (1.0f - alpha_) * filteredDecel_;
 
     /* ----- predict apogee if still climbing ----- */
