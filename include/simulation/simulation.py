@@ -160,7 +160,7 @@ try:
     wait_for_start_command()
 
     # Provide the path to your CSV file here
-    csv_file = 'AA Data Collection - Second Launch Trimmed.csv'  # Replace with your file path
+    csv_file = 'lib/Avionics/include/simulation/AA Data Collection - Second Launch Trimmed.csv'  # Replace with your file path
     stream_csv_data(csv_file)
 except KeyboardInterrupt:
     print("Program terminated.")

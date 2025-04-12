@@ -20,7 +20,8 @@ ApogeePredictor::ApogeePredictor(const VerticalVelocityEstimator& vve,
       predApogeeTs_(0),
       predApogeeAlt_(0.0f),
       lastTs_(0),
-      lastVel_(0.0f)
+      lastVel_(0.0f),
+      numWarmups_(0)
 {}
 
 void ApogeePredictor::update()
@@ -45,7 +46,7 @@ void ApogeePredictor::update()
     filteredDecel_ = alpha_ * decelSample + (1.0f - alpha_) * filteredDecel_;
 
     /* ----- predict apogee if still climbing ----- */
-    if (vel > minClimbVel_ && filteredDecel_ > 0.1f) {
+    if (vel > minClimbVel_ && filteredDecel_ > 0.1f && numWarmups_ > 10) {
         tToApogee_      = vel / filteredDecel_;          // s
         predApogeeTs_   = ts + static_cast<uint32_t>(tToApogee_ * 1000.0f);
 
@@ -60,6 +61,11 @@ void ApogeePredictor::update()
     /* save for next iteration */
     lastTs_  = ts;
     lastVel_ = vel;
+
+    numWarmups_++;
+    if (numWarmups_ > 1000) {
+        numWarmups_ = 1000; // cap to avoid overflow
+    }
 }
 
 /* ---------- simple getters ---------- */
