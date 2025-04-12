@@ -33,4 +33,7 @@
 // Power
 #define BATTERY_VOLTAGE 20
 
+// Active Aero
+#define FIN_DEPLOYMENT_AMOUNT 21
+
 #endif
