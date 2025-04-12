@@ -59,6 +59,8 @@ private:
     /* book‑keeping for Δv/Δt fallback */
     uint32_t lastTs_;
     float    lastVel_;
+
+    uint32_t numWarmups_;
 };
 
 #endif // APOGEE_PREDICTOR_H
