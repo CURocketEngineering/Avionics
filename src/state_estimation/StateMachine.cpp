@@ -15,8 +15,6 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 
-    // Update the vertical velocity estimator
-    verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
@@ -37,10 +35,15 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
                 
                 // Start the apogee detection system
                 apogeeDetector->init(alt.data, alt.timestamp_ms);
+
+                // Update the vertical velocity estimator
+                verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
             }
             break;
         case STATE_ASCENT:
             // Serial.println("apogee update");
+            // Update the vertical velocity estimator
+            verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
             apogeeDetector->update(verticalVelocityEstimator);
             if (apogeeDetector->isApogeeDetected()) {
                 state = STATE_DESCENT;
