@@ -10,13 +10,16 @@ class BatteryVoltage {
             : pin(adcPin), factor(conversionFactor) {}
     
         float readVoltage() {
-            int rawValue = 0;
+            // Set the pin for reading
+            pinMode(pin, INPUT);
+            uint32_t rawValue = 0;
             rawValue = analogRead(pin);  // Should give a value between 0 and 1023, not sure how to convert this to the true voltage. 
             // Conversion notes ->  respect to Vref you would do Vref * analogRead()/2^12. 
             // After that you can use the voltage divider equation to get the battery voltage level
             // Vref is 134.33? 
-            float voltage = pow((rawValue/2),12) * factor; 
-            return voltage;
+            // float voltage = pow((rawValue/2),12) * factor; 
+            Serial.println(rawValue);
+            return rawValue;
         }
       
         bool isAlive(){
