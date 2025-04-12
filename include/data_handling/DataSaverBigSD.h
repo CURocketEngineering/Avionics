@@ -1,30 +1,46 @@
-#ifndef DATA_SAVER_BIG_SD_H
-#define DATA_SAVER_BIG_SD_H
+#pragma once
 
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
-
+#include <SdFat.h>
 #include <string>
 #include <stdint.h>
 
-class DataSaverBigSD : public IDataSaver
-{
+class DataSaverBigSD : public IDataSaver {
 public:
     explicit DataSaverBigSD(uint8_t csPin = 5);
 
     /** Call once from setup(); returns true on success. */
     bool begin();
 
-    /** Append “idx,name,value\n” to the current log file. */
+    /** Buffer a CSV line (timestamp,name,value).  Flushes to SD in bulk. */
     int  saveDataPoint(DataPoint dp, uint8_t name) override;
 
+    /** Flush any pending bytes and close the file (call before power‑off). */
+    void end();
+
 private:
-    uint8_t     _csPin;
-    bool        _ready {false};
+    std::string nextFreeFilePath();                    // /stream‑<n>.csv
+
+    uint8_t  _csPin;
+    bool     _ready {false};
+
+    /* single shared SdFat instance */
+    static SdFat sd;
+    using SdFile_t = File32;
+
+    SdFile_t    _file;
     std::string _filePath;
 
-    /** Returns the first unused “/stream‑<n>.csv” path. */
-    std::string nextFreeFilePath();
-};
+    /* buffering parameters */
+    static constexpr uint16_t kBufBytes   = 512;   // one SD sector
+    static constexpr uint16_t kFlushLines = 64;    // flush after N lines
+    static constexpr uint32_t kFlushMs    = 200;   // or after 200 ms
 
-#endif  // DATA_SAVER_BIG_SD_H
+    /* buffering state */
+    char      _buf[kBufBytes];
+    uint16_t  _bufLen       = 0;
+    uint16_t  _linesPending = 0;
+    uint32_t  _lastFlushMs  = 0;
+    uint32_t  _lastSyncMs   = 0;
+};
