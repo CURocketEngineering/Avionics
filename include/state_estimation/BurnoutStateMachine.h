@@ -1,5 +1,5 @@
-#ifndef FLIGHT_STATE_MACHINE_H
-#define FLIGHT_STATE_MACHINE_H
+#ifndef BASM_STATE_MACHINE_H
+#define BASM_STATE_MACHINE_H
 
 #include "state_estimation/States.h"
 #include "state_estimation/ApogeeDetector.h"
