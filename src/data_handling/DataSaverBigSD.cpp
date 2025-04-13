@@ -43,7 +43,7 @@ int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
 
     // Format the new line
     int n = snprintf(_buf + _bufLen, remaining, "%lu,%u,%.6f\n",
-                     dp.timestamp_ms, name, dp.data);
+                     static_cast<long unsigned int>(dp.timestamp_ms), name, dp.data);
 
     // Check snprintf result
     if (n <= 0 || (size_t)n >= remaining) {
@@ -55,7 +55,7 @@ int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
 
         // Try again (safe now)
         remaining = sizeof(_buf);
-        n = snprintf(_buf, remaining, "%lu,%u,%.6f\n", dp.timestamp_ms, name, dp.data);
+        n = snprintf(_buf, remaining, "%lu,%u,%.6f\n", static_cast<long unsigned int>(dp.timestamp_ms), name, dp.data);
         if (n <= 0 || (size_t)n >= remaining) return -4;  // can't encode this line even in an empty buffer
     }
 
