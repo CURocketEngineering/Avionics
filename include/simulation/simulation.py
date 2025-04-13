@@ -115,8 +115,8 @@ def stream_csv_data(csv_file):
                     state = buffer[loc - 1]
                     break
                 else:
-                    pass 
-                    # print("Waiting for acknowledgment got: ", data)
+                    # pass 
+                    print("Waiting for acknowledgment got: ", buffer)
 
         sent_data.append(interpolated_data.split(',') + [state])
 

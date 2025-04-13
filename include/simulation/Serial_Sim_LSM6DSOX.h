@@ -8,6 +8,8 @@ public:
     Adafruit_LSM6DSOX (){}
 
     bool begin_SPI(int cs) { return true; } // Mock successful initialization
+    bool begin_I2C(int addr) { return true; } // Mock successful initialization
+    bool begin_I2C() { return true; } // Mock successful initialization
 
     void setAccelRange(int range) {}
     void setGyroRange(int range) {}
