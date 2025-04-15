@@ -34,6 +34,7 @@ public:
 
     /** Call every time the estimator is refreshed. */
     void update();
+    void quad_update();
 
     /* ------------ accessors ------------- */
     bool     isPredictionValid()            const;   ///< true if still climbing & estimate ok
