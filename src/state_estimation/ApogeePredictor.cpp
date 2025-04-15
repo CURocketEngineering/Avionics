@@ -46,7 +46,7 @@ void ApogeePredictor::update()
     filteredDecel_ = alpha_ * decelSample + (1.0f - alpha_) * filteredDecel_;
 
     /* ----- predict apogee if still climbing ----- */
-    if (vel > minClimbVel_ && filteredDecel_ > 0.1f && numWarmups_ > 10) {
+    if (true) {
         tToApogee_      = vel / filteredDecel_;          // s
         predApogeeTs_   = ts + static_cast<uint32_t>(tToApogee_ * 1000.0f);
 

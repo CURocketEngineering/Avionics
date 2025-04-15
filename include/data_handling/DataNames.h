@@ -29,6 +29,7 @@
 #define EST_APOGEE 17
 #define EST_VERTICAL_VELOCITY 18
 #define EST_ALTITUDE 19
+#define TIME_TO_APOGEE 22
 
 // Power
 #define BATTERY_VOLTAGE 20

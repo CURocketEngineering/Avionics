@@ -63,6 +63,7 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
         case STATE_POWERED_ASCENT:
             // Serial.println("apogee update");
             verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
+            apogeeDetector->update(verticalVelocityEstimator);
             Serial.println(verticalVelocityEstimator->getInertialVerticalAcceleration());
             if (verticalVelocityEstimator->getInertialVerticalAcceleration() <= 0) { // when acceleration returns to less than gravity after launch, we're coasting
                 state = STATE_COAST_ASCENT;
