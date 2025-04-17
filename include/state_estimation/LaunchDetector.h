@@ -47,15 +47,15 @@ public:
      *                       The delay in launch detection will equal half the window size
      *                       A window too small will cause false positives.
      * @param windowInterval_ms: The interval between acceleration value in the window
-     *                           You must be able to update the predictor faster than this interval
-     *                           The predictor will reject data that comes in faster than this interval to maintain this interval or slower
+     *                           You must be able to update the detector faster than this interval
+     *                           The detector will reject data that comes in faster than this interval to maintain this interval or slower
      */
     LaunchDetector(float accelerationThreshold_ms2,
                     uint16_t windowSize_ms,
                     uint16_t windowInterval_ms);
 
     /**
-     * Updates the predictor with new acceleration data
+     * Updates the detector with new acceleration data
      * @param xac: The x acceleration data point in ms^2
      * @param yac: The y acceleration data point in ms^2
      * @param zac: The z acceleration data point in ms^2
