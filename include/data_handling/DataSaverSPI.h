@@ -134,6 +134,10 @@ public:
         return lastDataPoint;
     }
 
+    uint32_t getBatteryVoltage() const {
+        return batteryVoltage;
+    }
+
     uint32_t getLaunchWriteAddress() const {
         return launchWriteAddress;
     }
@@ -176,6 +180,9 @@ private:
 
     // Address at which launch was detected
     uint32_t launchWriteAddress;
+
+    // Battery Voltage
+    uint32_t batteryVoltage;
 
     bool postLaunchMode;
 
