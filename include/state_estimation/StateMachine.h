@@ -3,7 +3,7 @@
 
 #include "state_estimation/States.h"
 #include "state_estimation/ApogeeDetector.h"
-#include "state_estimation/LaunchPredictor.h"
+#include "state_estimation/LaunchDetector.h"
 #include "state_estimation/VerticalVelocityEstimator.h"
 
 #include "data_handling/DataPoint.h"
@@ -12,7 +12,7 @@
 
 class StateMachine {
   public: 
-    StateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector, 
+    StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
                  VerticalVelocityEstimator* verticalVelocityEstimator);
 
     int update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt);
@@ -22,7 +22,7 @@ class StateMachine {
   private:
     uint8_t state;
     IDataSaver* dataSaver;
-    LaunchPredictor* launchPredictor;
+    LaunchDetector* launchDetector;
     ApogeeDetector* apogeeDetector;
     VerticalVelocityEstimator* verticalVelocityEstimator;
 };

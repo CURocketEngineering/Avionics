@@ -1,4 +1,4 @@
-#include "state_estimation/LaunchPredictor.h"
+#include "state_estimation/LaunchDetector.h"
 
 // #define DEBUG
 
@@ -6,7 +6,7 @@
 #include "ArduinoHAL.h"
 #endif
 
-LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
+LaunchDetector::LaunchDetector(float accelerationThreshold_ms2,
                                  uint16_t windowSize_ms,
                                  uint16_t windowInterval_ms)
     : AclMagSqWindow_ms2(windowSize_ms / windowInterval_ms)
@@ -28,7 +28,7 @@ LaunchPredictor::LaunchPredictor(float accelerationThreshold_ms2,
     this->max_window_size_ms = (windowInterval_ms + acceptableTimeDifference_ms) * (AclMagSqWindow_ms2.getMaxSize() - 1);
 }
 
-int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
+int LaunchDetector::update(DataPoint xac, DataPoint yac, DataPoint zac)
 {
     // :xac: The x acceleration data point in ms^2
     // :yac: The y acceleration data point in ms^2
@@ -42,7 +42,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (launched)
     {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: Data point ignored because already launched");
+        Serial.println("LaunchDetector: Data point ignored because already launched");
         #endif
         return LP_ALREADY_LAUNCHED;
     }
@@ -57,7 +57,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (time_ms < AclMagSqWindow_ms2.getFromHead(0).timestamp_ms)
     {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: Data point ignored because of time is earlier than head");
+        Serial.println("LaunchDetector: Data point ignored because of time is earlier than head");
         Serial.printf("Incoming time: %d\n", time_ms);
         Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
         #endif
@@ -68,7 +68,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (!AclMagSqWindow_ms2.isFull())
     {
         #ifdef DEBUG
-        // Serial.println("LaunchPredictor: Populating initial window");
+        // Serial.println("LaunchDetector: Populating initial window");
         #endif
         AclMagSqWindow_ms2.push(DataPoint(time_ms, aclMagSq));
         
@@ -81,7 +81,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     // Check that the data didn't come in too fast
     if (time_diff < windowInterval_ms - acceptableTimeDifference_ms){
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: DATA TOO EARLY");
+        Serial.println("LaunchDetector: DATA TOO EARLY");
         Serial.printf("Time diff: %d\n", time_diff);
         Serial.printf("Window interval: %d\n", windowInterval_ms);
         Serial.printf("Incoming time: %d\n", time_ms);
@@ -93,12 +93,12 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (time_diff > windowInterval_ms + acceptableTimeDifference_ms)
     {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: DATA TOO LATE");
+        Serial.println("LaunchDetector: DATA TOO LATE");
         Serial.printf("Time diff: %d\n", time_diff);
         Serial.printf("Window interval: %d\n", windowInterval_ms);
         Serial.printf("Incoming time: %d\n", time_ms);
         Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
-        Serial.println("LaunchPredictor: Clearing window");
+        Serial.println("LaunchDetector: Clearing window");
         #endif
         
         AclMagSqWindow_ms2.clear();
@@ -107,7 +107,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
 
     // Push the new data point
     #ifdef DEBUG
-    Serial.print("LaunchPredictor: Pushing timestamp: ");
+    Serial.print("LaunchDetector: Pushing timestamp: ");
     Serial.println(time_ms);
     #endif
 
@@ -119,8 +119,8 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (time_range < min_window_size_ms)
     {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: Time range too small, waiting...");
-        Serial.printf("Time range:     %d\n", time_range);
+        Serial.println("LaunchDetector: Time range too small, waiting...");
+        Serial.printf("Time range: %d\n", time_range);
         Serial.printf("Min Time Range: %d\n", min_window_size_ms);
         Serial.printf("Incoming time: %d\n", time_ms);
         Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
@@ -134,8 +134,8 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     if (time_range > max_window_size_ms)
     {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: Time range too large, waiting...");
-        Serial.printf("Time range:     %d\n", time_range);
+        Serial.println("LaunchDetector: Time range too large, waiting...");
+        Serial.printf("Time range: %d\n", time_range);
         Serial.printf("Max Time Range: %d\n", max_window_size_ms);
         Serial.printf("Incoming time: %d\n", time_ms);
         Serial.printf("Head time: %d\n", AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);
@@ -161,7 +161,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
         return LP_LAUNCH_DETECTED;
     } else {
         #ifdef DEBUG
-        Serial.println("LaunchPredictor: Median below threshold");
+        Serial.println("LaunchDetector: Median below threshold");
         // Print the median without being able to use %f because of the Arduino
         Serial.print("Median: ");
         Serial.println(median_acceleration_squared);
@@ -174,7 +174,7 @@ int LaunchPredictor::update(DataPoint xac, DataPoint yac, DataPoint zac)
     return LP_DEFAULT_FAIL;
 }
 
-void LaunchPredictor::reset()
+void LaunchDetector::reset()
 {
     launched = false;
     launchedTime_ms = 0;
