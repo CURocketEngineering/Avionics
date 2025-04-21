@@ -1,5 +1,0 @@
-#ifndef UARTCOMMANDHANDLER_H
-#define UARTCOMMANDHANDLER_H
-
-
-#endif
