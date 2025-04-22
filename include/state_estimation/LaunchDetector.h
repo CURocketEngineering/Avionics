@@ -4,8 +4,8 @@
  * new acceleration data as often as possible.
  */
 
-#ifndef LAUNCH_PREDICTOR_H
-#define LAUNCH_PREDICTOR_H
+#ifndef LAUNCH_DETECTOR_H
+#define LAUNCH_DETECTOR_H
 
 #include "data_handling/CircularArray.h"
 #include "data_handling/DataPoint.h"
@@ -13,7 +13,7 @@
 // Potential returns from the update function
 // Positive values are errors
 // Negative values are warnings
-enum LaunchPredictorStatus {
+enum LaunchDetectorStatus {
     LP_LAUNCH_DETECTED = 0,
     LP_ALREADY_LAUNCHED = -1,
     LP_YOUNGER_TIMESTAMP = -2, // The timestamp is younger than the last timestamp
@@ -37,7 +37,7 @@ enum LaunchPredictorStatus {
  * The delay in launch detection will equal half the window size because
  * the median will only be high once half the window is high
  */
-class LaunchPredictor
+class LaunchDetector
 {
 public:
     /**
@@ -47,15 +47,15 @@ public:
      *                       The delay in launch detection will equal half the window size
      *                       A window too small will cause false positives.
      * @param windowInterval_ms: The interval between acceleration value in the window
-     *                           You must be able to update the predictor faster than this interval
-     *                           The predictor will reject data that comes in faster than this interval to maintain this interval or slower
+     *                           You must be able to update the detector faster than this interval
+     *                           The detector will reject data that comes in faster than this interval to maintain this interval or slower
      */
-    LaunchPredictor(float accelerationThreshold_ms2,
+    LaunchDetector(float accelerationThreshold_ms2,
                     uint16_t windowSize_ms,
                     uint16_t windowInterval_ms);
 
     /**
-     * Updates the predictor with new acceleration data
+     * Updates the detector with new acceleration data
      * @param xac: The x acceleration data point in ms^2
      * @param yac: The y acceleration data point in ms^2
      * @param zac: The z acceleration data point in ms^2

@@ -20,7 +20,7 @@ This repository contains the avionics system used across various flight computer
 ### State Detection
 
 - **Launch Detection:**  
-  The [Launch Predictor](include/data_handling/LaunchPredictor.h) uses a rolling median of acceleration data to accurately detect launches. It is highly configurable to accommodate different launch profiles and includes stringent data rate and error-handling mechanisms.
+  The [Launch Detector](include/data_handling/LaunchDetector.h) uses a rolling median of acceleration data to accurately detect launches. It is highly configurable to accommodate different launch profiles and includes stringent data rate and error-handling mechanisms.
 
 - **Kalman Filter:**  
   The [Kalman Filter](include/kf-2d.h) module fuses accelerometer and altimeter data to provide precise estimates of vertical velocity.
@@ -66,7 +66,7 @@ For this test, MARTHA was used exclusively for data collection, while parachute 
  
 
 - **[MARTHA 1.3 Feb 8th 2025 Test Vehicle Launch Attempt](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.0):**
- MARTHA was mounted to the Active Aero test vehicle, but it never launched (wasn't fully assembled in time). Data was collected for 14.18 hours before the 9V battery died. The data was successfully dumped, and the last hour of data before shutdown was recorded. A consistent 100Hz loop speed was achieved. During a rough assembly, the LaunchPredictor never had a false positive, even though it detected large acceleration values.
+ MARTHA was mounted to the Active Aero test vehicle, but it never launched (wasn't fully assembled in time). Data was collected for 14.18 hours before the 9V battery died. The data was successfully dumped, and the last hour of data before shutdown was recorded. A consistent 100Hz loop speed was achieved. During a rough assembly, the LaunchDetector never had a false positive, even though it detected large acceleration values.
 
 
 - **[MARTHA 1.1 Nov 9th L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.1.0):**  
