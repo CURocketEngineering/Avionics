@@ -2,10 +2,10 @@
 #include "data_handling/DataNames.h"
 #include "ArduinoHAL.h"
 
-StateMachine::StateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector, 
+StateMachine::StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
                            VerticalVelocityEstimator* verticalVelocityEstimator) {
     this->dataSaver = dataSaver;
-    this->launchPredictor = launchPredictor;
+    this->launchDetector = launchDetector;
     this->apogeeDetector = apogeeDetector;
     this->verticalVelocityEstimator = verticalVelocityEstimator;
     this->state = STATE_ARMED;
@@ -18,9 +18,9 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            lpStatus = launchPredictor->update(aclX, aclY, aclZ);
+            lpStatus = launchDetector->update(aclX, aclY, aclZ);
             // Serial.println(lpStatus);
-            if (launchPredictor->isLaunched()) {
+            if (launchDetector->isLaunched()) {
                 // Change state to ascent
                 state = STATE_ASCENT;
 
@@ -31,7 +31,7 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
                 );
 
                 // Put the data saver into post-launch mode
-                dataSaver->launchDetected(launchPredictor->getLaunchedTime());
+                dataSaver->launchDetected(launchDetector->getLaunchedTime());
                 
                 // Start the apogee detection system
                 apogeeDetector->init(alt.data, alt.timestamp_ms);
