@@ -3,7 +3,7 @@
 
 #include "state_estimation/States.h"
 #include "state_estimation/ApogeeDetector.h"
-#include "state_estimation/LaunchPredictor.h"
+#include "state_estimation/LaunchDetector.h"
 
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
@@ -11,7 +11,7 @@
 
 class BurnoutStateMachine {
   public: 
-    BurnoutStateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector,
+    BurnoutStateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector,
       VerticalVelocityEstimator* verticalVelocityEstimator);
 
     int update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt);
@@ -21,7 +21,7 @@ class BurnoutStateMachine {
   private:
     uint8_t state;
     IDataSaver* dataSaver;
-    LaunchPredictor* launchPredictor;
+    LaunchDetector* launchDetector;
     ApogeeDetector* apogeeDetector;
     VerticalVelocityEstimator* verticalVelocityEstimator;
 };

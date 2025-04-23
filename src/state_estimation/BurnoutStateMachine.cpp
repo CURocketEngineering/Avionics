@@ -7,10 +7,10 @@
 int ts =0;
 int count = 0;
 
-BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver, LaunchPredictor* launchPredictor, ApogeeDetector* apogeeDetector,
+BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector,
                                         VerticalVelocityEstimator* verticalVelocityEstimator) {
     this->dataSaver = dataSaver;
-    this->launchPredictor = launchPredictor;
+    this->launchDetector = launchDetector;
     this->apogeeDetector = apogeeDetector;
     this->verticalVelocityEstimator = verticalVelocityEstimator;
     this->state = STATE_ARMED;
@@ -33,9 +33,9 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            lpStatus = launchPredictor->update(aclX, aclY, aclZ);
+            lpStatus = launchDetector->update(aclX, aclY, aclZ);
             // Serial.println(lpStatus);
-            if (launchPredictor->isLaunched()) {
+            if (launchDetector->isLaunched()) {
                 // Change state to ascent
                 state = STATE_POWERED_ASCENT;
 
@@ -49,7 +49,7 @@ int BurnoutStateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, 
                 );
 
                 // Put the data saver into post-launch mode
-                dataSaver->launchDetected(launchPredictor->getLaunchedTime());
+                dataSaver->launchDetected(launchDetector->getLaunchedTime());
                 
                 // Start the vertical velocity estimator
                 verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
