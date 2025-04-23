@@ -35,7 +35,7 @@ void ApogeePredictor::update()
 
     /* fallback / cross‑check using Δv / Δt */ // ------- take avg between actual and theoretical to avoid mess up
     if (ts > lastTs_) {
-        const float dt = (ts - lastTs_) * 1e-3f;
+        const float dt = (ts - lastTs_);
         const float dv = vel - lastVel_;        // typically negative while climbing
         const float dvDecel = (dt > 0.0f) ? std::max(0.0f, -dv / dt) : 0.0f;
         /* average the two estimates */
@@ -46,7 +46,7 @@ void ApogeePredictor::update()
     filteredDecel_ = alpha_ * decelSample + (1.0f - alpha_) * filteredDecel_;
 
     /* ----- predict apogee if still climbing ----- */
-    if (true) {
+    if (vel > minClimbVel_ && filteredDecel_ > 0.000001f) {
         tToApogee_      = vel / filteredDecel_;          // s
         predApogeeTs_   = ts + static_cast<uint32_t>(tToApogee_ * 1000.0f);
 
