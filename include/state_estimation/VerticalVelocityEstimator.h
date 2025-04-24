@@ -55,32 +55,32 @@ public:
     /**
      * @return Current estimated altitude (meters).
      */
-    float getEstimatedAltitude() const;
+    virtual float getEstimatedAltitude() const;
 
     /**
      * @return Current estimated vertical velocity (m/s).
      */
-    float getEstimatedVelocity() const;
+    virtual float getEstimatedVelocity() const;
 
     /**
      * @return The timestamp of the last update (milliseconds).
      */
-    uint32_t getTimestamp() const;
+    virtual uint32_t getTimestamp() const;
 
     /**
      * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - g.
      */
-    float getInertialVerticalAcceleration() const;
+    virtual float getInertialVerticalAcceleration() const;
 
     /**
      * @return The index of the axis determined to be vertical (0 = x, 1 = y, 2 = z).
      */
-    int8_t getVerticalAxis() const;
+    virtual int8_t getVerticalAxis() const;
 
     /**
      * @return The direction along that axis (+1 if positive direction is “up,” -1 if negative).
      */
-    int8_t getVerticalDirection() const;
+    virtual int8_t getVerticalDirection() const;
 
 private:
     /**

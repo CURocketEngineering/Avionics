@@ -4,6 +4,7 @@
 #include "ArduinoHAL.h"
 #include "Adafruit_Sensor.h"
 #include "state_estimation/StateMachine.h"
+#include "state_estimation/BurnoutStateMachine.h"
 
 #define LSM6DS_ACCEL_RANGE_16_G         0x03  
 #define LSM6DS_GYRO_RANGE_2000_DPS      0x03  
@@ -26,7 +27,7 @@ public:
         return instance;
     }
 
-    void begin(Stream *inStream, StateMachine *stateMachine) {
+    void begin(Stream *inStream, BurnoutStateMachine *stateMachine) {
         serial = inStream;
         this->stateMachine = stateMachine;
 
@@ -160,7 +161,7 @@ private:
 
 private:
     Stream* serial = nullptr;
-    StateMachine* stateMachine = nullptr;
+    BurnoutStateMachine* stateMachine = nullptr;
     String  _partialLine;  // used to accumulate characters until newline
 
     // Parsed sensor data
