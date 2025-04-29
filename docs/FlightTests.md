@@ -18,7 +18,7 @@
 ## Flight Test History (Most recent first)
 
 - **AA-AA-04-13-2025-0 [Active Aero FC Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/Active-Aero/releases/tag/1.0):**  
-  Flew on the same flight as **AA-MA-04-13-2025-0** and was connected to the air brakes. It successfully detected launch, engine burnout, and apogee (based on post-fight data analysis). The brakes were accurately deployed at 1 second after engine burnout and retracted 3 seconds before apogee (according to the software). There is no way of knowing if the fins actually deployed and then retracted or never deployed in the first place. Utilized the [new SD card data saver](include/data_handling/DataSaverBigSD.h) which worked well. 
+  Flew on the same flight as **AA-MA-04-13-2025-0** and was connected to the air brakes. It successfully detected launch, engine burnout, and apogee (based on post-fight data analysis). The brakes were accurately deployed at 1 second after engine burnout and retracted 3 seconds before apogee (according to the software). There is no way of knowing if the fins actually deployed and then retracted or never deployed in the first place. Utilized the [new SD card data saver](../include/data_handling/DataSaverBigSD.h) which worked well. 
 
 
 - **AA-MA-04-13-2025-0 [MARTHA 1.3 Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**  
