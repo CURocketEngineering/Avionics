@@ -1,15 +1,25 @@
 #ifndef UARTCOMMANDHANDLER_H
 #define UARTCOMMANDHANDLER_H
 
-#include <string>
-#include <queue>
-#include <vector>
 #include <functional>
+#include <queue>
+#include <string>
+#include <vector>
+
 #include "ArduinoHAL.h"
 
-#define UART_BUFFER_SIZE 128
-#define MAX_HISTORY      20
-#define MAX_ARGUMENTS    5
+enum class AsciiKey : uint8_t {
+    Escape      = 27,
+    UpArrow     = 65,
+    DownArrow   = 66,
+    Backspace   = 8,
+    Delete      = 127
+};
+
+constexpr int UART_BUFFER_SIZE = 128;
+constexpr int MAX_HISTORY = 20;
+constexpr int MAX_ARGUMENTS = 5;
+constexpr int MAX_ROW_LENGTH = 40;
 
 using namespace std;
 
@@ -38,20 +48,21 @@ private:
         string shortName;           
         function<void(queue<string>, string&)> funcPtr; // Function pointer to the command handler
     };
-    vector<Command> commands;  // Vector to store the list of commands
+    vector<Command> commands{};  // Vector to store the list of commands
 
     // Class member variables for buffering and history
     string fullLine = {""}; 
     string inputBuffer = "";  // Current input buffer
     string argBuffer = "";
     string command = "";
-    string fullLineHistory[MAX_HISTORY] = {""}; 
-    string commandHistory[MAX_HISTORY];  // Stores previous commands for up-arrow navigation
     int historyIndex = 0;  // Keeps track of the current position in the command history
-    queue<string> argumentQueue;
-    string argumentHistory[MAX_HISTORY][MAX_ARGUMENTS];
-    int argSize[MAX_HISTORY];
+    queue<string> argumentQueue{};
     bool isCommandParsed = false;
+
+    std::array<std::string, MAX_HISTORY> fullLineHistory = {};
+    std::array<std::string, MAX_HISTORY> commandHistory = {};
+    std::array<std::array<std::string, MAX_ARGUMENTS>, MAX_HISTORY> argumentHistory = {};
+    std::array<int, MAX_HISTORY> argSize = {};
 
 
     void help();
