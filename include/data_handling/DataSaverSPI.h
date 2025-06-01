@@ -18,12 +18,12 @@
 
 
 #pragma pack(push, 1)  // Pack the struct to avoid padding between the name and datas
-typedef struct {
+typedef struct { // NOLINT(altera-struct-pack-align)
     uint8_t name;
     float data;
 } Record_t; 
 
-typedef struct {
+typedef struct { // NOLINT(altera-struct-pack-align)
     uint8_t name;
     uint32_t timestamp_ms;
 } TimestampRecord_t;
