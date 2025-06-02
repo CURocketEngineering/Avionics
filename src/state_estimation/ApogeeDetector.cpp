@@ -2,25 +2,22 @@
 #include <cmath>
 
 // Constructor
-ApogeeDetector::ApogeeDetector(float apogeeThreshold_m = 1.0f)
-: apogee_flag(false),
-  apogeeThreshold_m(apogeeThreshold_m),
-  maxAltitude(0.0f),
-  maxAltitudeTimestamp(0)
+ApogeeDetector::ApogeeDetector(float apogeeThreshold_m)
+: apogeeThreshold_m(apogeeThreshold_m)
 {}
 
 // Initialize the filter state
-void ApogeeDetector::init(float initialAltitude, uint32_t initialTimestamp) {
+void ApogeeDetector::init(ApogeeDetectorInitialState initialState) {
     apogee_flag = false;
 
-    maxAltitude = initialAltitude;
-    maxAltitudeTimestamp = initialTimestamp;
+    maxAltitude = initialState.initialAltitude;
+    maxAltitudeTimestamp = initialState.initialTimestamp;
 }
 
 // Update the filter with new sensor data.
 void ApogeeDetector::update(VerticalVelocityEstimator* verticalVelocityEstimator) {
     
-    float estimated_altitude_meters = verticalVelocityEstimator->getEstimatedAltitude();
+    const float estimated_altitude_meters = verticalVelocityEstimator->getEstimatedAltitude();
 
     // Update maximum altitude seen so far.
     if (estimated_altitude_meters > maxAltitude) {
@@ -45,7 +42,7 @@ bool ApogeeDetector::isApogeeDetected() const {
 // If apogee has not been detected, returns a DataPoint with timestamp 0 and altitude 0.
 DataPoint ApogeeDetector::getApogee() const {
     if (apogee_flag) {
-        return DataPoint(maxAltitudeTimestamp, maxAltitude);
+        return {maxAltitudeTimestamp, maxAltitude};
     }
-    return DataPoint(0, 0.0f);
+    return {0, 0.0F};
 }

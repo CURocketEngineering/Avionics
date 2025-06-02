@@ -40,7 +40,7 @@ int StateMachine::update(AccelerationTriplet accel, DataPoint alt) {
                 dataSaver->launchDetected(launchDetector->getLaunchedTime());
                 
                 // Start the apogee detection system
-                apogeeDetector->init(alt.data, alt.timestamp_ms);
+                apogeeDetector->init({alt.data, alt.timestamp_ms});
 
                 // Update the vertical velocity estimator
                 verticalVelocityEstimator->update(accel, alt);

@@ -59,7 +59,7 @@ int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
                 verticalVelocityEstimator->update(accel, alt);
 
                 // Start the apogee detection system
-                apogeeDetector->init(alt.data, alt.timestamp_ms);
+                apogeeDetector->init({alt.data, alt.timestamp_ms});
                  
             }
             break;
