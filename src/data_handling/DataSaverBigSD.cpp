@@ -37,7 +37,9 @@ bool DataSaverBigSD::begin() {
 
 /* -----------------------  saveDataPoint()  ------------------------------- */
 int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
-    if (!_ready) return -1;
+    if (!_ready) {
+        return -1;
+    }
 
     // Reserve space left
     size_t remaining = sizeof(_buf) - _bufLen;
@@ -49,7 +51,9 @@ int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
     // Check snprintf result
     if (n <= 0 || (size_t)n >= remaining) {
         // Flush current buffer and try again if this line couldn’t fit
-        if (_file.write(_buf, _bufLen) != _bufLen) return -3;
+        if (_file.write(_buf, _bufLen) != _bufLen) {
+          return -3;
+        }
         _file.sync();  // just to be extra safe during debug
         _bufLen = 0;
         _linesPending = 0;
@@ -57,19 +61,23 @@ int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
         // Try again (safe now)
         remaining = sizeof(_buf);
         n = snprintf(_buf, remaining, "%lu,%u,%.6f\n", static_cast<long unsigned int>(dp.timestamp_ms), name, dp.data);
-        if (n <= 0 || (size_t)n >= remaining) return -4;  // can't encode this line even in an empty buffer
+        if (n <= 0 || (size_t)n >= remaining) {
+          return -4;  // can't encode this line even in an empty buffer
+        }
     }
 
     _bufLen += n;
     ++_linesPending;
 
-    uint32_t now = millis();
-    bool bufFull   = (_bufLen >= kBufBytes);
-    bool manyLines = (_linesPending >= kFlushLines);
-    bool timeUp    = (now - _lastFlushMs >= kFlushMs);
+    uint32_t const now = millis();
+    bool const bufFull = (_bufLen >= kBufBytes);
+    bool const manyLines = (_linesPending >= kFlushLines);
+    bool const timeUp = (now - _lastFlushMs >= kFlushMs);
 
     if (bufFull || manyLines || timeUp) {
-        if (_file.write(_buf, _bufLen) != _bufLen) return -5;
+        if (_file.write(_buf, _bufLen) != _bufLen) {
+          return -5;
+        }
         _bufLen       = 0;
         _linesPending = 0;
         _lastFlushMs  = now;
@@ -86,7 +94,9 @@ int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
 
 /* -----------------------------  end()  ----------------------------------- */
 void DataSaverBigSD::end() {
-    if (!_ready) return;
+    if (!_ready) {
+        return;
+    }
     if (_bufLen) {
         _file.write(_buf, _bufLen);
         _bufLen = 0;
@@ -101,6 +111,8 @@ std::string DataSaverBigSD::nextFreeFilePath() {
     char path[32];
     for (uint16_t n = 0;; ++n) {
         snprintf(path, sizeof(path), "/stream-%u.csv", n);
-        if (!sd.exists(path)) return std::string(path);
+        if (!sd.exists(path)) {
+            return std::string(path);
+        }
     }
 }
