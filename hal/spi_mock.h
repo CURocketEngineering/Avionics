@@ -2,8 +2,8 @@
 #define SPI_MOCK_H
 
 #include <array>
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 #include <cstdio>
 
 /* ──────────────────────────────

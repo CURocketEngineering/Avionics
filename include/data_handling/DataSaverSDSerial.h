@@ -1,11 +1,12 @@
 #ifndef DATA_SAVER_SD_SERIAL_H
 #define DATA_SAVER_SD_SERIAL_H
 
-#include "data_handling/DataPoint.h"
-#include "data_handling/DataSaver.h"
 #include <array>
 #include <cstdlib>
+
 #include "ArduinoHAL.h"
+#include "data_handling/DataPoint.h"
+#include "data_handling/DataSaver.h"
 
 class DataSaverSDSerial: public IDataSaver {
     // Given data points, will write the data over uart to a serial data logger 

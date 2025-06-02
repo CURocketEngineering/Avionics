@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <stdint.h>
+#include <stdio.h>
+
 #include <algorithm>
 #include <cstdarg>
 #include <cstdint>
@@ -9,10 +12,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include <stdio.h>
-#include <stdint.h>
-
 
 class MockSerial {
 public:

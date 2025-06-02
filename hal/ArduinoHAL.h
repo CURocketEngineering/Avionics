@@ -22,10 +22,10 @@ using String = std::string;
 #include "spi_mock.h"
 
 // Within here we must define the mock functions for the Arduino functions
-#include "serial_mock.h"
-#include "Adafruit_SPIFlash_mock.h"
-
 #include <thread>
+
+#include "Adafruit_SPIFlash_mock.h"
+#include "serial_mock.h"
 
 #define OUTPUT 1
 #define INPUT 0

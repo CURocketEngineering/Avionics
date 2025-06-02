@@ -1,10 +1,12 @@
 #pragma once
 
+#include <stdint.h>
+
+#include <string>
+
+#include "ArduinoHAL.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
-#include "ArduinoHAL.h"
-#include <string>
-#include <stdint.h>
 
 class DataSaverBigSD : public IDataSaver {
 public:
