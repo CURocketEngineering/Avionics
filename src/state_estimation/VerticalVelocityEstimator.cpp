@@ -1,28 +1,30 @@
-#include "state_estimation/VerticalVelocityEstimator.h"
-#include <cmath>
 #include <array>
+#include <cmath>
 
-VerticalVelocityEstimator::VerticalVelocityEstimator(float accelNoiseVar, float altimeterNoiseVar)
-    : state_alt(0.0f),
-      state_vel(0.0f),
+#include "state_estimation/VerticalVelocityEstimator.h"
+
+
+VerticalVelocityEstimator::VerticalVelocityEstimator(NoiseVariances noise)
+    : state_alt(0.0F),
+      state_vel(0.0F),
       lastTimestamp_ms(0),
       initialized(false),
-      accelNoiseVariance(accelNoiseVar),
-      altimeterNoiseVariance(altimeterNoiseVar),
+      accelNoiseVariance(noise.accelNoiseVar),
+      altimeterNoiseVariance(noise.altimeterNoiseVar),
       verticalAxis(0),
       verticalDirection(0),
       verticalAxisDetermined(false),
-      inertialVerticalAcceleration(0.0f)
+      inertialVerticalAcceleration(0.0F)
 {
     // Initialize the covariance matrix P with moderate initial uncertainty.
     P[0][0] = 1.0F;  P[0][1] = 0.0F;
     P[1][0] = 0.0F;  P[1][1] = 1.0F;
 }
 
-void VerticalVelocityEstimator::init(float initialAltitude, uint32_t initialTimestamp) {
-    state_alt = initialAltitude;
+void VerticalVelocityEstimator::init(InitialState initialState) {
+    state_alt = initialState.initialAltitude;
     state_vel = 0.0F;
-    lastTimestamp_ms = initialTimestamp;
+    lastTimestamp_ms = initialState.initialTimestamp;
     initialized = true;
 
     // Reset vertical axis determination.
@@ -37,7 +39,7 @@ void VerticalVelocityEstimator::init(float initialAltitude, uint32_t initialTime
 
 void VerticalVelocityEstimator::determineVerticalAxis(const std::array<float, 3>& rawAcl) {
     // Check the magnitude of each axis reading.
-    float mag[3] = { std::fabs(rawAcl[0]), std::fabs(rawAcl[1]), std::fabs(rawAcl[2]) };
+    std::array<float, 3> mag = { std::fabs(rawAcl[0]), std::fabs(rawAcl[1]), std::fabs(rawAcl[2]) };
 
     // Find the index of the largest magnitude.
     verticalAxis = 0; // Start with X
@@ -60,7 +62,8 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet accel, const Da
 
     // If not initialized, do so with the altimeter reading.
     if (!initialized) {
-        init(altimeter.data, currentTimestamp_ms);
+        const InitialState initialState = { altimeter.data, currentTimestamp_ms };
+        init(initialState);
         return;
     }
 

@@ -1,8 +1,9 @@
 #include "data_handling/DataSaverBigSD.h"
 #include "ArduinoHAL.h"   // for Serial
 
-/* static */ SdFat DataSaverBigSD::sd;          // one SdFat object for all
-
+// one SdFat object for all
+/* static */ SdFat DataSaverBigSD::sd; //NOLINT(readability-identifier-length)      
+    
 /* ------------------------------------------------------------------------- */
 DataSaverBigSD::DataSaverBigSD(uint8_t csPin) : _csPin(csPin) {}
 

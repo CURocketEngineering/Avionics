@@ -2,14 +2,17 @@
 
 #pragma once
 
-#include <iostream>
-#include <stdio.h>
+#include <algorithm>
 #include <cstdarg>
+#include <cstdint>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <algorithm>
 #include <vector>
+
+#include <stdio.h>
 #include <stdint.h>
+
 
 class MockSerial {
 public:

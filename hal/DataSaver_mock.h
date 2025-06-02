@@ -1,8 +1,9 @@
 #pragma once 
 
 #include <iostream>
-#include <vector>
 #include <utility>
+#include <vector>
+
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 

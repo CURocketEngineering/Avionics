@@ -1,8 +1,8 @@
 #ifndef ADAFRUIT_SPIFLASH_MOCK_H
 #define ADAFRUIT_SPIFLASH_MOCK_H
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define FAKE_MEMORY_SIZE_BYTES 16777216 // 16MB
 #define SFLASH_SECTOR_SIZE 4096

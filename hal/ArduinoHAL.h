@@ -32,11 +32,11 @@ using String = std::string;
 #define HIGH 1
 #define LOW 0
 
-inline void pinMode(int pin, int mode) {
+inline void pinMode(int pin, int mode) { //NOLINT
     // Do nothing
 }
 
-inline void digitalWrite(int pin, int value) {
+inline void digitalWrite(int pin, int value) { //NOLINT
     // Do nothing
 }
 
