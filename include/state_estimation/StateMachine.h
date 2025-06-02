@@ -17,7 +17,7 @@ class StateMachine {
 
     int update(AccelerationTriplet accel, DataPoint alt);
 
-    uint8_t getState();
+    uint8_t getState() const;
 
   private:
     uint8_t state;

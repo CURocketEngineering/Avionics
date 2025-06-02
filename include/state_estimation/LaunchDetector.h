@@ -64,7 +64,7 @@ public:
      */
     int update(AccelerationTriplet accel);
     bool isLaunched() {return launched;}
-    float getLaunchedTime() {return launchedTime_ms;}
+    uint32_t getLaunchedTime() {return launchedTime_ms;}
     float getMedianAccelerationSquared() {return median_acceleration_squared;}
     void reset();
 

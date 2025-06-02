@@ -1,15 +1,20 @@
-#include "state_estimation/StateMachine.h"
-#include "state_estimation/StateEstimationTypes.h"
-#include "data_handling/DataNames.h"
 #include "ArduinoHAL.h"
 
-StateMachine::StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
-                           VerticalVelocityEstimator* verticalVelocityEstimator) {
-    this->dataSaver = dataSaver;
-    this->launchDetector = launchDetector;
-    this->apogeeDetector = apogeeDetector;
-    this->verticalVelocityEstimator = verticalVelocityEstimator;
-    this->state = STATE_ARMED;
+#include "data_handling/DataNames.h"
+#include "state_estimation/StateEstimationTypes.h"
+#include "state_estimation/StateMachine.h"
+
+
+StateMachine::StateMachine(IDataSaver* dataSaver,
+                           LaunchDetector* launchDetector,
+                           ApogeeDetector* apogeeDetector,
+                           VerticalVelocityEstimator* verticalVelocityEstimator)
+    : dataSaver(dataSaver),
+      launchDetector(launchDetector),
+      apogeeDetector(apogeeDetector),
+      verticalVelocityEstimator(verticalVelocityEstimator),
+      state(STATE_ARMED)
+{
 }
 
 int StateMachine::update(AccelerationTriplet accel, DataPoint alt) {
@@ -65,6 +70,6 @@ int StateMachine::update(AccelerationTriplet accel, DataPoint alt) {
     return 0;
 }
 
-uint8_t StateMachine::getState() {
+uint8_t StateMachine::getState() const {
     return state;
 }
