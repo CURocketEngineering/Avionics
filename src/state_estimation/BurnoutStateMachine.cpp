@@ -1,19 +1,23 @@
-#include "state_estimation/BurnoutStateMachine.h"
-#include "data_handling/DataNames.h"
 #include "ArduinoHAL.h"
 
-#define GRAVITY 9.8
+#include "data_handling/DataNames.h"
+#include "state_estimation/BurnoutStateMachine.h"
 
-int ts =0;
+constexpr float GRAVITY = 9.8;
+
+uint32_t tempTimeStamp =0;
 int count = 0;
 
-BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector,
-                                        VerticalVelocityEstimator* verticalVelocityEstimator) {
-    this->dataSaver = dataSaver;
-    this->launchDetector = launchDetector;
-    this->apogeeDetector = apogeeDetector;
-    this->verticalVelocityEstimator = verticalVelocityEstimator;
-    this->state = STATE_ARMED;
+BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
+                                         LaunchDetector* launchDetector,
+                                         ApogeeDetector* apogeeDetector,
+                                         VerticalVelocityEstimator* verticalVelocityEstimator)
+    : dataSaver(dataSaver),
+      launchDetector(launchDetector),
+      apogeeDetector(apogeeDetector),
+      verticalVelocityEstimator(verticalVelocityEstimator),
+      state(STATE_ARMED)
+{
 }
 
 int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
@@ -22,7 +26,7 @@ int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
 
     if(count == 0)
     {
-        ts = accel.x.timestamp_ms;
+        tempTimeStamp = accel.x.timestamp_ms;
         count++;
     }
     Serial.print("EA: ");
@@ -100,13 +104,13 @@ int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
             // Do nothing
             // Serial.println("in descent");
             Serial.print("Timestamp: ");
-            Serial.println(ts);
+            Serial.println(tempTimeStamp);
             break;
     }
 
     return 0;
 }
 
-uint8_t BurnoutStateMachine::getState() {
+uint8_t BurnoutStateMachine::getState() const {
     return state;
 }
