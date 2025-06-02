@@ -3,14 +3,13 @@
 #include "data_handling/SensorDataHandler.h"
 #include "ArduinoHAL.h"
 
-// If it needs to be stored, then it should be stored in the data saver
-SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* ds) {
-    this->name = name;
-    this->dataSaver = ds;
-    this->saveInterval_ms = 0;
-    this->lastSaveTime_ms = 0;
-    this->lastDataPointSaved = {0, 0};
-}
+SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* dataSaver)
+    : name(name),
+      dataSaver(dataSaver),
+      saveInterval_ms(0),
+      lastSaveTime_ms(0),
+      lastDataPointSaved({0, 0})
+{}
 
 void SensorDataHandler::restrictSaveSpeed(uint16_t interval_ms){
     this->saveInterval_ms = interval_ms;

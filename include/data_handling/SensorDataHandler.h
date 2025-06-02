@@ -4,14 +4,14 @@
 #ifndef SensorDataHandler_H
 #define SensorDataHandler_H
 
+#include <algorithm>
+#include <cmath>
 #include <cstdint>
 #include <cstdlib>
 #include <vector>
-#include <algorithm>
-#include <cmath>
 
-#include "data_handling/DataPoint.h"
 #include "data_handling/CircularArray.h"
+#include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
 // This class is used to store data from a sensor
@@ -24,7 +24,7 @@
 class SensorDataHandler {
 public:
     // Constructor
-    SensorDataHandler(uint8_t name, IDataSaver* ds);
+    SensorDataHandler(uint8_t name, IDataSaver* dataSaver);
     
     // Adds a data point to the sensor data handler
     // Will save it if the saveInterval_ms has passed
@@ -34,7 +34,7 @@ public:
     // Sets the minimum time between each data point that is saved to the SD card
     void restrictSaveSpeed(uint16_t interval_ms);
 
-    uint8_t getName() {return name;}
+    uint8_t getName() const {return name;}
 
     DataPoint getLastDataPointSaved() const {
         return lastDataPointSaved;
