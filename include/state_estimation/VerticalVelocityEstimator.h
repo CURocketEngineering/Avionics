@@ -2,7 +2,15 @@
 #define VELOCITY_ESTIMATOR_H
 
 #include <cstdint>
+#include <array>
+
 #include "data_handling/DataPoint.h"
+#include "state_estimation/StateEstimationTypes.h"
+
+
+constexpr float MINIMUM_DELTA_T_S = 0.01f; // Minimum delta time for updates (10ms)
+constexpr float MILLISECONDS_TO_SECONDS = 0.001f; // Conversion factor from milliseconds to seconds
+
 
 /**
  * VerticalVelocityEstimator provides a 1D Kalman filter that fuses altimeter and acceleration
@@ -49,7 +57,7 @@ public:
      * @param accelZ    Accelerometer reading for the z-axis (vertical).
      * @param altimeter Altimeter reading.
      */
-    void update(const DataPoint &accelX, const DataPoint &accelY, const DataPoint &accelZ,
+    void update(const AccelerationTriplet accel,
                 const DataPoint &altimeter);
 
     /**
@@ -87,7 +95,7 @@ private:
      * Determine which of the three accelerometer axes is vertical, based on the largest
      * magnitude reading. Also sets the direction (+1 or -1) depending on the sign.
      */
-    void determineVerticalAxis(const float rawAcl[3]);
+    void determineVerticalAxis(const std::array<float, 3>& rawAcl);
 
 private:
     // Kalman filter state: altitude (m), vertical velocity (m/s).
@@ -98,7 +106,7 @@ private:
     float P[2][2];
 
     // Time of last update (milliseconds).
-    uint32_t lastTimestamp;
+    uint32_t lastTimestamp_ms;
 
     // True after init() has been called.
     bool initialized;

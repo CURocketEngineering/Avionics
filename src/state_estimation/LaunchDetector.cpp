@@ -28,7 +28,7 @@ LaunchDetector::LaunchDetector(float accelerationThreshold_ms2,
     this->max_window_size_ms = (windowInterval_ms + acceptableTimeDifference_ms) * (AclMagSqWindow_ms2.getMaxSize() - 1);
 }
 
-int LaunchDetector::update(DataPoint xac, DataPoint yac, DataPoint zac)
+int LaunchDetector::update(AccelerationTriplet accel)
 {
     // :xac: The x acceleration data point in ms^2
     // :yac: The y acceleration data point in ms^2
@@ -47,11 +47,11 @@ int LaunchDetector::update(DataPoint xac, DataPoint yac, DataPoint zac)
         return LP_ALREADY_LAUNCHED;
     }
     // Calculate the magnitude of the acceleration squared
-    float aclMagSq = xac.data * xac.data + yac.data * yac.data + zac.data * zac.data;
+    float aclMagSq = accel.x.data * accel.x.data + accel.y.data * accel.y.data + accel.z.data * accel.z.data;
 
     // Take the average of the timestamps
     // Ideally these should all be the same
-    uint32_t time_ms = (xac.timestamp_ms + yac.timestamp_ms + zac.timestamp_ms) / 3;
+    uint32_t time_ms = (accel.x.timestamp_ms + accel.y.timestamp_ms + accel.z.timestamp_ms) / 3;
 
     // Making sure the new time is greater than the last time
     if (time_ms < AclMagSqWindow_ms2.getFromHead(0).timestamp_ms)

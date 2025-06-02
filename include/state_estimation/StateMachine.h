@@ -15,7 +15,7 @@ class StateMachine {
     StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
                  VerticalVelocityEstimator* verticalVelocityEstimator);
 
-    int update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt);
+    int update(AccelerationTriplet accel, DataPoint alt);
 
     uint8_t getState();
 

@@ -9,6 +9,7 @@
 
 #include "data_handling/CircularArray.h"
 #include "data_handling/DataPoint.h"
+#include "state_estimation/StateEstimationTypes.h"
 
 // Potential returns from the update function
 // Positive values are errors
@@ -61,7 +62,7 @@ public:
      * @param zac: The z acceleration data point in ms^2
      * @return: False if the data is ignored, true if the data is accepted
      */
-    int update(DataPoint xac, DataPoint yac, DataPoint zac);
+    int update(AccelerationTriplet accel);
     bool isLaunched() {return launched;}
     float getLaunchedTime() {return launchedTime_ms;}
     float getMedianAccelerationSquared() {return median_acceleration_squared;}
