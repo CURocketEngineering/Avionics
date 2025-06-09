@@ -10,7 +10,7 @@ class printSaver : public IDataSaver {
     // Just prints what would otherwise be saved to the terminal 
 
     public:
-        int saveDataPoint(DataPoint dp, uint8_t name) override {
+        int saveDataPoint(const DataPoint& dp, uint8_t name) override {
             std::cout << name << " " << dp.timestamp_ms << " " << dp.data << std::endl;
             return 0;
         }

@@ -26,7 +26,7 @@ DataSaverSDSerial::DataSaverSDSerial(HardwareSerial &SD_serial) : SD_serial(SD_s
     // Nothing to do here
 }
 
-int DataSaverSDSerial::saveDataPoint(DataPoint dp, uint8_t name){
+int DataSaverSDSerial::saveDataPoint(const DataPoint& dp, uint8_t name){
     dataToSDCardSerial(name, dp.timestamp_ms, dp.data, this->SD_serial);
     return 0;
 }

@@ -16,7 +16,7 @@ class DataSaverSDSerial: public IDataSaver {
         DataSaverSDSerial(HardwareSerial &SD_serial);
         
         using IDataSaver::saveDataPoint; // Allow the use of the other saveDataPoint overload
-        virtual int saveDataPoint(DataPoint dp, uint8_t name) override;
+        virtual int saveDataPoint(const DataPoint& dp, uint8_t name) override;
 
     private:
         HardwareSerial &SD_serial;

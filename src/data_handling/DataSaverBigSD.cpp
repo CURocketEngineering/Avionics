@@ -36,7 +36,7 @@ bool DataSaverBigSD::begin() {
 }
 
 /* -----------------------  saveDataPoint()  ------------------------------- */
-int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
+int DataSaverBigSD::saveDataPoint(const DataPoint& dp, uint8_t name) {
     if (!_ready) {
         return -1;
     }

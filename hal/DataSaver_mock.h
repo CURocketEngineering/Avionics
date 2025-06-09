@@ -14,7 +14,7 @@ class DataSaverMock: public IDataSaver {
         std::vector<std::pair<DataPoint, uint8_t>> saveDataPointCalls;
 
         // Mock saveDataPoint function
-        int saveDataPoint(DataPoint dp, uint8_t name) override {
+        int saveDataPoint(const DataPoint& dp, uint8_t name) override {
             saveDataPointCalls.emplace_back(dp, name);
             return 0; // Return success
         }
