@@ -16,7 +16,7 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
   clearInternalState();
 }
 
-int DataSaverSPI::saveDataPoint(DataPoint dp, uint8_t name) {
+int DataSaverSPI::saveDataPoint(const DataPoint& dp, uint8_t name) {
   if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) {
     return 1;  // Do not save if we rebooted in post-launch mode
   }
@@ -179,8 +179,8 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
         }
 
         // At the start of each page, write some alignment characters
-        char startLine[3] = {'l', 's', 'h'};
-        serial.write(reinterpret_cast<uint8_t*>(startLine), 3);
+        uint8_t startLine[3] = {'l', 's', 'h'};
+        serial.write(startLine, 3);
 
 
 
@@ -200,9 +200,9 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) {
         }
 
     }
-    for (int i = 0; i < 255; i++){
-        char doneLine[3] = {'E', 'O', 'F'};
-        serial.write(reinterpret_cast<uint8_t*>(doneLine), 3);
+    for (int i = 0; i < BUFFER_SIZE; i++){
+        uint8_t doneLine[3] = {'E', 'O', 'F'};
+        serial.write(doneLine, 3);
         if (done){
             serial.write('D');
         }
@@ -245,6 +245,8 @@ void DataSaverSPI::eraseAllData() {
 }
 
 void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
+    this->launchTimestamp_ms = launchTimestamp_ms;
+
     // 0) Stop if we are already in post-launch mode
     if (postLaunchMode) {
         return;
@@ -274,7 +276,7 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
     //
     //    If you only occasionally store the timestamp, you might want a more nuanced approach.
     // 
-    size_t recordSize = sizeof(uint32_t) + sizeof(uint8_t) + sizeof(DataPoint);
+    size_t recordSize = sizeof(uint32_t) + sizeof(uint8_t) + sizeof(DataPoint); //NOLINT(cppcoreguidelines-init-variables)
     uint32_t const oneMinuteInMs = 60000;
     uint32_t const dataPointsPerMinute = oneMinuteInMs / timestampInterval_ms;
     uint32_t rollbackBytes       = dataPointsPerMinute * recordSize;
@@ -321,9 +323,9 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
 
     launchWriteAddress = static_cast<uint32_t>(potentialAddr);
 
-    // Write the launchWriteAddress to the metadata
-    flash->writeBuffer(LAUNCH_START_ADDRESS_ADDRESS, reinterpret_cast<uint8_t*>(&launchWriteAddress),
-                                                     sizeof(launchWriteAddress));
+    uint8_t bytes[sizeof(launchWriteAddress)];
+    std::memcpy(bytes, &launchWriteAddress, sizeof(launchWriteAddress));
+    flash->writeBuffer(LAUNCH_START_ADDRESS_ADDRESS, bytes, sizeof(launchWriteAddress));
 }
 
 bool DataSaverSPI::writeToFlash(const uint8_t* data, size_t length) {

@@ -54,7 +54,7 @@ public:
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
      * @return int 0 on success; non-zero on error
      */
-    virtual int saveDataPoint(DataPoint dp, uint8_t name) override;
+    int saveDataPoint(const DataPoint& dp, uint8_t name) override;
 
     int saveTimestamp(uint32_t timestamp_ms, uint8_t name);
 
@@ -163,6 +163,9 @@ private:
 
     // The last timestamp we actually wrote to flash
     uint32_t lastTimestamp_ms;
+
+    // The timestamp this module was given for launch
+    uint32_t launchTimestamp_ms; 
 
     // The last data point written
     DataPoint lastDataPoint;

@@ -18,7 +18,7 @@ class Adafruit_SPIFlash {
         return true;
     }
 
-    bool size() {
+    size_t size() {
         return FAKE_MEMORY_SIZE_BYTES;
     }
 
