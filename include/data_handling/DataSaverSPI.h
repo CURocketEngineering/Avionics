@@ -16,6 +16,8 @@
 #define POST_LAUNCH_FLAG_TRUE 0x00 // Flag to indicate post-launch mode is active
 #define POST_LAUNCH_FLAG_FALSE 0x01 // Flag to indicate post-launch mode is not active
 
+constexpr uint8_t EMPTY_PAGE = 0xFF;
+
 
 #pragma pack(push, 1)  // Pack the struct to avoid padding between the name and datas
 typedef struct { // NOLINT(altera-struct-pack-align)
@@ -56,7 +58,7 @@ public:
      */
     int saveDataPoint(const DataPoint& dp, uint8_t name) override;
 
-    int saveTimestamp(uint32_t timestamp_ms, uint8_t name);
+    int saveTimestamp(uint32_t timestamp_ms);
 
     virtual bool begin() override;
 
