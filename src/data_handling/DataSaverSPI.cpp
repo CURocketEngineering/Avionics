@@ -16,25 +16,25 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
   clearInternalState();
 }
 
-int DataSaverSPI::saveDataPoint(const DataPoint& dp, uint8_t name) {
+int DataSaverSPI::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
   if (rebootedInPostLaunchMode || isChipFullDueToPostLaunchProtection) {
     return 1;  // Do not save if we rebooted in post-launch mode
   }
 
     // Write a timestamp automatically if enough time has passed since the last one
-    uint32_t const timestamp = dp.timestamp_ms;
+    uint32_t const timestamp = dataPoint.timestamp_ms;
     if (timestamp - lastTimestamp_ms > timestampInterval_ms) {
       if (saveTimestamp(timestamp) < 0) {
         return -1;
       }
     }
 
-    Record_t record = {name, dp.data};
+    Record_t record = {name, dataPoint.data};
     if (addRecordToBuffer(&record) < 0) {
       return -1;
     }
 
-    lastDataPoint = dp;
+    lastDataPoint = dataPoint;
     return 0;
 }
 
