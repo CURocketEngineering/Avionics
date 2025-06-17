@@ -30,6 +30,8 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
   **AA-MA-2025-04-13-0** including apogee detection which performed poorly in the same way as before (underestimating throughout the flight). 
   The main chute was deployed at apogee, drogue was never deployed. 
   Launch was detected 0.19 seconds late, and apogee was detected 0.55 seconds lates. Reported apogee was 9917 feet. 
+  Both boards were powered at 3:00 AM and then launch at around 1:30 PM, so the battery was on for 
+  about 10.5 hours. This was a 9v Alkaline battery. 
 
 - **CV-MA-2025-06-11-1 [MARTHA 1.3 B2 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**  
   Flew on the same rocket as **CV-MA-2025-06-11-0** to about 9900 feet. It also lost power at drogue deployment. It flew older software, the same as
