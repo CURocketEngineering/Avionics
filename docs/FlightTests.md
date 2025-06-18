@@ -25,6 +25,18 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
 
 ## Flight Test History (most recent first)
 
+* **CV-MA-2025-06-11-0 [MARTHA 1.3 B1 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**
+  Flew on the competition vehicle for IREC 2025 to about 9900 feet. It lost power at drogue deployment. It flew the same software as
+  **AA-MA-2025-04-13-0**, including apogee detection, which performed poorly in the same way as before (underestimating throughout the flight).
+  The main chute was deployed at apogee; drogue was never deployed.
+  Launch was detected 0.19 seconds late, and apogee was detected 0.55 seconds late. Reported apogee was 9917 feet.
+  Both boards were powered at 3:00 AM and then launched at around 1:30 PM, so the battery was on for
+  about 10.5 hours. This was a 9V alkaline battery.
+
+* **CV-MA-2025-06-11-1 [MARTHA 1.3 B2 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**
+  Flew on the same rocket as **CV-MA-2025-06-11-0** to about 9900 feet. It also lost power at drogue deployment. It flew older software, the same as
+  **L1-MA-2025-03-08-0**. Launch was detected 0.19 seconds late, and apogee was detected 0.70 seconds late. Reported apogee was 9904 feet.
+
 - **AA-AA-2025-04-13-0 [Active Aero FC Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/Active-Aero/releases/tag/1.0):**  
   Flew on the same flight as **AA-MA-04-13-2025-0** and was connected to the air brakes. It successfully detected launch, engine burnout, and apogee (based on post-fight data analysis). The brakes were accurately deployed at 1 second after engine burnout and retracted 3 seconds before apogee (according to the software). There is no way of knowing if the fins actually deployed and then retracted or never deployed in the first place. Utilized the [new SD card data saver](../include/data_handling/DataSaverBigSD.h) which worked well. 
 
@@ -44,4 +56,4 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
   Launch detection and SD card data logging performed as expected. No altitude data was recorded, likely due to issues with sensor drivers or hardware damage.
 
 - **CV-MA-2024-06-22-0 [MARTHA 1.1 Spaceport 2024](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.0.0):**  
-  Although data was captured via the serial logger, a battery failure on the pad resulted in no launch data being recorded. The log from being the pad for 6 hours was only 30 minutes long.
+  Although data was captured via the serial logger, a battery failure on the pad resulted in no launch data being recorded. The log from being on the pad for 6 hours was only 30 minutes long.
