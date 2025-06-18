@@ -8,6 +8,19 @@
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
+constexpr size_t PRE_ALLOCATE_SIZE_MB = 4; // Define the size in MB
+constexpr size_t BYTES_PER_MB = 1024 * 1024; // Define the number of bytes in 1 MB
+constexpr uint32_t SYNC_INTERVAL_MS = 1000;
+constexpr size_t FILE_PATH_BUFFER_SIZE = 32; // Buffer size for file path
+
+enum BigSDDataSaverError {
+    DS_SUCCESS = 0,            // Operation successful
+    DS_NOT_READY = -1,         // DataSaver is not ready
+    DS_BUFFER_WRITE_FAILED = -3, // Failed to write buffer to file
+    DS_LINE_TOO_LONG = -4,     // Line couldn't fit in an empty buffer
+    DS_FLUSH_FAILED = -5       // Failed to flush buffer to file
+};
+
 class DataSaverBigSD : public IDataSaver {
 public:
     explicit DataSaverBigSD(uint8_t csPin = 5);
@@ -22,7 +35,7 @@ public:
     void end();
 
 private:
-    std::string nextFreeFilePath();                    // /stream‑<n>.csv
+    static std::string nextFreeFilePath();                    // /stream‑<n>.csv
 
     uint8_t  _csPin;
     bool     _ready {false};
@@ -40,7 +53,7 @@ private:
     static constexpr uint32_t kFlushMs    = 200;   // or after 200 ms
 
     /* buffering state */
-    char      _buf[kBufBytes];
+    char      _buf[kBufBytes] = {};
     uint16_t  _bufLen       = 0;
     uint16_t  _linesPending = 0;
     uint32_t  _lastFlushMs  = 0;

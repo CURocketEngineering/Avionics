@@ -56,7 +56,7 @@ public:
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
      * @return int 0 on success; non-zero on error
      */
-    int saveDataPoint(const DataPoint& dp, uint8_t name) override;
+    int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
     int saveTimestamp(uint32_t timestamp_ms);
 
