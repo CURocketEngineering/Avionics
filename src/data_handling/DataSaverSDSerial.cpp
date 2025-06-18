@@ -3,12 +3,15 @@
 #include <cstdint>
 
 #pragma pack(push, 1)
+
+// NOLINTBEGIN(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
 struct SerialData {
     uint32_t timestamp_ms;
     float data;
     uint8_t name;
     std::array<char, 3> dlim;
 };
+// NOLINTEND(cppcoreguidelines-pro-type-member-init, hicpp-member-init)
 #pragma pack(pop)
 
 
@@ -18,6 +21,7 @@ struct SerialData {
 */
 void dataToSDCardSerial(uint8_t name, uint32_t timestamp_ms, float data, HardwareSerial &SD_serial) { // NOLINT(bugprone-easily-swappable-parameters)
     SerialData serialData = {timestamp_ms, data, name, {{'\0', '\r', '\n'}}};
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     SD_serial.write(reinterpret_cast<const uint8_t*>(&serialData), sizeof(SerialData));
 }
 

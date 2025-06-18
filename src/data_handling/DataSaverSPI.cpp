@@ -10,6 +10,7 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
       nextWriteAddress(DATA_START_ADDRESS),
       bufferIndex(0),
       lastTimestamp_ms(0),
+      launchTimestamp_ms(0),
       postLaunchMode(false),
       launchWriteAddress(0),
       isChipFullDueToPostLaunchProtection(false) {

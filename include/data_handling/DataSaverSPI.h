@@ -196,7 +196,7 @@ private:
     bool readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length);
 
     // Write buffer to improve write performance
-    uint8_t buffer[BUFFER_SIZE];
+    uint8_t buffer[BUFFER_SIZE] = {};
     size_t bufferIndex = 0;
     uint32_t bufferFlushes = 0; // Keep track of how many times the buffer has been flushed
 

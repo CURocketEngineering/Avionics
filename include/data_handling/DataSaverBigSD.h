@@ -29,7 +29,7 @@ public:
     bool begin();
 
     /** Buffer a CSV line (timestamp,name,value).  Flushes to SD in bulk. */
-    int  saveDataPoint(const DataPoint& dp, uint8_t name) override;
+    int  saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
     /** Flush any pending bytes and close the file (call before power‑off). */
     void end();
