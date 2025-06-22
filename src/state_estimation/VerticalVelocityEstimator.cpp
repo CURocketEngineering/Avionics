@@ -55,7 +55,7 @@ void VerticalVelocityEstimator::determineVerticalAxis(const std::array<float, 3>
 }
 
 // NOLINTBEGIN(readability-identifier-length)
-void VerticalVelocityEstimator::update(const AccelerationTriplet accel, const DataPoint &altimeter) 
+void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const DataPoint &altimeter) 
 {
     // Use the altimeter timestamp as the reference for this update.
     const uint32_t currentTimestamp_ms = altimeter.timestamp_ms;
