@@ -17,7 +17,7 @@ StateMachine::StateMachine(IDataSaver* dataSaver,
 {
 }
 
-int StateMachine::update(const AccelerationTriplet& accel, DataPoint alt) {
+int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 

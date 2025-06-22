@@ -69,7 +69,7 @@ public:
      * @param accelZ    Accelerometer reading for the z-axis (vertical).
      * @param altimeter Altimeter reading.
      */
-    void update(const AccelerationTriplet accel,
+    void update(const AccelerationTriplet& accel,
                 const DataPoint &altimeter);
 
     /**
