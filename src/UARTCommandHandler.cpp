@@ -231,11 +231,11 @@ void CommandLine::help(){
 
 void CommandLine::trimSpaces(std::string& str) { //NOLINT(readability-convert-member-functions-to-static)
     // Remove leading spaces
-    size_t start = str.find_first_not_of(" ");
+    size_t start = str.find_first_not_of(" "); //NOLINT(cppcoreguidelines-init-variables)
     // If there's any non-space character
     if (start != std::string::npos) {
         // Remove trailing spaces
-        size_t end = str.find_last_not_of(" ");
+        size_t end = str.find_last_not_of(" "); //NOLINT(cppcoreguidelines-init-variables)
         str = str.substr(start, end - start + 1);
     } else {
         // If there are only spaces, clear the string
