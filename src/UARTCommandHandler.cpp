@@ -188,20 +188,20 @@ void CommandLine::displayCommandFromHistory() {
 }
 
 // Add a command with its long name, short name, and function pointer
-void CommandLine::addCommand(const string& longName, const string& shortName, function<void(queue<string>, string&)> funcPtr) { //NOLINT(readability-convert-member-functions-to-static)
+void CommandLine::addCommand(const std::string& longName, const std::string& shortName, std::function<void(std::queue<std::string>, std::string&)> funcPtr) { //NOLINT(readability-convert-member-functions-to-static)
     Command newCommand{ longName, shortName, funcPtr };
     commands.push_back(newCommand);
 }
 
 // Execute a command based on its long name or short name
-void CommandLine::executeCommand(const string& command, queue<string> arugments) {
+void CommandLine::executeCommand(const std::string& command, std::queue<std::string> arugments) {
     // Check if the user entered "help" or "?"
     if (command == "help" || command == "?") {
         help();
         return;
     }
 
-    string response;
+    std::string response;
     for (const auto& cmd : commands) {
         if (cmd.longName == command || cmd.shortName == command) {
 

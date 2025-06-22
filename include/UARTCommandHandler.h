@@ -21,42 +21,40 @@ constexpr int MAX_HISTORY = 20;
 constexpr int MAX_ARGUMENTS = 5;
 constexpr int MAX_ROW_LENGTH = 40;
 
-using namespace std;
-
 class CommandLine {
 
 public:
     CommandLine(Stream * UART);  // Constructor
-    void addCommand(const string& longName, const string& shortName, function<void(queue<string> argumentQueue , string&)> funcPtr);
-    void executeCommand(const string& command, queue<string> arugments);
+    void addCommand(const std::string& longName, const std::string& shortName, std::function<void(std::queue<std::string> argumentQueue ,std::string&)> funcPtr);
+    void executeCommand(const std::string& command, std::queue<std::string> arugments);
     void readInput();
-    void processCommand(const string& command);
+    void processCommand(const std::string& command);
     void begin();
 
     // Pass-through functions for the UART object
-    void println(const string& message){
+    void println(const std::string& message){
         UART->println(message.c_str());
     }
-    void print(const string& message){
+    void print(const std::string& message){
         UART->print(message.c_str());
     }
 
 private:
     Stream * UART;  // Pointer to the UART object
     struct Command {
-        string longName;             
-        string shortName;           
-        function<void(queue<string>, string&)> funcPtr; // Function pointer to the command handler
+        std::string longName;             
+        std::string shortName;           
+        std::function<void(std::queue<std::string>, std::string&)> funcPtr; // Function pointer to the command handler
     };
-    vector<Command> commands{};  // Vector to store the list of commands
+    std::vector<Command> commands{};  // Vector to store the list of commands
 
     // Class member variables for buffering and history
-    string fullLine = {""}; 
-    string inputBuffer = "";  // Current input buffer
-    string argBuffer = "";
-    string command = "";
+    std::string fullLine = {""}; 
+    std::string inputBuffer = "";  // Current input buffer
+    std::string argBuffer = "";
+    std::string command = "";
     int historyIndex = 0;  // Keeps track of the current position in the command history
-    queue<string> argumentQueue{};
+    std::queue<std::string> argumentQueue{};
     bool isCommandParsed = false;
 
     std::array<std::string, MAX_HISTORY> fullLineHistory = {};
@@ -67,7 +65,7 @@ private:
 
     void help();
     void displayCommandFromHistory();
-    string combineArguments(queue<string> arguments);
+    std::string combineArguments(std::queue<std::string> arguments);
     void trimSpaces(std::string& str);
 };
 
