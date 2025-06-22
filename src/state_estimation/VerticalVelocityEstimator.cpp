@@ -80,7 +80,7 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet accel, const Da
                : MINIMUM_DELTA_T_S;
 
     // Subtract gravity from the measured acceleration on the identified vertical axis.
-    inertialVerticalAcceleration = (rawAcl.at(verticalAxis) * static_cast<float>(verticalDirection)) - g;
+    inertialVerticalAcceleration = (rawAcl[verticalAxis] * static_cast<float>(verticalDirection)) - g;
 
     // --- Prediction Step ---
     // State prediction:
