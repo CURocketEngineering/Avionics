@@ -194,7 +194,7 @@ void CommandLine::addCommand(const std::string& longName, const std::string& sho
 }
 
 // Execute a command based on its long name or short name
-void CommandLine::executeCommand(const std::string& command, std::queue<std::string> arugments) {
+void CommandLine::executeCommand(const std::string& command, std::queue<std::string> arguments) {
     // Check if the user entered "help" or "?"
     if (command == "help" || command == "?") {
         help();
@@ -205,7 +205,7 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
     for (const auto& cmd : commands) {
         if (cmd.longName == command || cmd.shortName == command) {
 
-            cmd.funcPtr(arugments, response);
+            cmd.funcPtr(arguments, response);
             return;
         }
     }
