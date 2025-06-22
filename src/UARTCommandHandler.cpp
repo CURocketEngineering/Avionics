@@ -100,7 +100,7 @@ void CommandLine::readInput() { //NOLINT(readability-function-cognitive-complexi
                 commandHistory[historyIndex] = command;
                 fullLineHistory[historyIndex] = fullLine;
                 
-                #pragma unroll argumentQueue.size()
+                
                 while (!argumentQueue.empty()) { //NOLINT(altera-unroll-loops)
                     argumentHistory[historyIndex][idx] = argumentQueue.front();
                     argumentQueue.pop();  // Clear the argument queue
