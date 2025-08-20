@@ -11,7 +11,7 @@ class IDataSaver {
     // Name is an 8 bit unsigned integer that can be used to identify the data point source
 
     public:
-        virtual int saveDataPoint(DataPoint dp, uint8_t name) = 0;
+        virtual int saveDataPoint(const DataPoint& dp, uint8_t name) = 0;
 
         virtual int saveDataPoint(float data, uint32_t timestamp_ms, uint8_t name) final {
             return saveDataPoint(DataPoint(timestamp_ms, data), name);

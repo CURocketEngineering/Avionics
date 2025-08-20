@@ -1,11 +1,12 @@
 #ifndef DATA_SAVER_SD_SERIAL_H
 #define DATA_SAVER_SD_SERIAL_H
 
-#include "data_handling/DataPoint.h"
-#include "data_handling/DataSaver.h"
 #include <array>
 #include <cstdlib>
+
 #include "ArduinoHAL.h"
+#include "data_handling/DataPoint.h"
+#include "data_handling/DataSaver.h"
 
 class DataSaverSDSerial: public IDataSaver {
     // Given data points, will write the data over uart to a serial data logger 
@@ -15,7 +16,7 @@ class DataSaverSDSerial: public IDataSaver {
         DataSaverSDSerial(HardwareSerial &SD_serial);
         
         using IDataSaver::saveDataPoint; // Allow the use of the other saveDataPoint overload
-        virtual int saveDataPoint(DataPoint dp, uint8_t name) override;
+        virtual int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
     private:
         HardwareSerial &SD_serial;

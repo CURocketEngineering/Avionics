@@ -22,21 +22,21 @@ using String = std::string;
 #include "spi_mock.h"
 
 // Within here we must define the mock functions for the Arduino functions
-#include "serial_mock.h"
-#include "Adafruit_SPIFlash_mock.h"
-
 #include <thread>
+
+#include "Adafruit_SPIFlash_mock.h"
+#include "serial_mock.h"
 
 #define OUTPUT 1
 #define INPUT 0
 #define HIGH 1
 #define LOW 0
 
-inline void pinMode(int pin, int mode) {
+inline void pinMode(int pin, int mode) { //NOLINT
     // Do nothing
 }
 
-inline void digitalWrite(int pin, int value) {
+inline void digitalWrite(int pin, int value) { //NOLINT
     // Do nothing
 }
 
@@ -47,7 +47,7 @@ inline unsigned long millis() {
     return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - program_start).count();
 }
 
-inline void delay(unsigned long ms) {
+inline void delay(unsigned long ms) { // NOLINT
     // Wait using the real time clock
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }

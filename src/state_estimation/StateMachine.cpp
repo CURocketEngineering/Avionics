@@ -1,24 +1,30 @@
-#include "state_estimation/StateMachine.h"
-#include "data_handling/DataNames.h"
 #include "ArduinoHAL.h"
 
-StateMachine::StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
-                           VerticalVelocityEstimator* verticalVelocityEstimator) {
-    this->dataSaver = dataSaver;
-    this->launchDetector = launchDetector;
-    this->apogeeDetector = apogeeDetector;
-    this->verticalVelocityEstimator = verticalVelocityEstimator;
-    this->state = STATE_ARMED;
+#include "data_handling/DataNames.h"
+#include "state_estimation/StateEstimationTypes.h"
+#include "state_estimation/StateMachine.h"
+
+
+StateMachine::StateMachine(IDataSaver* dataSaver,
+                           LaunchDetector* launchDetector,
+                           ApogeeDetector* apogeeDetector,
+                           VerticalVelocityEstimator* verticalVelocityEstimator)
+    : dataSaver(dataSaver),
+      launchDetector(launchDetector),
+      apogeeDetector(apogeeDetector),
+      verticalVelocityEstimator(verticalVelocityEstimator),
+      state(STATE_ARMED)
+{
 }
 
-int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoint alt) {
+int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            lpStatus = launchDetector->update(aclX, aclY, aclZ);
+            lpStatus = launchDetector->update(accel);
             // Serial.println(lpStatus);
             if (launchDetector->isLaunched()) {
                 // Change state to ascent
@@ -26,7 +32,7 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
 
                 // Log the state change
                 dataSaver->saveDataPoint(
-                    DataPoint(aclX.timestamp_ms, STATE_ASCENT),
+                    DataPoint(accel.x.timestamp_ms, STATE_ASCENT),
                     STATE_CHANGE
                 );
 
@@ -34,23 +40,23 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
                 dataSaver->launchDetected(launchDetector->getLaunchedTime());
                 
                 // Start the apogee detection system
-                apogeeDetector->init(alt.data, alt.timestamp_ms);
+                apogeeDetector->init({alt.data, alt.timestamp_ms});
 
                 // Update the vertical velocity estimator
-                verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
+                verticalVelocityEstimator->update(accel, alt);
             }
             break;
         case STATE_ASCENT:
             // Serial.println("apogee update");
             // Update the vertical velocity estimator
-            verticalVelocityEstimator->update(aclX, aclY, aclZ, alt);
+            verticalVelocityEstimator->update(accel, alt);
             apogeeDetector->update(verticalVelocityEstimator);
             if (apogeeDetector->isApogeeDetected()) {
                 state = STATE_DESCENT;
 
                 // Log the state change
                 dataSaver->saveDataPoint(
-                    DataPoint(aclX.timestamp_ms, STATE_DESCENT),
+                    DataPoint(accel.x.timestamp_ms, STATE_DESCENT),
                     STATE_CHANGE
                 );
             }
@@ -64,6 +70,6 @@ int StateMachine::update(DataPoint aclX, DataPoint aclY, DataPoint aclZ, DataPoi
     return 0;
 }
 
-uint8_t StateMachine::getState() {
+uint8_t StateMachine::getState() const {
     return state;
 }

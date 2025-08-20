@@ -16,14 +16,16 @@
 #define POST_LAUNCH_FLAG_TRUE 0x00 // Flag to indicate post-launch mode is active
 #define POST_LAUNCH_FLAG_FALSE 0x01 // Flag to indicate post-launch mode is not active
 
+constexpr uint8_t EMPTY_PAGE = 0xFF;
+
 
 #pragma pack(push, 1)  // Pack the struct to avoid padding between the name and datas
-typedef struct {
+typedef struct { // NOLINT(altera-struct-pack-align)
     uint8_t name;
     float data;
 } Record_t; 
 
-typedef struct {
+typedef struct { // NOLINT(altera-struct-pack-align)
     uint8_t name;
     uint32_t timestamp_ms;
 } TimestampRecord_t;
@@ -54,9 +56,9 @@ public:
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
      * @return int 0 on success; non-zero on error
      */
-    virtual int saveDataPoint(DataPoint dp, uint8_t name) override;
+    int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
-    int saveTimestamp(uint32_t timestamp_ms, uint8_t name);
+    int saveTimestamp(uint32_t timestamp_ms);
 
     virtual bool begin() override;
 
@@ -164,6 +166,9 @@ private:
     // The last timestamp we actually wrote to flash
     uint32_t lastTimestamp_ms;
 
+    // The timestamp this module was given for launch
+    uint32_t launchTimestamp_ms; 
+
     // The last data point written
     DataPoint lastDataPoint;
 
@@ -191,7 +196,7 @@ private:
     bool readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length);
 
     // Write buffer to improve write performance
-    uint8_t buffer[BUFFER_SIZE];
+    uint8_t buffer[BUFFER_SIZE] = {};
     size_t bufferIndex = 0;
     uint32_t bufferFlushes = 0; // Keep track of how many times the buffer has been flushed
 

@@ -1,8 +1,9 @@
 #include "data_handling/DataSaverBigSD.h"
 #include "ArduinoHAL.h"   // for Serial
 
-/* static */ SdFat DataSaverBigSD::sd;          // one SdFat object for all
-
+// one SdFat object for all
+/* static */ SdFat DataSaverBigSD::sd; //NOLINT(readability-identifier-length)      
+    
 /* ------------------------------------------------------------------------- */
 DataSaverBigSD::DataSaverBigSD(uint8_t csPin) : _csPin(csPin) {}
 
@@ -22,7 +23,7 @@ bool DataSaverBigSD::begin() {
     }
 
     // Pre‑allocate 4 MB so writes stay contiguous (faster & less wear)
-    _file.preAllocate(4UL * 1024 * 1024);
+    _file.preAllocate(PRE_ALLOCATE_SIZE_MB * BYTES_PER_MB);
 
     Serial.print(F("Logging to ")); Serial.println(_filePath.c_str());
 
@@ -35,45 +36,53 @@ bool DataSaverBigSD::begin() {
 }
 
 /* -----------------------  saveDataPoint()  ------------------------------- */
-int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
-    if (!_ready) return -1;
+int DataSaverBigSD::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
+    if (!_ready) {
+        return DS_NOT_READY;
+    }
 
     // Reserve space left
-    size_t remaining = sizeof(_buf) - _bufLen;
+    size_t remaining = sizeof(_buf) - _bufLen; // NOLINT(cppcoreguidelines-init-variables)
 
     // Format the new line
-    int n = snprintf(_buf + _bufLen, remaining, "%lu,%u,%.6f\n",
-                     static_cast<long unsigned int>(dp.timestamp_ms), name, dp.data);
+    int numCharsWritten = snprintf(_buf + _bufLen, remaining, "%lu,%u,%.6f\n", // NOLINT(cppcoreguidelines-init-variables)
+                     static_cast<long unsigned int>(dataPoint.timestamp_ms), name, dataPoint.data);
 
     // Check snprintf result
-    if (n <= 0 || (size_t)n >= remaining) {
+    if (numCharsWritten <= 0 || (size_t)numCharsWritten >= remaining) {
         // Flush current buffer and try again if this line couldn’t fit
-        if (_file.write(_buf, _bufLen) != _bufLen) return -3;
+        if (_file.write(_buf, _bufLen) != _bufLen) {
+          return DS_BUFFER_WRITE_FAILED;  // failed to write current buffer
+        }
         _file.sync();  // just to be extra safe during debug
         _bufLen = 0;
         _linesPending = 0;
 
         // Try again (safe now)
         remaining = sizeof(_buf);
-        n = snprintf(_buf, remaining, "%lu,%u,%.6f\n", static_cast<long unsigned int>(dp.timestamp_ms), name, dp.data);
-        if (n <= 0 || (size_t)n >= remaining) return -4;  // can't encode this line even in an empty buffer
+        numCharsWritten = snprintf(_buf, remaining, "%lu,%u,%.6f\n", static_cast<long unsigned int>(dataPoint.timestamp_ms), name, dataPoint.data);
+        if (numCharsWritten <= 0 || (size_t)numCharsWritten >= remaining) {
+          return DS_LINE_TOO_LONG;  // can't encode this line even in an empty buffer
+        }
     }
 
-    _bufLen += n;
+    _bufLen += numCharsWritten;
     ++_linesPending;
 
-    uint32_t now = millis();
-    bool bufFull   = (_bufLen >= kBufBytes);
-    bool manyLines = (_linesPending >= kFlushLines);
-    bool timeUp    = (now - _lastFlushMs >= kFlushMs);
+    uint32_t const now = millis();
+    bool const bufFull = (_bufLen >= kBufBytes);
+    bool const manyLines = (_linesPending >= kFlushLines);
+    bool const timeUp = (now - _lastFlushMs >= kFlushMs);
 
     if (bufFull || manyLines || timeUp) {
-        if (_file.write(_buf, _bufLen) != _bufLen) return -5;
+        if (_file.write(_buf, _bufLen) != _bufLen) {
+          return DS_FLUSH_FAILED;
+        }
         _bufLen       = 0;
         _linesPending = 0;
         _lastFlushMs  = now;
 
-        if (now - _lastSyncMs >= 1000) {
+        if (now - _lastSyncMs >= SYNC_INTERVAL_MS) {
             _file.sync();
             _lastSyncMs = now;
         }
@@ -85,8 +94,10 @@ int DataSaverBigSD::saveDataPoint(DataPoint dp, uint8_t name) {
 
 /* -----------------------------  end()  ----------------------------------- */
 void DataSaverBigSD::end() {
-    if (!_ready) return;
-    if (_bufLen) {
+    if (!_ready) {
+        return;
+    }
+    if (_bufLen > 0) {
         _file.write(_buf, _bufLen);
         _bufLen = 0;
     }
@@ -97,9 +108,11 @@ void DataSaverBigSD::end() {
 
 /* -------------------  nextFreeFilePath()  -------------------------------- */
 std::string DataSaverBigSD::nextFreeFilePath() {
-    char path[32];
-    for (uint16_t n = 0;; ++n) {
-        snprintf(path, sizeof(path), "/stream-%u.csv", n);
-        if (!sd.exists(path)) return std::string(path);
+    std::array<char, FILE_PATH_BUFFER_SIZE> path;
+    for (uint16_t flightNumber = 0;; ++flightNumber) {
+        snprintf(path.data(), sizeof(path), "/stream-%u.csv", flightNumber);
+        if (!sd.exists(path.data())) {
+            return std::string(path.data());
+        }
     }
 }

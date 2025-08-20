@@ -1,0 +1,22 @@
+repos:
+  - repo: local
+    hooks:
+      - id: pio-check
+        name: PlatformIO Static Analysis
+        entry: bash
+        args:
+          - -c
+          - cd ../../ && pio check --fail-on-defect=low --fail-on-defect=medium --fail-on-defect=high
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: pio-test
+        name: PlatformIO Test
+        entry: bash
+        args:
+          - -c
+          - cd ../../ && pio test
+        language: system
+        pass_filenames: false
+        always_run: true

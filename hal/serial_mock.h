@@ -2,14 +2,16 @@
 
 #pragma once
 
-#include <iostream>
+#include <stdint.h>
 #include <stdio.h>
+
+#include <algorithm>
 #include <cstdarg>
+#include <cstdint>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <algorithm>
 #include <vector>
-#include <stdint.h>
 
 class MockSerial {
 public:
@@ -76,6 +78,7 @@ public:
     virtual void flush() {}
     virtual size_t write(uint8_t) { return 0; }
     virtual size_t write(const char *str) { return 0; }   
+    virtual size_t write(const char* buffer, size_t size) { return size; } // for string literals
     virtual size_t write(const uint8_t *buffer, size_t size) { return size; }
 
     // Read a string until a newline character

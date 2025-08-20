@@ -2,74 +2,105 @@
 #define APOGEE_DETECTOR_H
 
 #include <cstdint>
+
 #include "data_handling/DataPoint.h"
 #include "state_estimation/VerticalVelocityEstimator.h"
 
-/*
- * ApogeeDetector uses a simple Kalman filter for fusing acceleration and altimeter data.
- * It assumes:
- *   - The state is [altitude, vertical velocity] (in SI units).
- *   - The process model uses the vertical acceleration as a control input.
- *   - The accelerometer (LSM6DSOX) outputs about 9.81 m/s² when at rest (i.e. it “measures the normal”)
- *     so that in free fall (or after burnout) it outputs 0 m/s².
- *     To get the inertial acceleration we subtract g (9.81 m/s²) from the measured value.
- *   - The altimeter (BMP390) measurement is used to correct the altitude.
+/**
+ * @brief Represents the initial state for initializing the ApogeeDetector.
+ */
+struct ApogeeDetectorInitialState {
+    float initialAltitude;       ///< Initial altitude in meters.
+    uint32_t initialTimestamp;   ///< Initial timestamp in milliseconds.
+};
+
+/**
+ * @brief Detects the apogee (peak altitude) of a rocket flight using estimated altitude and vertical velocity.
  *
- * Apogee detection is based on tracking the maximum altitude reached and then detecting a drop
- * of at least a configurable threshold (e.g. 1 meter) while the velocity becomes negative.
+ * The detector uses data from a VerticalVelocityEstimator (e.g., a Kalman filter fusing an altimeter and accelerometer).
+ * Apogee is detected when:
+ *   - The vertical velocity becomes negative.
+ *   - The estimated altitude drops by at least a configurable threshold after reaching a maximum.
+ *
+ * Acceleration assumptions:
+ *   - The accelerometer (e.g., LSM6DSOX) measures the "normal force" and outputs ~9.81 m/s² at rest.
+ *   - During free fall or coasting, its output approaches 0.
+ *   - Therefore, inertial acceleration = measured acceleration − 9.81 m/s².
  */
 class ApogeeDetector {
 public:
-
-    ApogeeDetector(float apogeeThreshold_m);
-    // Default constructor with 1.0 m threshold
-    ApogeeDetector() : ApogeeDetector(1.0f) {}
+    /**
+     * @brief Constructs an ApogeeDetector with a custom drop threshold.
+     * @param apogeeThreshold_m Minimum drop in altitude (in meters) to confirm apogee.
+     */
+    explicit ApogeeDetector(float apogeeThreshold_m);
 
     /**
-     * Initialize the filter with an initial altitude and timestamp.
-     * @param initialAltitude in meters.
-     * @param initialTimestamp in milliseconds.
+     * @brief Constructs an ApogeeDetector with the default threshold of 1.0 meter.
      */
-    void init(float initialAltitude, uint32_t initialTimestamp);
+    ApogeeDetector() : ApogeeDetector(1.0F) {}
 
     /**
-     * Reads the VerticalVelocityEstimator and checks if apogee has occurred.
-     * @param verticalVelocityEstimator the VerticalVelocityEstimator to read velocity and altitude from.
+     * @brief Initializes the detector with the starting altitude and timestamp.
+     * @param initialState Struct containing initial altitude and timestamp.
      */
-    void update(VerticalVelocityEstimator * verticalVelocityEstimator);
+    void init(ApogeeDetectorInitialState initialState);
 
-    /// Returns true if apogee has been detected.
+    /**
+     * @brief Updates the detector using the latest estimated altitude and vertical velocity.
+     * @param verticalVelocityEstimator Pointer to the estimator providing current flight state.
+     */
+    void update(VerticalVelocityEstimator* verticalVelocityEstimator);
+
+    /**
+     * @brief Checks if apogee has been detected.
+     * @return true if apogee has occurred, false otherwise.
+     */
     bool isApogeeDetected() const;
 
     /**
-     * Get the detected apogee.
-     * @return a DataPoint where the timestamp is the time at maximum altitude and data is the altitude.
-     *         If apogee has not been detected yet, returns a DataPoint with timestamp 0 and altitude 0.
+     * @brief Retrieves the detected apogee.
+     * @return A DataPoint containing the timestamp and altitude of apogee.
+     *         If not detected, returns {0, 0.0F}.
      */
     DataPoint getApogee() const;
 
-    /// Get the current estimated altitude (meters) from the Kalman filter.
+    /**
+     * @brief Gets the current estimated altitude.
+     * @return Altitude in meters.
+     */
     float getEstimatedAltitude() const;
 
-    /// Get the current estimated vertical velocity (m/s) from the Kalman filter.
+    /**
+     * @brief Gets the current estimated vertical velocity.
+     * @return Velocity in meters per second.
+     */
     float getEstimatedVelocity() const;
 
+    /**
+     * @brief Gets the current inertial vertical acceleration.
+     * @return Vertical acceleration in m/s², corrected for gravity.
+     */
     float getInertialVerticalAcceleration() const;
 
+    /**
+     * @brief Gets the configured vertical axis.
+     * @return Axis index used as vertical (0=X, 1=Y, 2=Z).
+     */
     int8_t getVerticalAxis() const;
 
+    /**
+     * @brief Gets the configured vertical direction (+1 or -1).
+     * @return 1 if increasing values mean upward, -1 otherwise.
+     */
     int8_t getVerticalDirection() const;
 
 private:
-    // Has apogee been detected?
-    bool apogee_flag;
+    bool apogee_flag = false;              ///< True if apogee has been detected.
+    float apogeeThreshold_m = 1.0F;        ///< Minimum drop required to confirm apogee.
 
-    // Apogee detection threshold (meters)
-    float apogeeThreshold_m;
-
-    // Maximum altitude reached so far (and its timestamp)
-    float maxAltitude;
-    uint32_t maxAltitudeTimestamp;
+    float maxAltitude = 0.0F;              ///< Maximum altitude observed so far.
+    uint32_t maxAltitudeTimestamp = 0;     ///< Timestamp when max altitude was reached.
 };
 
 #endif // APOGEE_DETECTOR_H
