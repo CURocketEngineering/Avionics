@@ -15,6 +15,10 @@ Avionics is a modular, Arduino-core based system powering the flight computers o
 
 This repository contains the avionics system used across various flight computers within the Clemson University Rocket Engineering organization. Designed to be modular and highly configurable, the system supports critical functions such as state detection, data logging, and robust communication.
 
+## Flight Tests
+
+See a comprehensive list of all flights using this software at ***🚀[Flight Tests](docs/FlightTests.md)🚀***.
+
 ## Features
 
 ### State Detection Tools
@@ -56,15 +60,9 @@ The following systems integrate Avionics as a submodule:
 - [MARTHA 1.1](https://github.com/CURocketEngineering/MARTHA-1.1)
 - [Native](https://github.com/CURocketEngineering/Native)
 
-## Testing
-
-### Unit Testing
+## Unit Testing
 
 Unit tests are managed by the [Native](https://github.com/CURocketEngineering/Native) repository, allowing for module testing without requiring embedded hardware.
-
-### Flight Tests
-
-See all of our flights using this software at [Flight Tests](docs/FlightTests.md).
 
 ## License
 
