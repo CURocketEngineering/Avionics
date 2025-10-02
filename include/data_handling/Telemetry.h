@@ -18,12 +18,20 @@
  * @param sendFrequencyHz: desired frequency to send at
  * @param sensorDataBytes: number of bytes per SensorDatahandler
  */
-typedef struct SendableSensorData {
+struct SendableSensorData {
     SensorDataHandler* singleSDH;
     SensorDataHandler** multiSDH;
     int multiSDHDataLabel;
     int sendFrequencyHz;
     int sensorDataBytes;
+
+    SendableSensorData(SensorDataHandler* _singleSDH, SensorDataHandler** _multiSDH, int _multiSDHDataLabel, int _sendFrequencyHz, int _sensorDataBytes) {
+        singleSDH = _singleSDH;
+        multiSDH = _multiSDH;
+        multiSDHDataLabel = _multiSDHDataLabel;
+        sendFrequencyHz = _sendFrequencyHz;
+        sensorDataBytes = _sensorDataBytes;
+    }
 };
 
 class Telemetry {

@@ -21,7 +21,6 @@ void Telemetry::preparePacket(byte frequency, uint32_t timestamp) {
     nextEmptyPacketIndex = 5;
 }
 
-//TODO: add support for datalabels (ie. remove line 26 from this method and put that before 1 single data handler or before 1 multi data handler)
 void Telemetry::addSingleSDHToPacket(SensorDataHandler* sdh, int sensorDataBytes) {
     uint32_t data = sdh->getLastDataPointSaved().data;
     for (int i = 0; i < sensorDataBytes; i++) {
@@ -31,12 +30,12 @@ void Telemetry::addSingleSDHToPacket(SensorDataHandler* sdh, int sensorDataBytes
 }
 
 void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
-    if (ssd->singleSDH > 0) {
+    if (ssd->singleSDH != nullptr) {
         this->packet[nextEmptyPacketIndex] = ssd->singleSDH->getName();
         nextEmptyPacketIndex += 1;
         this->addSingleSDHToPacket(ssd->singleSDH, ssd->sensorDataBytes);
     }
-    if (ssd->multiSDH > 0) {
+    if (ssd->multiSDH != nullptr) {
         this->packet[nextEmptyPacketIndex] = ssd->multiSDHDataLabel;
         nextEmptyPacketIndex += 1;
         for (int i = 0; i < size_t(ssd->multiSDH)/size_t(ssd->multiSDH[0]); i++) {
