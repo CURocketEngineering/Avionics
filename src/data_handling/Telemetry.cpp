@@ -1,10 +1,9 @@
 #include "data_handling/Telemetry.h"
 #include "ArduinoHAL.h"
-#include <SoftwareSerial.h>
 #include <algorithm>
 
-Telemetry::Telemetry(SendableSensorData* ssdArray[], int txPin, int rxPin)
-    : rfdSerialConnection(txPin, rxPin, false)
+Telemetry::Telemetry(SendableSensorData* ssdArray[], HardwareSerial &rfdSerialConnection)
+    : rfdSerialConnection(rfdSerialConnection)
 {
     this->ssdArray = ssdArray;
     //TODO: it would be nice if we could throw an error at compile time
@@ -12,7 +11,7 @@ Telemetry::Telemetry(SendableSensorData* ssdArray[], int txPin, int rxPin)
     //ssdArray is larger than this value.
 }
 
-void Telemetry::preparePacket(byte frequency, uint32_t timestamp) {
+void Telemetry::preparePacket(int8_t frequency, uint32_t timestamp) {
     this->packet[0] = START_BYTE_BASE+frequency;
     this->packet[1] = (timestamp >> 24) & 0xFF;
     this->packet[2] = (timestamp >> 16) & 0xFF;

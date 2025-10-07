@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <vector>
-#include <SoftwareSerial.h>
+#include "ArduinoHAL.h"
 
 #define START_BYTE_BASE 50
 
@@ -43,7 +43,7 @@ class Telemetry {
          * @param txPin tx pin that the RFD is connected to
          * @param rxPin rx pin that the RFD is connected to
          */
-        Telemetry(SendableSensorData* ssdArray[], int txPin, int rxPin);
+        Telemetry(SendableSensorData* ssdArray[], HardwareSerial &rfdSerialConnection);
 
         /**
          * @attention MUST BE RUN EVERY LOOP
@@ -53,19 +53,19 @@ class Telemetry {
         void tick();
 
     private:
-        void preparePacket(byte frequency, uint32_t timestamp);
+        void preparePacket(int8_t frequency, uint32_t timestamp);
         void addSingleSDHToPacket(SensorDataHandler* sdh, int sensorDataBytes);
         void addSSDToPacket(SendableSensorData* ssd);
 
         SendableSensorData** ssdArray;
-        SoftwareSerial rfdSerialConnection;
+        HardwareSerial &rfdSerialConnection;
         int lastFrequencyHzSent;
         int nextEmptyPacketIndex;
-        byte packet[128]; //128 is the maximum packet length.
+        int8_t packet[128]; //128 is the maximum packet length.
         // This can be modified if more space is needed,
         // but ideally it matches the max packet size of the telemetry device.
         // The RFD900x has a theoritcal a maximum packet length,
-        // but it is unlikely that we will reach it.
+        // but it is unlikely that we will reach it, so feel free to make this bigger if needed.
 };
 
 #endif
