@@ -40,6 +40,8 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
         #endif
         return ACL_TOO_LOW;
     }
+
+    return DEFAULT_FAIL;
 }
 
 void FastLaunchDetector::reset(){
