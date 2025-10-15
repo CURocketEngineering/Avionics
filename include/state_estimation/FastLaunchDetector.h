@@ -9,11 +9,10 @@
 // Positive values are errors
 // Negative values are warnings
 enum FastLaunchDetectorStatus {
-    LP_LAUNCH_DETECTED = 0,
-    LP_ALREADY_LAUNCHED = -1,
-    LP_YOUNGER_TIMESTAMP = -2, // The timestamp is younger than the last timestamp
-    LP_ACL_TOO_LOW = -8, // The acceleration is too low for launch
-    LP_DEFAULT_FAIL = 2,
+    LAUNCH_DETECTED = 0,
+    ALREADY_LAUNCHED = -1,
+    ACL_TOO_LOW = -2, // The acceleration is too low for launch
+    DEFAULT_FAIL = 2,
 };
 
 
