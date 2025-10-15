@@ -40,5 +40,9 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
         #endif
         return ACL_TOO_LOW;
     }
+}
 
+void FastLaunchDetector::reset(){
+    launched = false;
+    launchedTime_ms = 0;
 }
