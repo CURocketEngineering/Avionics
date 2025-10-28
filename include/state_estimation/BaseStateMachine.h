@@ -7,8 +7,6 @@
 
 class BaseStateMachine {
   public:
-    virtual ~BaseStateMachine() = default;
-    virtual int update(AccelerationTriplet accel, DataPoint alt) = 0;
     virtual int update(const AccelerationTriplet& accel, const DataPoint& alt) = 0;
     virtual uint8_t getState() const = 0;
 };

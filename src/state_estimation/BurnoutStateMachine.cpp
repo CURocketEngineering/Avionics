@@ -22,7 +22,7 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
 {
 }
 
-int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
+int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 
