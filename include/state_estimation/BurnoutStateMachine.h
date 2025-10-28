@@ -8,16 +8,16 @@
 #include "state_estimation/LaunchDetector.h"
 #include "state_estimation/StateEstimationTypes.h"
 #include "state_estimation/States.h"
+#include "state_estimation/BaseStateMachine.h"
 
-
-class BurnoutStateMachine {
-  public: 
+class BurnoutStateMachine : public BaseStateMachine {
+  public:
     BurnoutStateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector,
       VerticalVelocityEstimator* verticalVelocityEstimator);
 
-    int update(AccelerationTriplet accel, DataPoint alt);
+    int update(AccelerationTriplet accel, DataPoint alt) override;
 
-    uint8_t getState() const;
+    uint8_t getState() const override;
 
   private:
     uint8_t state;

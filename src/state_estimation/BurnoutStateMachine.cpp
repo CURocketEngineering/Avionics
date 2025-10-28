@@ -1,6 +1,8 @@
 #include "ArduinoHAL.h"
 
 #include "data_handling/DataNames.h"
+#include "data_handling/DataPoint.h"
+#include "state_estimation/StateEstimationTypes.h"
 #include "state_estimation/BurnoutStateMachine.h"
 
 constexpr float GRAVITY = 9.8;
