@@ -113,6 +113,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // revert to ARMED state
                 state = STATE_ARMED;
                 fldLaunchTime_ms = 0;
+                fastLaunchDetector->reset();
 
                 // Log the state change
                 dataSaver->saveDataPoint(
