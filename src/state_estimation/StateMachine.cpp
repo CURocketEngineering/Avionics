@@ -83,6 +83,12 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             break;
 
         case STATE_SOFT_ASCENT:
+        /*
+        * In soft ascent, we are waiting for confirmation of launch from the LaunchDetector.
+        * If LaunchDetector confirms launch within the confirmation window, we transition to ASCENT.
+        * If the confirmation window passes without confirmation, we revert to ARMED
+        * and clear post-launch mode.
+        */
             // Serial.println("lp update");
             lpStatus = launchDetector->update(accel);
             // Serial.println(lpStatus);

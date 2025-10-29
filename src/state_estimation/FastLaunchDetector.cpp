@@ -5,8 +5,11 @@
 #include "ArduinoHAL.h"
 #endif
 
-FastLaunchDetector::FastLaunchDetector(float accelerationThreshold_ms2)
-    : accelerationThresholdSq_ms2(accelerationThreshold_ms2 * accelerationThreshold_ms2)
+FastLaunchDetector::FastLaunchDetector(float accelerationThreshold_ms2, uint32_t confirmationWindow_ms)
+    : accelerationThresholdSq_ms2(accelerationThreshold_ms2 * accelerationThreshold_ms2),
+      launched(false),
+      launchedTime_ms(0),
+      confirmationWindow_ms(confirmationWindow_ms)
 {}
 
 int FastLaunchDetector::update(AccelerationTriplet accel){
