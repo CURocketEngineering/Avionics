@@ -1,6 +1,8 @@
 #include "ArduinoHAL.h"
 
 #include "data_handling/DataNames.h"
+#include "data_handling/DataPoint.h"
+#include "state_estimation/StateEstimationTypes.h"
 #include "state_estimation/BurnoutStateMachine.h"
 
 constexpr float GRAVITY = 9.8;
@@ -20,7 +22,7 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
 {
 }
 
-int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
+int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 

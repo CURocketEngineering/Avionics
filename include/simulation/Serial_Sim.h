@@ -27,7 +27,7 @@ public:
         return instance;
     }
 
-    void begin(Stream *inStream, BurnoutStateMachine *stateMachine) {
+    void begin(Stream *inStream, BaseStateMachine *stateMachine) {
         serial = inStream;
         this->stateMachine = stateMachine;
 
