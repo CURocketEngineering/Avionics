@@ -6,9 +6,11 @@
 #include "state_estimation/States.h"
 
 class BaseStateMachine {
-  public:
-    virtual int update(const AccelerationTriplet& accel, const DataPoint& alt) = 0;
-    virtual uint8_t getState() const = 0;
+    // Common interface that all StateMachines must implement
+    // This allows for easy swapping of StateMachines
+    public:
+        virtual int update(const AccelerationTriplet& accel, const DataPoint& alt) = 0;
+        virtual uint8_t getState() const = 0;
 };
 
 #endif
