@@ -49,7 +49,7 @@ public:
      * @param altimeterNoiseVariance Measurement noise variance of the altimeter 
      *                             (e.g. 1.0 for 1m²).
      */
-    VerticalVelocityEstimator(NoiseVariances noise = {0.25f, 1.0f});
+    VerticalVelocityEstimator(NoiseVariances noise = {1.0f, 0.1f});
 
     /**
      * Initialize the filter with an initial altitude and timestamp.

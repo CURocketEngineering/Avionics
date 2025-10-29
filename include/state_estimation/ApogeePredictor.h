@@ -37,6 +37,8 @@ public:
     /** Optional: Update using a quadratic-drag model (more accurate under drag) */
     void quad_update();
 
+    void poly_update();
+
     // ----- Accessors -----
     [[nodiscard]] bool     isPredictionValid()            const;
     [[nodiscard]] float    getTimeToApogee_s()            const;

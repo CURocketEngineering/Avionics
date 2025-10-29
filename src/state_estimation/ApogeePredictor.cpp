@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <cstdio>
 
 namespace {
 
@@ -101,6 +102,75 @@ void ApogeePredictor::quad_update() {
     lastTs_ = currentTimestamp;
     lastVel_ = velocity;
 }
+void ApogeePredictor::poly_update() {
+    const uint32_t currentTimestamp_ms = vve_.getTimestamp();
+    const float altitude_m = vve_.getEstimatedAltitude();
+    const float velocity_ms = vve_.getEstimatedVelocity();
+    const float acceleration_ms2 = vve_.getInertialVerticalAcceleration();
+
+    
+
+    const size_t featureCount = 10;
+
+    // Polynomial Regression Coefficients for C++
+    const float coeffs[] = {
+        /* 1 */ 0.00000000,
+        /* vertical_velocity */ 5.06108448,
+        /* vertical_acceleration */ 63.94744144,
+        /* delta_h_simple */ 0.52115350,
+        /* vertical_velocity^2 */ 0.01494354,
+        /* vertical_velocity vertical_acceleration */ 0.46012269,
+        /* vertical_velocity delta_h_simple */ 0.01274390,
+        /* vertical_acceleration^2 */ 3.27864634,
+        /* vertical_acceleration delta_h_simple */ -0.00747177,
+        /* delta_h_simple^2 */ -0.00208120,
+    };
+    const float intercept = 308.64734694;
+
+    // ───────────────────────────────────────────────────────
+    // Compute delta_h_simple = v^2 / (2 * decel), with decel > 0
+    double decel = std::fabs(acceleration_ms2);
+    double delta_h_simple = (velocity_ms * velocity_ms) / (2.0 * decel);
+
+    // ───────────────────────────────────────────────────────
+    // Evaluate the regression model
+    const double inputs[featureCount] = {
+        1.0,
+        velocity_ms,                // vertical_velocity
+        acceleration_ms2,           // vertical_acceleration
+        delta_h_simple,
+        velocity_ms * velocity_ms,  // vertical_velocity^2
+        velocity_ms * acceleration_ms2, // vertical_velocity vertical_acceleration
+        velocity_ms * delta_h_simple, // vertical_velocity delta_h_simple
+        acceleration_ms2 * acceleration_ms2, // vertical_acceleration^2
+        acceleration_ms2 * delta_h_simple, // vertical_acceleration delta_h_simple
+        delta_h_simple * delta_h_simple, // delta_h_simple^2
+    };
+
+    double apogeeRemaining_m = intercept;
+    for (size_t i = 0; i < featureCount; ++i) {
+        apogeeRemaining_m += coeffs[i] * inputs[i];
+    }
+
+    // ───────────────────────────────────────────────────────
+    // Combine with current altitude to compute predicted apogee
+    predApogeeAlt_ = altitude_m + apogeeRemaining_m;
+
+    // Estimate time to apogee using kinematic model
+    tToApogee_ = velocity_ms / decel;
+    predApogeeTs_ = currentTimestamp_ms + static_cast<uint32_t>(tToApogee_ * MS_TO_S_FACTOR);
+
+    valid_ = true;
+
+    lastTs_ = currentTimestamp_ms;
+    lastVel_ = velocity_ms;
+    numWarmups_ = std::min(numWarmups_ + 1, MAX_WARMUPS);
+
+    printf("Current Timestamp: %u, Altitude: %.2f, Velocity: %.2f, Acceleration: %.2f, Predicted Apogee Remaining: %.2f, Delta H: %.2f\n",
+           currentTimestamp_ms, altitude_m, velocity_ms, acceleration_ms2, apogeeRemaining_m, delta_h_simple);
+}
+
+
 
 // Simple getters
 bool ApogeePredictor::isPredictionValid() const { return valid_; }
