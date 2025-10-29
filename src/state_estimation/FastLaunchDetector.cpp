@@ -23,14 +23,14 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
         #ifdef DEBUG
         Serial.println("FastLaunchDetector: Data point ignored because already launched");
         #endif
-        return ALREADY_LAUNCHED;
+        return FLD_ALREADY_LAUNCHED;
     }
 
     //if accel higher than threshold, launch detected
     if (aclMagSq > accelerationThresholdSq_ms2){
         launched = true;
         launchedTime_ms = time_ms;
-        return LAUNCH_DETECTED;
+        return FLD_LAUNCH_DETECTED;
     }
 
     //if accel lower than threshold, acl too low
@@ -38,10 +38,10 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
         #ifdef DEBUG
         Serial.println("FastLaunchDetector: Acceloration below threshold");
         #endif
-        return ACL_TOO_LOW;
+        return FLD_ACL_TOO_LOW;
     }
 
-    return DEFAULT_FAIL;
+    return FLD_DEFAULT_FAIL;
 }
 
 void FastLaunchDetector::reset(){

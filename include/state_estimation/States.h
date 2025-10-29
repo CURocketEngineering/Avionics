@@ -10,7 +10,8 @@ enum FlightState {
     STATE_DESCENT,
     STATE_DROGUE_DEPLOYED,
     STATE_MAIN_DEPLOYED,
-    STATE_LANDED
+    STATE_LANDED,
+    STATE_SOFT_ASCENT // for FastLaunchDetector, will transition to STATE_ASCENT once confirmed by LaunchDetector
 };
 
 #endif
