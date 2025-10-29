@@ -26,6 +26,7 @@ struct SendableSensorData {
     int multiSDHLength;
     int multiSDHDataLabel;
     int sendFrequencyHz;
+    uint32_t lastSentTimestamp;
 
     SendableSensorData(SensorDataHandler* _singleSDH, SensorDataHandler** _multiSDH, int _multiSDHLength, int _multiSDHDataLabel, uint8_t _sendFrequencyHz) {
         singleSDH = _singleSDH;
@@ -33,6 +34,22 @@ struct SendableSensorData {
         multiSDHLength = _multiSDHLength;
         multiSDHDataLabel = _multiSDHDataLabel;
         sendFrequencyHz = _sendFrequencyHz;
+        lastSentTimestamp = 0;
+    }
+    
+    /**
+     * @brief True if the packet should be sent
+     */
+    bool shouldBeSent(uint32_t time) {
+        uint32_t delta = time-lastSentTimestamp;
+        return delta >= (1000.0/sendFrequencyHz);
+    }
+
+    /**
+     * @brief Run when the packet is sent
+     */
+    void markWasSent(uint32_t time) {
+        lastSentTimestamp = time;
     }
 };
 
@@ -52,18 +69,17 @@ class Telemetry {
          * @brief No argument tick function that handles sending data at
          * specified send frequencies.
          */
-        bool tick();
+        bool tick(uint32_t currentTime);
 
     private:
         void preparePacket(uint32_t timestamp);
         void addSingleSDHToPacket(SensorDataHandler* sdh);
         void addSSDToPacket(SendableSensorData* ssd);
+        void setPacketToZero();
 
         SendableSensorData** ssdArray;
         int ssdArrayLength;
         HardwareSerial &rfdSerialConnection;
-        int lastFrequencyHzSent;
-        uint32_t lastSecond;
         int nextEmptyPacketIndex;
         uint8_t packet[120]; //rfd settings indicate that 120 is the max packet size
 };

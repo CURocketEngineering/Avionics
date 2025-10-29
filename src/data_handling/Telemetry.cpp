@@ -7,8 +7,6 @@ Telemetry::Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, Hardwar
 {
     this->ssdArray = ssdArray;
     this->ssdArrayLength = ssdArrayLength;
-    this->lastSecond = 0;
-    this->lastFrequencyHzSent = 100;
     //TODO: it would be nice if we could throw an error at compile time
     //if a user's desired max packet size as specified from what they put in
     //ssdArray is larger than this value.
@@ -51,34 +49,32 @@ void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
     }
 }
 
-bool Telemetry::tick() {
-    uint32_t timestamp = millis();
-    uint32_t thisSecond = timestamp/1000;
-    uint32_t millisOfThisSecond = (timestamp-((timestamp/1000)*1000));
-    int thisTicksFrequency = ceil(1000.0/(millisOfThisSecond+1)); //+1 prevents the case (that happens a lot during testing in Native) in which millisOfThisSecond is 0
+void Telemetry::setPacketToZero() {
+    for (int i = 0; i < 120; i++) { //Completely clear packet
+        this->packet[i] = 0;
+    }
+}
+
+bool Telemetry::tick(uint32_t currentTime) {
     bool sendingPacketThisTick = false;
     int currentPacketIndex = 0;
     for (int i = 0; i < this->ssdArrayLength; i++) {
-        if (ssdArray[i]->sendFrequencyHz < this->lastFrequencyHzSent && 
-            (ssdArray[i]->sendFrequencyHz >= thisTicksFrequency || (ssdArray[i]->sendFrequencyHz == 1 && thisSecond>lastSecond))) {
-            this->lastFrequencyHzSent = ssdArray[i]->sendFrequencyHz;
+        if (ssdArray[i]->shouldBeSent(currentTime)) {
             if (!sendingPacketThisTick) {
-                preparePacket(timestamp);
+                setPacketToZero();
+                preparePacket(currentTime);
                 addSSDToPacket(ssdArray[i]);
                 sendingPacketThisTick = true;
             } else {
                 addSSDToPacket(ssdArray[i]);
             }
+            ssdArray[i]->markWasSent(currentTime);
         }
     }
     if (sendingPacketThisTick) {
-        if (this->lastFrequencyHzSent == 1) {
-            this->lastFrequencyHzSent = 100;
-        }
         for (int i = 0; i < nextEmptyPacketIndex; i++) {
             this->rfdSerialConnection.write(this->packet[i]);
         }
     }
-    if (thisSecond > lastSecond) lastSecond = thisSecond;
     return sendingPacketThisTick;
 }
