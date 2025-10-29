@@ -112,6 +112,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // If the confirmation window has passed without launch detected by LaunchDetector,
                 // revert to ARMED state
                 state = STATE_ARMED;
+                fldLaunchTime_ms = 0;
 
                 // Log the state change
                 dataSaver->saveDataPoint(
