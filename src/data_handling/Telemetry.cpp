@@ -55,6 +55,13 @@ void Telemetry::setPacketToZero() {
     }
 }
 
+void Telemetry::addEndMarker() {
+    this->packet[nextEmptyPacketIndex] = 0;
+    this->packet[nextEmptyPacketIndex+1] = 0;
+    this->packet[nextEmptyPacketIndex+2] = 0;
+    this->packet[nextEmptyPacketIndex+3] = END_BYTE;
+}
+
 bool Telemetry::tick(uint32_t currentTime) {
     bool sendingPacketThisTick = false;
     int currentPacketIndex = 0;
@@ -72,6 +79,7 @@ bool Telemetry::tick(uint32_t currentTime) {
         }
     }
     if (sendingPacketThisTick) {
+        addEndMarker();
         for (int i = 0; i < nextEmptyPacketIndex; i++) {
             this->rfdSerialConnection.write(this->packet[i]);
         }

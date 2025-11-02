@@ -9,6 +9,7 @@
 #include "ArduinoHAL.h"
 
 #define START_BYTE 51
+#define END_BYTE 52
 
 /**
  * @struct SendableSensorData
@@ -76,6 +77,7 @@ class Telemetry {
         void addSingleSDHToPacket(SensorDataHandler* sdh);
         void addSSDToPacket(SendableSensorData* ssd);
         void setPacketToZero();
+        void addEndMarker();
 
         SendableSensorData** ssdArray;
         int ssdArrayLength;
