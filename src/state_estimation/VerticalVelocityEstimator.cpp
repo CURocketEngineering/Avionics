@@ -1,5 +1,6 @@
 #include <array>
 #include <cmath>
+#include <cstdio>
 
 #include "state_estimation/VerticalVelocityEstimator.h"
 

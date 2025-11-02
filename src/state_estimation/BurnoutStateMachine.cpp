@@ -29,11 +29,6 @@ int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
         tempTimeStamp = accel.x.timestamp_ms;
         count++;
     }
-    Serial.print("EA: ");
-    Serial.println(verticalVelocityEstimator->getEstimatedAltitude());
-    Serial.print("Ts: ");
-    Serial.println(accel.x.timestamp_ms);
-
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");
@@ -102,9 +97,6 @@ int BurnoutStateMachine::update(AccelerationTriplet accel, DataPoint alt) {
 
         case STATE_DESCENT:
             // Do nothing
-            // Serial.println("in descent");
-            Serial.print("Timestamp: ");
-            Serial.println(tempTimeStamp);
             break;
     }
 
