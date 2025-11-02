@@ -60,6 +60,7 @@ void Telemetry::addEndMarker() {
     this->packet[nextEmptyPacketIndex+1] = 0;
     this->packet[nextEmptyPacketIndex+2] = 0;
     this->packet[nextEmptyPacketIndex+3] = END_BYTE;
+    nextEmptyPacketIndex += 4;
 }
 
 bool Telemetry::tick(uint32_t currentTime) {

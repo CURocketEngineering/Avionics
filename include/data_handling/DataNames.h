@@ -23,6 +23,7 @@
 // Metadata
 #define TIMESTAMP 14
 #define STATE_CHANGE 15
+#define CURRENT_STATE 23
 #define FLIGHT_ID 16
 
 // State Estimation
