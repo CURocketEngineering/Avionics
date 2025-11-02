@@ -70,6 +70,9 @@ class MockHardwareSerial : public MockSerial{
         return 0;
     }
     size_t write(const uint8_t *buffer, size_t size) { return size; }
+    void clearWriteCalls() {
+        writeCalls.clear();
+    }
 };
 
 typedef MockHardwareSerial HardwareSerial;
