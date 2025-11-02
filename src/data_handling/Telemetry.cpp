@@ -2,7 +2,7 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 
-Telemetry::Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, HardwareSerial &rfdSerialConnection)
+Telemetry::Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, Stream &rfdSerialConnection)
     : rfdSerialConnection(rfdSerialConnection)
 {
     this->ssdArray = ssdArray;

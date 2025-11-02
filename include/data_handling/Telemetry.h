@@ -62,7 +62,7 @@ class Telemetry {
          * @param txPin tx pin that the RFD is connected to
          * @param rxPin rx pin that the RFD is connected to
          */
-        Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, HardwareSerial &rfdSerialConnection);
+        Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, Stream &rfdSerialConnection);
 
         /**
          * @attention MUST BE RUN EVERY LOOP
@@ -79,7 +79,7 @@ class Telemetry {
 
         SendableSensorData** ssdArray;
         int ssdArrayLength;
-        HardwareSerial &rfdSerialConnection;
+        Stream &rfdSerialConnection;
         int nextEmptyPacketIndex;
         uint8_t packet[120]; //rfd settings indicate that 120 is the max packet size
 };
