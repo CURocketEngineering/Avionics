@@ -6,19 +6,20 @@
 #include "state_estimation/LaunchDetector.h"
 #include "state_estimation/VerticalVelocityEstimator.h"
 #include "state_estimation/FastLaunchDetector.h"
+#include "state_estimation/BaseStateMachine.h"
 
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
 
-class StateMachine {
+class StateMachine : public BaseStateMachine {
   public: 
     StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
                  VerticalVelocityEstimator* verticalVelocityEstimator, FastLaunchDetector* fastLaunchDetector);
 
-    int update(const AccelerationTriplet& accel, const DataPoint& alt);
+    int update(const AccelerationTriplet& accel, const DataPoint& alt) override;
 
-    uint8_t getState() const;
+    uint8_t getState() const override;
 
   private:
     uint8_t state;
