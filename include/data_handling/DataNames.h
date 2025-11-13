@@ -19,6 +19,7 @@
 // Metrics
 #define MEDIAN_ACCELERATION_SQUARED 12
 #define AVERAGE_CYCLE_RATE 13
+#define NUM_PACKETS_SENT 24
 
 // Metadata
 #define TIMESTAMP 14

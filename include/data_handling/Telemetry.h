@@ -69,6 +69,7 @@ class Telemetry {
          * @attention MUST BE RUN EVERY LOOP
          * @brief No argument tick function that handles sending data at
          * specified send frequencies.
+         * @return true if a packet was sent after calling this function.
          */
         bool tick(uint32_t currentTime);
 
