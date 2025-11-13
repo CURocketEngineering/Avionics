@@ -63,7 +63,16 @@ extern MockSerial Serial;
 extern MockSerial Serial1;
 
 class MockHardwareSerial : public MockSerial{
-    
+    public:
+    std::vector<uint8_t> writeCalls;
+    size_t write(uint8_t byte) {
+        this->writeCalls.push_back(byte);
+        return 0;
+    }
+    size_t write(const uint8_t *buffer, size_t size) { return size; }
+    void clearWriteCalls() {
+        writeCalls.clear();
+    }
 };
 
 typedef MockHardwareSerial HardwareSerial;
