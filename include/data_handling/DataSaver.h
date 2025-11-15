@@ -27,6 +27,11 @@ class IDataSaver {
             // Default implementation does nothing
         }
 
+        // default method that does nothing, can be overridden
+        virtual void clearPostLaunchMode(){
+            // default implementation does nothing
+        }
+
 };
 
 
