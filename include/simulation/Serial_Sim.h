@@ -161,7 +161,7 @@ private:
 
 private:
     Stream* serial = nullptr;
-    BurnoutStateMachine* stateMachine = nullptr;
+    BaseStateMachine* stateMachine = nullptr;
     String  _partialLine;  // used to accumulate characters until newline
 
     // Parsed sensor data
