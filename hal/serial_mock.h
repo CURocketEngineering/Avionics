@@ -62,33 +62,28 @@ public:
 extern MockSerial Serial;
 extern MockSerial Serial1;
 
-class MockHardwareSerial : public MockSerial{
-    public:
-    std::vector<uint8_t> writeCalls;
-    size_t write(uint8_t byte) {
-        this->writeCalls.push_back(byte);
-        return 0;
-    }
-    size_t write(const uint8_t *buffer, size_t size) { return size; }
-    void clearWriteCalls() {
-        writeCalls.clear();
-    }
-};
-
-typedef MockHardwareSerial HardwareSerial;
+typedef MockSerial HardwareSerial;
 
 
 // Mock Stream class
 class Stream {
 public:
+    std::vector<uint8_t> writeCalls;
+
     virtual int available() { return 0; }
     virtual int read() { return -1; }
     virtual int peek() { return -1; }
     virtual void flush() {}
-    virtual size_t write(uint8_t) { return 0; }
+    virtual size_t write(uint8_t byte) {
+        this->writeCalls.push_back(byte);
+        return 0;
+    }
     virtual size_t write(const char *str) { return 0; }   
     virtual size_t write(const char* buffer, size_t size) { return size; } // for string literals
     virtual size_t write(const uint8_t *buffer, size_t size) { return size; }
+    void clearWriteCalls() {
+        writeCalls.clear();
+    }
 
     // Read a string until a newline character
     std::string readStringUntil(char terminator) {
