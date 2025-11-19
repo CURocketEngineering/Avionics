@@ -2,72 +2,88 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 
-Telemetry::Telemetry(SendableSensorData* ssdArray[], HardwareSerial &rfdSerialConnection)
+Telemetry::Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, Stream &rfdSerialConnection)
     : rfdSerialConnection(rfdSerialConnection)
 {
     this->ssdArray = ssdArray;
+    this->ssdArrayLength = ssdArrayLength;
     //TODO: it would be nice if we could throw an error at compile time
     //if a user's desired max packet size as specified from what they put in
     //ssdArray is larger than this value.
 }
 
-void Telemetry::preparePacket(int8_t frequency, uint32_t timestamp) {
-    this->packet[0] = START_BYTE_BASE+frequency;
-    this->packet[1] = (timestamp >> 24) & 0xFF;
-    this->packet[2] = (timestamp >> 16) & 0xFF;
-    this->packet[3] = (timestamp >> 8) & 0xFF;
-    this->packet[4] = timestamp & 0xFF;
-    nextEmptyPacketIndex = 5;
+void Telemetry::preparePacket(uint32_t timestamp) {
+    this->packet[0] = 0;
+    this->packet[1] = 0;
+    this->packet[2] = 0;
+    this->packet[3] = START_BYTE;
+    this->packet[4] = (timestamp >> 24) & 0xFF;
+    this->packet[5] = (timestamp >> 16) & 0xFF;
+    this->packet[6] = (timestamp >> 8) & 0xFF;
+    this->packet[7] = timestamp & 0xFF;
+    nextEmptyPacketIndex = 8;
 }
 
-void Telemetry::addSingleSDHToPacket(SensorDataHandler* sdh, int sensorDataBytes) {
-    uint32_t data = sdh->getLastDataPointSaved().data;
-    for (int i = 0; i < sensorDataBytes; i++) {
-        this->packet[nextEmptyPacketIndex+i] = (data >> (i*8)) & 0xFF;
+void Telemetry::addSingleSDHToPacket(SensorDataHandler* sdh) {
+    float floatData = sdh->getLastDataPointSaved().data; 
+    uint32_t data;
+    memcpy(&data, &floatData, sizeof(data));
+    for (int i = 3; i > -1; i--) {
+        this->packet[nextEmptyPacketIndex+(3-i)] = (data >> (i*8)) & 0xFF;
     }
-    nextEmptyPacketIndex += (sensorDataBytes+1);
+    nextEmptyPacketIndex += 4;
 }
 
 void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
     if (ssd->singleSDH != nullptr) {
         this->packet[nextEmptyPacketIndex] = ssd->singleSDH->getName();
         nextEmptyPacketIndex += 1;
-        this->addSingleSDHToPacket(ssd->singleSDH, ssd->sensorDataBytes);
+        this->addSingleSDHToPacket(ssd->singleSDH);
     }
     if (ssd->multiSDH != nullptr) {
         this->packet[nextEmptyPacketIndex] = ssd->multiSDHDataLabel;
         nextEmptyPacketIndex += 1;
-        for (int i = 0; i < size_t(ssd->multiSDH)/size_t(ssd->multiSDH[0]); i++) {
-            this->addSingleSDHToPacket(ssd->multiSDH[i], ssd->sensorDataBytes);
+        for (int i = 0; i < ssd->multiSDHLength; i++) {
+            this->addSingleSDHToPacket(ssd->multiSDH[i]);
         }
     }
 }
 
-void Telemetry::tick() {
-    uint32_t timestamp = millis();
-    uint32_t millisOfThisSecond = (timestamp-((timestamp/1000)*1000));
-    int thisTicksFrequency = 1000/(millisOfThisSecond+10); //plus 10 so that at ~990, the last loop of the second, we are less than one here
-    int ssdArrayLen = sizeof(ssdArray)/sizeof(ssdArray[0]);
+void Telemetry::setPacketToZero() {
+    for (int i = 0; i < 120; i++) { //Completely clear packet
+        this->packet[i] = 0;
+    }
+}
+
+void Telemetry::addEndMarker() {
+    this->packet[nextEmptyPacketIndex] = 0;
+    this->packet[nextEmptyPacketIndex+1] = 0;
+    this->packet[nextEmptyPacketIndex+2] = 0;
+    this->packet[nextEmptyPacketIndex+3] = END_BYTE;
+    nextEmptyPacketIndex += 4;
+}
+
+bool Telemetry::tick(uint32_t currentTime) {
     bool sendingPacketThisTick = false;
     int currentPacketIndex = 0;
-    for (int i = 0; i < ssdArrayLen; i++) {
-        if (ssdArray[i]->sendFrequencyHz > this->lastFrequencyHzSent && ssdArray[i]->sendFrequencyHz >= thisTicksFrequency) {
-            this->lastFrequencyHzSent = ssdArray[i]->sendFrequencyHz;
+    for (int i = 0; i < this->ssdArrayLength; i++) {
+        if (ssdArray[i]->shouldBeSent(currentTime)) {
             if (!sendingPacketThisTick) {
-                preparePacket(ssdArray[i]->sendFrequencyHz, timestamp);
+                setPacketToZero();
+                preparePacket(currentTime);
                 addSSDToPacket(ssdArray[i]);
                 sendingPacketThisTick = true;
             } else {
                 addSSDToPacket(ssdArray[i]);
             }
+            ssdArray[i]->markWasSent(currentTime);
         }
     }
     if (sendingPacketThisTick) {
-        if (this->lastFrequencyHzSent == 1) {
-            this->lastFrequencyHzSent = 0;
-        }
+        addEndMarker();
         for (int i = 0; i < nextEmptyPacketIndex; i++) {
             this->rfdSerialConnection.write(this->packet[i]);
         }
     }
+    return sendingPacketThisTick;
 }
