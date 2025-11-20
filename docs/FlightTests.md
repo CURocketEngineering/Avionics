@@ -25,8 +25,7 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
 
 ## Flight Test History (most recent first)
 
-* **L2-MA-2025-11-09-0 [MARTHA 1.3 B1 Sam's L2 Live Telemetry Test](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.2.0)
-:**  
+* **L2-MA-2025-11-09-0 [MARTHA 1.3 B1 Sam's L2 Live Telemetry Test](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.2.0):**
   Flew on Sam's L2 test vehicle to about 1,300 feet. Live telemetry worked at 2 HZ with a live updating ground station dashboard and we could tell apogee and
   all the parachute events prior to recovery. No data was saved on the flash chip due to a hardware issue.
   The little blue spider wires on B1's flash chip likely got broken when placing the board in the 
