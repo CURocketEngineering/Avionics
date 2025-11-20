@@ -25,6 +25,14 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
 
 ## Flight Test History (most recent first)
 
+* **L2-MA-2025-11-09-0 [MARTHA 1.3 B1 Sam's L2 Live Telemetry Test](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.2.0)
+:**  
+  Flew on Sam's L2 test vehicle to about 1,300 feet. Live telemetry worked at 2 HZ with a live updating ground station dashboard and we could tell apogee and
+  all the parachute events prior to recovery. No data was saved on the flash chip due to a hardware issue.
+  The little blue spider wires on B1's flash chip likely got broken when placing the board in the 
+  radio-MARTHA assembly. Used a custom mount to hold the radio and MARTHA together and only one support 
+  struct sheared. Main chute did not come out, landed under drogue. 
+
 * **CV-MA-2025-06-11-0 [MARTHA 1.3 B1 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**
   Flew on the competition vehicle for IREC 2025 to about 9900 feet. It lost power at drogue deployment. It flew the same software as
   **AA-MA-2025-04-13-0**, including apogee detection, which performed poorly in the same way as before (underestimating throughout the flight).
