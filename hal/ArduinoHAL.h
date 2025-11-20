@@ -16,6 +16,7 @@
 using String = std::string;
 
 #include <iostream>
+#include <cstring>
 
 #include <chrono>
 
