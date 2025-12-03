@@ -15,7 +15,7 @@
 #define LIS3MDL_CONTINUOUSMODE          0x00  
 #define LIS3MDL_MEDIUMMODE              0x01  
 // LIS2MDL (Magnetometer 1.4) Define
-#define LIS2MDL_DATARATE_155_HZ         0x06
+#define LIS2MDL_RATE_100_HZ             0x06
 // BMP3 (Barometric Pressure Sensor) Define
 #define BMP3_OVERSAMPLING_8X            0x03  
 #define BMP3_OVERSAMPLING_4X            0x02  
