@@ -6,8 +6,6 @@ on:
       - '**'
 
   workflow_dispatch:
-  
-
 
 jobs:
   test-native:
@@ -29,10 +27,14 @@ jobs:
           mkdir -p native/lib
           mv avionics native/lib/avionics
 
+      - name: Show native directory structure
+        run: |
+          echo "===== native directory tree ====="
+          ls -R native
+
       - name: Download Rocket-test-data v1.0.0 release CSVs
         run: |
           mkdir -p native/data
-
           curl -s https://api.github.com/repos/CURocketEngineering/Rocket-test-data/releases/tags/v1.0.0 \
             | jq -r '.assets[].browser_download_url' \
             | while read url; do
