@@ -27,10 +27,6 @@ jobs:
           mkdir -p native/lib
           mv avionics native/lib/avionics
 
-      - name: Show native directory structure
-        run: |
-          echo "===== native directory tree ====="
-          ls -R native
 
       - name: Download Rocket-test-data v1.0.0 release CSVs
         run: |
@@ -45,6 +41,11 @@ jobs:
       - name: Install PlatformIO Core
         run: |
           pip install -U platformio
+          
+      - name: Show native directory structure
+        run: |
+          echo "===== native directory tree ====="
+          ls -R native
 
       - name: Run PlatformIO Tests
         working-directory: ./native
