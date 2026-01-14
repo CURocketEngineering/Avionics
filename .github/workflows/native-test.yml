@@ -32,16 +32,21 @@ jobs:
         run: |
           mkdir -p native/data
           curl -s https://api.github.com/repos/CURocketEngineering/Rocket-test-data/releases/tags/v1.0.0 \
+                  https://github.com/CURocketEngineering/Rocket-test-data/releases/tag/v1.0.0
             | jq -r '.assets[].browser_download_url' \
             | while read url; do
                 echo "Downloading $url"
                 curl -L "$url" -o native/data/$(basename "$url")
               done
-
+      - name: Fix file name
+        run: |
+          mv native/data/AA.Data.Collection.-.Second.Launch.Trimmed.csv \
+             native/data/"AA Data Collection - Second Launch Trimmed.csv"
+             
       - name: Install PlatformIO Core
         run: |
           pip install -U platformio
-          
+
       - name: Show native directory structure
         run: |
           echo "===== native directory tree ====="
