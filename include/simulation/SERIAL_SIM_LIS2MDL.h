@@ -13,7 +13,7 @@ public:
     void setDataRate(int rate) {}
     void enableInterrupts(bool a) {}
 
-    int getDataRate() { return 155; } // Mock as 155 Hz
+    int getDataRate() { return 100; } // Mock as 155 Hz
 
     void getEvent(sensors_event_t *mag) {
         SerialSim::getInstance().updateMag(mag);
