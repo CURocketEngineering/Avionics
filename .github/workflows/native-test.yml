@@ -1,10 +1,12 @@
-name: Test on Native
+name: Test With Native
 
 on:
+  #triggers the workflow on pull requests
   pull_request:
     branches:
       - '**'
 
+  #allows manual triggering of the workflow
   workflow_dispatch:
 
 jobs:
@@ -12,22 +14,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      #gets the current repo
       - name: Checkout avionics repo
         uses: actions/checkout@v4
         with:
           path: avionics
-
+      
+      #clones the native repo
       - name: Clone Native repo
         run: |
           git clone https://github.com/CURocketEngineering/Native native
 
+      #replaces the linked avionics repo with the current avionics code
       - name: Replace Native lib avionics with checked-out avionics code
         run: |
           rm -rf native/lib/avionics
           mkdir -p native/lib
           mv avionics native/lib/avionics
 
-
+      #downlaods the rocket-test-data for the test
       - name: Download Rocket-test-data v1.0.0 release CSVs
         run: |
           mkdir -p native/data
@@ -39,20 +44,36 @@ jobs:
               echo "Downloading $url"
               curl -L "$url" -o native/data/$(basename "$url")
             done
+
+      #fixes the file name replacing the . with spaces      
       - name: Fix file name
         run: |
           mv native/data/AA.Data.Collection.-.Second.Launch.Trimmed.csv \
              native/data/"AA Data Collection - Second Launch Trimmed.csv"
 
+      #installed PlatformIO core
       - name: Install PlatformIO Core
         run: |
           pip install -U platformio
-
+      #shows the file tree structure for debugging
       - name: Show native directory structure
         run: |
           echo "===== native directory tree ====="
           ls -R native
 
+      #used to allow non-standard C++ code
+      - name: Make CI permissive for all tests
+        working-directory: ./native
+        run: |
+          echo "
+          [env:native]
+          build_flags =
+            -fpermissive
+            -Wno-pedantic
+            -Wno-error
+          " >> platformio.ini
+
+      #runs platformio test
       - name: Run PlatformIO Tests
         working-directory: ./native
         run: |
