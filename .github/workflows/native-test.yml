@@ -61,20 +61,9 @@ jobs:
           echo "===== native directory tree ====="
           ls -R native
 
-      #used to allow non-standard C++ code
-      - name: Make CI permissive for all tests
-        working-directory: ./native
-        run: |
-          echo "
-          [env:native]
-          build_flags =
-            -fpermissive
-            -Wno-pedantic
-            -Wno-error
-          " >> platformio.ini
-
       #runs platformio test
       - name: Run PlatformIO Tests
         working-directory: ./native
         run: |
-          pio test -e native
+          pio test -e native --project-option="build_flags=-std=gnu++17"
+
