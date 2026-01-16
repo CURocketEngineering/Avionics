@@ -22,4 +22,4 @@ public:
 
 };
 
-#endif // SERIAL_SIM_LIS3MDL_H
+#endif // SERIAL_SIM_LIS2MDL_H
