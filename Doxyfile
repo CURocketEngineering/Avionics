@@ -1029,6 +1029,7 @@ WARN_LOGFILE           =
 INPUT                  = include \
                          src \
                          hal \
+                         docs \
                          README.md
 
 # This tag can be used to specify the character encoding of the source files
@@ -1077,7 +1078,8 @@ FILE_PATTERNS          = *.h \
                          *.cc \
                          *.cpp \
                          *.cxx \
-                         *.ino
+                         *.ino \
+                         *.md
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -1110,7 +1112,6 @@ EXCLUDE_SYMLINKS       = NO
 
 EXCLUDE_PATTERNS       = */.git/* \
                          */.github/* \
-                         */docs/* \
                          */build/* \
                          */.pio/* \
                          */.vscode/* \
