@@ -8,6 +8,11 @@
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
+/**
+ * @brief IDataSaver implementation that streams CSV packets over UART.
+ * @note When to use: log data to an external serial data logger when file
+ *       systems (SD/SPI flash) are unavailable or you need live passthrough.
+ */
 class DataSaverSDSerial: public IDataSaver {
     // Given data points, will write the data over uart to a serial data logger 
 

@@ -83,6 +83,7 @@ The following systems integrate Avionics as a submodule:
 - Doxygen: run `doxygen Doxyfile` from the repository root. HTML output is placed in `build/doxygen/index.html` (README is used as the main page).
 - High-level notes: data logging constraints and Byte5 format are summarized in `docs/FlashDataSaving.md`.
 - Flight history: see `docs/FlightTests.md` for vehicles and dates that have flown with this codebase.
+- Target Audience: The documentation is written for compsci students with very little background in C++ or embedded systems. 
 
 ## Unit Testing
 
