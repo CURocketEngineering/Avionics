@@ -97,13 +97,16 @@ $(document).ready(function(){initNavTree('classVerticalVelocityEstimator.html','
 </div><!--header-->
 <div class="contents">
 
+<p>1D Kalman filter fusing altimeter and accelerometer data.  
+ <a href="classVerticalVelocityEstimator.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="VerticalVelocityEstimator_8h_source.html">VerticalVelocityEstimator.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for VerticalVelocityEstimator:</div>
 <div class="dyncontent">
 <div class="center"><img src="classVerticalVelocityEstimator__coll__graph.png" border="0" usemap="#aVerticalVelocityEstimator_coll__map" alt="Collaboration graph"/></div>
 <map name="aVerticalVelocityEstimator_coll__map" id="aVerticalVelocityEstimator_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,249,200"/>
+<area shape="rect" title="1D Kalman filter fusing altimeter and accelerometer data." alt="" coords="5,5,249,200"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -129,17 +132,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a339c7edd7270215cb436707d5bd9024e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a> provides a 1D Kalman filter that fuses altimeter and acceleration data to estimate altitude and vertical velocity. It is adapted from the logic in <a class="el" href="classApogeeDetector.html" title="Detects the apogee (peak altitude) of a rocket flight using estimated altitude and vertical velocity.">ApogeeDetector</a> but excludes the apogee detection mechanism.</p>
-<p>Assumptions:</p><ul>
-<li>The state is [altitude, vertical velocity] (in SI units).</li>
-<li>The process model uses the vertical acceleration as a control input.</li>
-<li>The accelerometer outputs roughly +9.81 m/s² when at rest (measuring gravity). In free fall it reads ~0 m/s². Hence we subtract g (9.81 m/s²) from the raw accelerometer reading to get the rocket’s inertial acceleration.</li>
-<li>The altimeter measurement is used to correct the altitude.</li>
-</ul>
-<p>The user of this class may simply call update(...) whenever new sensor readings arrive and retrieve the current altitude and velocity estimates.</p>
-<dl class="section note"><dt>Note</dt><dd>When to use: any pipeline that needs filtered altitude/velocity inputs for detection, control, or prediction without embedding apogee logic. </dd></dl>
+<div class="textblock"><p>1D Kalman filter fusing altimeter and accelerometer data. </p>
+<p>Maintains altitude and vertical velocity by treating vertical acceleration as the control input. Gravity is subtracted from raw accelerometer readings to obtain inertial acceleration. Call <code><a class="el" href="classVerticalVelocityEstimator.html#a9f740ef28bc66fe44de75d05f41e58c2">update()</a></code> with new IMU + baro samples and query the latest estimates via getters. </p><dl class="section note"><dt>Note</dt><dd>Use when downstream logic (detectors, control, telemetry) needs filtered altitude/velocity without embedding apogee-specific behavior. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="VerticalVelocityEstimator_8h_source.html#l00046">46</a> of file <a class="el" href="VerticalVelocityEstimator_8h_source.html">VerticalVelocityEstimator.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="VerticalVelocityEstimator_8h_source.html#l00037">37</a> of file <a class="el" href="VerticalVelocityEstimator_8h_source.html">VerticalVelocityEstimator.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9c193f977c52797f3ac1661f84b49a45" name="a9c193f977c52797f3ac1661f84b49a45"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c193f977c52797f3ac1661f84b49a45">&#9670;&#160;</a></span>VerticalVelocityEstimator()</h2>

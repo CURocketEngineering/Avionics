@@ -135,7 +135,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Predicts time‑to‑apogee and altitude‑at‑apogee from real‑time kinematics. </p>
 <p>The predictor treats the <em>current</em> deceleration (loss of vertical velocity) as constant and analytically projects forward: </p><pre class="fragment"> t_apogee = v / |a|          (time until v → 0)
  h_apogee = h + v·t − ½|a|t²
-</pre><p> where v and a are the <b>filtered</b> estimates of vertical velocity and net vertical acceleration supplied by the <a class="el" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a>.</p>
+</pre><p> where v and a are the <b>filtered</b> estimates of vertical velocity and net vertical acceleration supplied by the <a class="el" href="classVerticalVelocityEstimator.html" title="1D Kalman filter fusing altimeter and accelerometer data.">VerticalVelocityEstimator</a>.</p>
 <p>To damp sensor noise, we run a single‑pole low‑pass filter on the measured deceleration magnitude. Call <code><a class="el" href="classApogeePredictor.html#aab5d0d262dd54de3bb61f976bc92013d">update()</a></code> after each estimator refresh.</p>
 <dl class="section note"><dt>Note</dt><dd>When to use: provide early apogee timing/altitude estimates for telemetry or adaptive control while still ascending. </dd></dl>
 
