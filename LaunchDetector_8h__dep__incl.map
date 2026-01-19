@@ -1,0 +1,12 @@
+<map id="LaunchDetector.h" name="LaunchDetector.h">
+<area shape="rect" id="node1" title=" " alt="" coords="219,5,354,31"/>
+<area shape="rect" id="node2" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="13,79,187,104"/>
+<area shape="rect" id="node8" href="$LaunchDetector_8cpp.html" title=" " alt="" coords="211,79,362,104"/>
+<area shape="rect" id="node9" href="$StateMachine_8h.html" title=" " alt="" coords="387,79,509,104"/>
+<area shape="rect" id="node3" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="5,152,195,177"/>
+<area shape="rect" id="node4" href="$Serial__Sim_8h.html" title=" " alt="" coords="235,152,338,177"/>
+<area shape="rect" id="node5" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="16,225,179,251"/>
+<area shape="rect" id="node6" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="203,225,370,251"/>
+<area shape="rect" id="node7" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="394,225,577,251"/>
+<area shape="rect" id="node10" href="$StateMachine_8cpp.html" title=" " alt="" coords="379,152,517,177"/>
+</map>

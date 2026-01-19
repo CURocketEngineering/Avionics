@@ -1,0 +1,20 @@
+<map id="StateEstimationTypes.h" name="StateEstimationTypes.h">
+<area shape="rect" id="node1" title=" " alt="" coords="217,5,391,31"/>
+<area shape="rect" id="node2" href="$BaseStateMachine_8h.html" title=" " alt="" coords="269,152,424,177"/>
+<area shape="rect" id="node3" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="234,225,409,251"/>
+<area shape="rect" id="node4" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="5,299,195,324"/>
+<area shape="rect" id="node10" href="$StateMachine_8cpp.html" title=" " alt="" coords="717,299,856,324"/>
+<area shape="rect" id="node11" href="$LaunchDetector_8h.html" title=" " alt="" coords="110,152,245,177"/>
+<area shape="rect" id="node13" href="$VerticalVelocityEstimator_8h.html" title=" " alt="" coords="505,79,703,104"/>
+<area shape="rect" id="node9" href="$StateMachine_8h.html" title=" " alt="" coords="433,225,556,251"/>
+<area shape="rect" id="node5" href="$Serial__Sim_8h.html" title=" " alt="" coords="283,299,386,324"/>
+<area shape="rect" id="node6" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="64,372,227,397"/>
+<area shape="rect" id="node7" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="251,372,418,397"/>
+<area shape="rect" id="node8" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="442,372,625,397"/>
+<area shape="rect" id="node12" href="$LaunchDetector_8cpp.html" title=" " alt="" coords="59,225,210,251"/>
+<area shape="rect" id="node14" href="$ApogeeDetector_8h.html" title=" " alt="" coords="735,152,873,177"/>
+<area shape="rect" id="node16" href="$ApogeePredictor_8h.html" title=" " alt="" coords="898,152,1038,177"/>
+<area shape="rect" id="node18" href="$VerticalVelocityEstimator_8cpp.html" title=" " alt="" coords="498,152,710,177"/>
+<area shape="rect" id="node15" href="$ApogeeDetector_8cpp.html" title=" " alt="" coords="709,225,862,251"/>
+<area shape="rect" id="node17" href="$ApogeePredictor_8cpp.html" title=" " alt="" coords="887,225,1041,251"/>
+</map>

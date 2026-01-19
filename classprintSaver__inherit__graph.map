@@ -1,0 +1,4 @@
+<map id="printSaver" name="printSaver">
+<area shape="rect" id="node1" title="IDataSaver that prints samples to stdout for debugging." alt="" coords="9,175,151,252"/>
+<area shape="rect" id="node2" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="5,5,155,127"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="ApogeeDetector.h" name="ApogeeDetector.h">
+<area shape="rect" id="node1" title=" " alt="" coords="201,5,339,31"/>
+<area shape="rect" id="node2" href="$ApogeeDetector_8cpp.html" title=" " alt="" coords="5,79,159,104"/>
+<area shape="rect" id="node3" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="183,79,357,104"/>
+<area shape="rect" id="node9" href="$StateMachine_8h.html" title=" " alt="" coords="382,79,505,104"/>
+<area shape="rect" id="node4" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="103,152,293,177"/>
+<area shape="rect" id="node5" href="$Serial__Sim_8h.html" title=" " alt="" coords="317,152,420,177"/>
+<area shape="rect" id="node6" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="98,225,261,251"/>
+<area shape="rect" id="node7" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="285,225,452,251"/>
+<area shape="rect" id="node8" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="476,225,659,251"/>
+<area shape="rect" id="node10" href="$StateMachine_8cpp.html" title=" " alt="" coords="445,152,583,177"/>
+</map>

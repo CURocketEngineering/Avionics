@@ -1,0 +1,4 @@
+<map id="BurnoutStateMachine" name="BurnoutStateMachine">
+<area shape="rect" id="node1" title="State machine variant that explicitly models motor burnout before coast." alt="" coords="5,145,192,252"/>
+<area shape="rect" id="node2" href="$classBaseStateMachine.html" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="27,5,170,97"/>
+</map>

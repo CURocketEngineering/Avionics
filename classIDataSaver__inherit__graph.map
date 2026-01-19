@@ -1,0 +1,8 @@
+<map id="IDataSaver" name="IDataSaver">
+<area shape="rect" id="node1" title="Abstract interface for persisting timestamped data points." alt="" coords="435,5,584,127"/>
+<area shape="rect" id="node2" href="$classDataSaverBigSD.html" title="Buffered CSV writer targeting large SD cards via SdFat." alt="" coords="5,226,160,347"/>
+<area shape="rect" id="node3" href="$classDataSaverMock.html" title=" " alt="" coords="185,226,399,347"/>
+<area shape="rect" id="node4" href="$classDataSaverSDSerial.html" title=" " alt="" coords="424,226,595,347"/>
+<area shape="rect" id="node5" href="$classDataSaverSPI.html" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="619,175,808,399"/>
+<area shape="rect" id="node6" href="$classprintSaver.html" title="IDataSaver that prints samples to stdout for debugging." alt="" coords="833,248,975,325"/>
+</map>

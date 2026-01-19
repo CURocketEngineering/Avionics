@@ -1,0 +1,3 @@
+<map id="Telemetry" name="Telemetry">
+<area shape="rect" id="node1" title="Packages sensor data into fixed&#45;size packets and streams over UART." alt="" coords="5,5,117,97"/>
+</map>

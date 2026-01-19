@@ -1,0 +1,5 @@
+<map id="BaseStateMachine" name="BaseStateMachine">
+<area shape="rect" id="node1" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="119,5,262,97"/>
+<area shape="rect" id="node2" href="$classBurnoutStateMachine.html" title="State machine variant that explicitly models motor burnout before coast." alt="" coords="5,145,192,252"/>
+<area shape="rect" id="node3" href="$classStateMachine.html" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="216,145,352,252"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="ApogeeDetector" name="ApogeeDetector">
+<area shape="rect" id="node1" title="Detects the apogee (peak altitude) of a rocket flight using estimated altitude and vertical velocity." alt="" coords="5,5,249,229"/>
+</map>

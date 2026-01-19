@@ -1,0 +1,4 @@
+<map id="DataSaverSPI" name="DataSaverSPI">
+<area shape="rect" id="node1" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="5,175,195,399"/>
+<area shape="rect" id="node2" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="25,5,175,127"/>
+</map>

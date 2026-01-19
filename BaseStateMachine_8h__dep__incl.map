@@ -1,0 +1,11 @@
+<map id="BaseStateMachine.h" name="BaseStateMachine.h">
+<area shape="rect" id="node1" title=" " alt="" coords="185,5,340,31"/>
+<area shape="rect" id="node2" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="89,79,263,104"/>
+<area shape="rect" id="node8" href="$StateMachine_8h.html" title=" " alt="" coords="288,79,411,104"/>
+<area shape="rect" id="node3" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="11,152,200,177"/>
+<area shape="rect" id="node4" href="$Serial__Sim_8h.html" title=" " alt="" coords="225,152,327,177"/>
+<area shape="rect" id="node5" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,225,168,251"/>
+<area shape="rect" id="node6" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="193,225,359,251"/>
+<area shape="rect" id="node7" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="383,225,566,251"/>
+<area shape="rect" id="node9" href="$StateMachine_8cpp.html" title=" " alt="" coords="352,152,491,177"/>
+</map>
