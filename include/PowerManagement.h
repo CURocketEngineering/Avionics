@@ -4,11 +4,21 @@
 #include "Arduino.h"
 #include "pins.h"
 
+/**
+ * @brief Simple ADC-based battery voltage helper.
+ * @note When to use: quick health checks of the main battery using an analog
+ *       pin and known divider scaling.
+ */
 class BatteryVoltage {
     public:
         BatteryVoltage(uint8_t adcPin, float conversionFactor)
             : pin(adcPin), factor(conversionFactor) {}
     
+        /**
+         * @brief Sample the ADC and convert to battery voltage.
+         * @return Converted voltage reading.
+         * @note When to use: periodic health checks or brownout warnings.
+         */
         float readVoltage() {
             // Set the pin for reading
             pinMode(pin, INPUT);
@@ -22,6 +32,12 @@ class BatteryVoltage {
             return rawValue;
         }
       
+        /**
+         * @brief Check whether voltage exceeds a minimal threshold.
+         * @return true if voltage is above the survival threshold.
+         * @note When to use: lightweight go/no-go checks before more detailed
+         *       power analysis.
+         */
         bool isAlive(){
             return readVoltage() > .3; // Not sure what a good cutoff is 
     }

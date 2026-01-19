@@ -31,6 +31,11 @@ typedef struct { // NOLINT(altera-struct-pack-align)
 } TimestampRecord_t;
 #pragma pack(pop)  // Stop packing from here on out
 
+/**
+ * @brief SPI flash implementation of IDataSaver with timestamp compression.
+ * @note When to use: onboard non-volatile logging where SD cards are
+ *       impractical and data may need to survive power loss or long recovery.
+ */
 class DataSaverSPI : public IDataSaver {
 public:
 
@@ -58,8 +63,18 @@ public:
      */
     int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
+    /**
+     * @brief Persist a bare timestamp entry to flash.
+     * @param timestamp_ms Timestamp in milliseconds to record.
+     * @note When to use: emitted internally when gaps exceed
+     *       timestampInterval_ms, or explicitly in tests.
+     */
     int saveTimestamp(uint32_t timestamp_ms);
 
+    /**
+     * @brief Initialize the flash chip and metadata.
+     * @note When to use: call during setup before any saveDataPoint usage.
+     */
     virtual bool begin() override;
 
     /**
@@ -107,16 +122,33 @@ public:
      * @brief Dumps all data from flash to Serial
      * 
      */
+    /**
+     * @brief Stream all recorded data to a serial connection.
+     * @param serial            Output stream.
+     * @param ignoreEmptyPages  Skip pages that appear unwritten.
+     * @note When to use: post-flight data retrieval before erasing or
+     *       redeploying the flash.
+     */
     void dumpData(Stream &serial, bool ignoreEmptyPages);
 
     /**
      * @brief Resets all internal state values (buffer, lastDataPoint, nextWriteAddress, lastTimestamp_ms)
      * Does not erase the flash chip
      */
+    /**
+     * @brief Reset in-memory pointers without erasing flash contents.
+     * @note When to use: restart logging logic while preserving prior data on
+     *       the chip.
+     */
     void clearInternalState();
 
     /**
      * @brief Clears/erases the entire flash chip to start fresh
+     */
+    /**
+     * @brief Erase the entire flash chip to start fresh.
+     * @note When to use: before a new campaign when previous flights are fully
+     *       offloaded.
      */
     void eraseAllData();
 

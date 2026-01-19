@@ -21,6 +21,11 @@ constexpr int MAX_HISTORY = 20;
 constexpr int MAX_ARGUMENTS = 5;
 constexpr int MAX_ROW_LENGTH = 40;
 
+/**
+ * @brief Lightweight UART command-line interface with history and parsing.
+ * @note When to use: add interactive commands for debugging or configuration
+ *       over a serial terminal without bringing in a full shell.
+ */
 class CommandLine {
 
 public:
