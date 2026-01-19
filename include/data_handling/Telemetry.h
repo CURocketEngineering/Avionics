@@ -13,13 +13,14 @@
 
 /**
  * @struct SendableSensorData
- * @brief Wrapper struct to hold data info
- * @param singleSDH: SensorDataHandler*, put just one SDH pointer here
- * @param multiSDH: SensorDataHandler**, put an array of pointers to SDHs
- * @param multiSDHLength: length of multiSDHArray; can be 0 if singleSDH 
- * @param multiSDHDataLabel: data label of multiSDHArray; can be 0 if singleSDH 
- * @param sendFrequencyHz: desired frequency to send at
- * Number of bytes per sensor data handler is always assumed to be 4 (ie. a float) for consistency
+ * @brief Bundles one or more SensorDataHandler pointers for telemetry packing.
+ * @param singleSDH        Single handler to send when not using an array.
+ * @param multiSDH         Array of handlers to send together (optional).
+ * @param multiSDHLength   Length of the multiSDH array.
+ * @param multiSDHDataLabel Label used for the multi array payload.
+ * @param sendFrequencyHz  Desired transmission rate in hertz.
+ * @note When to use: define the telemetry mix (single vs. grouped streams) fed
+ *       to Telemetry before calling tick().
  */
 struct SendableSensorData {
     SensorDataHandler* singleSDH;
@@ -54,14 +55,21 @@ struct SendableSensorData {
     }
 };
 
+/**
+ * @brief Packages sensor data into fixed-size packets and streams over UART.
+ * @note When to use: periodic downlink of key channels during flight; call
+ *       tick() every loop to honor per-stream send rates.
+ */
 class Telemetry {
     public:
+    
         /**
          * @brief Initialize this object
-         * 
-         * @param ssdArray array of pointers to SendableSensorData structs
-         * @param txPin tx pin that the RFD is connected to
-         * @param rxPin rx pin that the RFD is connected to
+         * @param ssdArray          Array of pointers to SendableSensorData.
+         * @param ssdArrayLength    Number of entries in ssdArray.
+         * @param rfdSerialConnection Stream connected to the radio/modem.
+         * @note When to use: instantiate once during setup with the telemetry
+         *       layout you need for the current flight profile.
          */
         Telemetry(SendableSensorData* ssdArray[], int ssdArrayLength, Stream &rfdSerialConnection);
 

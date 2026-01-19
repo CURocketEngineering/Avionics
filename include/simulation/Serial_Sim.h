@@ -20,6 +20,11 @@
 #define BMP3_IIR_FILTER_COEFF_3         0x03  
 #define BMP3_ODR_100_HZ                 0x05 
 
+/**
+ * @brief Serial-based sensor/flight simulation singleton for hardware-in-the-loop.
+ * @note When to use: feed prerecorded or live PC-side simulation data into
+ *       firmware during development without real sensors.
+ */
 class SerialSim {
 public:
     static SerialSim& getInstance() {

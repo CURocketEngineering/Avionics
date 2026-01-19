@@ -40,6 +40,11 @@ enum LaunchDetectorStatus {
  * The delay in launch detection will equal half the window size because
  * the median will only be high once half the window is high
  */
+/**
+ * @brief Sliding-window launch detector based on acceleration magnitude.
+ * @note When to use: detect liftoff robustly against spikes by requiring a
+ *       sustained acceleration median over a configurable window.
+ */
 class LaunchDetector
 {
 public:

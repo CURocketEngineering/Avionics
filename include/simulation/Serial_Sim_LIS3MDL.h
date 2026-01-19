@@ -3,6 +3,11 @@
 
 #include "Serial_Sim.h"
 
+/**
+ * @brief Mock LIS3MDL magnetometer sourcing readings from SerialSim.
+ * @note When to use: magnetometer-dependent code paths during desktop or HIL
+ *       testing without the physical sensor.
+ */
 class Adafruit_LIS3MDL {
 public:
     Adafruit_LIS3MDL (){}

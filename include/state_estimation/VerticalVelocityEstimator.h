@@ -39,6 +39,9 @@ struct InitialState {
  *
  * The user of this class may simply call update(...) whenever new sensor readings 
  * arrive and retrieve the current altitude and velocity estimates.
+ *
+ * @note When to use: any pipeline that needs filtered altitude/velocity inputs for
+ *       detection, control, or prediction without embedding apogee logic.
  */
 class VerticalVelocityEstimator {
 public:
