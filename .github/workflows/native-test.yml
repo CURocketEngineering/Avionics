@@ -64,6 +64,6 @@ jobs:
       #runs platformio test
       - name: Run PlatformIO Tests
         working-directory: ./native
-        run: |
-          pio test -e native --project-option="build_flags=-std=gnu++17"
+        run: pio test -e native
+
 
