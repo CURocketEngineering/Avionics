@@ -15,22 +15,22 @@ jobs:
 
     steps:
       #gets the current repo
-      - name: Checkout avionics repo
+      - name: Checkout Avionics repo
         uses: actions/checkout@v4
         with:
-          path: avionics
+          path: Avionics
       
       #clones the native repo
       - name: Clone Native repo
         run: |
           git clone https://github.com/CURocketEngineering/Native native
 
-      #replaces the linked avionics repo with the current avionics code
-      - name: Replace Native lib avionics with checked-out avionics code
+      #replaces the linked Avionics repo with the current Avionics code
+      - name: Replace Native lib Avionics with checked-out Avionics code
         run: |
-          rm -rf native/lib/avionics
+          rm -rf native/lib/Avionics
           mkdir -p native/lib
-          mv avionics native/lib/avionics
+          mv Avionics native/lib/Avionics
 
       #downlaods the rocket-test-data for the test
       - name: Download Rocket-test-data v1.0.0 release CSVs
@@ -55,6 +55,7 @@ jobs:
       - name: Install PlatformIO Core
         run: |
           pip install -U platformio
+
       #shows the file tree structure for debugging
       - name: Show native directory structure
         run: |
