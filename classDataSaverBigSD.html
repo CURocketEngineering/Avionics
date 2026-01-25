@@ -125,7 +125,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af705c5b1eef94a44d14455bc6d8e46bf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverBigSD.html#af705c5b1eef94a44d14455bc6d8e46bf">DataSaverBigSD</a> (uint8_t csPin=5)</td></tr>
 <tr class="separator:af705c5b1eef94a44d14455bc6d8e46bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a818c1fe885458b614eb19a54596c695f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverBigSD.html#a818c1fe885458b614eb19a54596c695f">begin</a> ()</td></tr>
-<tr class="memdesc:a818c1fe885458b614eb19a54596c695f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the SD card and open a streaming file.  <br /></td></tr>
+<tr class="memdesc:a818c1fe885458b614eb19a54596c695f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the SD card and open a streaming file. Returns true on success.  <br /></td></tr>
 <tr class="separator:a818c1fe885458b614eb19a54596c695f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2f8e1142c2704b5c23bac0b6d08fa1f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverBigSD.html#af2f8e1142c2704b5c23bac0b6d08fa1f">saveDataPoint</a> (const <a class="el" href="classDataPoint.html">DataPoint</a> &amp;dataPoint, uint8_t name) override</td></tr>
 <tr class="memdesc:af2f8e1142c2704b5c23bac0b6d08fa1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Buffer a CSV line (timestamp,name,value) and flush in batches.  <br /></td></tr>
@@ -205,7 +205,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Initialize the SD card and open a streaming file. </p>
+<p>Initialize the SD card and open a streaming file. Returns true on success. </p>
 <dl class="section note"><dt>Note</dt><dd>When to use: during setup before any calls to saveDataPoint. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classIDataSaver.html#ace5e2181d713f498206b9a6bfb454dec">IDataSaver</a>.</p>
@@ -278,7 +278,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>When to use: routine logging path once <a class="el" href="classDataSaverBigSD.html#a818c1fe885458b614eb19a54596c695f" title="Initialize the SD card and open a streaming file.">begin()</a> succeeds. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>When to use: routine logging path once <a class="el" href="classDataSaverBigSD.html#a818c1fe885458b614eb19a54596c695f" title="Initialize the SD card and open a streaming file. Returns true on success.">begin()</a> succeeds. </dd></dl>
 
 <p>Implements <a class="el" href="classIDataSaver.html#aeb3489281aa9c4f7d545a012ba54a4dd">IDataSaver</a>.</p>
 

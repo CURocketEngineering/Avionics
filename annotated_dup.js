@@ -2,6 +2,7 @@ var annotated_dup =
 [
     [ "AccelerationTriplet", "structAccelerationTriplet.html", "structAccelerationTriplet" ],
     [ "Adafruit_BMP3XX", "classAdafruit__BMP3XX.html", "classAdafruit__BMP3XX" ],
+    [ "Adafruit_LIS2MDL", "classAdafruit__LIS2MDL.html", "classAdafruit__LIS2MDL" ],
     [ "Adafruit_LIS3MDL", "classAdafruit__LIS3MDL.html", "classAdafruit__LIS3MDL" ],
     [ "Adafruit_LSM6DSOX", "classAdafruit__LSM6DSOX.html", "classAdafruit__LSM6DSOX" ],
     [ "Adafruit_SPIFlash", "classAdafruit__SPIFlash.html", "classAdafruit__SPIFlash" ],
@@ -19,6 +20,7 @@ var annotated_dup =
     [ "DataSaverSDSerial", "classDataSaverSDSerial.html", "classDataSaverSDSerial" ],
     [ "DataSaverSPI", "classDataSaverSPI.html", "classDataSaverSPI" ],
     [ "File32", "structFile32.html", "structFile32" ],
+    [ "GroundLevelEstimator", "classGroundLevelEstimator.html", "classGroundLevelEstimator" ],
     [ "IDataSaver", "classIDataSaver.html", "classIDataSaver" ],
     [ "InitialState", "structInitialState.html", "structInitialState" ],
     [ "LaunchDetector", "classLaunchDetector.html", "classLaunchDetector" ],

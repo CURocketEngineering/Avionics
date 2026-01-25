@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "AccelerationTriplet", "structAccelerationTriplet.html", null ],
     [ "Adafruit_BMP3XX", "classAdafruit__BMP3XX.html", null ],
+    [ "Adafruit_LIS2MDL", "classAdafruit__LIS2MDL.html", null ],
     [ "Adafruit_LIS3MDL", "classAdafruit__LIS3MDL.html", null ],
     [ "Adafruit_LSM6DSOX", "classAdafruit__LSM6DSOX.html", null ],
     [ "Adafruit_SPIFlash", "classAdafruit__SPIFlash.html", null ],
@@ -18,6 +19,7 @@ var hierarchy =
     [ "CommandLine", "classCommandLine.html", null ],
     [ "DataPoint", "classDataPoint.html", null ],
     [ "File32", "structFile32.html", null ],
+    [ "GroundLevelEstimator", "classGroundLevelEstimator.html", null ],
     [ "IDataSaver", "classIDataSaver.html", [
       [ "DataSaverBigSD", "classDataSaverBigSD.html", null ],
       [ "DataSaverMock", "classDataSaverMock.html", null ],

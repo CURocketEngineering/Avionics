@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a008cfc0430ecaa8504c5084395c3cd9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classDataSaverSPI.html" title="SPI flash implementation of IDataSaver with timestamp compression.">DataSaverSPI</a> object.  <br /></td></tr>
 <tr class="separator:a008cfc0430ecaa8504c5084395c3cd9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8995d23226f88059a50efe390d5d0208"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverSPI.html#a8995d23226f88059a50efe390d5d0208">saveDataPoint</a> (const <a class="el" href="classDataPoint.html">DataPoint</a> &amp;dataPoint, uint8_t name) override</td></tr>
-<tr class="memdesc:a8995d23226f88059a50efe390d5d0208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a <a class="el" href="classDataPoint.html" title="Timestamped scalar measurement container.">DataPoint</a> to SPI flash.  <br /></td></tr>
+<tr class="memdesc:a8995d23226f88059a50efe390d5d0208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a <a class="el" href="classDataPoint.html" title="Timestamped float measurement container.">DataPoint</a> to SPI flash.  <br /></td></tr>
 <tr class="separator:a8995d23226f88059a50efe390d5d0208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1959f8a8ee920466914316bed479f7d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverSPI.html#ac1959f8a8ee920466914316bed479f7d">saveTimestamp</a> (uint32_t timestamp_ms)</td></tr>
 <tr class="memdesc:ac1959f8a8ee920466914316bed479f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Persist a bare timestamp entry to flash.  <br /></td></tr>
@@ -157,7 +157,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9626b96fc54d0b2b5931f2caca2aa5c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last timestamp that was actually written to flash.  <br /></td></tr>
 <tr class="separator:a9626b96fc54d0b2b5931f2caca2aa5c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab08c7211bf05222797820dd89fc4ebe8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classDataPoint.html">DataPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">getLastDataPoint</a> () const</td></tr>
-<tr class="memdesc:ab08c7211bf05222797820dd89fc4ebe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last <a class="el" href="classDataPoint.html" title="Timestamped scalar measurement container.">DataPoint</a> that was written (not necessarily including timestamp, just the data chunk).  <br /></td></tr>
+<tr class="memdesc:ab08c7211bf05222797820dd89fc4ebe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last <a class="el" href="classDataPoint.html" title="Timestamped float measurement container.">DataPoint</a> that was written (not necessarily including timestamp, just the data chunk).  <br /></td></tr>
 <tr class="separator:ab08c7211bf05222797820dd89fc4ebe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a447513f7986f3bf63a962fab8f8216de"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">getLaunchWriteAddress</a> () const</td></tr>
 <tr class="separator:a447513f7986f3bf63a962fab8f8216de"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -489,7 +489,7 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the last <a class="el" href="classDataPoint.html" title="Timestamped scalar measurement container.">DataPoint</a> that was written (not necessarily including timestamp, just the data chunk). </p>
+<p>Returns the last <a class="el" href="classDataPoint.html" title="Timestamped float measurement container.">DataPoint</a> that was written (not necessarily including timestamp, just the data chunk). </p>
 
 <p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00166">166</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
 
@@ -757,7 +757,7 @@ false if post-launch mode is not active </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Saves a <a class="el" href="classDataPoint.html" title="Timestamped scalar measurement container.">DataPoint</a> to SPI flash. </p>
+<p>Saves a <a class="el" href="classDataPoint.html" title="Timestamped float measurement container.">DataPoint</a> to SPI flash. </p>
 <p>If the new data point’s timestamp differs from the last written timestamp by more than timestampInterval_ms, the new timestamp is also written to flash. Otherwise, the timestamp is omitted (to save space).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

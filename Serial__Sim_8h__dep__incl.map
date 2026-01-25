@@ -1,6 +1,7 @@
 <map id="Serial_Sim.h" name="Serial_Sim.h">
-<area shape="rect" id="node1" title=" " alt="" coords="225,5,327,31"/>
+<area shape="rect" id="node1" title=" " alt="" coords="319,5,422,31"/>
 <area shape="rect" id="node2" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,79,168,104"/>
-<area shape="rect" id="node3" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="193,79,359,104"/>
-<area shape="rect" id="node4" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="383,79,566,104"/>
+<area shape="rect" id="node3" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,79,359,104"/>
+<area shape="rect" id="node4" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,79,550,104"/>
+<area shape="rect" id="node5" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,79,757,104"/>
 </map>

@@ -5,6 +5,7 @@ var Serial__Sim_8h =
     [ "BMP3_ODR_100_HZ", "Serial__Sim_8h.html#aa9739b8211e68cbcf3cce0dfbb6dcc43", null ],
     [ "BMP3_OVERSAMPLING_4X", "Serial__Sim_8h.html#a6d4828b3f0f10c0c19a7a64b8a8c20f5", null ],
     [ "BMP3_OVERSAMPLING_8X", "Serial__Sim_8h.html#aa07ad4bcf27972dce32ae952c5446d38", null ],
+    [ "LIS2MDL_RATE_100_HZ", "Serial__Sim_8h.html#a71ebe59eb085389213cce273f4f0e3fc", null ],
     [ "LIS3MDL_CONTINUOUSMODE", "Serial__Sim_8h.html#ae763f82fd817483153c5268475554415", null ],
     [ "LIS3MDL_DATARATE_155_HZ", "Serial__Sim_8h.html#a3b7a0befc8e6444cb3b11fc59efa180a", null ],
     [ "LIS3MDL_MEDIUMMODE", "Serial__Sim_8h.html#a5aa13eefdbbab4abb877f63f1d660149", null ],

@@ -8,7 +8,7 @@ var searchData=
   ['setacceldatarate_5',['setAccelDataRate',['../classAdafruit__LSM6DSOX.html#ab93bb1cfed41512c806012cb602a5919',1,'Adafruit_LSM6DSOX']]],
   ['setaccelrange_6',['setAccelRange',['../classAdafruit__LSM6DSOX.html#ae2abcca598799608b04336df17ad6347',1,'Adafruit_LSM6DSOX']]],
   ['setconversiondelay_7',['setConversionDelay',['../classAdafruit__BMP3XX.html#ab5dd3af08ab3b76db17b6b432c335791',1,'Adafruit_BMP3XX']]],
-  ['setdatarate_8',['setDataRate',['../classAdafruit__LIS3MDL.html#a5e460d6faee1dc8218eb297fc72c80e0',1,'Adafruit_LIS3MDL']]],
+  ['setdatarate_8',['setDataRate',['../classAdafruit__LIS2MDL.html#acd79b694f521aed5cb8a4c70f843bdfd',1,'Adafruit_LIS2MDL::setDataRate()'],['../classAdafruit__LIS3MDL.html#a5e460d6faee1dc8218eb297fc72c80e0',1,'Adafruit_LIS3MDL::setDataRate()']]],
   ['setgyrodatarate_9',['setGyroDataRate',['../classAdafruit__LSM6DSOX.html#a9e64de7d1d52b44c6ddbe74c6fd93c63',1,'Adafruit_LSM6DSOX']]],
   ['setgyrorange_10',['setGyroRange',['../classAdafruit__LSM6DSOX.html#ac003226f3466d9e9dba7b2a47b1478f4',1,'Adafruit_LSM6DSOX']]],
   ['setiirfiltercoeff_11',['setIIRFilterCoeff',['../classAdafruit__BMP3XX.html#aefb1dfa47022cbd7bb208f4a0fd10e0e',1,'Adafruit_BMP3XX']]],

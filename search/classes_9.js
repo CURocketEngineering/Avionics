@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['printsaver_0',['printSaver',['../classprintSaver.html',1,'']]]
+  ['noisevariances_0',['NoiseVariances',['../structNoiseVariances.html',1,'']]]
 ];

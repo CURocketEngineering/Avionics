@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['launchdetector_0',['LaunchDetector',['../classLaunchDetector.html',1,'']]]
+  ['idatasaver_0',['IDataSaver',['../classIDataSaver.html',1,'']]],
+  ['initialstate_1',['InitialState',['../structInitialState.html',1,'']]]
 ];

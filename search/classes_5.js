@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['idatasaver_0',['IDataSaver',['../classIDataSaver.html',1,'']]],
-  ['initialstate_1',['InitialState',['../structInitialState.html',1,'']]]
+  ['groundlevelestimator_0',['GroundLevelEstimator',['../classGroundLevelEstimator.html',1,'']]]
 ];
