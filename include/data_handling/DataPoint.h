@@ -4,7 +4,7 @@
 #include <cstdint>
 
 /**
- * @brief Timestamped scalar measurement container.
+ * @brief Timestamped float measurement container.
  * @note When to use: represent a single sensor or derived value tagged with the
  *       millisecond timestamp at which it was produced.
  */

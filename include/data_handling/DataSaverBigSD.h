@@ -31,7 +31,7 @@ public:
     explicit DataSaverBigSD(uint8_t csPin = 5);
 
     /**
-     * @brief Initialize the SD card and open a streaming file.
+     * @brief Initialize the SD card and open a streaming file. Returns true on success
      * @note When to use: during setup before any calls to saveDataPoint.
      */
     bool begin();
