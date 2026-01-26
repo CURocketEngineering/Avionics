@@ -35,7 +35,7 @@ class GroundLevelEstimator{
          * Stops recording ground level measurements and freezes the EGL.
          * Should be called once when launch is confirmed.
          */
-        void launchDeteched();
+        void launchDetected();
 
         /**
          * @brief Gets the estimated ground level.
@@ -49,6 +49,7 @@ class GroundLevelEstimator{
         bool launched = false; //Turned true if launch is detected
         float estimatedGroundLevel_m = 0.0F; //EGL in meters
         uint32_t sampleCount = 0; //Number of samples used for ground level estimate
+        float alpha; //Determines how much weight the most recent number added has on the current EGL
 
 };
 
