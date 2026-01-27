@@ -66,21 +66,6 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 dataSaver->launchDetected(fastLaunchDetector->getLaunchedTime());
             }
             break;
-        case STATE_ASCENT:
-            // Serial.println("apogee update");
-            // Update the vertical velocity estimator
-            verticalVelocityEstimator->update(accel, alt);
-            apogeeDetector->update(verticalVelocityEstimator);
-            if (apogeeDetector->isApogeeDetected()) {
-                state = STATE_DESCENT;
-
-                // Log the state change
-                dataSaver->saveDataPoint(
-                    DataPoint(accel.x.timestamp_ms, STATE_DESCENT),
-                    STATE_CHANGE
-                );
-            }
-            break;
 
         case STATE_SOFT_ASCENT:
         /*
@@ -123,6 +108,22 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
 
                 // Clear post-launch mode
                 dataSaver->clearPostLaunchMode();
+            }
+            break;
+            
+        case STATE_ASCENT:
+            // Serial.println("apogee update");
+            // Update the vertical velocity estimator
+            verticalVelocityEstimator->update(accel, alt);
+            apogeeDetector->update(verticalVelocityEstimator);
+            if (apogeeDetector->isApogeeDetected()) {
+                state = STATE_DESCENT;
+
+                // Log the state change
+                dataSaver->saveDataPoint(
+                    DataPoint(accel.x.timestamp_ms, STATE_DESCENT),
+                    STATE_CHANGE
+                );
             }
             break;
 
