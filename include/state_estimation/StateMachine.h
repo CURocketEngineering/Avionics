@@ -5,6 +5,7 @@
 #include "state_estimation/ApogeeDetector.h"
 #include "state_estimation/LaunchDetector.h"
 #include "state_estimation/VerticalVelocityEstimator.h"
+#include "state_estimation/FastLaunchDetector.h"
 #include "state_estimation/BaseStateMachine.h"
 
 #include "data_handling/DataPoint.h"
@@ -27,7 +28,7 @@ class StateMachine : public BaseStateMachine {
      *       estimator/detector instances.
      */
     StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
-                 VerticalVelocityEstimator* verticalVelocityEstimator);
+                 VerticalVelocityEstimator* verticalVelocityEstimator, FastLaunchDetector* fastLaunchDetector);
 
     /**
      * @brief Process new sensor data and transition states if thresholds are met.
@@ -49,6 +50,8 @@ class StateMachine : public BaseStateMachine {
     LaunchDetector* launchDetector;
     ApogeeDetector* apogeeDetector;
     VerticalVelocityEstimator* verticalVelocityEstimator;
+    FastLaunchDetector* fastLaunchDetector;
+    uint32_t fldLaunchTime_ms = 0;
 };
 
 
