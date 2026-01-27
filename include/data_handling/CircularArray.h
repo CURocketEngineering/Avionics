@@ -44,6 +44,11 @@ T quickSelect(std::vector<T> &array, int left, int right, int k){
 
 
 template<typename T>
+/**
+ * @brief Fixed-size circular buffer with median helper and head tracking.
+ * @note When to use: maintain a rolling window of recent samples for filters
+ *       or detectors without reallocations.
+ */
 class CircularArray {
   protected:
     std::vector<T> array; 

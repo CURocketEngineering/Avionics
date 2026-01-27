@@ -25,20 +25,14 @@ struct InitialState {
 
 
 /**
- * VerticalVelocityEstimator provides a 1D Kalman filter that fuses altimeter and acceleration
- * data to estimate altitude and vertical velocity. It is adapted from the logic in 
- * ApogeeDetector but excludes the apogee detection mechanism. 
- *
- * Assumptions:
- *  - The state is [altitude, vertical velocity] (in SI units).
- *  - The process model uses the vertical acceleration as a control input.
- *  - The accelerometer outputs roughly +9.81 m/s² when at rest (measuring gravity).
- *    In free fall it reads ~0 m/s². Hence we subtract g (9.81 m/s²) from the raw 
- *    accelerometer reading to get the rocket’s inertial acceleration.
- *  - The altimeter measurement is used to correct the altitude.
- *
- * The user of this class may simply call update(...) whenever new sensor readings 
- * arrive and retrieve the current altitude and velocity estimates.
+ * @brief 1D Kalman filter fusing altimeter and accelerometer data.
+ * @details Maintains altitude and vertical velocity by treating vertical
+ *          acceleration as the control input. Gravity is subtracted from raw
+ *          accelerometer readings to obtain inertial acceleration. Call
+ *          `update()` with new IMU + baro samples and query the latest
+ *          estimates via getters.
+ * @note Use when downstream logic (detectors, control, telemetry) needs
+ *       filtered altitude/velocity without embedding apogee-specific behavior.
  */
 class VerticalVelocityEstimator {
 public:

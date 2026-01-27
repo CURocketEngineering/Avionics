@@ -21,17 +21,33 @@ enum BigSDDataSaverError {
     DS_FLUSH_FAILED = -5       // Failed to flush buffer to file
 };
 
+/**
+ * @brief Buffered CSV writer targeting large SD cards via SdFat.
+ * @note When to use: high-volume logging to removable media where batched
+ *       writes and periodic syncs reduce wear and latency.
+ */
 class DataSaverBigSD : public IDataSaver {
 public:
     explicit DataSaverBigSD(uint8_t csPin = 5);
 
-    /** Call once from setup(); returns true on success. */
+    /**
+     * @brief Initialize the SD card and open a streaming file. Returns true on success
+     * @note When to use: during setup before any calls to saveDataPoint.
+     */
     bool begin();
 
-    /** Buffer a CSV line (timestamp,name,value).  Flushes to SD in bulk. */
+    /**
+     * @brief Buffer a CSV line (timestamp,name,value) and flush in batches.
+     * @param dataPoint Timestamped value to log.
+     * @param name      8-bit channel identifier written in the CSV line.
+     * @note When to use: routine logging path once begin() succeeds.
+     */
     int  saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
-    /** Flush any pending bytes and close the file (call before power‑off). */
+    /**
+     * @brief Flush pending bytes and close the file.
+     * @note When to use: before power-off or media removal to avoid loss.
+     */
     void end();
 
 private:
