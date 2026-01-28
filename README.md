@@ -80,7 +80,7 @@ The following systems integrate Avionics as a submodule:
 
 ## Documentation
 
-- Doxygen: run `doxygen Doxyfile` from the repository root. HTML output is placed in `build/doxygen/index.html` (README is used as the main page).
+- Doxygen: run `doxygen Doxyfile` from the repository root. HTML output is placed in `build/doxygen/index.html` (README is used as the main page). You can then use Python to serve the files locally: `python -m http.server --directory build/doxygen 8000` and navigate to `http://localhost:8000` in your browser. We have a workflow that will autogenerate and deploy the docs to GitHub Pages on each push to main.
 - High-level notes: data logging constraints and Byte5 format are summarized in `docs/FlashDataSaving.md`.
 - Flight history: see `docs/FlightTests.md` for vehicles and dates that have flown with this codebase.
 - Target Audience: The documentation is written for compsci students with very little background in C++ or embedded systems. 
