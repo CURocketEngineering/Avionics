@@ -38,17 +38,19 @@ class VerticalVelocityEstimator {
 public:
     /**
      * Constructor.
-     * @param accelNoiseVariance    Process noise variance due to unknown acceleration 
-     *                             changes (e.g. (0.5 m/s²)² = 0.25).
-     * @param altimeterNoiseVariance Measurement noise variance of the altimeter 
-     *                             (e.g. 1.0 for 1m²).
+     * @param noise Struct containing process and measurement noise variances.
+     *             - `accelNoiseVar`: process noise variance due to unknown
+     *               acceleration changes (e.g. (0.5 m/s²)² = 0.25).
+     *             - `altimeterNoiseVar`: measurement noise variance of the
+     *               altimeter (e.g. 1.0 for 1m²).
      */
     VerticalVelocityEstimator(NoiseVariances noise = {1.0f, 0.1f});
 
     /**
      * Initialize the filter with an initial altitude and timestamp.
-     * @param initialAltitude  in meters.
-     * @param initialTimestamp in milliseconds.
+     * @param initialState Struct containing:
+     *                    - `initialAltitude`  in meters.
+     *                    - `initialTimestamp` in milliseconds.
      */
     void init(InitialState initialState);
 
@@ -58,9 +60,7 @@ public:
      * The three acceleration DataPoints correspond to x, y, and z (vertical) axes.
      * The altimeter DataPoint contains the altitude measurement.
      *
-     * @param accelX    Accelerometer reading for the x-axis.
-     * @param accelY    Accelerometer reading for the y-axis.
-     * @param accelZ    Accelerometer reading for the z-axis (vertical).
+     * @param accel     Accelerometer readings for x, y, and z (vertical) axes.
      * @param altimeter Altimeter reading.
      */
     void update(const AccelerationTriplet& accel,

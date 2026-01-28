@@ -45,6 +45,7 @@ public:
      * @brief Construct a new DataSaverSPI object
      * 
      * @param timestampInterval_ms  Interval in ms at which timestamps are stored
+     * @param flash                 Pointer to an initialized Adafruit_SPIFlash object
      *
      * @note timestampInterval_ms must be < 65535 (about 1 minute)
      */
@@ -57,7 +58,7 @@ public:
      * timestamp by more than timestampInterval_ms, the new timestamp is also
      * written to flash. Otherwise, the timestamp is omitted (to save space).
      * 
-     * @param dp   The data point to save
+     * @param dataPoint The data point to save
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
      * @return int 0 on success; non-zero on error
      */

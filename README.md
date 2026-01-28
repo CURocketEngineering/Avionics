@@ -2,6 +2,8 @@
 
 Avionics is a modular, Arduino-core based system powering the flight computers of Clemson University Rocket Engineering. Designed for high reliability and efficiency, it supports real-time state estimation, data logging, and robust communication across multiple rockets.
 
+**Documentation Website: 🚀[Avionics Docs](https://curocketengineering.github.io/Avionics/)🚀**
+
 ## Table of Contents
 
 - [Introduction](#introduction)
