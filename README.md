@@ -89,6 +89,8 @@ The following systems integrate Avionics as a submodule:
 
 Unit tests are managed by the [Native](https://github.com/CURocketEngineering/Native) repository, allowing for module testing without requiring embedded hardware.
 
+Never in the Avionics repo should you `#include <Arduino.h>` or any other Arduino-specific headers. Instead, always include `ArduinoHAL.h` from the `hal` directory, which will either pull in the real Arduino core (when compiling for an Arduino target) or a mock implementation (when compiling for Native). This ensures that Avionics can be tested via the Native repo on a laptop without any Arduino dependencies.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE). Please review the LICENSE file for complete details.
