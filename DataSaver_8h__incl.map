@@ -1,5 +1,8 @@
 <map id="DataSaver.h" name="DataSaver.h">
-<area shape="rect" id="node1" title=" " alt="" coords="119,5,220,31"/>
-<area shape="rect" id="node2" href="$DataPoint_8h.html" title=" " alt="" coords="5,79,200,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="136,152,203,177"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="119,5,220,31"/>
+<area shape="rect" id="Node000002" href="$DataPoint_8h.html" title=" " alt="" coords="5,79,200,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,33,125,70,121,67,156,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="136,152,203,177"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="183,29,200,50,215,78,216,96,212,113,193,143,189,140,207,111,211,95,209,79,196,53,179,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,103,151,140,147,144,112,106"/>
 </map>

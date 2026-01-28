@@ -1,8 +1,16 @@
 <map id="ApogeePredictor.h" name="ApogeePredictor.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,145,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="27,328,94,353"/>
-<area shape="rect" id="node3" href="$VerticalVelocityEstimator_8h.html" title=" " alt="" coords="48,79,233,119"/>
-<area shape="rect" id="node4" title=" " alt="" coords="98,174,154,199"/>
-<area shape="rect" id="node5" href="$DataPoint_8h.html" title=" " alt="" coords="98,255,293,280"/>
-<area shape="rect" id="node6" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="229,167,469,207"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,145,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="27,328,94,353"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,33,51,54,39,80,32,111,29,144,32,210,43,269,55,314,50,315,38,270,27,211,24,144,27,110,34,78,47,51,63,29"/>
+<area shape="rect" id="Node000003" href="$VerticalVelocityEstimator_8h.html" title=" " alt="" coords="48,79,233,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="87,29,118,66,114,70,83,33"/>
+<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="122,121,104,142,88,168,75,206,68,246,63,314,58,314,62,245,70,205,84,166,99,139,118,117"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="98,174,154,199"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="140,119,133,161,128,160,135,118"/>
+<area shape="rect" id="Node000005" href="$DataPoint_8h.html" title=" " alt="" coords="98,255,293,280"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="151,118,169,166,191,241,186,242,163,168,146,120"/>
+<area shape="rect" id="Node000006" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="229,167,469,207"/>
+<area shape="poly" id="edge7_Node000003_Node000006" title=" " alt="" coords="187,116,291,159,289,164,185,121"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="175,282,96,324,94,319,172,278"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="313,209,231,251,229,246,311,204"/>
 </map>

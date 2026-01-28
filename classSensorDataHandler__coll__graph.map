@@ -1,4 +1,5 @@
 <map id="SensorDataHandler" name="SensorDataHandler">
-<area shape="rect" id="node1" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate." alt="" coords="5,189,204,325"/>
-<area shape="rect" id="node2" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="30,5,179,127"/>
+<area shape="rect" id="Node000001" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate." alt="" coords="5,201,196,347"/>
+<area shape="rect" id="Node000002" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="30,5,171,131"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,131,103,185,98,185,98,131"/>
 </map>

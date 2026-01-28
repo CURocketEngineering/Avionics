@@ -1,8 +1,17 @@
 <map id="ApogeeDetector.h" name="ApogeeDetector.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,144,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="279,328,345,353"/>
-<area shape="rect" id="node3" href="$DataPoint_8h.html" title=" " alt="" coords="215,255,409,280"/>
-<area shape="rect" id="node4" href="$VerticalVelocityEstimator_8h.html" title=" " alt="" coords="219,79,405,119"/>
-<area shape="rect" id="node5" title=" " alt="" coords="112,174,168,199"/>
-<area shape="rect" id="node6" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="192,167,432,207"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,144,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="279,328,345,353"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,31,64,64,56,110,58,160,64,183,76,205,94,229,116,249,167,283,219,308,266,325,265,330,217,313,164,288,113,254,90,232,71,208,59,185,53,160,51,109,59,63,68,30"/>
+<area shape="rect" id="Node000003" href="$DataPoint_8h.html" title=" " alt="" coords="215,255,409,280"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="75,31,71,65,70,111,78,161,88,184,102,205,123,224,147,239,202,257,201,262,145,243,120,228,98,208,83,187,73,163,64,112,65,64,70,30"/>
+<area shape="rect" id="Node000004" href="$VerticalVelocityEstimator_8h.html" title=" " alt="" coords="219,79,405,119"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="110,28,243,72,241,77,108,33"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="315,280,315,314,309,314,309,280"/>
+<area shape="poly" id="edge6_Node000004_Node000002" title=" " alt="" coords="401,116,438,136,454,149,468,165,476,182,479,198,477,213,471,228,451,255,423,282,391,307,356,325,354,320,388,302,420,278,447,251,467,225,472,212,474,198,471,184,463,168,450,153,435,140,399,121"/>
+<area shape="poly" id="edge7_Node000004_Node000003" title=" " alt="" coords="383,116,418,136,434,149,446,165,454,187,446,208,419,235,386,253,383,248,416,231,442,205,448,187,442,168,430,153,415,140,381,121"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="112,174,168,199"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="275,121,176,170,174,165,273,116"/>
+<area shape="rect" id="Node000006" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="192,167,432,207"/>
+<area shape="poly" id="edge8_Node000004_Node000006" title=" " alt="" coords="315,119,315,153,309,153,309,119"/>
+<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="315,207,315,241,309,241,309,207"/>
 </map>

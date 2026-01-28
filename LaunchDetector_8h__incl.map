@@ -1,9 +1,17 @@
 <map id="LaunchDetector.h" name="LaunchDetector.h">
-<area shape="rect" id="node1" title=" " alt="" coords="205,5,339,31"/>
-<area shape="rect" id="node2" href="$CircularArray_8h.html" title=" " alt="" coords="21,86,235,111"/>
-<area shape="rect" id="node6" href="$DataPoint_8h.html" title=" " alt="" coords="253,167,448,192"/>
-<area shape="rect" id="node7" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="309,79,549,119"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,167,91,192"/>
-<area shape="rect" id="node4" title=" " alt="" coords="205,240,272,265"/>
-<area shape="rect" id="node5" title=" " alt="" coords="166,167,229,192"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="205,5,339,31"/>
+<area shape="rect" id="Node000002" href="$CircularArray_8h.html" title=" " alt="" coords="21,86,235,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,33,162,82,160,77,249,28"/>
+<area shape="rect" id="Node000006" href="$DataPoint_8h.html" title=" " alt="" coords="253,167,448,192"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="276,31,283,70,300,117,313,138,329,155,325,159,309,141,295,120,278,72,271,31"/>
+<area shape="rect" id="Node000007" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="309,79,549,119"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="296,28,380,70,378,75,294,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,91,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="118,113,72,159,68,155,114,110"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="205,240,272,265"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="131,111,138,149,145,171,155,190,178,213,203,231,200,236,174,218,151,194,140,173,132,150,126,112"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="166,167,229,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="140,110,180,155,176,158,136,113"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="334,194,270,235,267,230,331,190"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="412,121,374,159,370,155,408,117"/>
 </map>

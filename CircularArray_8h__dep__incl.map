@@ -1,18 +1,34 @@
 <map id="CircularArray.h" name="CircularArray.h">
-<area shape="rect" id="node1" title=" " alt="" coords="480,5,597,31"/>
-<area shape="rect" id="node2" href="$LaunchDetector_8h.html" title=" " alt="" coords="385,79,519,104"/>
-<area shape="rect" id="node13" href="$SensorDataHandler_8h.html" title=" " alt="" coords="626,79,785,104"/>
-<area shape="rect" id="node3" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="97,152,271,177"/>
-<area shape="rect" id="node10" href="$LaunchDetector_8cpp.html" title=" " alt="" coords="295,152,446,177"/>
-<area shape="rect" id="node11" href="$StateMachine_8h.html" title=" " alt="" coords="471,152,593,177"/>
-<area shape="rect" id="node4" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="89,225,279,251"/>
-<area shape="rect" id="node5" href="$Serial__Sim_8h.html" title=" " alt="" coords="319,225,422,251"/>
-<area shape="rect" id="node6" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,299,168,324"/>
-<area shape="rect" id="node7" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,299,359,324"/>
-<area shape="rect" id="node8" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,299,550,324"/>
-<area shape="rect" id="node9" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,299,757,324"/>
-<area shape="rect" id="node12" href="$StateMachine_8cpp.html" title=" " alt="" coords="463,225,601,251"/>
-<area shape="rect" id="node14" href="$SensorDataHandler_8cpp.html" title=" " alt="" coords="618,152,793,177"/>
-<area shape="rect" id="node15" href="$Telemetry_8h.html" title=" " alt="" coords="817,152,914,177"/>
-<area shape="rect" id="node16" href="$Telemetry_8cpp.html" title=" " alt="" coords="809,225,921,251"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="480,5,597,31"/>
+<area shape="rect" id="Node000002" href="$LaunchDetector_8h.html" title=" " alt="" coords="385,79,519,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="516,41,468,81,464,76,513,37"/>
+<area shape="rect" id="Node000013" href="$SensorDataHandler_8h.html" title=" " alt="" coords="626,79,785,104"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="579,34,679,76,677,81,577,38"/>
+<area shape="rect" id="Node000003" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="97,152,271,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,110,228,154,227,149,395,105"/>
+<area shape="rect" id="Node000010" href="$LaunchDetector_8cpp.html" title=" " alt="" coords="295,152,446,177"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="430,115,386,154,382,150,427,111"/>
+<area shape="rect" id="Node000011" href="$StateMachine_8h.html" title=" " alt="" coords="471,152,593,177"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="477,111,521,150,517,154,473,115"/>
+<area shape="rect" id="Node000004" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="89,225,279,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="187,191,187,225,181,225,181,191"/>
+<area shape="rect" id="Node000005" href="$Serial__Sim_8h.html" title=" " alt="" coords="319,225,422,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="227,180,341,223,339,228,226,185"/>
+<area shape="rect" id="Node000006" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,299,168,324"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="313,257,133,301,132,296,311,251"/>
+<area shape="rect" id="Node000007" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,299,359,324"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="346,261,293,301,290,296,343,257"/>
+<area shape="rect" id="Node000008" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,299,550,324"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="399,257,453,296,449,301,396,261"/>
+<area shape="rect" id="Node000009" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,299,757,324"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="432,251,618,296,617,301,430,256"/>
+<area shape="poly" id="edge11_Node000011_Node000005" title=" " alt="" coords="495,185,398,228,396,223,493,180"/>
+<area shape="rect" id="Node000012" href="$StateMachine_8cpp.html" title=" " alt="" coords="463,225,601,251"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="535,191,535,225,529,225,529,191"/>
+<area shape="rect" id="Node000014" href="$SensorDataHandler_8cpp.html" title=" " alt="" coords="618,152,793,177"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="708,118,708,152,703,152,703,118"/>
+<area shape="rect" id="Node000015" href="$Telemetry_8h.html" title=" " alt="" coords="817,152,914,177"/>
+<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="744,107,840,149,838,154,742,112"/>
+<area shape="rect" id="Node000016" href="$Telemetry_8cpp.html" title=" " alt="" coords="809,225,921,251"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="868,191,868,225,863,225,863,191"/>
 </map>

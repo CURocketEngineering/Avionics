@@ -1,9 +1,15 @@
 <map id="ArduinoHAL.h" name="ArduinoHAL.h">
-<area shape="rect" id="node1" title=" " alt="" coords="288,5,399,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,79,89,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="113,79,168,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="193,79,329,104"/>
-<area shape="rect" id="node5" title=" " alt="" coords="353,79,501,104"/>
-<area shape="rect" id="node6" title=" " alt="" coords="526,79,595,104"/>
-<area shape="rect" id="node7" title=" " alt="" coords="620,79,731,104"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="288,5,399,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,89,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="296,33,103,79,102,74,295,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="113,79,168,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,33,182,78,180,73,310,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="193,79,329,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="332,33,286,72,283,67,328,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="353,79,501,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="359,29,405,67,401,72,355,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="526,79,595,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="379,28,514,72,512,77,377,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="620,79,731,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="397,28,609,73,608,78,396,33"/>
 </map>

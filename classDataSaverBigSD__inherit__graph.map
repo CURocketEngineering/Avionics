@@ -1,4 +1,5 @@
 <map id="DataSaverBigSD" name="DataSaverBigSD">
-<area shape="rect" id="node1" title="Buffered CSV writer targeting large SD cards via SdFat." alt="" coords="5,175,160,296"/>
-<area shape="rect" id="node2" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="8,5,157,127"/>
+<area shape="rect" id="Node000001" title="Buffered CSV writer targeting large SD cards via SdFat." alt="" coords="5,179,151,304"/>
+<area shape="rect" id="Node000002" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="7,5,149,131"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,145,81,178,75,178,75,145"/>
 </map>

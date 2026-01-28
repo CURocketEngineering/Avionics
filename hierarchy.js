@@ -14,8 +14,7 @@ var hierarchy =
       [ "StateMachine", "classStateMachine.html", null ]
     ] ],
     [ "BatteryVoltage", "classBatteryVoltage.html", null ],
-    [ "CircularArray< T >", "classCircularArray.html", null ],
-    [ "CircularArray< DataPoint >", "classCircularArray.html", null ],
+    [ "CircularArray&lt; T &gt;", "classCircularArray.html", null ],
     [ "CommandLine", "classCommandLine.html", null ],
     [ "DataPoint", "classDataPoint.html", null ],
     [ "File32", "structFile32.html", null ],

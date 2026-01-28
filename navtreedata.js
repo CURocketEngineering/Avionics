@@ -25,35 +25,35 @@
 var NAVTREE =
 [
   [ "Avionics", "index.html", [
-    [ "data_handling Directory", "index.html", "index" ],
-    [ "Restricted Flash Storage Specifications", "md_docs_FlashDataSaving.html", [
-      [ "Variable Data Rates", "md_docs_FlashDataSaving.html#autotoc_md16", [
-        [ "<strong>Data Save Rates (No Labels)</strong>", "md_docs_FlashDataSaving.html#autotoc_md17", null ]
+    [ "Avionics for Clemson University Rocket Engineering", "index.html", "index" ],
+    [ "Restricted Flash Storage Specifications", "md_docs_2FlashDataSaving.html", [
+      [ "Variable Data Rates", "md_docs_2FlashDataSaving.html#autotoc_md16", [
+        [ "<b>Data Save Rates (No Labels)</b>", "md_docs_2FlashDataSaving.html#autotoc_md17", null ]
       ] ],
-      [ "<strong>Maximum Storage Capacity</strong>", "md_docs_FlashDataSaving.html#autotoc_md18", null ],
-      [ "<strong>Metadata Storage</strong>", "md_docs_FlashDataSaving.html#autotoc_md19", [
-        [ "<strong>Metadata Layout</strong>", "md_docs_FlashDataSaving.html#autotoc_md20", null ]
+      [ "<b>Maximum Storage Capacity</b>", "md_docs_2FlashDataSaving.html#autotoc_md18", null ],
+      [ "<b>Metadata Storage</b>", "md_docs_2FlashDataSaving.html#autotoc_md19", [
+        [ "<b>Metadata Layout</b>", "md_docs_2FlashDataSaving.html#autotoc_md20", null ]
       ] ],
-      [ "<strong>Writing Strategy</strong>", "md_docs_FlashDataSaving.html#autotoc_md21", [
-        [ "<strong>Sensor Data Handling</strong>", "md_docs_FlashDataSaving.html#autotoc_md22", null ],
-        [ "<strong>Byte5 Data Format</strong>", "md_docs_FlashDataSaving.html#autotoc_md23", null ],
-        [ "<strong>Byte5 Data Breakdown (Per 256-Byte Page)</strong>", "md_docs_FlashDataSaving.html#autotoc_md24", null ],
-        [ "<strong>Data Save Rates (Byte5 Format)</strong>", "md_docs_FlashDataSaving.html#autotoc_md25", null ]
+      [ "<b>Writing Strategy</b>", "md_docs_2FlashDataSaving.html#autotoc_md21", [
+        [ "<b>Sensor Data Handling</b>", "md_docs_2FlashDataSaving.html#autotoc_md22", null ],
+        [ "<b>Byte5 Data Format</b>", "md_docs_2FlashDataSaving.html#autotoc_md23", null ],
+        [ "<b>Byte5 Data Breakdown (Per 256-Byte Page)</b>", "md_docs_2FlashDataSaving.html#autotoc_md24", null ],
+        [ "<b>Data Save Rates (Byte5 Format)</b>", "md_docs_2FlashDataSaving.html#autotoc_md25", null ]
       ] ],
-      [ "<strong>Alternative Approach: 64-Byte Chunks</strong>", "md_docs_FlashDataSaving.html#autotoc_md26", [
-        [ "<strong>Proposed 64-Byte Data Chunk</strong>", "md_docs_FlashDataSaving.html#autotoc_md27", null ],
-        [ "<strong>Why We Rejected the 64-Byte Chunk Method</strong>", "md_docs_FlashDataSaving.html#autotoc_md28", null ]
+      [ "<b>Alternative Approach: 64-Byte Chunks</b>", "md_docs_2FlashDataSaving.html#autotoc_md26", [
+        [ "<b>Proposed 64-Byte Data Chunk</b>", "md_docs_2FlashDataSaving.html#autotoc_md27", null ],
+        [ "<b>Why We Rejected the 64-Byte Chunk Method</b>", "md_docs_2FlashDataSaving.html#autotoc_md28", null ]
       ] ],
-      [ "<strong>Post-Launch Data Protection</strong>", "md_docs_FlashDataSaving.html#autotoc_md29", [
-        [ "<strong>Summary</strong>", "md_docs_FlashDataSaving.html#autotoc_md30", null ]
+      [ "<b>Post-Launch Data Protection</b>", "md_docs_2FlashDataSaving.html#autotoc_md29", [
+        [ "<b>Summary</b>", "md_docs_2FlashDataSaving.html#autotoc_md30", null ]
       ] ]
     ] ],
-    [ "Flight Test History", "md_docs_FlightTests.html", [
-      [ "Flight-Number Format", "md_docs_FlightTests.html#autotoc_md32", [
-        [ "Rocket Types", "md_docs_FlightTests.html#autotoc_md33", null ],
-        [ "Flight-Computer Types", "md_docs_FlightTests.html#autotoc_md34", null ]
+    [ "Flight Test History", "md_docs_2FlightTests.html", [
+      [ "Flight-Number Format", "md_docs_2FlightTests.html#autotoc_md32", [
+        [ "Rocket Types", "md_docs_2FlightTests.html#autotoc_md33", null ],
+        [ "Flight-Computer Types", "md_docs_2FlightTests.html#autotoc_md34", null ]
       ] ],
-      [ "Flight Test History (most recent first)", "md_docs_FlightTests.html#autotoc_md36", null ]
+      [ "Flight Test History (most recent first)", "md_docs_2FlightTests.html#autotoc_md36", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
@@ -63,7 +63,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -85,8 +85,9 @@ var NAVTREEINDEX =
 [
 "Adafruit__SPIFlash__mock_8h.html",
 "classAdafruit__LSM6DSOX.html#ae30a302700243bb51c27beb9d3200ac9",
-"functions_h.html"
+"functions_i.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

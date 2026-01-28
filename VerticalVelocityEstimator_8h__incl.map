@@ -1,7 +1,13 @@
 <map id="VerticalVelocityEstimator.h" name="VerticalVelocityEstimator.h">
-<area shape="rect" id="node1" title=" " alt="" coords="25,5,223,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,86,61,111"/>
-<area shape="rect" id="node3" title=" " alt="" coords="132,240,199,265"/>
-<area shape="rect" id="node4" href="$DataPoint_8h.html" title=" " alt="" coords="136,167,331,192"/>
-<area shape="rect" id="node5" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="187,79,427,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="25,5,223,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,86,61,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,33,59,79,55,75,109,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="132,240,199,265"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="124,31,117,100,118,146,127,191,135,211,148,228,143,231,131,213,121,193,113,147,111,100,119,31"/>
+<area shape="rect" id="Node000004" href="$DataPoint_8h.html" title=" " alt="" coords="136,167,331,192"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="131,30,149,70,177,117,211,155,207,159,173,120,144,72,126,32"/>
+<area shape="rect" id="Node000005" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="187,79,427,119"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="152,28,251,71,249,76,150,33"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="224,194,188,232,184,228,220,190"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="291,121,256,158,252,155,287,117"/>
 </map>

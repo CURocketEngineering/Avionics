@@ -1,4 +1,5 @@
 <map id="SPIClass" name="SPIClass">
-<area shape="rect" id="node1" title=" " alt="" coords="33,307,135,399"/>
-<area shape="rect" id="node2" href="$classMockSPIClass.html" title=" " alt="" coords="5,5,163,259"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="33,359,127,444"/>
+<area shape="rect" id="Node000002" href="$classMockSPIClass.html" title=" " alt="" coords="5,5,155,311"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,324,83,358,77,358,77,324"/>
 </map>

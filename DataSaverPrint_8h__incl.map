@@ -1,7 +1,13 @@
 <map id="DataSaverPrint.h" name="DataSaverPrint.h">
-<area shape="rect" id="node1" title=" " alt="" coords="171,5,303,31"/>
-<area shape="rect" id="node2" href="$DataPoint_8h.html" title=" " alt="" coords="5,152,200,177"/>
-<area shape="rect" id="node4" href="$DataSaver_8h.html" title=" " alt="" coords="139,79,336,104"/>
-<area shape="rect" id="node5" title=" " alt="" coords="360,79,440,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="136,225,203,251"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="171,5,303,31"/>
+<area shape="rect" id="Node000002" href="$DataPoint_8h.html" title=" " alt="" coords="5,152,200,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,33,163,52,144,65,129,80,114,109,107,139,102,137,109,107,125,77,141,61,160,47,199,28"/>
+<area shape="rect" id="Node000004" href="$DataSaver_8h.html" title=" " alt="" coords="139,79,336,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="240,31,240,65,235,65,235,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="360,79,440,104"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="265,28,362,71,360,75,262,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="136,225,203,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,176,151,213,147,217,112,179"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="217,106,138,148,136,143,214,102"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="238,105,229,138,214,179,190,216,186,213,210,176,224,137,233,103"/>
 </map>

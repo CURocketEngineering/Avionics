@@ -1,7 +1,12 @@
 <map id="BaseStateMachine.h" name="BaseStateMachine.h">
-<area shape="rect" id="node1" title=" " alt="" coords="104,5,259,31"/>
-<area shape="rect" id="node2" href="$DataPoint_8h.html" title=" " alt="" coords="5,167,200,192"/>
-<area shape="rect" id="node4" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="61,79,301,119"/>
-<area shape="rect" id="node5" href="$States_8h.html" title=" " alt="" coords="325,86,515,111"/>
-<area shape="rect" id="node3" title=" " alt="" coords="69,240,136,265"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,259,31"/>
+<area shape="rect" id="Node000002" href="$DataPoint_8h.html" title=" " alt="" coords="5,167,200,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,33,83,51,65,64,52,80,46,99,52,119,65,139,81,156,77,159,61,142,47,121,41,99,47,77,62,60,80,46,121,28"/>
+<area shape="rect" id="Node000004" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="61,79,301,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,31,184,65,179,65,179,31"/>
+<area shape="rect" id="Node000005" href="$States_8h.html" title=" " alt="" coords="325,86,515,111"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="217,28,373,79,371,84,215,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="69,240,136,265"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,192,105,226,100,226,100,192"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="164,121,126,159,122,155,160,117"/>
 </map>

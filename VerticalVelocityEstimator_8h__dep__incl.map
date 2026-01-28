@@ -1,17 +1,33 @@
 <map id="VerticalVelocityEstimator.h" name="VerticalVelocityEstimator.h">
-<area shape="rect" id="node1" title=" " alt="" coords="399,5,596,31"/>
-<area shape="rect" id="node2" href="$ApogeeDetector_8h.html" title=" " alt="" coords="235,79,373,104"/>
-<area shape="rect" id="node11" href="$StateMachine_8h.html" title=" " alt="" coords="383,152,505,177"/>
-<area shape="rect" id="node13" href="$ApogeePredictor_8h.html" title=" " alt="" coords="482,79,622,104"/>
-<area shape="rect" id="node15" href="$VerticalVelocityEstimator_8cpp.html" title=" " alt="" coords="646,79,858,104"/>
-<area shape="rect" id="node3" href="$ApogeeDetector_8cpp.html" title=" " alt="" coords="6,152,159,177"/>
-<area shape="rect" id="node4" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="183,152,358,177"/>
-<area shape="rect" id="node5" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="105,225,295,251"/>
-<area shape="rect" id="node6" href="$Serial__Sim_8h.html" title=" " alt="" coords="319,225,422,251"/>
-<area shape="rect" id="node7" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,299,168,324"/>
-<area shape="rect" id="node8" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,299,359,324"/>
-<area shape="rect" id="node9" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,299,550,324"/>
-<area shape="rect" id="node10" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,299,757,324"/>
-<area shape="rect" id="node12" href="$StateMachine_8cpp.html" title=" " alt="" coords="447,225,585,251"/>
-<area shape="rect" id="node14" href="$ApogeePredictor_8cpp.html" title=" " alt="" coords="529,152,684,177"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="399,5,596,31"/>
+<area shape="rect" id="Node000002" href="$ApogeeDetector_8h.html" title=" " alt="" coords="235,79,373,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="455,38,337,81,335,76,453,33"/>
+<area shape="rect" id="Node000011" href="$StateMachine_8h.html" title=" " alt="" coords="383,152,505,177"/>
+<area shape="poly" id="edge15_Node000001_Node000011" title=" " alt="" coords="488,44,473,80,450,152,445,151,468,78,483,42"/>
+<area shape="rect" id="Node000013" href="$ApogeePredictor_8h.html" title=" " alt="" coords="482,79,622,104"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="517,40,545,77,541,80,513,43"/>
+<area shape="rect" id="Node000015" href="$VerticalVelocityEstimator_8cpp.html" title=" " alt="" coords="646,79,858,104"/>
+<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="552,32,711,76,710,81,551,37"/>
+<area shape="rect" id="Node000003" href="$ApogeeDetector_8cpp.html" title=" " alt="" coords="6,152,159,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="256,111,119,154,118,149,255,106"/>
+<area shape="rect" id="Node000004" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="183,152,358,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="295,118,278,153,274,151,290,115"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="340,108,422,149,420,154,337,113"/>
+<area shape="rect" id="Node000005" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="105,225,295,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="251,189,213,227,210,223,247,185"/>
+<area shape="rect" id="Node000006" href="$Serial__Sim_8h.html" title=" " alt="" coords="319,225,422,251"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="299,183,356,223,353,227,296,187"/>
+<area shape="rect" id="Node000007" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,299,168,324"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="313,257,133,301,132,296,311,251"/>
+<area shape="rect" id="Node000008" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,299,359,324"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="346,261,293,301,290,296,343,257"/>
+<area shape="rect" id="Node000009" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,299,550,324"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="399,257,453,296,449,301,396,261"/>
+<area shape="rect" id="Node000010" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,299,757,324"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="432,251,618,296,617,301,430,256"/>
+<area shape="poly" id="edge11_Node000011_Node000006" title=" " alt="" coords="424,189,384,227,381,223,420,185"/>
+<area shape="rect" id="Node000012" href="$StateMachine_8cpp.html" title=" " alt="" coords="447,225,585,251"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="468,185,506,223,502,227,464,189"/>
+<area shape="rect" id="Node000014" href="$ApogeePredictor_8cpp.html" title=" " alt="" coords="529,152,684,177"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="571,113,600,150,596,154,567,117"/>
 </map>

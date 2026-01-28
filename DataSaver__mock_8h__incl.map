@@ -1,9 +1,17 @@
 <map id="DataSaver_mock.h" name="DataSaver_mock.h">
-<area shape="rect" id="node1" title=" " alt="" coords="153,5,298,31"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,79,85,104"/>
-<area shape="rect" id="node3" title=" " alt="" coords="110,79,170,104"/>
-<area shape="rect" id="node4" title=" " alt="" coords="194,79,257,104"/>
-<area shape="rect" id="node5" href="$DataPoint_8h.html" title=" " alt="" coords="199,152,393,177"/>
-<area shape="rect" id="node7" href="$DataSaver_8h.html" title=" " alt="" coords="332,79,529,104"/>
-<area shape="rect" id="node6" title=" " alt="" coords="329,225,396,251"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="153,5,298,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,85,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,33,88,76,86,71,195,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="110,79,170,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,33,166,72,163,68,210,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="194,79,257,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="228,31,228,65,223,65,223,31"/>
+<area shape="rect" id="Node000005" href="$DataPoint_8h.html" title=" " alt="" coords="199,152,393,177"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="238,29,270,77,292,138,287,139,266,80,233,32"/>
+<area shape="rect" id="Node000007" href="$DataSaver_8h.html" title=" " alt="" coords="332,79,529,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="259,28,385,72,384,77,257,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="329,225,396,251"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="309,176,344,213,341,217,305,179"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="410,106,331,148,329,143,408,102"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="431,105,423,138,408,179,383,216,379,213,403,176,418,137,426,103"/>
 </map>
