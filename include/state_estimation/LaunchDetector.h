@@ -64,9 +64,7 @@ public:
 
     /**
      * Updates the detector with new acceleration data
-     * @param xac: The x acceleration data point in ms^2
-     * @param yac: The y acceleration data point in ms^2
-     * @param zac: The z acceleration data point in ms^2
+     * @param accel: The newest acceleration data (triplet of x, y, and z acceleration data points)
      * @return: False if the data is ignored, true if the data is accepted
      */
     int update(AccelerationTriplet accel);
