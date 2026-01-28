@@ -8,8 +8,8 @@ var searchData=
   ['acceptable_5fpercent_5fdifference_5fwindow_5finterval_5',['ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL',['../LaunchDetector_8h.html#ac8041eaad58801cf73271596584de2ba',1,'LaunchDetector.h']]],
   ['adafruit_5fbmp3xx_6',['Adafruit_BMP3XX',['../classAdafruit__BMP3XX.html',1,'Adafruit_BMP3XX'],['../classAdafruit__BMP3XX.html#a0a9202db376246e4b8d192ddeed9468a',1,'Adafruit_BMP3XX::Adafruit_BMP3XX()']]],
   ['adafruit_5flis2mdl_7',['Adafruit_LIS2MDL',['../classAdafruit__LIS2MDL.html',1,'Adafruit_LIS2MDL'],['../classAdafruit__LIS2MDL.html#ad910878413adbd488b1359887ea40e66',1,'Adafruit_LIS2MDL::Adafruit_LIS2MDL()']]],
-  ['adafruit_5flis3mdl_8',['Adafruit_LIS3MDL',['../classAdafruit__LIS3MDL.html',1,'Adafruit_LIS3MDL'],['../classAdafruit__LIS3MDL.html#a0c75eef3b8d54ccf36dc843cb3d945ac',1,'Adafruit_LIS3MDL::Adafruit_LIS3MDL()']]],
-  ['adafruit_5flsm6dsox_9',['Adafruit_LSM6DSOX',['../classAdafruit__LSM6DSOX.html#a7290feea7fc738b7275c9ba9665e1912',1,'Adafruit_LSM6DSOX::Adafruit_LSM6DSOX()'],['../classAdafruit__LSM6DSOX.html',1,'Adafruit_LSM6DSOX']]],
+  ['adafruit_5flis3mdl_8',['Adafruit_LIS3MDL',['../classAdafruit__LIS3MDL.html#a0c75eef3b8d54ccf36dc843cb3d945ac',1,'Adafruit_LIS3MDL::Adafruit_LIS3MDL()'],['../classAdafruit__LIS3MDL.html',1,'Adafruit_LIS3MDL']]],
+  ['adafruit_5flsm6dsox_9',['Adafruit_LSM6DSOX',['../classAdafruit__LSM6DSOX.html',1,'Adafruit_LSM6DSOX'],['../classAdafruit__LSM6DSOX.html#a7290feea7fc738b7275c9ba9665e1912',1,'Adafruit_LSM6DSOX::Adafruit_LSM6DSOX()']]],
   ['adafruit_5fspiflash_10',['Adafruit_SPIFlash',['../classAdafruit__SPIFlash.html',1,'Adafruit_SPIFlash'],['../classAdafruit__SPIFlash.html#a993575793e5e7c83e33254222b3ffe9d',1,'Adafruit_SPIFlash::Adafruit_SPIFlash()']]],
   ['adafruit_5fspiflash_5fmock_2eh_11',['Adafruit_SPIFlash_mock.h',['../Adafruit__SPIFlash__mock_8h.html',1,'']]],
   ['addcommand_12',['addCommand',['../classCommandLine.html#a73c1b4e14f70f7e145f2c8c7971f57c2',1,'CommandLine']]],
@@ -28,6 +28,5 @@ var searchData=
   ['asciikey_25',['AsciiKey',['../UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5',1,'UARTCommandHandler.h']]],
   ['assertsavedatapointcalledwith_26',['assertSaveDataPointCalledWith',['../classDataSaverMock.html#a0738da16e49b142c8136b8d87ecb77f9',1,'DataSaverMock']]],
   ['available_27',['available',['../classStream.html#a4dcdea71acf9df53627cde6cf909c176',1,'Stream']]],
-  ['average_5fcycle_5frate_28',['AVERAGE_CYCLE_RATE',['../DataNames_8h.html#aa01fb7de9a57b9ecba6371bbdcb65e4f',1,'DataNames.h']]],
-  ['avionics_20for_20clemson_20university_20rocket_20engineering_29',['Avionics for Clemson University Rocket Engineering',['../index.html',1,'']]]
+  ['average_5fcycle_5frate_28',['AVERAGE_CYCLE_RATE',['../DataNames_8h.html#aa01fb7de9a57b9ecba6371bbdcb65e4f',1,'DataNames.h']]]
 ];

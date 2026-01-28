@@ -25,35 +25,35 @@
 var NAVTREE =
 [
   [ "Avionics", "index.html", [
-    [ "Avionics for Clemson University Rocket Engineering", "index.html", "index" ],
+    [ "data_handling Directory", "index.html", "index" ],
     [ "Restricted Flash Storage Specifications", "md_docs_FlashDataSaving.html", [
-      [ "Variable Data Rates", "md_docs_FlashDataSaving.html#autotoc_md1", [
-        [ "<strong>Data Save Rates (No Labels)</strong>", "md_docs_FlashDataSaving.html#autotoc_md2", null ]
+      [ "Variable Data Rates", "md_docs_FlashDataSaving.html#autotoc_md16", [
+        [ "<strong>Data Save Rates (No Labels)</strong>", "md_docs_FlashDataSaving.html#autotoc_md17", null ]
       ] ],
-      [ "<strong>Maximum Storage Capacity</strong>", "md_docs_FlashDataSaving.html#autotoc_md3", null ],
-      [ "<strong>Metadata Storage</strong>", "md_docs_FlashDataSaving.html#autotoc_md4", [
-        [ "<strong>Metadata Layout</strong>", "md_docs_FlashDataSaving.html#autotoc_md5", null ]
+      [ "<strong>Maximum Storage Capacity</strong>", "md_docs_FlashDataSaving.html#autotoc_md18", null ],
+      [ "<strong>Metadata Storage</strong>", "md_docs_FlashDataSaving.html#autotoc_md19", [
+        [ "<strong>Metadata Layout</strong>", "md_docs_FlashDataSaving.html#autotoc_md20", null ]
       ] ],
-      [ "<strong>Writing Strategy</strong>", "md_docs_FlashDataSaving.html#autotoc_md6", [
-        [ "<strong>Sensor Data Handling</strong>", "md_docs_FlashDataSaving.html#autotoc_md7", null ],
-        [ "<strong>Byte5 Data Format</strong>", "md_docs_FlashDataSaving.html#autotoc_md8", null ],
-        [ "<strong>Byte5 Data Breakdown (Per 256-Byte Page)</strong>", "md_docs_FlashDataSaving.html#autotoc_md9", null ],
-        [ "<strong>Data Save Rates (Byte5 Format)</strong>", "md_docs_FlashDataSaving.html#autotoc_md10", null ]
+      [ "<strong>Writing Strategy</strong>", "md_docs_FlashDataSaving.html#autotoc_md21", [
+        [ "<strong>Sensor Data Handling</strong>", "md_docs_FlashDataSaving.html#autotoc_md22", null ],
+        [ "<strong>Byte5 Data Format</strong>", "md_docs_FlashDataSaving.html#autotoc_md23", null ],
+        [ "<strong>Byte5 Data Breakdown (Per 256-Byte Page)</strong>", "md_docs_FlashDataSaving.html#autotoc_md24", null ],
+        [ "<strong>Data Save Rates (Byte5 Format)</strong>", "md_docs_FlashDataSaving.html#autotoc_md25", null ]
       ] ],
-      [ "<strong>Alternative Approach: 64-Byte Chunks</strong>", "md_docs_FlashDataSaving.html#autotoc_md11", [
-        [ "<strong>Proposed 64-Byte Data Chunk</strong>", "md_docs_FlashDataSaving.html#autotoc_md12", null ],
-        [ "<strong>Why We Rejected the 64-Byte Chunk Method</strong>", "md_docs_FlashDataSaving.html#autotoc_md13", null ]
+      [ "<strong>Alternative Approach: 64-Byte Chunks</strong>", "md_docs_FlashDataSaving.html#autotoc_md26", [
+        [ "<strong>Proposed 64-Byte Data Chunk</strong>", "md_docs_FlashDataSaving.html#autotoc_md27", null ],
+        [ "<strong>Why We Rejected the 64-Byte Chunk Method</strong>", "md_docs_FlashDataSaving.html#autotoc_md28", null ]
       ] ],
-      [ "<strong>Post-Launch Data Protection</strong>", "md_docs_FlashDataSaving.html#autotoc_md14", [
-        [ "<strong>Summary</strong>", "md_docs_FlashDataSaving.html#autotoc_md15", null ]
+      [ "<strong>Post-Launch Data Protection</strong>", "md_docs_FlashDataSaving.html#autotoc_md29", [
+        [ "<strong>Summary</strong>", "md_docs_FlashDataSaving.html#autotoc_md30", null ]
       ] ]
     ] ],
     [ "Flight Test History", "md_docs_FlightTests.html", [
-      [ "Flight-Number Format", "md_docs_FlightTests.html#autotoc_md17", [
-        [ "Rocket Types", "md_docs_FlightTests.html#autotoc_md18", null ],
-        [ "Flight-Computer Types", "md_docs_FlightTests.html#autotoc_md19", null ]
+      [ "Flight-Number Format", "md_docs_FlightTests.html#autotoc_md32", [
+        [ "Rocket Types", "md_docs_FlightTests.html#autotoc_md33", null ],
+        [ "Flight-Computer Types", "md_docs_FlightTests.html#autotoc_md34", null ]
       ] ],
-      [ "Flight Test History (most recent first)", "md_docs_FlightTests.html#autotoc_md21", null ]
+      [ "Flight Test History (most recent first)", "md_docs_FlightTests.html#autotoc_md36", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

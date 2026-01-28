@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['verticalvelocityestimator_2ecpp_0',['VerticalVelocityEstimator.cpp',['../VerticalVelocityEstimator_8cpp.html',1,'']]],
-  ['verticalvelocityestimator_2eh_1',['VerticalVelocityEstimator.h',['../VerticalVelocityEstimator_8h.html',1,'']]]
+  ['telemetry_2ecpp_0',['Telemetry.cpp',['../Telemetry_8cpp.html',1,'']]],
+  ['telemetry_2eh_1',['Telemetry.h',['../Telemetry_8h.html',1,'']]]
 ];
