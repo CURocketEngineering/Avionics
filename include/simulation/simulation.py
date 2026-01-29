@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Set up the serial connection (adjust the port to your system)
-ser = serial.Serial('COM4', 115200, timeout=1)  # Replace 'COM3' with your port name
+ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Replace 'COM3' with your port name
 time.sleep(2)  # Allow time for the connection to be established
 
 # Clear the buffer
@@ -20,7 +20,7 @@ def wait_for_start_command():
             print(command)
             if command == "START":
                 # Send ack to the client
-                ser.write(b'\x67')
+                ser.write(b'\x06')
                 print("Received start command, beginning data transmission.")
                 break
 
@@ -108,9 +108,9 @@ def stream_csv_data(csv_file):
         while True:
             if ser.in_waiting > 0:
                 buffer += ser.read_all()   
-                if b'\x67' in buffer:
+                if b'\x06' in buffer:
                     # The byte after ack is the current state of the rocket
-                    loc = buffer.index(b'\x67')
+                    loc = buffer.index(b'\x06')
                     print("Received acknowledgment: ", buffer)
                     state = buffer[loc - 1]
                     break
@@ -160,7 +160,7 @@ try:
     wait_for_start_command()
 
     # Provide the path to your CSV file here
-    csv_file = './AA Data Collection - Second Launch Trimmed.csv'  # Replace with your file path
+    csv_file = 'lib/Avionics/include/simulation'  # Replace with your file path
     stream_csv_data(csv_file)
 except KeyboardInterrupt:
     print("Program terminated.")

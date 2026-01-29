@@ -40,7 +40,7 @@ public:
 
         // Handshake: send "START\n" until we get ACK (0x06)
         uint8_t ack = 0;
-        while (ack != 0x67) {
+        while (ack != 0x06) {
             serial->write("START\n");
             delay(100);
             if (serial->available() > 0) {
@@ -123,15 +123,10 @@ private:
         }
 
         // We'll parse each comma‐separated float in the line
-        Serial.println("1");
         _timestamp   = parseNextFloat(line);
-        Serial.println("2");
         accel_x      = parseNextFloat(line);
-        Serial.println("3");
         accel_y      = parseNextFloat(line);
-        Serial.println("4");
         accel_z      = parseNextFloat(line);
-        Serial.println("5");
         _alt         = parseNextFloat(line);
         // gyro_x       = parseNextFloat(line);
         // gyro_y       = parseNextFloat(line);
@@ -157,20 +152,18 @@ private:
             data = "";
             return val;
         }
-        Serial.println("hi");
 
         // Parse substring up to the comma
         float value = data.substring(0, commaIndex).toFloat();
         // Remove parsed portion (including the comma)
         data = data.substring(commaIndex + 1);
-        Serial.println("bye");
         return value;
     }
 
     // Send ACK (0x06) alongside the current state to the serial port
     void ack(){
-        serial->write(0x01);
-        serial->write(0x67);
+        serial->write(stateMachine->getState());
+        serial->write(0x06);
     }
 
 private:

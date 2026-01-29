@@ -30,7 +30,23 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             lpStatus = launchDetector->update(accel);
             fldStatus = fastLaunchDetector->update(accel);
             // Serial.println(lpStatus);
-            if (launchDetector->isLaunched()) {
+            if (fastLaunchDetector->hasLaunched()) {
+                // Change state to soft ascent
+                state = STATE_SOFT_ASCENT;
+
+                // Save the FLD launch time
+                fldLaunchTime_ms = fastLaunchDetector->getLaunchedTime();
+
+                // Log the state change
+                dataSaver->saveDataPoint(
+                    DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
+                    STATE_CHANGE
+                );
+
+                // Put the data saver into post-launch mode
+                dataSaver->launchDetected(fastLaunchDetector->getLaunchedTime());
+            }
+            else if (launchDetector->isLaunched()) {
                 // Change state to ascent
                 state = STATE_ASCENT;
 
@@ -48,22 +64,6 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
 
                 // Update the vertical velocity estimator
                 verticalVelocityEstimator->update(accel, alt);
-            }
-            if (fastLaunchDetector->hasLaunched()) {
-                // Change state to soft ascent
-                state = STATE_SOFT_ASCENT;
-
-                // Save the FLD launch time
-                fldLaunchTime_ms = fastLaunchDetector->getLaunchedTime();
-
-                // Log the state change
-                dataSaver->saveDataPoint(
-                    DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
-                    STATE_CHANGE
-                );
-
-                // Put the data saver into post-launch mode
-                dataSaver->launchDetected(fastLaunchDetector->getLaunchedTime());
             }
             break;
 
@@ -93,7 +93,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Update the vertical velocity estimator
                 verticalVelocityEstimator->update(accel, alt);
             }
-            if (accel.x.timestamp_ms - fldLaunchTime_ms > fastLaunchDetector->getConfirmationWindow()) {
+            else if (accel.x.timestamp_ms - fldLaunchTime_ms > fastLaunchDetector->getConfirmationWindow()) {
                 // If the confirmation window has passed without launch detected by LaunchDetector,
                 // revert to ARMED state
                 state = STATE_ARMED;
