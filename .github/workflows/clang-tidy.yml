@@ -1,0 +1,51 @@
+name: Clang-Tidy Check
+
+on:
+  #triggers the workflow on pull requests
+  pull_request:
+    branches:
+      - '**'
+
+  #allows manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  clang-tidy-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      #gets the current repo
+      - name: Checkout Avionics repo
+        uses: actions/checkout@v4
+        with:
+          path: Avionics
+      
+      #clones the native repo
+      - name: Clone Native repo
+        run: |
+          git clone https://github.com/CURocketEngineering/Native native
+
+      #replaces the linked Avionics repo with the current Avionics code
+      - name: Replace Native lib Avionics with checked-out Avionics code
+        run: |
+          rm -rf native/lib/Avionics
+          mkdir -p native/lib
+          mv Avionics native/lib/Avionics
+
+      #installed PlatformIO core
+      - name: Install PlatformIO Core
+        run: |
+          pip install -U platformio
+
+      #shows the file tree structure for debugging
+      - name: Show native directory structure
+        run: |
+          echo "===== native directory tree ====="
+          ls -R native
+
+      #runs clang-tidy check
+      - name: Run Clang-Tidy Check
+        working-directory: ./native
+        run: pio check --fail-on-defect=low --fail-on-defect=medium --fail-on-defect=high
+
+

@@ -1,8 +1,8 @@
 #include "state_estimation/GroundLevelEstimator.h"
 
 // Constructor
-GroundLevelEstimator::GroundLevelEstimator()
-: launched(false), estimatedGroundLevel_m(0.0F), sampleCount(0), alpha(0.1F)
+GroundLevelEstimator::GroundLevelEstimator(float alpha)
+: alpha(alpha)
 {}
 
 // Update the ground level estimate or convert ASL to AGL - Altitude ABOVE ground level

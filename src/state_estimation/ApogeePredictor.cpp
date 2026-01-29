@@ -1,6 +1,7 @@
 #include "state_estimation/ApogeePredictor.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
@@ -108,12 +109,10 @@ void ApogeePredictor::poly_update() {
     const float velocity_ms = vve_.getEstimatedVelocity();
     const float acceleration_ms2 = vve_.getInertialVerticalAcceleration();
 
-    
-
-    const size_t featureCount = 10;
+    constexpr size_t FEATURE_COUNT = 10; // NOLINT(cppcoreguidelines-init-variables)
 
     // Polynomial Regression Coefficients for C++
-    const float coeffs[] = {
+    const std::array<float, FEATURE_COUNT> coeffs = {
         /* 1 */ 0.00000000,
         /* vertical_velocity */ 5.06108448,
         /* vertical_acceleration */ 63.94744144,
@@ -129,13 +128,13 @@ void ApogeePredictor::poly_update() {
 
     // ───────────────────────────────────────────────────────
     // Compute delta_h_simple = v^2 / (2 * decel), with decel > 0
-    double decel = std::fabs(acceleration_ms2);
-    double delta_h_simple = (velocity_ms * velocity_ms) / (2.0 * decel);
+    const float decel = std::fabs(acceleration_ms2);
+    const float delta_h_simple = MAGIC_HALF * (velocity_ms * velocity_ms) / decel;
 
     // ───────────────────────────────────────────────────────
     // Evaluate the regression model
-    const double inputs[featureCount] = {
-        1.0,
+    const std::array<float, FEATURE_COUNT> inputs = {
+        1.0F,
         velocity_ms,                // vertical_velocity
         acceleration_ms2,           // vertical_acceleration
         delta_h_simple,
@@ -147,8 +146,8 @@ void ApogeePredictor::poly_update() {
         delta_h_simple * delta_h_simple, // delta_h_simple^2
     };
 
-    double apogeeRemaining_m = intercept;
-    for (size_t i = 0; i < featureCount; ++i) {
+    float apogeeRemaining_m = intercept;
+    for (size_t i = 0; i < FEATURE_COUNT; ++i) { // NOLINT(cppcoreguidelines-init-variables)
         apogeeRemaining_m += coeffs[i] * inputs[i];
     }
 
@@ -166,8 +165,8 @@ void ApogeePredictor::poly_update() {
     lastVel_ = velocity_ms;
     numWarmups_ = std::min(numWarmups_ + 1, MAX_WARMUPS);
 
-    printf("Current Timestamp: %u, Altitude: %.2f, Velocity: %.2f, Acceleration: %.2f, Predicted Apogee Remaining: %.2f, Delta H: %.2f\n",
-           currentTimestamp_ms, altitude_m, velocity_ms, acceleration_ms2, apogeeRemaining_m, delta_h_simple);
+    // printf("Current Timestamp: %u, Altitude: %.2f, Velocity: %.2f, Acceleration: %.2f, Predicted Apogee Remaining: %.2f, Delta H: %.2f\n",
+    //        currentTimestamp_ms, altitude_m, velocity_ms, acceleration_ms2, apogeeRemaining_m, delta_h_simple);
 }
 
 
