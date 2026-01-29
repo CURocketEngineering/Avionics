@@ -1,12 +1,17 @@
 # Avionics for Clemson University Rocket Engineering
 
-Avionics is a modular, Arduino-core based system powering the flight computers of Clemson University Rocket Engineering. Designed for high reliability and efficiency, it supports real-time state estimation, data logging, and robust communication.
+Avionics is a modular, Arduino-core based system powering the flight computers of Clemson University Rocket Engineering. Designed for high reliability and efficiency, it supports real-time state estimation, data logging, and robust communication across multiple rockets.
+
+**Documentation Website: 🚀[Avionics Docs](https://curocketengineering.github.io/Avionics/)🚀**
 
 ## Table of Contents
 
 - [Introduction](#introduction)
+- [Project Goals](#project-goals)
+- [Architecture Overview](#architecture-overview)
 - [Features](#features)
 - [Dependent Systems](#dependent-systems)
+- [Documentation](#documentation)
 - [Testing](#testing)
   - [Unit Testing](#unit-testing)
   - [Flight Tests](#flight-tests)
@@ -14,6 +19,21 @@ Avionics is a modular, Arduino-core based system powering the flight computers o
 ## Introduction
 
 This repository contains the avionics system used across various flight computers within the Clemson University Rocket Engineering organization. Designed to be modular and highly configurable, the system supports critical functions such as state detection, data logging, and robust communication.
+
+## Project Goals
+
+- Deliver a reusable avionics toolbox that can be utilized across multiple rocket platforms.
+- Prioritize flight safety through redundant sensing, conservative state transitions, and explicit error handling.
+- Maintain traceable telemetry and post-flight data for analysis and certification.
+- Enable rapid iteration with simulation hooks, configurable command interfaces, and host-side unit testing.
+
+## Architecture Overview
+
+- **State estimation:** Launch/apogee detection, burnout/landing state machines, and vertical velocity filtering to gate deployment logic.
+- **Data handling:** SPI flash/SD logging, serial streaming, and documented Byte5 binary format for efficient on-vehicle storage (see `docs/FlashDataSaving.md`).
+- **Communication:** UART command handler for runtime configuration, telemetry, and debugging without reflashing firmware.
+- **Power and platform:** Power management utilities plus HAL abstractions to keep sensor/MCU specifics isolated from flight logic.
+- **Simulation:** Serial-driven sensor simulators (e.g., LSM6DSOX, LIS3MDL, BMP390) to inject prerecorded data for hardware-in-the-loop testing.
 
 ## Flight Tests
 
@@ -60,9 +80,18 @@ The following systems integrate Avionics as a submodule:
 - [MARTHA 1.1](https://github.com/CURocketEngineering/MARTHA-1.1)
 - [Native](https://github.com/CURocketEngineering/Native)
 
+## Documentation
+
+- Doxygen: run `doxygen Doxyfile` from the repository root. HTML output is placed in `build/doxygen/index.html` (README is used as the main page). You can then use Python to serve the files locally: `python -m http.server --directory build/doxygen 8000` and navigate to `http://localhost:8000` in your browser. We have a workflow that will autogenerate and deploy the docs to GitHub Pages on each push to main.
+- High-level notes: data logging constraints and Byte5 format are summarized in `docs/FlashDataSaving.md`.
+- Flight history: see `docs/FlightTests.md` for vehicles and dates that have flown with this codebase.
+- Target Audience: The documentation is written for compsci students with very little background in C++ or embedded systems. 
+
 ## Unit Testing
 
 Unit tests are managed by the [Native](https://github.com/CURocketEngineering/Native) repository, allowing for module testing without requiring embedded hardware.
+
+Never in the Avionics repo should you `#include <Arduino.h>` or any other Arduino-specific headers. Instead, always include `ArduinoHAL.h` from the `hal` directory, which will either pull in the real Arduino core (when compiling for an Arduino target) or a mock implementation (when compiling for Native). This ensures that Avionics can be tested via the Native repo on a laptop without any Arduino dependencies.
 
 ## License
 

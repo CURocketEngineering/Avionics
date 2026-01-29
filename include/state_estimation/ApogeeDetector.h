@@ -26,6 +26,9 @@ struct ApogeeDetectorInitialState {
  *   - The accelerometer (e.g., LSM6DSOX) measures the "normal force" and outputs ~9.81 m/s² at rest.
  *   - During free fall or coasting, its output approaches 0.
  *   - Therefore, inertial acceleration = measured acceleration − 9.81 m/s².
+ *
+ * @note When to use: flights where apogee-triggered events (e.g., drogue deployment)
+ *       must be driven by fused altimeter/IMU estimates rather than a single sensor.
  */
 class ApogeeDetector {
 public:

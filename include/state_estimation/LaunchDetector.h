@@ -40,6 +40,11 @@ enum LaunchDetectorStatus {
  * The delay in launch detection will equal half the window size because
  * the median will only be high once half the window is high
  */
+/**
+ * @brief Sliding-window launch detector based on acceleration magnitude.
+ * @note When to use: detect liftoff robustly against spikes by requiring a
+ *       sustained acceleration median over a configurable window.
+ */
 class LaunchDetector
 {
 public:
@@ -59,9 +64,7 @@ public:
 
     /**
      * Updates the detector with new acceleration data
-     * @param xac: The x acceleration data point in ms^2
-     * @param yac: The y acceleration data point in ms^2
-     * @param zac: The z acceleration data point in ms^2
+     * @param accel: The newest acceleration data (triplet of x, y, and z acceleration data points)
      * @return: False if the data is ignored, true if the data is accepted
      */
     int update(AccelerationTriplet accel);

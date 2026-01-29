@@ -3,6 +3,11 @@
 
 #include "Serial_Sim.h"
 
+/**
+ * @brief Mock BMP3XX sensor backed by SerialSim data.
+ * @note When to use: compile flight code on a host without real hardware while
+ *       exercising baro-dependent logic.
+ */
 class Adafruit_BMP3XX  {
 public:
     Adafruit_BMP3XX  (){}

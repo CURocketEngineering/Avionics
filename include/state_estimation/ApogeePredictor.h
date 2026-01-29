@@ -19,6 +19,9 @@
  *
  * To damp sensor noise, we run a single‑pole low‑pass filter on the measured
  * deceleration magnitude. Call `update()` after each estimator refresh.
+ *
+ * @note When to use: provide early apogee timing/altitude estimates for
+ *       telemetry or adaptive control while still ascending.
  */
 class ApogeePredictor {
 public:

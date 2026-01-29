@@ -9,17 +9,24 @@
 #define LSM6DS_ACCEL_RANGE_16_G         0x03  
 #define LSM6DS_GYRO_RANGE_2000_DPS      0x03  
 #define LSM6DS_RATE_104_HZ              0x04  
-// LIS3MDL (Magnetometer) Define
+// LIS3MDL (Magnetometer 1.3) Define
 #define LIS3MDL_DATARATE_155_HZ         0x06  
 #define LIS3MDL_RANGE_4_GAUSS           0x01  
 #define LIS3MDL_CONTINUOUSMODE          0x00  
 #define LIS3MDL_MEDIUMMODE              0x01  
+// LIS2MDL (Magnetometer 1.4) Define
+#define LIS2MDL_RATE_100_HZ             0x06
 // BMP3 (Barometric Pressure Sensor) Define
 #define BMP3_OVERSAMPLING_8X            0x03  
 #define BMP3_OVERSAMPLING_4X            0x02  
 #define BMP3_IIR_FILTER_COEFF_3         0x03  
 #define BMP3_ODR_100_HZ                 0x05 
 
+/**
+ * @brief Serial-based sensor/flight simulation singleton for hardware-in-the-loop.
+ * @note When to use: feed prerecorded or live PC-side simulation data into
+ *       firmware during development without real sensors.
+ */
 class SerialSim {
 public:
     static SerialSim& getInstance() {

@@ -3,6 +3,11 @@
 
 #include "Serial_Sim.h"
 
+/**
+ * @brief Mock LSM6DSOX IMU backed by SerialSim accelerometer/gyro data.
+ * @note When to use: firmware simulation or CI builds where the real IMU is
+ *       not available but API compatibility is required.
+ */
 class Adafruit_LSM6DSOX {
 public:
     Adafruit_LSM6DSOX (){}

@@ -1,0 +1,20 @@
+name: Deploy Doxygen (gh-pages branch)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: DenverCoder1/doxygen-github-pages-action@v2.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          doxygen_version: 1.16.1
+          branch: gh-pages
+          folder: build/doxygen
+          config_file: Doxyfile
