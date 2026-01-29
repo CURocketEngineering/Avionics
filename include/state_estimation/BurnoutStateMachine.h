@@ -5,10 +5,10 @@
 #include "data_handling/DataSaver.h"
 
 #include "state_estimation/ApogeeDetector.h"
+#include "state_estimation/BaseStateMachine.h"
 #include "state_estimation/LaunchDetector.h"
 #include "state_estimation/StateEstimationTypes.h"
 #include "state_estimation/States.h"
-#include "state_estimation/BaseStateMachine.h"
 
 /**
  * @brief State machine variant that explicitly models motor burnout before coast.
