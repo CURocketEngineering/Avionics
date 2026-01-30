@@ -3,30 +3,26 @@
 
 #ifdef ARDUINO
 #include "Arduino.h"
-#include <SPI.h>
-#include <Adafruit_Sensor.h>
 
 #include <Adafruit_SPIFlash.h>
+#include <Adafruit_Sensor.h>
 #include <SdFat.h>
 #include <SdFatConfig.h>
+#include <SPI.h>
 
 #else // Everything below will only be compiled if we are not on an Arduino
 
-#include <string>
-using String = std::string;
-
-#include <iostream>
-#include <cstring>
-
 #include <chrono>
-
-#include "spi_mock.h"
-
-// Within here we must define the mock functions for the Arduino functions
+#include <cstring>
+#include <iostream>
+#include <string>
 #include <thread>
 
 #include "Adafruit_SPIFlash_mock.h"
 #include "serial_mock.h"
+#include "spi_mock.h"
+
+using String = std::string;
 
 #define OUTPUT 1
 #define INPUT 0

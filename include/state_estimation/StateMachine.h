@@ -1,15 +1,14 @@
 #ifndef FLIGHT_STATE_MACHINE_H
 #define FLIGHT_STATE_MACHINE_H
 
-#include "state_estimation/States.h"
-#include "state_estimation/ApogeeDetector.h"
-#include "state_estimation/LaunchDetector.h"
-#include "state_estimation/VerticalVelocityEstimator.h"
-#include "state_estimation/FastLaunchDetector.h"
-#include "state_estimation/BaseStateMachine.h"
-
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
+#include "state_estimation/ApogeeDetector.h"
+#include "state_estimation/BaseStateMachine.h"
+#include "state_estimation/FastLaunchDetector.h"
+#include "state_estimation/LaunchDetector.h"
+#include "state_estimation/States.h"
+#include "state_estimation/VerticalVelocityEstimator.h"
 
 /**
  * @brief Nominal flight state machine using launch/apogee detection and VVE.
