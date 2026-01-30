@@ -12,13 +12,14 @@
 enum FlightState {
     STATE_UNARMED,
     STATE_ARMED,
+    STATE_SOFT_ASCENT,
     STATE_ASCENT, // Don't use the ascent state if you are already using powered ascent and coast ascent
     STATE_POWERED_ASCENT,
     STATE_COAST_ASCENT,
     STATE_DESCENT,
     STATE_DROGUE_DEPLOYED,
     STATE_MAIN_DEPLOYED,
-    STATE_LANDED
+    STATE_LANDED,
 };
 
 #endif
