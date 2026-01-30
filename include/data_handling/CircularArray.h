@@ -2,9 +2,9 @@
 #define CIRCULARARRAY_H
 
 #include <algorithm>
-#include <cstdint>
 #include <array>
 #include <assert.h>
+#include <cstdint>
 
 constexpr std::size_t MAX_CIRCULAR_ARRAY_CAPACITY = 255;
 

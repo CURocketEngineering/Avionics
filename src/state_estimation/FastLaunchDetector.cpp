@@ -5,7 +5,7 @@
 #include "ArduinoHAL.h"
 #endif
 
-FastLaunchDetector::FastLaunchDetector(float accelerationThreshold_ms2, uint32_t confirmationWindow_ms)
+FastLaunchDetector::FastLaunchDetector(float accelerationThreshold_ms2, uint32_t confirmationWindow_ms) //NOLINT(bugprone-easily-swappable-parameters)
     : accelerationThresholdSq_ms2(accelerationThreshold_ms2 * accelerationThreshold_ms2),
       launched(false),
       launchedTime_ms(0),
