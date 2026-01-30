@@ -4,6 +4,7 @@ var dir_21a1dae48c88f97b8930be8c7aef0512 =
     [ "ApogeePredictor.h", "ApogeePredictor_8h.html", "ApogeePredictor_8h" ],
     [ "BaseStateMachine.h", "BaseStateMachine_8h.html", "BaseStateMachine_8h" ],
     [ "BurnoutStateMachine.h", "BurnoutStateMachine_8h.html", "BurnoutStateMachine_8h" ],
+    [ "FastLaunchDetector.h", "FastLaunchDetector_8h.html", "FastLaunchDetector_8h" ],
     [ "GroundLevelEstimator.h", "GroundLevelEstimator_8h.html", "GroundLevelEstimator_8h" ],
     [ "LaunchDetector.h", "LaunchDetector_8h.html", "LaunchDetector_8h" ],
     [ "StateEstimationTypes.h", "StateEstimationTypes_8h.html", "StateEstimationTypes_8h" ],

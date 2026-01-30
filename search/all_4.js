@@ -9,7 +9,7 @@ var searchData=
   ['circulararray_3c_20datapoint_20_3e_6',['CircularArray&lt; DataPoint &gt;',['../classCircularArray.html',1,'']]],
   ['clear_7',['clear',['../classCircularArray.html#a0bae18aebd97fc59c9e4b8e42ed71ebe',1,'CircularArray::clear()'],['../classDataSaverMock.html#a18cd7dc6a239991a749149436cfcdb86',1,'DataSaverMock::clear()'],['../classMockSerial.html#aa19c49045a394de46e22ebfae19b95a5',1,'MockSerial::clear()'],['../classMockSerialClass.html#a5bc2e706b702e7645f7ae8af5a026473',1,'MockSerialClass::clear()']]],
   ['clearinternalstate_8',['clearInternalState',['../classDataSaverSPI.html#a8c25bb7cb8f22f91726c85b27017033e',1,'DataSaverSPI']]],
-  ['clearpostlaunchmode_9',['clearPostLaunchMode',['../classDataSaverSPI.html#aa101952b8bef79ffdd0264c754fe5134',1,'DataSaverSPI']]],
+  ['clearpostlaunchmode_9',['clearPostLaunchMode',['../classIDataSaver.html#a79ac95353ea726856098888143c0195e',1,'IDataSaver::clearPostLaunchMode()'],['../classDataSaverSPI.html#aa101952b8bef79ffdd0264c754fe5134',1,'DataSaverSPI::clearPostLaunchMode()']]],
   ['clearwritecalls_10',['clearWriteCalls',['../classStream.html#a8a37da1a85cd7c2fa52f4eab9548abda',1,'Stream']]],
   ['clemson_20university_20rocket_20engineering_11',['Avionics for Clemson University Rocket Engineering',['../index.html',1,'']]],
   ['close_12',['close',['../structFile32.html#ac75c776f7a81db90778959e64fb58696',1,'File32']]],

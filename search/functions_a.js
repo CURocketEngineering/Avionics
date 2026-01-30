@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['open_0',['open',['../structFile32.html#ad946b38111dce3db1fdd1bee1b2136df',1,'File32::open()'],['../structSdFat.html#aa4b614c512c624a74836b28ed06b6302',1,'SdFat::open()']]],
-  ['operator_20bool_1',['operator bool',['../structFile32.html#aeefd65b0759b838514c630a4819da0c0',1,'File32']]]
+  ['markwassent_0',['markWasSent',['../structSendableSensorData.html#a52de90c13252dcc11d140fa121085986',1,'SendableSensorData']]],
+  ['mockspiclass_1',['MockSPIClass',['../classMockSPIClass.html#a9b4e3ce1e6b1f3a55d5c5f3ddcc2db59',1,'MockSPIClass::MockSPIClass(uint32_t &amp;, uint32_t &amp;, uint32_t &amp;, uint32_t &amp;)'],['../classMockSPIClass.html#acc06a5590d97a94ded06a95f9ecfc64c',1,'MockSPIClass::MockSPIClass()']]]
 ];

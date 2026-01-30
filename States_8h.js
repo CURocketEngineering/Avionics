@@ -3,6 +3,7 @@ var States_8h =
     [ "FlightState", "States_8h.html#a37637b81dfa46377176213983b8bb1f1", [
       [ "STATE_UNARMED", "States_8h.html#a37637b81dfa46377176213983b8bb1f1aaad1f49300d4e2acbbf7143874e9b39b", null ],
       [ "STATE_ARMED", "States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581", null ],
+      [ "STATE_SOFT_ASCENT", "States_8h.html#a37637b81dfa46377176213983b8bb1f1aa83ac3ae629ad200c72f4f5536f54e55", null ],
       [ "STATE_ASCENT", "States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca", null ],
       [ "STATE_POWERED_ASCENT", "States_8h.html#a37637b81dfa46377176213983b8bb1f1ae24abc2575b788799897bfc9f218a604", null ],
       [ "STATE_COAST_ASCENT", "States_8h.html#a37637b81dfa46377176213983b8bb1f1ac7cb0a999e38fc396afd709e99ce0484", null ],

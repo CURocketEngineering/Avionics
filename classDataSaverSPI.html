@@ -103,9 +103,9 @@ Inheritance diagram for DataSaverSPI:</div>
 <div class="dyncontent">
 <div class="center"><img src="classDataSaverSPI__inherit__graph.png" border="0" usemap="#aDataSaverSPI_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="aDataSaverSPI_inherit__map" id="aDataSaverSPI_inherit__map">
-<area shape="rect" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="5,179,187,444"/>
-<area shape="rect" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="25,5,167,131"/>
-<area shape="poly" title=" " alt="" coords="99,144,99,178,93,178,93,144"/>
+<area shape="rect" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="5,199,187,464"/>
+<area shape="rect" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="5,5,187,151"/>
+<area shape="poly" title=" " alt="" coords="99,164,99,198,93,198,93,164"/>
 </map>
 </div>
 <div class="dynheader">
@@ -113,9 +113,9 @@ Collaboration diagram for DataSaverSPI:</div>
 <div class="dyncontent">
 <div class="center"><img src="classDataSaverSPI__coll__graph.png" border="0" usemap="#aDataSaverSPI_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aDataSaverSPI_coll__map" id="aDataSaverSPI_coll__map">
-<area shape="rect" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="5,179,187,444"/>
-<area shape="rect" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="25,5,167,131"/>
-<area shape="poly" title=" " alt="" coords="99,144,99,178,93,178,93,144"/>
+<area shape="rect" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="5,199,187,464"/>
+<area shape="rect" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="5,5,187,151"/>
+<area shape="poly" title=" " alt="" coords="99,164,99,198,93,198,93,164"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -264,6 +264,9 @@ Static Public Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void DataSaverSPI::clearPostLaunchMode </td>
@@ -272,9 +275,16 @@ Static Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Clears the post-launch mode flag on the flash chip **WARNING: This will allow the data to be overwritten Only call this after you have dumped the data to a more permanent storage or another machine. </p>
+
+<p>Reimplemented from <a class="el" href="classIDataSaver.html#a79ac95353ea726856098888143c0195e">IDataSaver</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="DataSaverSPI_8cpp_source.html#l00131">131</a> of file <a class="el" href="DataSaverSPI_8cpp_source.html">DataSaverSPI.cpp</a>.</p>
 

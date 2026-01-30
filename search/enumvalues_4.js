@@ -1,12 +1,14 @@
 var searchData=
 [
-  ['state_5farmed_0',['STATE_ARMED',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581',1,'States.h']]],
-  ['state_5fascent_1',['STATE_ASCENT',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca',1,'States.h']]],
-  ['state_5fcoast_5fascent_2',['STATE_COAST_ASCENT',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1ac7cb0a999e38fc396afd709e99ce0484',1,'States.h']]],
-  ['state_5fdescent_3',['STATE_DESCENT',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7',1,'States.h']]],
-  ['state_5fdrogue_5fdeployed_4',['STATE_DROGUE_DEPLOYED',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1a8998750cf9407393c7d4bd32bba6dbcc',1,'States.h']]],
-  ['state_5flanded_5',['STATE_LANDED',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1a7d4e8b41b1e21ec79acc481e203de616',1,'States.h']]],
-  ['state_5fmain_5fdeployed_6',['STATE_MAIN_DEPLOYED',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1a2f8212e351f4435ca5eb8dda98a56ef1',1,'States.h']]],
-  ['state_5fpowered_5fascent_7',['STATE_POWERED_ASCENT',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1ae24abc2575b788799897bfc9f218a604',1,'States.h']]],
-  ['state_5funarmed_8',['STATE_UNARMED',['../States_8h.html#a37637b81dfa46377176213983b8bb1f1aaad1f49300d4e2acbbf7143874e9b39b',1,'States.h']]]
+  ['lp_5facl_5ftoo_5flow_0',['LP_ACL_TOO_LOW',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a686daad6b191529dbdc7f02bf27f6572',1,'LaunchDetector.h']]],
+  ['lp_5falready_5flaunched_1',['LP_ALREADY_LAUNCHED',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080afbe67ada0f1b0a4edd304168f437a3ef',1,'LaunchDetector.h']]],
+  ['lp_5fdata_5ftoo_5ffast_2',['LP_DATA_TOO_FAST',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a80bc20b88138de9371639ea71bf56585',1,'LaunchDetector.h']]],
+  ['lp_5fdefault_5ffail_3',['LP_DEFAULT_FAIL',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a7affdc9e272a68c8732a39cff0422945',1,'LaunchDetector.h']]],
+  ['lp_5finitial_5fpopulation_4',['LP_INITIAL_POPULATION',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a6b1e984da9587377f161469ab0303445',1,'LaunchDetector.h']]],
+  ['lp_5flaunch_5fdetected_5',['LP_LAUNCH_DETECTED',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a4361e11eb8765b4c163edbfa0d4a6dff',1,'LaunchDetector.h']]],
+  ['lp_5fwindow_5fdata_5fstale_6',['LP_WINDOW_DATA_STALE',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080ac42669799e8c4b31090280073785da2d',1,'LaunchDetector.h']]],
+  ['lp_5fwindow_5fnot_5ffull_7',['LP_WINDOW_NOT_FULL',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a622591f5c3e7f82e33db4f25e744f02a',1,'LaunchDetector.h']]],
+  ['lp_5fwindow_5ftime_5frange_5ftoo_5flarge_8',['LP_WINDOW_TIME_RANGE_TOO_LARGE',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a91ab0d6da25f183f5bd31488cb9befbd',1,'LaunchDetector.h']]],
+  ['lp_5fwindow_5ftime_5frange_5ftoo_5fsmall_9',['LP_WINDOW_TIME_RANGE_TOO_SMALL',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080ad19671ce85a8d5c2b6c745ca1fa255b1',1,'LaunchDetector.h']]],
+  ['lp_5fyounger_5ftimestamp_10',['LP_YOUNGER_TIMESTAMP',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080aa063df1281826f139a90af3499487911',1,'LaunchDetector.h']]]
 ];

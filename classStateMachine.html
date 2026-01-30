@@ -121,8 +121,8 @@ Collaboration diagram for StateMachine:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a09b002e49afbd1f198db2c85055891e5" id="r_a09b002e49afbd1f198db2c85055891e5"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a09b002e49afbd1f198db2c85055891e5">StateMachine</a> (<a class="el" href="classIDataSaver.html">IDataSaver</a> *dataSaver, <a class="el" href="classLaunchDetector.html">LaunchDetector</a> *launchDetector, <a class="el" href="classApogeeDetector.html">ApogeeDetector</a> *apogeeDetector, <a class="el" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a> *verticalVelocityEstimator)</td></tr>
-<tr class="memdesc:a09b002e49afbd1f198db2c85055891e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wire dependencies for the state machine.  <br /></td></tr>
+<tr class="memitem:a2cd14f5f5d9b076823ff85e221cab15e" id="r_a2cd14f5f5d9b076823ff85e221cab15e"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a2cd14f5f5d9b076823ff85e221cab15e">StateMachine</a> (<a class="el" href="classIDataSaver.html">IDataSaver</a> *dataSaver, <a class="el" href="classLaunchDetector.html">LaunchDetector</a> *launchDetector, <a class="el" href="classApogeeDetector.html">ApogeeDetector</a> *apogeeDetector, <a class="el" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a> *verticalVelocityEstimator, <a class="el" href="classFastLaunchDetector.html">FastLaunchDetector</a> *fastLaunchDetector)</td></tr>
+<tr class="memdesc:a2cd14f5f5d9b076823ff85e221cab15e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wire dependencies for the state machine.  <br /></td></tr>
 <tr class="memitem:a552f60dab35286b089d99e530414a593" id="r_a552f60dab35286b089d99e530414a593"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a552f60dab35286b089d99e530414a593">update</a> (const <a class="el" href="structAccelerationTriplet.html">AccelerationTriplet</a> &amp;accel, const <a class="el" href="classDataPoint.html">DataPoint</a> &amp;alt) override</td></tr>
 <tr class="memdesc:a552f60dab35286b089d99e530414a593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process new sensor data and transition states if thresholds are met.  <br /></td></tr>
 <tr class="memitem:a41e682913490eaefb10b50cd2e4e2b70" id="r_a41e682913490eaefb10b50cd2e4e2b70"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a41e682913490eaefb10b50cd2e4e2b70">getState</a> () const override</td></tr>
@@ -132,10 +132,10 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Nominal flight state machine using launch/apogee detection and VVE. </p>
 <dl class="section note"><dt>Note</dt><dd>When to use: standard flights where launch-&gt;coast-&gt;descent transitions are driven by detectors and logging is desired at each change. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="StateMachine_8h_source.html#l00018">18</a> of file <a class="el" href="StateMachine_8h_source.html">StateMachine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StateMachine_8h_source.html#l00019">19</a> of file <a class="el" href="StateMachine_8h_source.html">StateMachine.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a09b002e49afbd1f198db2c85055891e5" name="a09b002e49afbd1f198db2c85055891e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09b002e49afbd1f198db2c85055891e5">&#9670;&#160;</a></span>StateMachine()</h2>
+<a id="a2cd14f5f5d9b076823ff85e221cab15e" name="a2cd14f5f5d9b076823ff85e221cab15e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd14f5f5d9b076823ff85e221cab15e">&#9670;&#160;</a></span>StateMachine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -158,7 +158,12 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a> *</td>          <td class="paramname"><span class="paramname"><em>verticalVelocityEstimator</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a> *</td>          <td class="paramname"><span class="paramname"><em>verticalVelocityEstimator</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classFastLaunchDetector.html">FastLaunchDetector</a> *</td>          <td class="paramname"><span class="paramname"><em>fastLaunchDetector</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -208,7 +213,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBaseStateMachine.html#a8343e067635a3fa9fab2e80b08941f82">BaseStateMachine</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="StateMachine_8cpp_source.html#l00073">73</a> of file <a class="el" href="StateMachine_8cpp_source.html">StateMachine.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StateMachine_8cpp_source.html#l00138">138</a> of file <a class="el" href="StateMachine_8cpp_source.html">StateMachine.cpp</a>.</p>
 
 </div>
 </div>
@@ -251,7 +256,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="classBaseStateMachine.html#a5e54ffb4caa0be27ac15f3980e1d123f">BaseStateMachine</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="StateMachine_8cpp_source.html#l00020">20</a> of file <a class="el" href="StateMachine_8cpp_source.html">StateMachine.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="StateMachine_8cpp_source.html#l00022">22</a> of file <a class="el" href="StateMachine_8cpp_source.html">StateMachine.cpp</a>.</p>
 
 </div>
 </div>

@@ -1,5 +1,5 @@
 <map id="DataSaverMock" name="DataSaverMock">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,179,211,299"/>
-<area shape="rect" id="Node000002" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="37,5,179,131"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,145,111,179,105,179,105,145"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,199,211,319"/>
+<area shape="rect" id="Node000002" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="17,5,199,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,164,111,199,105,199,105,164"/>
 </map>

@@ -19,6 +19,7 @@ var annotated_dup =
     [ "DataSaverMock", "classDataSaverMock.html", "classDataSaverMock" ],
     [ "DataSaverSDSerial", "classDataSaverSDSerial.html", "classDataSaverSDSerial" ],
     [ "DataSaverSPI", "classDataSaverSPI.html", "classDataSaverSPI" ],
+    [ "FastLaunchDetector", "classFastLaunchDetector.html", "classFastLaunchDetector" ],
     [ "File32", "structFile32.html", "structFile32" ],
     [ "GroundLevelEstimator", "classGroundLevelEstimator.html", "classGroundLevelEstimator" ],
     [ "IDataSaver", "classIDataSaver.html", "classIDataSaver" ],

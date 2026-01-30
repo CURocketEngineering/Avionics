@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['update_0',['update',['../classSerialSim.html#a956519d1a37dd0e65235891a83f168ad',1,'SerialSim::update()'],['../classApogeeDetector.html#ad5eab32c798455a7e746c9e19f4b7667',1,'ApogeeDetector::update()'],['../classApogeePredictor.html#aab5d0d262dd54de3bb61f976bc92013d',1,'ApogeePredictor::update()'],['../classBaseStateMachine.html#a5e54ffb4caa0be27ac15f3980e1d123f',1,'BaseStateMachine::update()'],['../classBurnoutStateMachine.html#a760a3dcd98a90fcaaf94281590393741',1,'BurnoutStateMachine::update()'],['../classGroundLevelEstimator.html#ab30984cfe9c9e86b0d6d1df3911ed593',1,'GroundLevelEstimator::update()'],['../classLaunchDetector.html#aafd3b9a4f4cab849750851cfb3fbe4ff',1,'LaunchDetector::update()'],['../classStateMachine.html#a552f60dab35286b089d99e530414a593',1,'StateMachine::update()'],['../classVerticalVelocityEstimator.html#a9f740ef28bc66fe44de75d05f41e58c2',1,'VerticalVelocityEstimator::update()']]],
-  ['updateacl_1',['updateAcl',['../classSerialSim.html#ae9e3099a2d388511ba261f9b8b992a18',1,'SerialSim']]],
-  ['updatealt_2',['updateAlt',['../classSerialSim.html#a889b377975b3faf6a70b359c0922bb48',1,'SerialSim']]],
-  ['updateconversion_3',['updateConversion',['../classAdafruit__BMP3XX.html#aabf09792bee35e755ea291cab40de93d',1,'Adafruit_BMP3XX']]],
-  ['updategyro_4',['updateGyro',['../classSerialSim.html#ac408038678650962c8cfaefe9da2b361',1,'SerialSim']]],
-  ['updatemag_5',['updateMag',['../classSerialSim.html#a412e6960f202b7e4b4a427824a19cd64',1,'SerialSim']]],
-  ['updatepres_6',['updatePres',['../classSerialSim.html#a9d79873c4908b09679008df2ea6856dd',1,'SerialSim']]],
-  ['updatetemp_7',['updateTemp',['../classSerialSim.html#a2762b3499cfede6f1ecf03db3944518d',1,'SerialSim']]],
-  ['updatetimestamp_8',['updateTimeStamp',['../classSerialSim.html#aaa47e43600e3f206cd65a2a080192d27',1,'SerialSim']]]
+  ['telemetry_0',['Telemetry',['../classTelemetry.html#a1658104b0d310de0bf2559e13af03e46',1,'Telemetry']]],
+  ['tick_1',['tick',['../classTelemetry.html#ad0468fa42f476c8e62a918390bee434d',1,'Telemetry']]],
+  ['transfer_2',['transfer',['../classMockSPIClass.html#a714284f811e117f8f73b1b4bc4dd04f7',1,'MockSPIClass::transfer(uint8_t &amp;)'],['../classMockSPIClass.html#a0599a5732c60e69059c03ed1f9115312',1,'MockSPIClass::transfer(uint8_t *, std::nullptr_t, int)'],['../classMockSPIClass.html#a555ed5b03960654b778db2bec4134ee9',1,'MockSPIClass::transfer(uint8_t *, uint8_t *&amp;, size_t &amp;)'],['../classMockSPIClass.html#a65bacc9262612076076bda0cb1e7e609',1,'MockSPIClass::transfer(const uint8_t *, std::nullptr_t, int)'],['../classMockSPIClass.html#a859d58188f96186234aba828f4ff7e84',1,'MockSPIClass::transfer(uint8_t *, uint8_t, int)'],['../classMockSPIClass.html#a981b331fca666b2980b31c49277e7c42',1,'MockSPIClass::transfer(uint8_t *, uint8_t *, int)'],['../classMockSPIClass.html#a0d40301a8962d877738bac7391c7636e',1,'MockSPIClass::transfer(uint8_t *, uint8_t *, int *)']]],
+  ['transferbytes_3',['transferBytes',['../classMockSPIClass.html#ac293ed2d2188bcf1de218e7867b24abe',1,'MockSPIClass::transferBytes(uint8_t *, uint8_t *, int)'],['../classMockSPIClass.html#aef7493c965a6fd0957e571c03435c9fd',1,'MockSPIClass::transferBytes(uint8_t *, uint8_t *, int *)']]]
 ];

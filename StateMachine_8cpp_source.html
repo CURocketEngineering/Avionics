@@ -101,97 +101,165 @@ $(function(){initNavTree('StateMachine_8cpp_source.html','',''); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="foldopen" id="foldopen00008" data-start="{" data-end="}">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classStateMachine.html#a09b002e49afbd1f198db2c85055891e5">    8</a></span><a class="code hl_function" href="classStateMachine.html#a09b002e49afbd1f198db2c85055891e5">StateMachine::StateMachine</a>(<a class="code hl_class" href="classIDataSaver.html">IDataSaver</a>* dataSaver,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e">    8</a></span><a class="code hl_function" href="classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e">StateMachine::StateMachine</a>(<a class="code hl_class" href="classIDataSaver.html">IDataSaver</a>* dataSaver,</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                           <a class="code hl_class" href="classLaunchDetector.html">LaunchDetector</a>* launchDetector,</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                           <a class="code hl_class" href="classApogeeDetector.html">ApogeeDetector</a>* apogeeDetector,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                           <a class="code hl_class" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a>* verticalVelocityEstimator)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    : dataSaver(dataSaver),</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      launchDetector(launchDetector),</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      apogeeDetector(apogeeDetector),</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      verticalVelocityEstimator(verticalVelocityEstimator),</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      state(<a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a>)</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                           <a class="code hl_class" href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a>* verticalVelocityEstimator,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                           <a class="code hl_class" href="classFastLaunchDetector.html">FastLaunchDetector</a>* fastLaunchDetector)</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    : dataSaver(dataSaver),</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      launchDetector(launchDetector),</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      apogeeDetector(apogeeDetector),</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      verticalVelocityEstimator(verticalVelocityEstimator),</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      fastLaunchDetector(fastLaunchDetector),</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      state(<a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
 </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classStateMachine.html#a552f60dab35286b089d99e530414a593">   20</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="classStateMachine.html#a552f60dab35286b089d99e530414a593">StateMachine::update</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structAccelerationTriplet.html">AccelerationTriplet</a>&amp; accel, <span class="keyword">const</span> <a class="code hl_class" href="classDataPoint.html">DataPoint</a>&amp; alt) {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="comment">// Update the state</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">int</span> lpStatus = <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a7affdc9e272a68c8732a39cff0422945">LP_DEFAULT_FAIL</a>; </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordflow">switch</span> (state) {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="comment">// Serial.println(&quot;lp update&quot;);</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            lpStatus = launchDetector-&gt;update(accel);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="comment">// Serial.println(lpStatus);</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            <span class="keywordflow">if</span> (launchDetector-&gt;isLaunched()) {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                <span class="comment">// Change state to ascent</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                <span class="comment">// Log the state change</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                dataSaver-&gt;saveDataPoint(</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>),</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                );</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                <span class="comment">// Put the data saver into post-launch mode</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                dataSaver-&gt;launchDetected(launchDetector-&gt;getLaunchedTime());</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                <span class="comment">// Start the apogee detection system</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                apogeeDetector-&gt;init({alt.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, alt.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>});</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>                <span class="comment">// Update the vertical velocity estimator</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                verticalVelocityEstimator-&gt;update(accel, alt);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>:</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            <span class="comment">// Serial.println(&quot;apogee update&quot;);</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            <span class="comment">// Update the vertical velocity estimator</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            verticalVelocityEstimator-&gt;update(accel, alt);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            apogeeDetector-&gt;update(verticalVelocityEstimator);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="keywordflow">if</span> (apogeeDetector-&gt;isApogeeDetected()) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                <span class="comment">// Log the state change</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>                dataSaver-&gt;saveDataPoint(</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a>),</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                );</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classStateMachine.html#a552f60dab35286b089d99e530414a593">   22</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="classStateMachine.html#a552f60dab35286b089d99e530414a593">StateMachine::update</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structAccelerationTriplet.html">AccelerationTriplet</a>&amp; accel, <span class="keyword">const</span> <a class="code hl_class" href="classDataPoint.html">DataPoint</a>&amp; alt) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="comment">// Update the state</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">int</span> lpStatus = <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a7affdc9e272a68c8732a39cff0422945">LP_DEFAULT_FAIL</a>; </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">int</span> fldStatus = <a class="code hl_enumvalue" href="FastLaunchDetector_8h.html#a6066d5f397476f08676e3947bac1f193af61fc450dcc24099271b2122a47b2615">FLD_DEFAULT_FAIL</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">switch</span> (state) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a>:</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            <span class="comment">// Serial.println(&quot;lp update&quot;);</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            lpStatus = launchDetector-&gt;update(accel);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            fldStatus = fastLaunchDetector-&gt;update(accel);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="comment">// Serial.println(lpStatus);</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">if</span> (fastLaunchDetector-&gt;hasLaunched()) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                <span class="comment">// Change state to soft ascent</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1aa83ac3ae629ad200c72f4f5536f54e55">STATE_SOFT_ASCENT</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>                <span class="comment">// Save the FLD launch time</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                fldLaunchTime_ms = fastLaunchDetector-&gt;getLaunchedTime();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>                <span class="comment">// Log the state change</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                dataSaver-&gt;saveDataPoint(</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1aa83ac3ae629ad200c72f4f5536f54e55">STATE_SOFT_ASCENT</a>),</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                );</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                <span class="comment">// Put the data saver into post-launch mode</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                dataSaver-&gt;launchDetected(fastLaunchDetector-&gt;getLaunchedTime());</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (launchDetector-&gt;isLaunched()) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>                <span class="comment">// Change state to ascent</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                <span class="comment">// Log the state change</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                dataSaver-&gt;saveDataPoint(</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>),</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>                );</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>                <span class="comment">// Put the data saver into post-launch mode</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>                dataSaver-&gt;launchDetected(launchDetector-&gt;getLaunchedTime());</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>                </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>                <span class="comment">// Start the apogee detection system</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                apogeeDetector-&gt;init({alt.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, alt.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>});</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a>:</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="comment">// Do nothing</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                <span class="comment">// Update the vertical velocity estimator</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                verticalVelocityEstimator-&gt;update(accel, alt);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>}</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1aa83ac3ae629ad200c72f4f5536f54e55">STATE_SOFT_ASCENT</a>:</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="comment">/*</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">        * In soft ascent, we are waiting for confirmation of launch from the LaunchDetector.</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">        * If LaunchDetector confirms launch within the confirmation window, we transition to ASCENT.</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">        * If the confirmation window passes without confirmation, we revert to ARMED</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">        * and clear post-launch mode.</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">        */</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            <span class="comment">// Serial.println(&quot;lp update&quot;);</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            lpStatus = launchDetector-&gt;update(accel);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            <span class="comment">// Serial.println(lpStatus);</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="keywordflow">if</span> (launchDetector-&gt;isLaunched()) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                <span class="comment">// Change state to ascent</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                <span class="comment">// Log the state change</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                dataSaver-&gt;saveDataPoint(</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>),</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                );</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                <span class="comment">// Start the apogee detection system</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                apogeeDetector-&gt;init({alt.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, alt.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>});</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="comment">// Update the vertical velocity estimator</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                verticalVelocityEstimator-&gt;update(accel, alt);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a> - fldLaunchTime_ms &gt; fastLaunchDetector-&gt;getConfirmationWindow()) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                <span class="comment">// If the confirmation window has passed without launch detected by LaunchDetector,</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                <span class="comment">// revert to ARMED state</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                fldLaunchTime_ms = 0;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                fastLaunchDetector-&gt;reset();</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                <span class="comment">// Log the state change</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                dataSaver-&gt;saveDataPoint(</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a>),</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                );</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                <span class="comment">// Clear post-launch mode</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                dataSaver-&gt;clearPostLaunchMode();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a>:</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="comment">// Serial.println(&quot;apogee update&quot;);</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="comment">// Update the vertical velocity estimator</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            verticalVelocityEstimator-&gt;update(accel, alt);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            apogeeDetector-&gt;update(verticalVelocityEstimator);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            <span class="keywordflow">if</span> (apogeeDetector-&gt;isApogeeDetected()) {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                state = <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                <span class="comment">// Log the state change</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                dataSaver-&gt;saveDataPoint(</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                    <a class="code hl_class" href="classDataPoint.html">DataPoint</a>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>, <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a>),</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                    <a class="code hl_define" href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                );</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a>:</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            <span class="comment">// Do nothing</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
 </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">   73</a></span>uint8_t <a class="code hl_function" href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">StateMachine::getState</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> state;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">  138</a></span>uint8_t <a class="code hl_function" href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">StateMachine::getState</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordflow">return</span> state;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>}</div>
 </div>
 <div class="ttc" id="aArduinoHAL_8h_html"><div class="ttname"><a href="ArduinoHAL_8h.html">ArduinoHAL.h</a></div></div>
 <div class="ttc" id="aDataNames_8h_html"><div class="ttname"><a href="DataNames_8h.html">DataNames.h</a></div></div>
 <div class="ttc" id="aDataNames_8h_html_a921cc0b96e9153cc7f874bd6a44b6d51"><div class="ttname"><a href="DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51">STATE_CHANGE</a></div><div class="ttdeci">#define STATE_CHANGE</div><div class="ttdef"><b>Definition</b> <a href="DataNames_8h_source.html#l00026">DataNames.h:26</a></div></div>
+<div class="ttc" id="aFastLaunchDetector_8h_html_a6066d5f397476f08676e3947bac1f193af61fc450dcc24099271b2122a47b2615"><div class="ttname"><a href="FastLaunchDetector_8h.html#a6066d5f397476f08676e3947bac1f193af61fc450dcc24099271b2122a47b2615">FLD_DEFAULT_FAIL</a></div><div class="ttdeci">@ FLD_DEFAULT_FAIL</div><div class="ttdef"><b>Definition</b> <a href="FastLaunchDetector_8h_source.html#l00015">FastLaunchDetector.h:15</a></div></div>
 <div class="ttc" id="aLaunchDetector_8h_html_a25d95163b8059ecb03e5f9f95f1f2080a7affdc9e272a68c8732a39cff0422945"><div class="ttname"><a href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a7affdc9e272a68c8732a39cff0422945">LP_DEFAULT_FAIL</a></div><div class="ttdeci">@ LP_DEFAULT_FAIL</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00030">LaunchDetector.h:30</a></div></div>
 <div class="ttc" id="aStateEstimationTypes_8h_html"><div class="ttname"><a href="StateEstimationTypes_8h.html">StateEstimationTypes.h</a></div></div>
 <div class="ttc" id="aStateMachine_8h_html"><div class="ttname"><a href="StateMachine_8h.html">StateMachine.h</a></div></div>
 <div class="ttc" id="aStates_8h_html_a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581"><div class="ttname"><a href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a6ca94efc4194be94537b401579061581">STATE_ARMED</a></div><div class="ttdeci">@ STATE_ARMED</div><div class="ttdef"><b>Definition</b> <a href="States_8h_source.html#l00014">States.h:14</a></div></div>
-<div class="ttc" id="aStates_8h_html_a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca"><div class="ttname"><a href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a></div><div class="ttdeci">@ STATE_ASCENT</div><div class="ttdef"><b>Definition</b> <a href="States_8h_source.html#l00015">States.h:15</a></div></div>
-<div class="ttc" id="aStates_8h_html_a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7"><div class="ttname"><a href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a></div><div class="ttdeci">@ STATE_DESCENT</div><div class="ttdef"><b>Definition</b> <a href="States_8h_source.html#l00018">States.h:18</a></div></div>
+<div class="ttc" id="aStates_8h_html_a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca"><div class="ttname"><a href="States_8h.html#a37637b81dfa46377176213983b8bb1f1a85428a24d11af1afb767a37468b285ca">STATE_ASCENT</a></div><div class="ttdeci">@ STATE_ASCENT</div><div class="ttdef"><b>Definition</b> <a href="States_8h_source.html#l00016">States.h:16</a></div></div>
+<div class="ttc" id="aStates_8h_html_a37637b81dfa46377176213983b8bb1f1aa83ac3ae629ad200c72f4f5536f54e55"><div class="ttname"><a href="States_8h.html#a37637b81dfa46377176213983b8bb1f1aa83ac3ae629ad200c72f4f5536f54e55">STATE_SOFT_ASCENT</a></div><div class="ttdeci">@ STATE_SOFT_ASCENT</div><div class="ttdef"><b>Definition</b> <a href="States_8h_source.html#l00015">States.h:15</a></div></div>
+<div class="ttc" id="aStates_8h_html_a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7"><div class="ttname"><a href="States_8h.html#a37637b81dfa46377176213983b8bb1f1ad201a630da06a12403ee56c31ac73cf7">STATE_DESCENT</a></div><div class="ttdeci">@ STATE_DESCENT</div><div class="ttdef"><b>Definition</b> <a href="States_8h_source.html#l00019">States.h:19</a></div></div>
 <div class="ttc" id="aclassApogeeDetector_html"><div class="ttname"><a href="classApogeeDetector.html">ApogeeDetector</a></div><div class="ttdoc">Detects the apogee (peak altitude) of a rocket flight using estimated altitude and vertical velocity.</div><div class="ttdef"><b>Definition</b> <a href="ApogeeDetector_8h_source.html#l00033">ApogeeDetector.h:33</a></div></div>
 <div class="ttc" id="aclassDataPoint_html"><div class="ttname"><a href="classDataPoint.html">DataPoint</a></div><div class="ttdoc">Timestamped float measurement container.</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00011">DataPoint.h:11</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a22a179660ba6fd06f4a7149d2f80e86e"><div class="ttname"><a href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">DataPoint::data</a></div><div class="ttdeci">float data</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00014">DataPoint.h:14</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a314cf9ac0f59ae12e9a576b4906ae9a2"><div class="ttname"><a href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">DataPoint::timestamp_ms</a></div><div class="ttdeci">uint32_t timestamp_ms</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00013">DataPoint.h:13</a></div></div>
+<div class="ttc" id="aclassFastLaunchDetector_html"><div class="ttname"><a href="classFastLaunchDetector.html">FastLaunchDetector</a></div><div class="ttdef"><b>Definition</b> <a href="FastLaunchDetector_8h_source.html#l00019">FastLaunchDetector.h:20</a></div></div>
 <div class="ttc" id="aclassIDataSaver_html"><div class="ttname"><a href="classIDataSaver.html">IDataSaver</a></div><div class="ttdoc">Abstract interface for persisting timestamped data points.</div><div class="ttdef"><b>Definition</b> <a href="DataSaver_8h_source.html#l00013">DataSaver.h:13</a></div></div>
 <div class="ttc" id="aclassLaunchDetector_html"><div class="ttname"><a href="classLaunchDetector.html">LaunchDetector</a></div><div class="ttdoc">Sliding-window launch detector based on acceleration magnitude.</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00048">LaunchDetector.h:49</a></div></div>
-<div class="ttc" id="aclassStateMachine_html_a09b002e49afbd1f198db2c85055891e5"><div class="ttname"><a href="classStateMachine.html#a09b002e49afbd1f198db2c85055891e5">StateMachine::StateMachine</a></div><div class="ttdeci">StateMachine(IDataSaver *dataSaver, LaunchDetector *launchDetector, ApogeeDetector *apogeeDetector, VerticalVelocityEstimator *verticalVelocityEstimator)</div><div class="ttdoc">Wire dependencies for the state machine.</div><div class="ttdef"><b>Definition</b> <a href="#l00008">StateMachine.cpp:8</a></div></div>
-<div class="ttc" id="aclassStateMachine_html_a41e682913490eaefb10b50cd2e4e2b70"><div class="ttname"><a href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">StateMachine::getState</a></div><div class="ttdeci">uint8_t getState() const override</div><div class="ttdoc">Retrieve the current state value.</div><div class="ttdef"><b>Definition</b> <a href="#l00073">StateMachine.cpp:73</a></div></div>
-<div class="ttc" id="aclassStateMachine_html_a552f60dab35286b089d99e530414a593"><div class="ttname"><a href="classStateMachine.html#a552f60dab35286b089d99e530414a593">StateMachine::update</a></div><div class="ttdeci">int update(const AccelerationTriplet &amp;accel, const DataPoint &amp;alt) override</div><div class="ttdoc">Process new sensor data and transition states if thresholds are met.</div><div class="ttdef"><b>Definition</b> <a href="#l00020">StateMachine.cpp:20</a></div></div>
+<div class="ttc" id="aclassStateMachine_html_a2cd14f5f5d9b076823ff85e221cab15e"><div class="ttname"><a href="classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e">StateMachine::StateMachine</a></div><div class="ttdeci">StateMachine(IDataSaver *dataSaver, LaunchDetector *launchDetector, ApogeeDetector *apogeeDetector, VerticalVelocityEstimator *verticalVelocityEstimator, FastLaunchDetector *fastLaunchDetector)</div><div class="ttdoc">Wire dependencies for the state machine.</div><div class="ttdef"><b>Definition</b> <a href="#l00008">StateMachine.cpp:8</a></div></div>
+<div class="ttc" id="aclassStateMachine_html_a41e682913490eaefb10b50cd2e4e2b70"><div class="ttname"><a href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">StateMachine::getState</a></div><div class="ttdeci">uint8_t getState() const override</div><div class="ttdoc">Retrieve the current state value.</div><div class="ttdef"><b>Definition</b> <a href="#l00138">StateMachine.cpp:138</a></div></div>
+<div class="ttc" id="aclassStateMachine_html_a552f60dab35286b089d99e530414a593"><div class="ttname"><a href="classStateMachine.html#a552f60dab35286b089d99e530414a593">StateMachine::update</a></div><div class="ttdeci">int update(const AccelerationTriplet &amp;accel, const DataPoint &amp;alt) override</div><div class="ttdoc">Process new sensor data and transition states if thresholds are met.</div><div class="ttdef"><b>Definition</b> <a href="#l00022">StateMachine.cpp:22</a></div></div>
 <div class="ttc" id="aclassVerticalVelocityEstimator_html"><div class="ttname"><a href="classVerticalVelocityEstimator.html">VerticalVelocityEstimator</a></div><div class="ttdoc">1D Kalman filter fusing altimeter and accelerometer data.</div><div class="ttdef"><b>Definition</b> <a href="VerticalVelocityEstimator_8h_source.html#l00037">VerticalVelocityEstimator.h:37</a></div></div>
 <div class="ttc" id="astructAccelerationTriplet_html"><div class="ttname"><a href="structAccelerationTriplet.html">AccelerationTriplet</a></div><div class="ttdef"><b>Definition</b> <a href="StateEstimationTypes_8h_source.html#l00006">StateEstimationTypes.h:6</a></div></div>
 <div class="ttc" id="astructAccelerationTriplet_html_adf59c93553a776b9a498d8258c75e2d8"><div class="ttname"><a href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">AccelerationTriplet::x</a></div><div class="ttdeci">DataPoint x</div><div class="ttdef"><b>Definition</b> <a href="StateEstimationTypes_8h_source.html#l00007">StateEstimationTypes.h:7</a></div></div>

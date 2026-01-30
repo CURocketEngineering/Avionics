@@ -1,0 +1,19 @@
+<map id="FastLaunchDetector.h" name="FastLaunchDetector.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="277,5,438,31"/>
+<area shape="rect" id="Node000002" href="$FastLaunchDetector_8cpp.html" title=" " alt="" coords="183,79,359,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="335,41,287,81,283,76,331,37"/>
+<area shape="rect" id="Node000003" href="$StateMachine_8h.html" title=" " alt="" coords="383,79,505,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="383,37,432,76,428,81,380,41"/>
+<area shape="rect" id="Node000004" href="$Serial__Sim_8h.html" title=" " alt="" coords="319,152,422,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="424,116,384,154,381,150,420,112"/>
+<area shape="rect" id="Node000009" href="$StateMachine_8cpp.html" title=" " alt="" coords="447,152,585,177"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="468,112,506,150,502,154,464,116"/>
+<area shape="rect" id="Node000005" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,225,168,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="313,183,133,228,132,223,311,178"/>
+<area shape="rect" id="Node000006" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,225,359,251"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="346,188,293,227,290,223,343,183"/>
+<area shape="rect" id="Node000007" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,225,550,251"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="399,183,453,223,449,227,396,188"/>
+<area shape="rect" id="Node000008" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,225,757,251"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="432,178,618,223,617,228,430,183"/>
+</map>

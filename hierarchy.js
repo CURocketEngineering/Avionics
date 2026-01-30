@@ -17,6 +17,7 @@ var hierarchy =
     [ "CircularArray&lt; T &gt;", "classCircularArray.html", null ],
     [ "CommandLine", "classCommandLine.html", null ],
     [ "DataPoint", "classDataPoint.html", null ],
+    [ "FastLaunchDetector", "classFastLaunchDetector.html", null ],
     [ "File32", "structFile32.html", null ],
     [ "GroundLevelEstimator", "classGroundLevelEstimator.html", null ],
     [ "IDataSaver", "classIDataSaver.html", [

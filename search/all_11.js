@@ -14,7 +14,7 @@ var searchData=
   ['recent_20first_11',['Flight Test History (most recent first)',['../md_docs_2FlightTests.html#autotoc_md36',1,'']]],
   ['record_5ft_12',['Record_t',['../structRecord__t.html',1,'']]],
   ['rejected_20the_2064_20byte_20chunk_20method_13',['&lt;b&gt;Why We Rejected the 64-Byte Chunk Method&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md28',1,'']]],
-  ['reset_14',['reset',['../classLaunchDetector.html#a95dcd28cad213d76923dad7f3fac46d7',1,'LaunchDetector']]],
+  ['reset_14',['reset',['../classFastLaunchDetector.html#a5be144c3b467a3b3cd8232afb5978760',1,'FastLaunchDetector::reset()'],['../classLaunchDetector.html#a95dcd28cad213d76923dad7f3fac46d7',1,'LaunchDetector::reset()']]],
   ['resettimestamp_15',['resetTimestamp',['../classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf',1,'DataSaverSPI']]],
   ['restricted_20flash_20storage_20specifications_16',['Restricted Flash Storage Specifications',['../md_docs_2FlashDataSaving.html',1,'']]],
   ['restrictsavespeed_17',['restrictSaveSpeed',['../classSensorDataHandler.html#aa3d1311af6c98e99432479968121f0c7',1,'SensorDataHandler']]],

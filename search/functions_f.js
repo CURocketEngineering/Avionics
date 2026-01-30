@@ -1,7 +1,29 @@
 var searchData=
 [
-  ['telemetry_0',['Telemetry',['../classTelemetry.html#a1658104b0d310de0bf2559e13af03e46',1,'Telemetry']]],
-  ['tick_1',['tick',['../classTelemetry.html#ad0468fa42f476c8e62a918390bee434d',1,'Telemetry']]],
-  ['transfer_2',['transfer',['../classMockSPIClass.html#a714284f811e117f8f73b1b4bc4dd04f7',1,'MockSPIClass::transfer(uint8_t &amp;)'],['../classMockSPIClass.html#a0599a5732c60e69059c03ed1f9115312',1,'MockSPIClass::transfer(uint8_t *, std::nullptr_t, int)'],['../classMockSPIClass.html#a555ed5b03960654b778db2bec4134ee9',1,'MockSPIClass::transfer(uint8_t *, uint8_t *&amp;, size_t &amp;)'],['../classMockSPIClass.html#a65bacc9262612076076bda0cb1e7e609',1,'MockSPIClass::transfer(const uint8_t *, std::nullptr_t, int)'],['../classMockSPIClass.html#a859d58188f96186234aba828f4ff7e84',1,'MockSPIClass::transfer(uint8_t *, uint8_t, int)'],['../classMockSPIClass.html#a981b331fca666b2980b31c49277e7c42',1,'MockSPIClass::transfer(uint8_t *, uint8_t *, int)'],['../classMockSPIClass.html#a0d40301a8962d877738bac7391c7636e',1,'MockSPIClass::transfer(uint8_t *, uint8_t *, int *)']]],
-  ['transferbytes_3',['transferBytes',['../classMockSPIClass.html#ac293ed2d2188bcf1de218e7867b24abe',1,'MockSPIClass::transferBytes(uint8_t *, uint8_t *, int)'],['../classMockSPIClass.html#aef7493c965a6fd0957e571c03435c9fd',1,'MockSPIClass::transferBytes(uint8_t *, uint8_t *, int *)']]]
+  ['savedatapoint_0',['saveDataPoint',['../classIDataSaver.html#aeb3489281aa9c4f7d545a012ba54a4dd',1,'IDataSaver::saveDataPoint(const DataPoint &amp;dp, uint8_t name)=0'],['../classIDataSaver.html#a7402ab1e9a21b021867fd57fcbc40819',1,'IDataSaver::saveDataPoint(float data, uint32_t timestamp_ms, uint8_t name) final'],['../classDataSaverBigSD.html#af2f8e1142c2704b5c23bac0b6d08fa1f',1,'DataSaverBigSD::saveDataPoint()'],['../classprintSaver.html#add98cb629f7971ae0720de8bb46ce8a4',1,'printSaver::saveDataPoint()'],['../classDataSaverSDSerial.html#a0a79fcd1a8a08bcd61129f881249b6b5',1,'DataSaverSDSerial::saveDataPoint()'],['../classDataSaverSPI.html#a8995d23226f88059a50efe390d5d0208',1,'DataSaverSPI::saveDataPoint()'],['../classDataSaverMock.html#a9a2317170e2c6cf9732d9a9292d67c55',1,'DataSaverMock::saveDataPoint()'],['../classDataSaverSDSerial.html#a7402ab1e9a21b021867fd57fcbc40819',1,'DataSaverSDSerial::saveDataPoint()']]],
+  ['savetimestamp_1',['saveTimestamp',['../classDataSaverSPI.html#ac1959f8a8ee920466914316bed479f7d',1,'DataSaverSPI']]],
+  ['sendablesensordata_2',['SendableSensorData',['../structSendableSensorData.html#a621a3daf04c22b36e68693e89827f493',1,'SendableSensorData']]],
+  ['sensordatahandler_3',['SensorDataHandler',['../classSensorDataHandler.html#a1143bdcd75e2b8ad9324aa340e1e4dca',1,'SensorDataHandler']]],
+  ['serialavailable_4',['serialAvailable',['../classSerialSim.html#ab505f7614b6b9883f5b607af7cedf1b0',1,'SerialSim']]],
+  ['setacceldatarate_5',['setAccelDataRate',['../classAdafruit__LSM6DSOX.html#ab93bb1cfed41512c806012cb602a5919',1,'Adafruit_LSM6DSOX']]],
+  ['setaccelrange_6',['setAccelRange',['../classAdafruit__LSM6DSOX.html#ae2abcca598799608b04336df17ad6347',1,'Adafruit_LSM6DSOX']]],
+  ['setconversiondelay_7',['setConversionDelay',['../classAdafruit__BMP3XX.html#ab5dd3af08ab3b76db17b6b432c335791',1,'Adafruit_BMP3XX']]],
+  ['setdatarate_8',['setDataRate',['../classAdafruit__LIS2MDL.html#acd79b694f521aed5cb8a4c70f843bdfd',1,'Adafruit_LIS2MDL::setDataRate()'],['../classAdafruit__LIS3MDL.html#a5e460d6faee1dc8218eb297fc72c80e0',1,'Adafruit_LIS3MDL::setDataRate()']]],
+  ['setgyrodatarate_9',['setGyroDataRate',['../classAdafruit__LSM6DSOX.html#a9e64de7d1d52b44c6ddbe74c6fd93c63',1,'Adafruit_LSM6DSOX']]],
+  ['setgyrorange_10',['setGyroRange',['../classAdafruit__LSM6DSOX.html#ac003226f3466d9e9dba7b2a47b1478f4',1,'Adafruit_LSM6DSOX']]],
+  ['setiirfiltercoeff_11',['setIIRFilterCoeff',['../classAdafruit__BMP3XX.html#aefb1dfa47022cbd7bb208f4a0fd10e0e',1,'Adafruit_BMP3XX']]],
+  ['setintthreshold_12',['setIntThreshold',['../classAdafruit__LIS3MDL.html#a76d122e8aad45cbb858f1e9efe0f4ae7',1,'Adafruit_LIS3MDL']]],
+  ['setoperationmode_13',['setOperationMode',['../classAdafruit__LIS3MDL.html#aaa306d9e7bba046350b95ba45d72aea3',1,'Adafruit_LIS3MDL']]],
+  ['setoutputdatarate_14',['setOutputDataRate',['../classAdafruit__BMP3XX.html#ae4a202899225660b62f2f6d21956d37b',1,'Adafruit_BMP3XX']]],
+  ['setperformancemode_15',['setPerformanceMode',['../classAdafruit__LIS3MDL.html#af928056f6d02d0292d6c3b5d1c291266',1,'Adafruit_LIS3MDL']]],
+  ['setpressureoversampling_16',['setPressureOversampling',['../classAdafruit__BMP3XX.html#aeab6d0b112e9735c98cb728593c825e3',1,'Adafruit_BMP3XX']]],
+  ['setrange_17',['setRange',['../classAdafruit__LIS3MDL.html#a94c445f0606c6caf30f5a9ab050e1b3d',1,'Adafruit_LIS3MDL']]],
+  ['settemperatureoversampling_18',['setTemperatureOversampling',['../classAdafruit__BMP3XX.html#a1e7ef76c0e09d3222f7fe4e3fdc97f92',1,'Adafruit_BMP3XX']]],
+  ['shouldbesent_19',['shouldBeSent',['../structSendableSensorData.html#a4635b12f1e822b9940bb4d1dfd21c409',1,'SendableSensorData']]],
+  ['size_20',['size',['../classAdafruit__SPIFlash.html#a2c28ba587b333026b138fa214fea5acd',1,'Adafruit_SPIFlash']]],
+  ['spiclass_21',['SPIClass',['../classSPIClass.html#a445bee289720f7aec2ac26465f50b67c',1,'SPIClass::SPIClass(uint32_t &amp;mosi, uint32_t &amp;miso, uint32_t &amp;sclk, uint32_t &amp;ssel)'],['../classSPIClass.html#a50c3dcd98bab69db9d3d0ea1b5f463b2',1,'SPIClass::SPIClass()']]],
+  ['spisettings_22',['SPISettings',['../classSPISettings.html#a1873acec9734fc2702e02b63ae400ed4',1,'SPISettings']]],
+  ['startconversion_23',['startConversion',['../classAdafruit__BMP3XX.html#a1cd01680e97904d3a8c654b1ffbab804',1,'Adafruit_BMP3XX']]],
+  ['statemachine_24',['StateMachine',['../classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e',1,'StateMachine']]],
+  ['sync_25',['sync',['../structFile32.html#a0b52a4b2114c45808cdc400223031394',1,'File32']]]
 ];
