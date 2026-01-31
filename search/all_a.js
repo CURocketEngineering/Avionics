@@ -13,10 +13,12 @@ var searchData=
   ['introduction_10',['Introduction',['../index.html#autotoc_md39',1,'']]],
   ['isalive_11',['isAlive',['../classBatteryVoltage.html#aab9f49c1731aaccd4072b742c8cbea6f',1,'BatteryVoltage']]],
   ['isapogeedetected_12',['isApogeeDetected',['../classApogeeDetector.html#a24d9114579568c88ec78f34c1af3ce34',1,'ApogeeDetector']]],
-  ['isempty_13',['isEmpty',['../classCircularArray.html#a8625d4b75e6fe99ddcaa3542c303880d',1,'CircularArray']]],
-  ['isfull_14',['isFull',['../classCircularArray.html#a339cd803987c742df1f4959b26ec9173',1,'CircularArray']]],
+  ['isempty_13',['isEmpty',['../classCircularArray.html#a42a8c5cfa34dde8b028dc727df9a55ed',1,'CircularArray']]],
+  ['isfull_14',['isFull',['../classCircularArray.html#a791ae8e1f511db549ffee32d0a409959',1,'CircularArray']]],
   ['islaunched_15',['isLaunched',['../classLaunchDetector.html#a99e05cfc01d84f3401d053700e09b7a3',1,'LaunchDetector']]],
-  ['ispostlaunchmode_16',['isPostLaunchMode',['../classDataSaverSPI.html#a9a40d5ff112d1b8c6736ae26b709c4a4',1,'DataSaverSPI']]],
-  ['ispredictionvalid_17',['isPredictionValid',['../classApogeePredictor.html#a45e13691295a8052a023bd032727566f',1,'ApogeePredictor']]],
-  ['it_20works_18',['How it works',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md14',1,'']]]
+  ['ismulti_16',['isMulti',['../structSendableSensorData.html#a4462bf94153fb3ca5e3c05c2e9ff6cc1',1,'SendableSensorData']]],
+  ['ispostlaunchmode_17',['isPostLaunchMode',['../classDataSaverSPI.html#a9a40d5ff112d1b8c6736ae26b709c4a4',1,'DataSaverSPI']]],
+  ['ispredictionvalid_18',['isPredictionValid',['../classApogeePredictor.html#a45e13691295a8052a023bd032727566f',1,'ApogeePredictor']]],
+  ['issingle_19',['isSingle',['../structSendableSensorData.html#a4880c92f8cded3ee485c50940f61fdcc',1,'SendableSensorData']]],
+  ['it_20works_20',['How it works',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md14',1,'']]]
 ];

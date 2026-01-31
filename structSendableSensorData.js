@@ -1,12 +1,15 @@
 var structSendableSensorData =
 [
-    [ "SendableSensorData", "structSendableSensorData.html#a621a3daf04c22b36e68693e89827f493", null ],
-    [ "markWasSent", "structSendableSensorData.html#a52de90c13252dcc11d140fa121085986", null ],
-    [ "shouldBeSent", "structSendableSensorData.html#a4635b12f1e822b9940bb4d1dfd21c409", null ],
-    [ "lastSentTimestamp", "structSendableSensorData.html#a70aed79ce7d278edd53b4bb838ed260f", null ],
-    [ "multiSDH", "structSendableSensorData.html#ab16a95371f92bec7335cabc2211b70b7", null ],
-    [ "multiSDHDataLabel", "structSendableSensorData.html#a8264136aa34982bd7fa1eac614d9b53d", null ],
-    [ "multiSDHLength", "structSendableSensorData.html#a27e46f2ebb579a7c603b9827fde66a89", null ],
-    [ "sendFrequencyHz", "structSendableSensorData.html#af9e82a1707e9f23f7542c5ca2cbc4030", null ],
+    [ "SendableSensorData", "structSendableSensorData.html#aee5daa4aecdeef121330bf85a537511d", null ],
+    [ "SendableSensorData", "structSendableSensorData.html#ad2a2e45049598fb9be6436915f4cf127", null ],
+    [ "isMulti", "structSendableSensorData.html#a4462bf94153fb3ca5e3c05c2e9ff6cc1", null ],
+    [ "isSingle", "structSendableSensorData.html#a4880c92f8cded3ee485c50940f61fdcc", null ],
+    [ "markWasSent", "structSendableSensorData.html#a1f232175d3ec2f4d0f5d642e5c898aa0", null ],
+    [ "shouldBeSent", "structSendableSensorData.html#a7908633b014625a2d0ff7b113e035a60", null ],
+    [ "lastSentTimestamp", "structSendableSensorData.html#a05108f65559a32530572a376cc025314", null ],
+    [ "multiSDH", "structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86", null ],
+    [ "multiSDHDataLabel", "structSendableSensorData.html#a9871063b5ed50407ef3a00b3de773533", null ],
+    [ "multiSDHLength", "structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09", null ],
+    [ "periodMs", "structSendableSensorData.html#a8e3813650ade6606e3973c0bea975005", null ],
     [ "singleSDH", "structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169", null ]
 ];

@@ -94,20 +94,23 @@ $(function(){initNavTree('CircularArray_8h.html','',''); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
+<code>#include &lt;array&gt;</code><br />
+<code>#include &lt;assert.h&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for CircularArray.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="CircularArray_8h__incl.png" border="0" usemap="#aCircularArray_8h" loading="lazy" alt=""/></div>
 <map name="aCircularArray_8h" id="aCircularArray_8h">
-<area shape="rect" title=" " alt="" coords="89,5,207,31"/>
+<area shape="rect" title=" " alt="" coords="128,5,245,31"/>
 <area shape="rect" title=" " alt="" coords="5,79,91,104"/>
-<area shape="poly" title=" " alt="" coords="133,33,77,73,74,68,130,29"/>
-<area shape="rect" title=" " alt="" coords="115,79,181,104"/>
-<area shape="poly" title=" " alt="" coords="151,31,151,65,145,65,145,31"/>
-<area shape="rect" title=" " alt="" coords="206,79,269,104"/>
-<area shape="poly" title=" " alt="" coords="164,29,214,68,210,72,161,33"/>
+<area shape="poly" title=" " alt="" coords="166,33,84,75,82,70,163,28"/>
+<area shape="rect" title=" " alt="" coords="115,79,171,104"/>
+<area shape="poly" title=" " alt="" coords="182,32,159,68,155,66,177,30"/>
+<area shape="rect" title=" " alt="" coords="195,79,269,104"/>
+<area shape="poly" title=" " alt="" coords="196,30,220,66,215,69,192,32"/>
+<area shape="rect" title=" " alt="" coords="293,79,360,104"/>
+<area shape="poly" title=" " alt="" coords="210,28,293,70,291,75,208,33"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -148,7 +151,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <area shape="poly" title=" " alt="" coords="493,185,532,223,528,227,489,189"/>
 <area shape="rect" href="SensorDataHandler_8cpp.html" title=" " alt="" coords="755,152,930,177"/>
 <area shape="poly" title=" " alt="" coords="845,118,845,152,840,152,840,118"/>
-<area shape="rect" href="Telemetry_8h.html" title=" " alt="" coords="954,152,1051,177"/>
+<area shape="rect" href="Telemetry_8h.html" title="Packs SensorDataHandler values into a fixed&#45;size byte packet and streams over a Stream (UART)." alt="" coords="954,152,1051,177"/>
 <area shape="poly" title=" " alt="" coords="882,107,978,149,975,154,880,112"/>
 <area shape="rect" href="Telemetry_8cpp.html" title=" " alt="" coords="947,225,1059,251"/>
 <area shape="poly" title=" " alt="" coords="1005,191,1005,225,1000,225,1000,191"/>
@@ -159,29 +162,33 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:CircularArray_3C_20T_20_3E" id="r_CircularArray_3C_20T_20_3E"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classCircularArray.html">CircularArray&lt; T &gt;</a></td></tr>
+<tr class="memitem:CircularArray_3C_20T_2C_20Capacity_20_3E" id="r_CircularArray_3C_20T_2C_20Capacity_20_3E"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classCircularArray.html">CircularArray&lt; T, Capacity &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed-size circular buffer with median helper and head tracking.  <a href="classCircularArray.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab35f78ca4f5d4bceba7f361fd231bae6" id="r_ab35f78ca4f5d4bceba7f361fd231bae6"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ab35f78ca4f5d4bceba7f361fd231bae6 template"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ab35f78ca4f5d4bceba7f361fd231bae6">partition</a> (std::vector&lt; T &gt; &amp;array, int left, int right, int pivotIndex)</td></tr>
-<tr class="memitem:a7741ceddd68d19dcc62717ce45353e44" id="r_a7741ceddd68d19dcc62717ce45353e44"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a7741ceddd68d19dcc62717ce45353e44 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a7741ceddd68d19dcc62717ce45353e44">quickSelect</a> (std::vector&lt; T &gt; &amp;array, int left, int right, int k)</td></tr>
+<tr class="memitem:adce4396e29b6a3e076185063b646e518" id="r_adce4396e29b6a3e076185063b646e518"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t N&gt; </td></tr>
+<tr class="memitem:adce4396e29b6a3e076185063b646e518 template"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#adce4396e29b6a3e076185063b646e518">partition</a> (std::array&lt; T, N &gt; &amp;array, int left, int right, int pivotIndex)</td></tr>
+<tr class="memitem:a8b13da55799eef1f0f6e040d61856423" id="r_a8b13da55799eef1f0f6e040d61856423"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t N&gt; </td></tr>
+<tr class="memitem:a8b13da55799eef1f0f6e040d61856423 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a8b13da55799eef1f0f6e040d61856423">quickSelect</a> (std::array&lt; T, N &gt; &amp;array, int left, int right, int k)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a7fbb9820f0abc715d9ab249418bd8729" id="r_a7fbb9820f0abc715d9ab249418bd8729"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a7fbb9820f0abc715d9ab249418bd8729">MAX_CIRCULAR_ARRAY_CAPACITY</a> = 255</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="ab35f78ca4f5d4bceba7f361fd231bae6" name="ab35f78ca4f5d4bceba7f361fd231bae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab35f78ca4f5d4bceba7f361fd231bae6">&#9670;&#160;</a></span>partition()</h2>
+<a id="adce4396e29b6a3e076185063b646e518" name="adce4396e29b6a3e076185063b646e518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adce4396e29b6a3e076185063b646e518">&#9670;&#160;</a></span>partition()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t N&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">int partition </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>array</em></span>, </td>
+          <td class="paramtype">std::array&lt; T, N &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>array</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -201,22 +208,22 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00009">9</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00012">12</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
-<a id="a7741ceddd68d19dcc62717ce45353e44" name="a7741ceddd68d19dcc62717ce45353e44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7741ceddd68d19dcc62717ce45353e44">&#9670;&#160;</a></span>quickSelect()</h2>
+<a id="a8b13da55799eef1f0f6e040d61856423" name="a8b13da55799eef1f0f6e040d61856423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b13da55799eef1f0f6e040d61856423">&#9670;&#160;</a></span>quickSelect()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t N&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">T quickSelect </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>array</em></span>, </td>
+          <td class="paramtype">std::array&lt; T, N &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>array</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -236,7 +243,32 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00030">30</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00033">33</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
+<a id="a7fbb9820f0abc715d9ab249418bd8729" name="a7fbb9820f0abc715d9ab249418bd8729"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fbb9820f0abc715d9ab249418bd8729">&#9670;&#160;</a></span>MAX_CIRCULAR_ARRAY_CAPACITY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t MAX_CIRCULAR_ARRAY_CAPACITY = 255</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00009">9</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>

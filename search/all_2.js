@@ -27,7 +27,7 @@ var searchData=
   ['approach_3a_2064_20byte_20chunks_24',['&lt;b&gt;Alternative Approach: 64-Byte Chunks&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md26',1,'']]],
   ['architecture_20overview_25',['Architecture Overview',['../index.html#autotoc_md41',1,'']]],
   ['arduinohal_2eh_26',['ArduinoHAL.h',['../ArduinoHAL_8h.html',1,'']]],
-  ['array_27',['array',['../classCircularArray.html#ad18ec85defb608f66abd5a25ef700ea0',1,'CircularArray']]],
+  ['array_27',['array',['../classCircularArray.html#ae2590066160e5580a03433ee6fdd3197',1,'CircularArray']]],
   ['asciikey_28',['AsciiKey',['../UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5',1,'UARTCommandHandler.h']]],
   ['assertsavedatapointcalledwith_29',['assertSaveDataPointCalledWith',['../classDataSaverMock.html#a0738da16e49b142c8136b8d87ecb77f9',1,'DataSaverMock']]],
   ['available_30',['available',['../classStream.html#a4dcdea71acf9df53627cde6cf909c176',1,'Stream']]],

@@ -1,8 +1,28 @@
 var searchData=
 [
-  ['name_0',['name',['../structRecord__t.html#ad01dd70b6cc65cb55b314a55b96c41cf',1,'Record_t::name'],['../structTimestampRecord__t.html#a5b138fee7422bc446c83a1b82c746ecd',1,'TimestampRecord_t::name'],['../structSerialData.html#ad9984d3e2e3492fb324186a92ca7d332',1,'SerialData::name']]],
-  ['no_20labels_1',['&lt;b&gt;Data Save Rates (No Labels)&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md17',1,'']]],
-  ['noisevariances_2',['NoiseVariances',['../structNoiseVariances.html',1,'']]],
-  ['num_5fpackets_5fsent_3',['NUM_PACKETS_SENT',['../DataNames_8h.html#aa8dc33d1e8137bfaff062c6482867f1e',1,'DataNames.h']]],
-  ['number_20format_4',['Flight-Number Format',['../md_docs_2FlightTests.html#autotoc_md32',1,'']]]
+  ['magnetometer_5fx_0',['MAGNETOMETER_X',['../DataNames_8h.html#a8e3422615959e59d4e736c40c7dcc382',1,'DataNames.h']]],
+  ['magnetometer_5fy_1',['MAGNETOMETER_Y',['../DataNames_8h.html#a83dcfedf207b120a437f5dd3d7aac818',1,'DataNames.h']]],
+  ['magnetometer_5fz_2',['MAGNETOMETER_Z',['../DataNames_8h.html#a5da689928b36356bb0e1dd916535f4ff',1,'DataNames.h']]],
+  ['markwassent_3',['markWasSent',['../structSendableSensorData.html#a1f232175d3ec2f4d0f5d642e5c898aa0',1,'SendableSensorData']]],
+  ['max_5farguments_4',['MAX_ARGUMENTS',['../UARTCommandHandler_8h.html#a49d782a80a129ad0d7aba4a67d0bf5eb',1,'UARTCommandHandler.h']]],
+  ['max_5fcircular_5farray_5fcapacity_5',['MAX_CIRCULAR_ARRAY_CAPACITY',['../CircularArray_8h.html#a7fbb9820f0abc715d9ab249418bd8729',1,'CircularArray.h']]],
+  ['max_5fhistory_6',['MAX_HISTORY',['../UARTCommandHandler_8h.html#ad345f688d0b413d0808a38ef98b71963',1,'UARTCommandHandler.h']]],
+  ['max_5frow_5flength_7',['MAX_ROW_LENGTH',['../UARTCommandHandler_8h.html#a6d3903d7d4d39968ca27f7cb7a616515',1,'UARTCommandHandler.h']]],
+  ['maximum_20storage_20capacity_8',['&lt;b&gt;Maximum Storage Capacity&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md18',1,'']]],
+  ['maxsize_9',['maxSize',['../classCircularArray.html#a42d9a832b09f3976ca3562f930de766b',1,'CircularArray']]],
+  ['median_5facceleration_5fsquared_10',['MEDIAN_ACCELERATION_SQUARED',['../DataNames_8h.html#a68fb5f756defd46579385240f7aa8ede',1,'DataNames.h']]],
+  ['metadata_20layout_11',['&lt;b&gt;Metadata Layout&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md20',1,'']]],
+  ['metadata_20storage_12',['&lt;b&gt;Metadata Storage&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md19',1,'']]],
+  ['metadata_5fstart_5faddress_13',['METADATA_START_ADDRESS',['../DataSaverSPI_8h.html#ae1ef78adf262f9715284600484a6897b',1,'DataSaverSPI.h']]],
+  ['method_14',['&lt;b&gt;Why We Rejected the 64-Byte Chunk Method&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md28',1,'']]],
+  ['milliseconds_5fto_5fseconds_15',['MILLISECONDS_TO_SECONDS',['../VerticalVelocityEstimator_8h.html#a5ecf7bdf749a33cada374356691a52c8',1,'VerticalVelocityEstimator.h']]],
+  ['minimum_5fdelta_5ft_5fs_16',['MINIMUM_DELTA_T_S',['../VerticalVelocityEstimator_8h.html#ad56918ee487c4d8a17f4fcb0a954f0bb',1,'VerticalVelocityEstimator.h']]],
+  ['mockserial_17',['MockSerial',['../classMockSerial.html',1,'']]],
+  ['mockserialclass_18',['MockSerialClass',['../classMockSerialClass.html',1,'']]],
+  ['mockspiclass_19',['MockSPIClass',['../classMockSPIClass.html',1,'MockSPIClass'],['../classMockSPIClass.html#a9b4e3ce1e6b1f3a55d5c5f3ddcc2db59',1,'MockSPIClass::MockSPIClass(uint32_t &amp;, uint32_t &amp;, uint32_t &amp;, uint32_t &amp;)'],['../classMockSPIClass.html#acc06a5590d97a94ded06a95f9ecfc64c',1,'MockSPIClass::MockSPIClass()']]],
+  ['most_20recent_20first_20',['Flight Test History (most recent first)',['../md_docs_2FlightTests.html#autotoc_md36',1,'']]],
+  ['msbfirst_21',['MSBFIRST',['../spi__mock_8h.html#a1c7ef42eff02618bde70868af4944d81',1,'spi_mock.h']]],
+  ['multisdh_22',['multiSDH',['../structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86',1,'SendableSensorData']]],
+  ['multisdhdatalabel_23',['multiSDHDataLabel',['../structSendableSensorData.html#a9871063b5ed50407ef3a00b3de773533',1,'SendableSensorData']]],
+  ['multisdhlength_24',['multiSDHLength',['../structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09',1,'SendableSensorData']]]
 ];

@@ -14,5 +14,6 @@ var LaunchDetector_8h =
       [ "LP_ACL_TOO_LOW", "LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a686daad6b191529dbdc7f02bf27f6572", null ],
       [ "LP_DEFAULT_FAIL", "LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a7affdc9e272a68c8732a39cff0422945", null ]
     ] ],
-    [ "ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL", "LaunchDetector_8h.html#ac8041eaad58801cf73271596584de2ba", null ]
+    [ "ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL", "LaunchDetector_8h.html#ac8041eaad58801cf73271596584de2ba", null ],
+    [ "CIRCULAR_ARRAY_ALLOCATED_SLOTS", "LaunchDetector_8h.html#a010dffbeb29ec5827f49b8857058687b", null ]
 ];

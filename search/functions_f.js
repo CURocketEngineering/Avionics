@@ -2,7 +2,7 @@ var searchData=
 [
   ['savedatapoint_0',['saveDataPoint',['../classIDataSaver.html#aeb3489281aa9c4f7d545a012ba54a4dd',1,'IDataSaver::saveDataPoint(const DataPoint &amp;dp, uint8_t name)=0'],['../classIDataSaver.html#a7402ab1e9a21b021867fd57fcbc40819',1,'IDataSaver::saveDataPoint(float data, uint32_t timestamp_ms, uint8_t name) final'],['../classDataSaverBigSD.html#af2f8e1142c2704b5c23bac0b6d08fa1f',1,'DataSaverBigSD::saveDataPoint()'],['../classprintSaver.html#add98cb629f7971ae0720de8bb46ce8a4',1,'printSaver::saveDataPoint()'],['../classDataSaverSDSerial.html#a0a79fcd1a8a08bcd61129f881249b6b5',1,'DataSaverSDSerial::saveDataPoint()'],['../classDataSaverSPI.html#a8995d23226f88059a50efe390d5d0208',1,'DataSaverSPI::saveDataPoint()'],['../classDataSaverMock.html#a9a2317170e2c6cf9732d9a9292d67c55',1,'DataSaverMock::saveDataPoint()'],['../classDataSaverSDSerial.html#a7402ab1e9a21b021867fd57fcbc40819',1,'DataSaverSDSerial::saveDataPoint()']]],
   ['savetimestamp_1',['saveTimestamp',['../classDataSaverSPI.html#ac1959f8a8ee920466914316bed479f7d',1,'DataSaverSPI']]],
-  ['sendablesensordata_2',['SendableSensorData',['../structSendableSensorData.html#a621a3daf04c22b36e68693e89827f493',1,'SendableSensorData']]],
+  ['sendablesensordata_2',['SendableSensorData',['../structSendableSensorData.html#aee5daa4aecdeef121330bf85a537511d',1,'SendableSensorData::SendableSensorData(SensorDataHandler *sdh, std::uint16_t sendFrequencyHz)'],['../structSendableSensorData.html#ad2a2e45049598fb9be6436915f4cf127',1,'SendableSensorData::SendableSensorData(const std::array&lt; SensorDataHandler *, M &gt; &amp;sdhList, std::uint8_t label, std::uint16_t sendFrequencyHz)']]],
   ['sensordatahandler_3',['SensorDataHandler',['../classSensorDataHandler.html#a1143bdcd75e2b8ad9324aa340e1e4dca',1,'SensorDataHandler']]],
   ['serialavailable_4',['serialAvailable',['../classSerialSim.html#ab505f7614b6b9883f5b607af7cedf1b0',1,'SerialSim']]],
   ['setacceldatarate_5',['setAccelDataRate',['../classAdafruit__LSM6DSOX.html#ab93bb1cfed41512c806012cb602a5919',1,'Adafruit_LSM6DSOX']]],
@@ -19,7 +19,7 @@ var searchData=
   ['setpressureoversampling_16',['setPressureOversampling',['../classAdafruit__BMP3XX.html#aeab6d0b112e9735c98cb728593c825e3',1,'Adafruit_BMP3XX']]],
   ['setrange_17',['setRange',['../classAdafruit__LIS3MDL.html#a94c445f0606c6caf30f5a9ab050e1b3d',1,'Adafruit_LIS3MDL']]],
   ['settemperatureoversampling_18',['setTemperatureOversampling',['../classAdafruit__BMP3XX.html#a1e7ef76c0e09d3222f7fe4e3fdc97f92',1,'Adafruit_BMP3XX']]],
-  ['shouldbesent_19',['shouldBeSent',['../structSendableSensorData.html#a4635b12f1e822b9940bb4d1dfd21c409',1,'SendableSensorData']]],
+  ['shouldbesent_19',['shouldBeSent',['../structSendableSensorData.html#a7908633b014625a2d0ff7b113e035a60',1,'SendableSensorData']]],
   ['size_20',['size',['../classAdafruit__SPIFlash.html#a2c28ba587b333026b138fa214fea5acd',1,'Adafruit_SPIFlash']]],
   ['spiclass_21',['SPIClass',['../classSPIClass.html#a445bee289720f7aec2ac26465f50b67c',1,'SPIClass::SPIClass(uint32_t &amp;mosi, uint32_t &amp;miso, uint32_t &amp;sclk, uint32_t &amp;ssel)'],['../classSPIClass.html#a50c3dcd98bab69db9d3d0ea1b5f463b2',1,'SPIClass::SPIClass()']]],
   ['spisettings_22',['SPISettings',['../classSPISettings.html#a1873acec9734fc2702e02b63ae400ed4',1,'SPISettings']]],

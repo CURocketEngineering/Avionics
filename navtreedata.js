@@ -55,6 +55,14 @@ var NAVTREE =
       ] ],
       [ "Flight Test History (most recent first)", "md_docs_2FlightTests.html#autotoc_md36", null ]
     ] ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Variables", "namespacemembers_vars.html", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -84,8 +92,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Adafruit__SPIFlash__mock_8h.html",
-"classAdafruit__LSM6DSOX.html#a71b41dbde29a149f4061ce2db7e026e9",
-"functions_func_e.html"
+"classAdafruit__LSM6DSOX.html",
+"functions_func_b.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

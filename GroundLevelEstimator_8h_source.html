@@ -96,40 +96,44 @@ $(function(){initNavTree('GroundLevelEstimator_8h_source.html','',''); });
 <a href="GroundLevelEstimator_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef AGL_DETECTOR_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define AGL_DETECTOR_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">TWO RULES - 2 input functions, 1 output:</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">input</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">Update function: current ASL in meters as a DataPoint type</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">Launch Dectcted: Call this when launch has happened (MUST BE SURE)</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"></span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">output</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">GetEGL (estimated ground level), returns a float that represents how many meters above sealevel the rocket was before launch</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classGroundLevelEstimator.html">   15</a></span><span class="keyword">class </span><a class="code hl_function" href="classGroundLevelEstimator.html#a49c13cdd303b837f048ccd9a5b218129">GroundLevelEstimator</a>{</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <a class="code hl_function" href="classGroundLevelEstimator.html#a49c13cdd303b837f048ccd9a5b218129">GroundLevelEstimator</a>();</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keywordtype">float</span> <a class="code hl_function" href="classGroundLevelEstimator.html#ab30984cfe9c9e86b0d6d1df3911ed593">update</a>(<span class="keywordtype">float</span> currentASL_m);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classGroundLevelEstimator.html#a5993686a16bfa41f3e0fc793cf7b798c">launchDetected</a>();</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordtype">float</span> <a class="code hl_function" href="classGroundLevelEstimator.html#a7b289083cfec89b5af524ae7e6db3c17">getEGL</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordtype">bool</span> launched = <span class="keyword">false</span>; <span class="comment">//Turned true if launch is detected</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordtype">float</span> estimatedGroundLevel_m = 0.0F; <span class="comment">//EGL in meters</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        uint32_t sampleCount = 0; <span class="comment">//Number of samples used for ground level estimate</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordtype">float</span> alpha; <span class="comment">//Determines how much weight the most recent number added has on the current EGL</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="GroundLevelEstimator_8h.html#a3f3e01d2a73af32a2a35ab90f0659b25">    5</a></span><span class="preprocessor">#define DEFAULT_GLE_ALPHA 0.1F</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">TWO RULES - 2 input functions, 1 output:</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">input</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">Update function: current ASL in meters as a DataPoint type</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">Launch Dectcted: Call this when launch has happened (MUST BE SURE)</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">output</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">GetEGL (estimated ground level), returns a float that represents how many meters above sealevel the rocket was before launch</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classGroundLevelEstimator.html">   18</a></span><span class="keyword">class </span><a class="code hl_function" href="classGroundLevelEstimator.html#a179f187ff2015292b18f9cf3776fd60e">GroundLevelEstimator</a>{</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        <a class="code hl_function" href="classGroundLevelEstimator.html#a179f187ff2015292b18f9cf3776fd60e">GroundLevelEstimator</a>(<span class="keywordtype">float</span> alpha = <a class="code hl_define" href="GroundLevelEstimator_8h.html#a3f3e01d2a73af32a2a35ab90f0659b25">DEFAULT_GLE_ALPHA</a>);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordtype">float</span> <a class="code hl_function" href="classGroundLevelEstimator.html#ab30984cfe9c9e86b0d6d1df3911ed593">update</a>(<span class="keywordtype">float</span> currentASL_m);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classGroundLevelEstimator.html#a5993686a16bfa41f3e0fc793cf7b798c">launchDetected</a>();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordtype">float</span> <a class="code hl_function" href="classGroundLevelEstimator.html#a7b289083cfec89b5af524ae7e6db3c17">getEGL</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordtype">bool</span> launched = <span class="keyword">false</span>; <span class="comment">// Turned true if launch is detected</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordtype">float</span> estimatedGroundLevel_m = 0.0F; <span class="comment">// EGL in meters</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        uint32_t sampleCount = 0; <span class="comment">// Number of samples used for ground level estimate</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordtype">float</span> alpha; <span class="comment">// Determines how much weight the most recent number added has on the current EGL</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
 </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassGroundLevelEstimator_html_a49c13cdd303b837f048ccd9a5b218129"><div class="ttname"><a href="classGroundLevelEstimator.html#a49c13cdd303b837f048ccd9a5b218129">GroundLevelEstimator::GroundLevelEstimator</a></div><div class="ttdeci">GroundLevelEstimator()</div><div class="ttdoc">Constructs a GroundLevelEstimator.</div><div class="ttdef"><b>Definition</b> <a href="GroundLevelEstimator_8cpp_source.html#l00004">GroundLevelEstimator.cpp:4</a></div></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aGroundLevelEstimator_8h_html_a3f3e01d2a73af32a2a35ab90f0659b25"><div class="ttname"><a href="GroundLevelEstimator_8h.html#a3f3e01d2a73af32a2a35ab90f0659b25">DEFAULT_GLE_ALPHA</a></div><div class="ttdeci">#define DEFAULT_GLE_ALPHA</div><div class="ttdef"><b>Definition</b> <a href="#l00005">GroundLevelEstimator.h:5</a></div></div>
+<div class="ttc" id="aclassGroundLevelEstimator_html_a179f187ff2015292b18f9cf3776fd60e"><div class="ttname"><a href="classGroundLevelEstimator.html#a179f187ff2015292b18f9cf3776fd60e">GroundLevelEstimator::GroundLevelEstimator</a></div><div class="ttdeci">GroundLevelEstimator(float alpha=DEFAULT_GLE_ALPHA)</div><div class="ttdoc">Constructs a GroundLevelEstimator.</div><div class="ttdef"><b>Definition</b> <a href="GroundLevelEstimator_8cpp_source.html#l00004">GroundLevelEstimator.cpp:4</a></div></div>
 <div class="ttc" id="aclassGroundLevelEstimator_html_a5993686a16bfa41f3e0fc793cf7b798c"><div class="ttname"><a href="classGroundLevelEstimator.html#a5993686a16bfa41f3e0fc793cf7b798c">GroundLevelEstimator::launchDetected</a></div><div class="ttdeci">void launchDetected()</div><div class="ttdoc">Signals that launch has been detected.</div><div class="ttdef"><b>Definition</b> <a href="GroundLevelEstimator_8cpp_source.html#l00030">GroundLevelEstimator.cpp:30</a></div></div>
 <div class="ttc" id="aclassGroundLevelEstimator_html_a7b289083cfec89b5af524ae7e6db3c17"><div class="ttname"><a href="classGroundLevelEstimator.html#a7b289083cfec89b5af524ae7e6db3c17">GroundLevelEstimator::getEGL</a></div><div class="ttdeci">float getEGL() const</div><div class="ttdoc">Gets the estimated ground level.</div><div class="ttdef"><b>Definition</b> <a href="GroundLevelEstimator_8cpp_source.html#l00036">GroundLevelEstimator.cpp:36</a></div></div>
 <div class="ttc" id="aclassGroundLevelEstimator_html_ab30984cfe9c9e86b0d6d1df3911ed593"><div class="ttname"><a href="classGroundLevelEstimator.html#ab30984cfe9c9e86b0d6d1df3911ed593">GroundLevelEstimator::update</a></div><div class="ttdeci">float update(float currentASL_m)</div><div class="ttdoc">Updates the ground level estimate or converts ASL to AGL.</div><div class="ttdef"><b>Definition</b> <a href="GroundLevelEstimator_8cpp_source.html#l00009">GroundLevelEstimator.cpp:9</a></div></div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.16.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Avionics: CircularArray&lt; T &gt; Class Template Reference</title>
+<title>Avionics: CircularArray&lt; T, Capacity &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,7 +90,7 @@ $(function(){initNavTree('classCircularArray.html','','classCircularArray-member
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">CircularArray&lt; T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">CircularArray&lt; T, Capacity &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -99,57 +99,57 @@ $(function(){initNavTree('classCircularArray.html','','classCircularArray-member
 
 <p><code>#include &lt;<a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for CircularArray&lt; T &gt;:</div>
+Collaboration diagram for CircularArray&lt; T, Capacity &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classCircularArray__coll__graph.png" border="0" usemap="#aCircularArray_3_01T_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
-<map name="aCircularArray_3_01T_01_4_coll__map" id="aCircularArray_3_01T_01_4_coll__map">
-<area shape="rect" title="Fixed&#45;size circular buffer with median helper and head tracking." alt="" coords="5,5,143,331"/>
+<div class="center"><img src="classCircularArray__coll__graph.png" border="0" usemap="#aCircularArray_3_01T_00_01Capacity_01_4_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<map name="aCircularArray_3_01T_00_01Capacity_01_4_coll__map" id="aCircularArray_3_01T_00_01Capacity_01_4_coll__map">
+<area shape="rect" title="Fixed&#45;size circular buffer with median helper and head tracking." alt="" coords="5,5,208,331"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a621d9040f7235afbe642199df4ed63f7" id="r_a621d9040f7235afbe642199df4ed63f7"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a621d9040f7235afbe642199df4ed63f7">CircularArray</a> (uint8_t <a class="el" href="#aab5c48fde382d81e276589350e384e20">maxSize</a>)</td></tr>
-<tr class="memitem:a6d66f9c768d17d87a32725cff47898ae" id="r_a6d66f9c768d17d87a32725cff47898ae"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a6d66f9c768d17d87a32725cff47898ae">~CircularArray</a> ()</td></tr>
-<tr class="memitem:a53decf5e99aeedbd00ecce66f329dd23" id="r_a53decf5e99aeedbd00ecce66f329dd23"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a53decf5e99aeedbd00ecce66f329dd23">push</a> (T data)</td></tr>
-<tr class="memitem:aea40ba3505ed6209812a7097aebbf663" id="r_aea40ba3505ed6209812a7097aebbf663"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#aea40ba3505ed6209812a7097aebbf663">pop</a> ()</td></tr>
-<tr class="memitem:a7211dfdbc56750d6291e345b56f7d390" id="r_a7211dfdbc56750d6291e345b56f7d390"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a7211dfdbc56750d6291e345b56f7d390">getFromHead</a> (uint8_t index)</td></tr>
-<tr class="memitem:a339cd803987c742df1f4959b26ec9173" id="r_a339cd803987c742df1f4959b26ec9173"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a339cd803987c742df1f4959b26ec9173">isFull</a> ()</td></tr>
-<tr class="memitem:a8625d4b75e6fe99ddcaa3542c303880d" id="r_a8625d4b75e6fe99ddcaa3542c303880d"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a8625d4b75e6fe99ddcaa3542c303880d">isEmpty</a> ()</td></tr>
-<tr class="memitem:a6449fe7ca44a08605dc962c3e284837c" id="r_a6449fe7ca44a08605dc962c3e284837c"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a6449fe7ca44a08605dc962c3e284837c">getHead</a> ()</td></tr>
-<tr class="memitem:ac937e73545efa43a3b06176541806c73" id="r_ac937e73545efa43a3b06176541806c73"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#ac937e73545efa43a3b06176541806c73">getMaxSize</a> ()</td></tr>
-<tr class="memitem:aa7c1379f6a19909fd5666337ea154d7b" id="r_aa7c1379f6a19909fd5666337ea154d7b"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#aa7c1379f6a19909fd5666337ea154d7b">getMedian</a> ()</td></tr>
-<tr class="memitem:a0bae18aebd97fc59c9e4b8e42ed71ebe" id="r_a0bae18aebd97fc59c9e4b8e42ed71ebe"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a0bae18aebd97fc59c9e4b8e42ed71ebe">clear</a> ()</td></tr>
+<tr class="memitem:ae8a54cd0d4eeea4e7d69c73109678af3" id="r_ae8a54cd0d4eeea4e7d69c73109678af3"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae8a54cd0d4eeea4e7d69c73109678af3">CircularArray</a> (uint8_t <a class="el" href="#a42d9a832b09f3976ca3562f930de766b">maxSize</a>=Capacity)</td></tr>
+<tr class="memitem:a9e3c0151668d5ce6ef35feb67cf868c4" id="r_a9e3c0151668d5ce6ef35feb67cf868c4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9e3c0151668d5ce6ef35feb67cf868c4">push</a> (T data)</td></tr>
+<tr class="memitem:a210f905fdd5e0a5cba9cee0ce0dc750a" id="r_a210f905fdd5e0a5cba9cee0ce0dc750a"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a210f905fdd5e0a5cba9cee0ce0dc750a">pop</a> ()</td></tr>
+<tr class="memitem:a64b1995e7f05272c6fa99c5cc0bb8053" id="r_a64b1995e7f05272c6fa99c5cc0bb8053"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a64b1995e7f05272c6fa99c5cc0bb8053">getFromHead</a> (uint8_t index)</td></tr>
+<tr class="memitem:a791ae8e1f511db549ffee32d0a409959" id="r_a791ae8e1f511db549ffee32d0a409959"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a791ae8e1f511db549ffee32d0a409959">isFull</a> ()</td></tr>
+<tr class="memitem:a42a8c5cfa34dde8b028dc727df9a55ed" id="r_a42a8c5cfa34dde8b028dc727df9a55ed"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a42a8c5cfa34dde8b028dc727df9a55ed">isEmpty</a> ()</td></tr>
+<tr class="memitem:a16f15465464f780fab766a873564798d" id="r_a16f15465464f780fab766a873564798d"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a16f15465464f780fab766a873564798d">getHead</a> ()</td></tr>
+<tr class="memitem:a62ddb673285acc7c652eb4c87d3e9d7a" id="r_a62ddb673285acc7c652eb4c87d3e9d7a"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a62ddb673285acc7c652eb4c87d3e9d7a">getMaxSize</a> ()</td></tr>
+<tr class="memitem:a547abf5144cc090b646c80fc37af0765" id="r_a547abf5144cc090b646c80fc37af0765"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a547abf5144cc090b646c80fc37af0765">getMedian</a> ()</td></tr>
+<tr class="memitem:a68c4de6050f1462e92df759176692dbd" id="r_a68c4de6050f1462e92df759176692dbd"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a68c4de6050f1462e92df759176692dbd">clear</a> ()</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-attribs" class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:ad18ec85defb608f66abd5a25ef700ea0" id="r_ad18ec85defb608f66abd5a25ef700ea0"><td class="memItemLeft">std::vector&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ad18ec85defb608f66abd5a25ef700ea0">array</a></td></tr>
-<tr class="memitem:a895725091cf5e78f3747cb5bd15dff92" id="r_a895725091cf5e78f3747cb5bd15dff92"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a895725091cf5e78f3747cb5bd15dff92">head</a></td></tr>
-<tr class="memitem:aab5c48fde382d81e276589350e384e20" id="r_aab5c48fde382d81e276589350e384e20"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#aab5c48fde382d81e276589350e384e20">maxSize</a></td></tr>
-<tr class="memitem:a6f8700ff576c7f2c032467b4ecdcec3b" id="r_a6f8700ff576c7f2c032467b4ecdcec3b"><td class="memItemLeft">uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a6f8700ff576c7f2c032467b4ecdcec3b">pushCount</a></td></tr>
+<tr class="memitem:ae2590066160e5580a03433ee6fdd3197" id="r_ae2590066160e5580a03433ee6fdd3197"><td class="memItemLeft">std::array&lt; T, Capacity &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ae2590066160e5580a03433ee6fdd3197">array</a></td></tr>
+<tr class="memitem:a854b843396338acd9d10c7269fc2cc09" id="r_a854b843396338acd9d10c7269fc2cc09"><td class="memItemLeft">std::array&lt; T, Capacity &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a854b843396338acd9d10c7269fc2cc09">scratchArray</a></td></tr>
+<tr class="memitem:a42d9a832b09f3976ca3562f930de766b" id="r_a42d9a832b09f3976ca3562f930de766b"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a42d9a832b09f3976ca3562f930de766b">maxSize</a></td></tr>
+<tr class="memitem:a5e257517cbc2a9289755c5c6aac8726b" id="r_a5e257517cbc2a9289755c5c6aac8726b"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a5e257517cbc2a9289755c5c6aac8726b">head</a></td></tr>
+<tr class="memitem:a7569f23e20f4c788a6ba575df300fff2" id="r_a7569f23e20f4c788a6ba575df300fff2"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a7569f23e20f4c788a6ba575df300fff2">currentSize</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />
-class CircularArray&lt; T &gt;</div><p>Fixed-size circular buffer with median helper and head tracking. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, std::size_t Capacity&gt;<br />
+class CircularArray&lt; T, Capacity &gt;</div><p>Fixed-size circular buffer with median helper and head tracking. </p>
 <dl class="section note"><dt>Note</dt><dd>When to use: maintain a rolling window of recent samples for filters or detectors without reallocations. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00052">52</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00055">55</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a621d9040f7235afbe642199df4ed63f7" name="a621d9040f7235afbe642199df4ed63f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a621d9040f7235afbe642199df4ed63f7">&#9670;&#160;</a></span>CircularArray()</h2>
+<a id="ae8a54cd0d4eeea4e7d69c73109678af3" name="ae8a54cd0d4eeea4e7d69c73109678af3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8a54cd0d4eeea4e7d69c73109678af3">&#9670;&#160;</a></span>CircularArray()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t Capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::CircularArray </td>
+          <td class="memname"><a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::CircularArray </td>
           <td>(</td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>maxSize</em></span></td><td>)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>maxSize</em></span><span class="paramdefsep"> = </span><span class="paramdefval">Capacity</span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -160,53 +160,24 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00060">60</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="a6d66f9c768d17d87a32725cff47898ae" name="a6d66f9c768d17d87a32725cff47898ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d66f9c768d17d87a32725cff47898ae">&#9670;&#160;</a></span>~CircularArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::~<a class="el" href="classCircularArray.html">CircularArray</a> </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00067">67</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00064">64</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a0bae18aebd97fc59c9e4b8e42ed71ebe" name="a0bae18aebd97fc59c9e4b8e42ed71ebe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bae18aebd97fc59c9e4b8e42ed71ebe">&#9670;&#160;</a></span>clear()</h2>
+<a id="a68c4de6050f1462e92df759176692dbd" name="a68c4de6050f1462e92df759176692dbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68c4de6050f1462e92df759176692dbd">&#9670;&#160;</a></span>clear()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t Capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::clear </td>
+          <td class="memname">void <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::clear </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -219,170 +190,25 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00130">130</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00134">134</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
-<a id="a7211dfdbc56750d6291e345b56f7d390" name="a7211dfdbc56750d6291e345b56f7d390"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7211dfdbc56750d6291e345b56f7d390">&#9670;&#160;</a></span>getFromHead()</h2>
+<a id="a64b1995e7f05272c6fa99c5cc0bb8053" name="a64b1995e7f05272c6fa99c5cc0bb8053"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64b1995e7f05272c6fa99c5cc0bb8053">&#9670;&#160;</a></span>getFromHead()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t Capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::getFromHead </td>
+          <td class="memname">T <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::getFromHead </td>
           <td>(</td>
           <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>index</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00090">90</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="a6449fe7ca44a08605dc962c3e284837c" name="a6449fe7ca44a08605dc962c3e284837c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6449fe7ca44a08605dc962c3e284837c">&#9670;&#160;</a></span>getHead()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::getHead </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00103">103</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="ac937e73545efa43a3b06176541806c73" name="ac937e73545efa43a3b06176541806c73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac937e73545efa43a3b06176541806c73">&#9670;&#160;</a></span>getMaxSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::getMaxSize </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00107">107</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="aa7c1379f6a19909fd5666337ea154d7b" name="aa7c1379f6a19909fd5666337ea154d7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7c1379f6a19909fd5666337ea154d7b">&#9670;&#160;</a></span>getMedian()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::getMedian </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00111">111</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="a8625d4b75e6fe99ddcaa3542c303880d" name="a8625d4b75e6fe99ddcaa3542c303880d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8625d4b75e6fe99ddcaa3542c303880d">&#9670;&#160;</a></span>isEmpty()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::isEmpty </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00099">99</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="a339cd803987c742df1f4959b26ec9173" name="a339cd803987c742df1f4959b26ec9173"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a339cd803987c742df1f4959b26ec9173">&#9670;&#160;</a></span>isFull()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::isFull </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -397,19 +223,19 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="aea40ba3505ed6209812a7097aebbf663" name="aea40ba3505ed6209812a7097aebbf663"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea40ba3505ed6209812a7097aebbf663">&#9670;&#160;</a></span>pop()</h2>
+<a id="a16f15465464f780fab766a873564798d" name="a16f15465464f780fab766a873564798d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16f15465464f780fab766a873564798d">&#9670;&#160;</a></span>getHead()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t Capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::pop </td>
+          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::getHead </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -422,23 +248,168 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00079">79</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00108">108</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
-<a id="a53decf5e99aeedbd00ecce66f329dd23" name="a53decf5e99aeedbd00ecce66f329dd23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53decf5e99aeedbd00ecce66f329dd23">&#9670;&#160;</a></span>push()</h2>
+<a id="a62ddb673285acc7c652eb4c87d3e9d7a" name="a62ddb673285acc7c652eb4c87d3e9d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62ddb673285acc7c652eb4c87d3e9d7a">&#9670;&#160;</a></span>getMaxSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t Capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::push </td>
+          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::getMaxSize </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00112">112</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a547abf5144cc090b646c80fc37af0765" name="a547abf5144cc090b646c80fc37af0765"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a547abf5144cc090b646c80fc37af0765">&#9670;&#160;</a></span>getMedian()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::getMedian </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00116">116</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a42a8c5cfa34dde8b028dc727df9a55ed" name="a42a8c5cfa34dde8b028dc727df9a55ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42a8c5cfa34dde8b028dc727df9a55ed">&#9670;&#160;</a></span>isEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::isEmpty </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00104">104</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a791ae8e1f511db549ffee32d0a409959" name="a791ae8e1f511db549ffee32d0a409959"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a791ae8e1f511db549ffee32d0a409959">&#9670;&#160;</a></span>isFull()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::isFull </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00100">100</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a210f905fdd5e0a5cba9cee0ce0dc750a" name="a210f905fdd5e0a5cba9cee0ce0dc750a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a210f905fdd5e0a5cba9cee0ce0dc750a">&#9670;&#160;</a></span>pop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::pop </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00084">84</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a9e3c0151668d5ce6ef35feb67cf868c4" name="a9e3c0151668d5ce6ef35feb67cf868c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e3c0151668d5ce6ef35feb67cf868c4">&#9670;&#160;</a></span>push()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::push </td>
           <td>(</td>
           <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
           <td></td>
@@ -451,102 +422,24 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00071">71</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00072">72</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="ad18ec85defb608f66abd5a25ef700ea0" name="ad18ec85defb608f66abd5a25ef700ea0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad18ec85defb608f66abd5a25ef700ea0">&#9670;&#160;</a></span>array</h2>
+<a id="ae2590066160e5580a03433ee6fdd3197" name="ae2590066160e5580a03433ee6fdd3197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2590066160e5580a03433ee6fdd3197">&#9670;&#160;</a></span>array</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T&gt; </div>
+template&lt;typename T, std::size_t Capacity&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;T&gt; <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::array</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00054">54</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="a895725091cf5e78f3747cb5bd15dff92" name="a895725091cf5e78f3747cb5bd15dff92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a895725091cf5e78f3747cb5bd15dff92">&#9670;&#160;</a></span>head</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::head</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00055">55</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="aab5c48fde382d81e276589350e384e20" name="aab5c48fde382d81e276589350e384e20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab5c48fde382d81e276589350e384e20">&#9670;&#160;</a></span>maxSize</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::maxSize</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00056">56</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
-
-</div>
-</div>
-<a id="a6f8700ff576c7f2c032467b4ecdcec3b" name="a6f8700ff576c7f2c032467b4ecdcec3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f8700ff576c7f2c032467b4ecdcec3b">&#9670;&#160;</a></span>pushCount</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T &gt;::pushCount</td>
+          <td class="memname">std::array&lt;T, Capacity&gt; <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::array</td>
         </tr>
       </table>
   </td>
@@ -557,6 +450,110 @@ template&lt;typename T&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00057">57</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a7569f23e20f4c788a6ba575df300fff2" name="a7569f23e20f4c788a6ba575df300fff2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7569f23e20f4c788a6ba575df300fff2">&#9670;&#160;</a></span>currentSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::currentSize</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00061">61</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a5e257517cbc2a9289755c5c6aac8726b" name="a5e257517cbc2a9289755c5c6aac8726b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e257517cbc2a9289755c5c6aac8726b">&#9670;&#160;</a></span>head</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::head</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00060">60</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a42d9a832b09f3976ca3562f930de766b" name="a42d9a832b09f3976ca3562f930de766b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42d9a832b09f3976ca3562f930de766b">&#9670;&#160;</a></span>maxSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::maxSize</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00059">59</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+
+</div>
+</div>
+<a id="a854b843396338acd9d10c7269fc2cc09" name="a854b843396338acd9d10c7269fc2cc09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a854b843396338acd9d10c7269fc2cc09">&#9670;&#160;</a></span>scratchArray</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, std::size_t Capacity&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;T, Capacity&gt; <a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::scratchArray</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00058">58</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>

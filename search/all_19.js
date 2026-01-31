@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['z_0',['z',['../structAccelerationTriplet.html#a7babcf4dd3730f051f7152ffefa1606b',1,'AccelerationTriplet']]]
+  ['y_0',['y',['../structAccelerationTriplet.html#a7d0c0be6aeb1067835d9a15652b49257',1,'AccelerationTriplet']]]
 ];

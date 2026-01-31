@@ -118,6 +118,7 @@ Files</h2></td></tr>
 <tr class="memitem:DataSaverSPI_2Eh" id="r_DataSaverSPI_2Eh"><td class="memItemLeft"><a href="DataSaverSPI_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="DataSaverSPI_8h.html">DataSaverSPI.h</a></td></tr>
 <tr class="memitem:SensorDataHandler_2Eh" id="r_SensorDataHandler_2Eh"><td class="memItemLeft"><a href="SensorDataHandler_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="SensorDataHandler_8h.html">SensorDataHandler.h</a></td></tr>
 <tr class="memitem:Telemetry_2Eh" id="r_Telemetry_2Eh"><td class="memItemLeft"><a href="Telemetry_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight"><a class="el" href="Telemetry_8h.html">Telemetry.h</a></td></tr>
+<tr class="memdesc:Telemetry_8h"><td class="mdescLeft">&#160;</td><td class="mdescRight">Packs <a class="el" href="classSensorDataHandler.html" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate.">SensorDataHandler</a> values into a fixed-size byte packet and streams over a <a class="el" href="classStream.html">Stream</a> (UART). <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><h1 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
@@ -135,7 +136,7 @@ Files</h1>
 <li><span class="tt"><a class="el" href="DataSaverSDSerial_8h.html">DataSaverSDSerial.h</a></span>: Streams CSV-formatted samples over UART to an external serial data logger.</li>
 <li><span class="tt"><a class="el" href="DataSaverSPI_8h.html">DataSaverSPI.h</a></span>: SPI flash logger with timestamp compression, post-launch write protection, and dump/erase utilities. Use this to write to an onboard flash chip with very little storage space. This is the most space-efficient data saver we have, but it is also the most complex to use.</li>
 <li><span class="tt"><a class="el" href="SensorDataHandler_8h.html">SensorDataHandler.h</a></span>: Buffers sensor samples, enforces minimum save intervals, and forwards data to an <span class="tt"><a class="el" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points.">IDataSaver</a></span>.</li>
-<li><span class="tt"><a class="el" href="Telemetry_8h.html">Telemetry.h</a></span>: Builds fixed-size packets from <span class="tt"><a class="el" href="classSensorDataHandler.html" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate.">SensorDataHandler</a></span> streams and transmits them over UART at set frequencies. </li>
+<li><span class="tt"><a class="el" href="Telemetry_8h.html" title="Packs SensorDataHandler values into a fixed-size byte packet and streams over a Stream (UART).">Telemetry.h</a></span>: Builds fixed-size packets from <span class="tt"><a class="el" href="classSensorDataHandler.html" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate.">SensorDataHandler</a></span> streams and transmits them over UART at set frequencies. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->

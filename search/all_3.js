@@ -26,5 +26,6 @@ var searchData=
   ['byte5_20data_20breakdown_20per_20256_20byte_20page_23',['&lt;b&gt;Byte5 Data Breakdown (Per 256-Byte Page)&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md24',1,'']]],
   ['byte5_20data_20format_24',['&lt;b&gt;Byte5 Data Format&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md23',1,'']]],
   ['byte5_20format_25',['&lt;b&gt;Data Save Rates (Byte5 Format)&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md25',1,'']]],
-  ['bytes_5fper_5fmb_26',['BYTES_PER_MB',['../DataSaverBigSD_8h.html#acc553e9a226eb57b490ffa32ace48445',1,'DataSaverBigSD.h']]]
+  ['bytes_5fper_5fmb_26',['BYTES_PER_MB',['../DataSaverBigSD_8h.html#acc553e9a226eb57b490ffa32ace48445',1,'DataSaverBigSD.h']]],
+  ['bytesneededforssd_27',['bytesNeededForSSD',['../Telemetry_8cpp.html#ab862f1ba28fb569d482086bf4d77326f',1,'Telemetry.cpp']]]
 ];

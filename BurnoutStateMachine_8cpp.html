@@ -96,74 +96,75 @@ $(function(){initNavTree('BurnoutStateMachine_8cpp.html','',''); });
 <div class="textblock"><code>#include &quot;<a class="el" href="ArduinoHAL_8h_source.html">ArduinoHAL.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DataNames_8h_source.html">data_handling/DataNames.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DataPoint_8h_source.html">data_handling/DataPoint.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="StateEstimationTypes_8h_source.html">state_estimation/StateEstimationTypes.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="BurnoutStateMachine_8h_source.html">state_estimation/BurnoutStateMachine.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="StateEstimationTypes_8h_source.html">state_estimation/StateEstimationTypes.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BurnoutStateMachine.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="BurnoutStateMachine_8cpp__incl.png" border="0" usemap="#aBurnoutStateMachine_8cpp" loading="lazy" alt=""/></div>
 <map name="aBurnoutStateMachine_8cpp" id="aBurnoutStateMachine_8cpp">
-<area shape="rect" title=" " alt="" coords="723,5,913,31"/>
-<area shape="rect" href="ArduinoHAL_8h.html" title=" " alt="" coords="393,86,504,111"/>
-<area shape="poly" title=" " alt="" coords="765,33,516,86,515,81,764,28"/>
-<area shape="rect" href="DataNames_8h.html" title=" " alt="" coords="573,86,780,111"/>
-<area shape="poly" title=" " alt="" coords="798,33,711,82,708,77,796,29"/>
-<area shape="rect" href="DataPoint_8h.html" title=" " alt="" coords="1097,431,1291,456"/>
-<area shape="poly" title=" " alt="" coords="913,16,1119,21,1241,30,1362,44,1473,65,1522,79,1564,94,1600,113,1627,134,1644,158,1650,185,1650,276,1651,336,1644,360,1624,385,1601,399,1570,411,1489,428,1395,438,1305,443,1305,438,1395,433,1488,423,1568,406,1599,394,1620,381,1639,358,1646,335,1645,276,1645,186,1639,160,1623,137,1597,117,1562,99,1520,84,1472,70,1361,49,1241,35,1119,27,913,21"/>
-<area shape="rect" href="StateEstimationTypes_8h.html" title=" " alt="" coords="697,343,937,383"/>
-<area shape="poly" title=" " alt="" coords="821,31,819,329,814,329,815,31"/>
-<area shape="rect" href="BurnoutStateMachine_8h.html" title=" " alt="" coords="946,79,1133,119"/>
-<area shape="poly" title=" " alt="" coords="851,28,974,72,972,77,849,33"/>
-<area shape="rect" title=" " alt="" coords="407,174,491,199"/>
-<area shape="poly" title=" " alt="" coords="451,112,451,160,446,160,446,112"/>
-<area shape="rect" title=" " alt="" coords="515,174,569,199"/>
-<area shape="poly" title=" " alt="" coords="463,110,521,162,517,166,459,113"/>
-<area shape="rect" title=" " alt="" coords="594,174,730,199"/>
-<area shape="poly" title=" " alt="" coords="478,109,621,166,620,171,476,114"/>
-<area shape="rect" title=" " alt="" coords="5,174,153,199"/>
-<area shape="poly" title=" " alt="" coords="400,114,142,174,141,168,399,109"/>
-<area shape="rect" title=" " alt="" coords="178,174,247,199"/>
-<area shape="poly" title=" " alt="" coords="416,114,260,169,255,171,253,166,258,164,414,109"/>
-<area shape="rect" title=" " alt="" coords="272,174,383,199"/>
-<area shape="poly" title=" " alt="" coords="434,114,357,168,354,163,431,109"/>
-<area shape="rect" title=" " alt="" coords="1342,504,1409,529"/>
-<area shape="poly" title=" " alt="" coords="1224,454,1334,496,1332,501,1222,459"/>
-<area shape="poly" title=" " alt="" coords="908,380,1126,425,1125,430,907,385"/>
-<area shape="poly" title=" " alt="" coords="1025,120,1009,142,998,167,995,187,998,206,1008,260,1019,302,1037,340,1071,381,1103,406,1140,423,1137,428,1100,410,1067,385,1033,342,1014,304,1003,261,993,207,989,187,993,166,1005,139,1020,117"/>
-<area shape="poly" title=" " alt="" coords="1011,121,982,143,953,169,917,210,885,254,836,332,832,329,881,251,913,207,949,165,979,138,1008,117"/>
-<area shape="rect" href="DataSaver_8h.html" title=" " alt="" coords="1413,350,1610,375"/>
-<area shape="poly" title=" " alt="" coords="1133,103,1254,112,1386,125,1496,143,1534,153,1555,165,1567,185,1573,208,1573,232,1568,256,1551,302,1530,339,1525,337,1546,300,1563,255,1568,232,1568,209,1563,187,1551,169,1532,158,1495,148,1385,131,1254,117,1133,108"/>
-<area shape="rect" href="ApogeeDetector_8h.html" title=" " alt="" coords="1288,174,1540,199"/>
-<area shape="poly" title=" " alt="" coords="1122,116,1351,168,1350,174,1121,121"/>
-<area shape="rect" href="LaunchDetector_8h.html" title=" " alt="" coords="532,262,781,287"/>
-<area shape="poly" title=" " alt="" coords="979,121,917,143,851,169,761,215,688,257,685,253,758,210,849,164,915,138,977,116"/>
-<area shape="rect" href="States_8h.html" title=" " alt="" coords="1058,262,1247,287"/>
-<area shape="poly" title=" " alt="" coords="1134,109,1184,129,1206,145,1224,165,1230,177,1231,190,1222,215,1203,237,1182,256,1179,252,1200,234,1217,212,1226,189,1225,179,1220,168,1202,149,1181,134,1132,114"/>
-<area shape="rect" href="BaseStateMachine_8h.html" title=" " alt="" coords="1007,167,1210,207"/>
-<area shape="poly" title=" " alt="" coords="1057,117,1087,154,1083,157,1053,121"/>
-<area shape="poly" title=" " alt="" coords="1466,378,1254,430,1253,425,1465,373"/>
-<area shape="poly" title=" " alt="" coords="1503,377,1397,495,1393,492,1499,374"/>
-<area shape="poly" title=" " alt="" coords="1393,202,1356,224,1311,255,1266,296,1228,344,1211,382,1201,418,1196,416,1206,380,1224,341,1262,292,1308,251,1353,219,1390,197"/>
-<area shape="poly" title=" " alt="" coords="1447,197,1512,225,1548,245,1581,267,1609,293,1628,321,1635,351,1632,368,1624,384,1605,410,1582,432,1529,468,1473,493,1423,508,1421,503,1471,488,1527,463,1579,428,1601,406,1620,381,1627,366,1629,351,1623,323,1605,296,1578,271,1545,249,1509,230,1445,202"/>
-<area shape="rect" href="VerticalVelocityEstimator_8h.html" title=" " alt="" coords="1323,255,1508,295"/>
-<area shape="poly" title=" " alt="" coords="1417,199,1417,240,1412,241,1412,200"/>
-<area shape="poly" title=" " alt="" coords="1359,297,1315,317,1272,345,1236,382,1210,420,1205,417,1232,379,1268,341,1312,313,1357,292"/>
-<area shape="poly" title=" " alt="" coords="1413,296,1403,343,1381,491,1376,490,1398,342,1408,295"/>
-<area shape="poly" title=" " alt="" coords="1323,292,951,345,950,340,1322,287"/>
-<area shape="rect" title=" " alt="" coords="1282,350,1338,375"/>
-<area shape="poly" title=" " alt="" coords="1394,297,1337,343,1333,339,1390,293"/>
-<area shape="poly" title=" " alt="" coords="659,287,662,334,671,359,686,381,705,389,740,398,842,413,1083,433,1083,438,842,418,739,403,704,394,683,385,666,362,657,335,653,288"/>
-<area shape="poly" title=" " alt="" coords="679,285,771,334,768,338,677,290"/>
-<area shape="rect" href="CircularArray_8h.html" title=" " alt="" coords="409,350,622,375"/>
-<area shape="poly" title=" " alt="" coords="639,290,547,345,545,341,636,285"/>
-<area shape="poly" title=" " alt="" coords="580,373,1329,504,1328,510,580,378"/>
-<area shape="rect" title=" " alt="" coords="423,431,509,456"/>
-<area shape="poly" title=" " alt="" coords="510,377,483,420,478,418,506,374"/>
-<area shape="rect" title=" " alt="" coords="533,431,596,456"/>
-<area shape="poly" title=" " alt="" coords="525,374,552,418,548,420,520,377"/>
-<area shape="poly" title=" " alt="" coords="1085,209,1064,230,1048,256,1044,275,1048,294,1072,334,1102,369,1135,398,1165,421,1162,425,1132,403,1098,373,1067,337,1044,296,1038,275,1044,254,1060,227,1081,205"/>
-<area shape="poly" title=" " alt="" coords="1078,209,861,338,859,333,1076,205"/>
-<area shape="poly" title=" " alt="" coords="1121,206,1143,248,1138,251,1116,208"/>
+<area shape="rect" title=" " alt="" coords="672,5,861,31"/>
+<area shape="rect" href="ArduinoHAL_8h.html" title=" " alt="" coords="299,86,410,111"/>
+<area shape="poly" title=" " alt="" coords="707,33,424,87,423,82,706,28"/>
+<area shape="rect" href="DataNames_8h.html" title=" " alt="" coords="522,86,729,111"/>
+<area shape="poly" title=" " alt="" coords="747,33,660,82,657,77,745,29"/>
+<area shape="rect" href="DataPoint_8h.html" title=" " alt="" coords="993,431,1188,456"/>
+<area shape="poly" title=" " alt="" coords="771,30,786,93,818,189,842,241,872,293,908,340,951,381,993,406,1036,424,1034,429,990,411,948,385,904,344,867,296,837,244,813,191,781,94,766,31"/>
+<area shape="rect" href="BurnoutStateMachine_8h.html" title=" " alt="" coords="1020,79,1207,119"/>
+<area shape="poly" title=" " alt="" coords="818,28,1018,73,1017,78,816,33"/>
+<area shape="rect" href="StateEstimationTypes_8h.html" title=" " alt="" coords="1412,343,1652,383"/>
+<area shape="poly" title=" " alt="" coords="862,25,1019,43,1203,72,1292,91,1372,112,1438,137,1486,165,1507,185,1520,204,1536,254,1538,274,1536,295,1535,329,1530,329,1531,295,1532,274,1531,255,1515,206,1503,188,1482,169,1436,142,1370,117,1291,96,1202,77,1018,48,861,30"/>
+<area shape="rect" title=" " alt="" coords="313,174,397,199"/>
+<area shape="poly" title=" " alt="" coords="357,112,357,160,352,160,352,112"/>
+<area shape="rect" title=" " alt="" coords="421,174,569,199"/>
+<area shape="poly" title=" " alt="" coords="375,109,465,164,463,169,372,114"/>
+<area shape="rect" title=" " alt="" coords="593,174,729,199"/>
+<area shape="poly" title=" " alt="" coords="397,109,608,168,606,173,395,114"/>
+<area shape="rect" title=" " alt="" coords="5,174,75,199"/>
+<area shape="poly" title=" " alt="" coords="300,114,201,137,87,169,81,171,79,166,86,164,199,132,299,109"/>
+<area shape="rect" title=" " alt="" coords="99,174,210,199"/>
+<area shape="poly" title=" " alt="" coords="329,114,195,171,193,166,327,109"/>
+<area shape="rect" title=" " alt="" coords="234,174,289,199"/>
+<area shape="poly" title=" " alt="" coords="344,113,286,166,282,162,340,110"/>
+<area shape="rect" title=" " alt="" coords="1057,504,1124,529"/>
+<area shape="poly" title=" " alt="" coords="1093,456,1093,490,1088,490,1088,456"/>
+<area shape="poly" title=" " alt="" coords="1020,106,985,113,951,126,920,143,895,168,885,186,880,204,879,222,882,240,898,277,925,313,958,346,995,376,1061,421,1058,426,992,380,955,350,921,316,893,280,877,242,873,222,874,203,880,184,891,165,917,139,949,121,984,108,1019,101"/>
+<area shape="rect" href="DataSaver_8h.html" title=" " alt="" coords="557,350,755,375"/>
+<area shape="poly" title=" " alt="" coords="1020,114,935,134,892,149,851,169,794,209,744,256,703,302,674,340,670,337,699,299,741,252,791,205,848,164,889,144,933,129,1019,108"/>
+<area shape="rect" href="ApogeeDetector_8h.html" title=" " alt="" coords="906,174,1158,199"/>
+<area shape="poly" title=" " alt="" coords="1097,121,1054,166,1051,162,1093,117"/>
+<area shape="poly" title=" " alt="" coords="1207,108,1345,130,1407,146,1449,164,1469,181,1485,200,1508,244,1523,289,1531,328,1526,330,1518,291,1503,246,1480,203,1465,184,1447,169,1405,151,1344,135,1206,113"/>
+<area shape="rect" href="BaseStateMachine_8h.html" title=" " alt="" coords="1233,167,1436,207"/>
+<area shape="poly" title=" " alt="" coords="1163,116,1275,159,1273,164,1161,121"/>
+<area shape="rect" href="States_8h.html" title=" " alt="" coords="1007,262,1196,287"/>
+<area shape="poly" title=" " alt="" coords="1138,117,1158,139,1173,166,1178,187,1173,208,1155,235,1133,256,1129,252,1151,231,1168,206,1173,187,1168,168,1154,142,1134,121"/>
+<area shape="rect" href="LaunchDetector_8h.html" title=" " alt="" coords="1633,262,1882,287"/>
+<area shape="poly" title=" " alt="" coords="1207,101,1286,108,1376,120,1472,138,1565,164,1613,183,1659,207,1732,252,1729,256,1656,212,1610,188,1563,169,1470,143,1375,125,1285,114,1207,107"/>
+<area shape="poly" title=" " alt="" coords="720,373,1014,426,1013,431,719,378"/>
+<area shape="poly" title=" " alt="" coords="678,373,752,412,850,453,953,484,1044,504,1043,509,952,489,848,459,750,416,675,378"/>
+<area shape="poly" title=" " alt="" coords="1025,201,1010,225,997,255,994,275,997,294,1012,330,1032,365,1073,419,1069,422,1027,368,1007,333,992,295,988,275,992,254,1005,223,1021,198"/>
+<area shape="poly" title=" " alt="" coords="1023,201,1005,225,989,256,970,312,959,359,958,381,962,403,970,428,984,455,995,470,1010,482,1045,500,1043,505,1007,487,992,473,979,457,965,430,956,405,953,381,954,358,965,310,984,254,1000,222,1019,198"/>
+<area shape="rect" href="VerticalVelocityEstimator_8h.html" title=" " alt="" coords="1271,255,1457,295"/>
+<area shape="poly" title=" " alt="" coords="1077,197,1279,249,1278,254,1076,202"/>
+<area shape="poly" title=" " alt="" coords="1348,297,1303,340,1243,385,1193,410,1144,429,1142,424,1191,405,1240,380,1299,336,1345,293"/>
+<area shape="poly" title=" " alt="" coords="1355,296,1326,338,1289,384,1248,425,1201,458,1128,500,1126,496,1199,454,1244,420,1285,381,1322,335,1350,293"/>
+<area shape="rect" title=" " alt="" coords="1484,431,1540,456"/>
+<area shape="poly" title=" " alt="" coords="1369,294,1379,337,1388,360,1402,381,1435,408,1472,427,1470,431,1432,413,1398,384,1384,363,1374,339,1364,296"/>
+<area shape="poly" title=" " alt="" coords="1402,292,1484,334,1482,339,1400,297"/>
+<area shape="poly" title=" " alt="" coords="1427,385,1169,431,1168,426,1426,380"/>
+<area shape="poly" title=" " alt="" coords="1314,209,1262,257,1176,347,1111,422,1107,418,1172,344,1258,253,1310,205"/>
+<area shape="poly" title=" " alt="" coords="1391,204,1432,225,1471,253,1501,290,1522,329,1517,331,1497,293,1467,257,1429,229,1388,209"/>
+<area shape="poly" title=" " alt="" coords="1284,209,1146,260,1144,255,1283,204"/>
+<area shape="poly" title=" " alt="" coords="1753,289,1721,337,1696,364,1665,385,1628,399,1580,411,1458,428,1324,438,1202,443,1202,437,1323,432,1457,422,1579,405,1627,394,1663,380,1692,360,1717,334,1749,286"/>
+<area shape="poly" title=" " alt="" coords="1728,290,1596,340,1594,335,1726,285"/>
+<area shape="rect" href="CircularArray_8h.html" title=" " alt="" coords="1727,350,1940,375"/>
+<area shape="poly" title=" " alt="" coords="1770,286,1815,337,1811,341,1766,289"/>
+<area shape="poly" title=" " alt="" coords="1843,375,1857,415,1857,438,1847,458,1832,468,1808,476,1737,490,1642,500,1533,507,1309,516,1138,518,1138,513,1309,510,1533,502,1642,495,1736,484,1807,471,1830,463,1843,454,1852,436,1851,415,1838,377"/>
+<area shape="poly" title=" " alt="" coords="1787,378,1554,435,1553,429,1786,373"/>
+<area shape="rect" title=" " alt="" coords="1649,431,1735,456"/>
+<area shape="poly" title=" " alt="" coords="1814,378,1726,426,1724,422,1811,373"/>
+<area shape="rect" title=" " alt="" coords="1759,431,1833,456"/>
+<area shape="poly" title=" " alt="" coords="1830,377,1810,419,1805,417,1825,374"/>
 </map>
 </div>
 </div>
@@ -188,7 +189,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BurnoutStateMachine_8cpp_source.html#l00011">11</a> of file <a class="el" href="BurnoutStateMachine_8cpp_source.html">BurnoutStateMachine.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BurnoutStateMachine_8cpp_source.html#l00012">12</a> of file <a class="el" href="BurnoutStateMachine_8cpp_source.html">BurnoutStateMachine.cpp</a>.</p>
 
 </div>
 </div>
@@ -212,7 +213,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BurnoutStateMachine_8cpp_source.html#l00008">8</a> of file <a class="el" href="BurnoutStateMachine_8cpp_source.html">BurnoutStateMachine.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BurnoutStateMachine_8cpp_source.html#l00009">9</a> of file <a class="el" href="BurnoutStateMachine_8cpp_source.html">BurnoutStateMachine.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,7 +229,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="BurnoutStateMachine_8cpp_source.html#l00010">10</a> of file <a class="el" href="BurnoutStateMachine_8cpp_source.html">BurnoutStateMachine.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BurnoutStateMachine_8cpp_source.html#l00011">11</a> of file <a class="el" href="BurnoutStateMachine_8cpp_source.html">BurnoutStateMachine.cpp</a>.</p>
 
 </div>
 </div>

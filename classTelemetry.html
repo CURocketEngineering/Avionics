@@ -94,7 +94,7 @@ $(function(){initNavTree('classTelemetry.html','','classTelemetry-members'); });
 </div><!--header-->
 <div class="contents">
 
-<p>Packages sensor data into fixed-size packets and streams over UART.  
+<p>Packetizes telemetry streams and sends them out over a <a class="el" href="classStream.html">Stream</a>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>&gt;</code></p>
@@ -103,38 +103,45 @@ Collaboration diagram for Telemetry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTelemetry__coll__graph.png" border="0" usemap="#aTelemetry_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aTelemetry_coll__map" id="aTelemetry_coll__map">
-<area shape="rect" title="Packages sensor data into fixed&#45;size packets and streams over UART." alt="" coords="5,5,109,91"/>
+<area shape="rect" title="Packetizes telemetry streams and sends them out over a Stream." alt="" coords="5,5,109,91"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1658104b0d310de0bf2559e13af03e46" id="r_a1658104b0d310de0bf2559e13af03e46"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a1658104b0d310de0bf2559e13af03e46">Telemetry</a> (<a class="el" href="structSendableSensorData.html">SendableSensorData</a> *ssdArray[], int ssdArrayLength, <a class="el" href="classStream.html">Stream</a> &amp;rfdSerialConnection)</td></tr>
-<tr class="memdesc:a1658104b0d310de0bf2559e13af03e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize this object.  <br /></td></tr>
-<tr class="memitem:ad0468fa42f476c8e62a918390bee434d" id="r_ad0468fa42f476c8e62a918390bee434d"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ad0468fa42f476c8e62a918390bee434d">tick</a> (uint32_t currentTime)</td></tr>
-<tr class="memdesc:ad0468fa42f476c8e62a918390bee434d"><td class="mdescLeft">&#160;</td><td class="mdescRight">No argument tick function that handles sending data at specified send frequencies.  <br /></td></tr>
+<tr class="memitem:ac393a0bf389feebadc2b780d1d8a3d77" id="r_ac393a0bf389feebadc2b780d1d8a3d77"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:ac393a0bf389feebadc2b780d1d8a3d77 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac393a0bf389feebadc2b780d1d8a3d77">Telemetry</a> (const std::array&lt; <a class="el" href="structSendableSensorData.html">SendableSensorData</a> *, N &gt; &amp;streams, <a class="el" href="classStream.html">Stream</a> &amp;rfdSerialConnection)</td></tr>
+<tr class="memdesc:ac393a0bf389feebadc2b780d1d8a3d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct from std::array (convenient and compile-time sized). The std::array must outlive the <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> instance.  <br /></td></tr>
+<tr class="memitem:a81066a9695efb4fd2a316a1699eb9c28" id="r_a81066a9695efb4fd2a316a1699eb9c28"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a81066a9695efb4fd2a316a1699eb9c28">tick</a> (std::uint32_t currentTimeMs)</td></tr>
+<tr class="memdesc:a81066a9695efb4fd2a316a1699eb9c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call every loop to send due telemetry streams.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Packages sensor data into fixed-size packets and streams over UART. </p>
-<dl class="section note"><dt>Note</dt><dd>When to use: periodic downlink of key channels during flight; call <a class="el" href="#ad0468fa42f476c8e62a918390bee434d" title="No argument tick function that handles sending data at specified send frequencies.">tick()</a> every loop to honor per-stream send rates. </dd></dl>
+<div class="textblock"><p>Packetizes telemetry streams and sends them out over a <a class="el" href="classStream.html">Stream</a>. </p>
+<p>Usage pattern:</p><ul>
+<li>Construct <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> with a stable list of <a class="el" href="structSendableSensorData.html" title="Declares one telemetry &quot;stream&quot; to include in packets.">SendableSensorData</a> pointers.</li>
+<li>Call tick(currentTimeMs) every loop.</li>
+</ul>
+<p>Lifetime rule:</p><ul>
+<li><a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> stores a pointer to the provided list of streams (non-owning). The list must outlive <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a>. </li>
+</ul>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00063">63</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00191">191</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1658104b0d310de0bf2559e13af03e46" name="a1658104b0d310de0bf2559e13af03e46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1658104b0d310de0bf2559e13af03e46">&#9670;&#160;</a></span>Telemetry()</h2>
+<a id="ac393a0bf389feebadc2b780d1d8a3d77" name="ac393a0bf389feebadc2b780d1d8a3d77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac393a0bf389feebadc2b780d1d8a3d77">&#9670;&#160;</a></span>Telemetry()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Telemetry::Telemetry </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSendableSensorData.html">SendableSensorData</a> *</td>          <td class="paramname"><span class="paramname"><em>ssdArray</em></span>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>ssdArrayLength</em></span>, </td>
+          <td class="paramtype">const std::array&lt; <a class="el" href="structSendableSensorData.html">SendableSensorData</a> *, N &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>streams</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -142,26 +149,22 @@ Public Member Functions</h2></td></tr>
           <td class="paramtype"><a class="el" href="classStream.html">Stream</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rfdSerialConnection</em></span>&#160;)</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Initialize this object. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ssdArray</td><td>Array of pointers to <a class="el" href="structSendableSensorData.html" title="Bundles one or more SensorDataHandler pointers for telemetry packing.">SendableSensorData</a>. </td></tr>
-    <tr><td class="paramname">ssdArrayLength</td><td>Number of entries in ssdArray. </td></tr>
-    <tr><td class="paramname">rfdSerialConnection</td><td><a class="el" href="classStream.html">Stream</a> connected to the radio/modem. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>When to use: instantiate once during setup with the telemetry layout you need for the current flight profile. </dd></dl>
+<p>Construct from std::array (convenient and compile-time sized). The std::array must outlive the <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> instance. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00005">5</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00199">199</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="ad0468fa42f476c8e62a918390bee434d" name="ad0468fa42f476c8e62a918390bee434d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0468fa42f476c8e62a918390bee434d">&#9670;&#160;</a></span>tick()</h2>
+<a id="a81066a9695efb4fd2a316a1699eb9c28" name="a81066a9695efb4fd2a316a1699eb9c28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81066a9695efb4fd2a316a1699eb9c28">&#9670;&#160;</a></span>tick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -169,17 +172,22 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool Telemetry::tick </td>
           <td>(</td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>currentTime</em></span></td><td>)</td>
+          <td class="paramtype">std::uint32_t</td>          <td class="paramname"><span class="paramname"><em>currentTimeMs</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>No argument tick function that handles sending data at specified send frequencies. </p>
-<dl class="section attention"><dt>Attention</dt><dd>MUST BE RUN EVERY LOOP </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>true if a packet was sent after calling this function. </dd></dl>
+<p>Call every loop to send due telemetry streams. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">currentTimeMs</td><td>Current time in milliseconds. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if a packet was sent on this tick. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00066">66</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00077">77</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
 
 </div>
 </div>

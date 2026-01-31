@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_0',['x',['../structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8',1,'AccelerationTriplet']]]
+  ['writecalls_0',['writeCalls',['../classStream.html#a1c8cea0b8d6bbf5b5ada171c3e8c9987',1,'Stream']]]
 ];

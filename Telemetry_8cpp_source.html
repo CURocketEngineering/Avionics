@@ -97,111 +97,158 @@ $(function(){initNavTree('Telemetry_8cpp_source.html','',''); });
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="ArduinoHAL_8h.html">ArduinoHAL.h</a>&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="foldopen" id="foldopen00005" data-start="{" data-end="}">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classTelemetry.html#a1658104b0d310de0bf2559e13af03e46">    5</a></span><a class="code hl_function" href="classTelemetry.html#a1658104b0d310de0bf2559e13af03e46">Telemetry::Telemetry</a>(<a class="code hl_struct" href="structSendableSensorData.html">SendableSensorData</a>* ssdArray[], <span class="keywordtype">int</span> ssdArrayLength, <a class="code hl_class" href="classStream.html">Stream</a> &amp;rfdSerialConnection)</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    : rfdSerialConnection(rfdSerialConnection)</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    this-&gt;ssdArray = ssdArray;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    this-&gt;ssdArrayLength = ssdArrayLength;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="comment">//TODO: it would be nice if we could throw an error at compile time</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="comment">//if a user&#39;s desired max packet size as specified from what they put in</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="comment">//ssdArray is larger than this value.</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">// Helpers for checking if the packet has room for more data</span></div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="Telemetry_8cpp.html#ab862f1ba28fb569d482086bf4d77326f">    6</a></span>std::size_t <a class="code hl_function" href="Telemetry_8cpp.html#ab862f1ba28fb569d482086bf4d77326f">bytesNeededForSSD</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structSendableSensorData.html">SendableSensorData</a>* ssd) {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="comment">// Each SSD writes 1 label byte (name/label) plus 4 bytes per float value.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_function" href="structSendableSensorData.html#a4880c92f8cded3ee485c50940f61fdcc">isSingle</a>()) {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>        <span class="keywordflow">return</span> 1U + <a class="code hl_variable" href="namespaceTelemetryFmt.html#ade0be7291d2d3e9509211964c19ed2a6">TelemetryFmt::kBytesIn32Bit</a>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    }</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_function" href="structSendableSensorData.html#a4462bf94153fb3ca5e3c05c2e9ff6cc1">isMulti</a>()) {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        <span class="comment">// label + N floats</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>        <span class="keywordflow">return</span> 1U + (<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09">multiSDHLength</a>) * <a class="code hl_variable" href="namespaceTelemetryFmt.html#ade0be7291d2d3e9509211964c19ed2a6">TelemetryFmt::kBytesIn32Bit</a>);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">return</span> 0U;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
 </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">void</span> Telemetry::preparePacket(uint32_t timestamp) {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    this-&gt;packet[0] = 0;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    this-&gt;packet[1] = 0;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    this-&gt;packet[2] = 0;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    this-&gt;packet[3] = <a class="code hl_define" href="Telemetry_8h.html#a30d2043ca397843e08c43ade3aaee5b2">START_BYTE</a>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    this-&gt;packet[4] = (timestamp &gt;&gt; 24) &amp; 0xFF;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    this-&gt;packet[5] = (timestamp &gt;&gt; 16) &amp; 0xFF;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    this-&gt;packet[6] = (timestamp &gt;&gt; 8) &amp; 0xFF;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    this-&gt;packet[7] = timestamp &amp; 0xFF;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    nextEmptyPacketIndex = 8;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keywordtype">void</span> Telemetry::addSingleSDHToPacket(<a class="code hl_class" href="classSensorDataHandler.html">SensorDataHandler</a>* sdh) {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">float</span> floatData = sdh-&gt;<a class="code hl_function" href="classSensorDataHandler.html#a66376d969a784c22e84e61e371ca1816">getLastDataPointSaved</a>().<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>; </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    uint32_t data;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    memcpy(&amp;data, &amp;floatData, <span class="keyword">sizeof</span>(data));</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 3; i &gt; -1; i--) {</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        this-&gt;packet[nextEmptyPacketIndex+(3-i)] = (data &gt;&gt; (i*8)) &amp; 0xFF;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    nextEmptyPacketIndex += 4;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>}</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keywordtype">void</span> Telemetry::addSSDToPacket(<a class="code hl_struct" href="structSendableSensorData.html">SendableSensorData</a>* ssd) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">singleSDH</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        this-&gt;packet[nextEmptyPacketIndex] = ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">singleSDH</a>-&gt;<a class="code hl_function" href="classSensorDataHandler.html#a7f561759d83a6c6c360e4a8d6dc1a123">getName</a>();</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        nextEmptyPacketIndex += 1;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        this-&gt;addSingleSDHToPacket(ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">singleSDH</a>);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#ab16a95371f92bec7335cabc2211b70b7">multiSDH</a> != <span class="keyword">nullptr</span>) {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        this-&gt;packet[nextEmptyPacketIndex] = ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a8264136aa34982bd7fa1eac614d9b53d">multiSDHDataLabel</a>;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        nextEmptyPacketIndex += 1;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a27e46f2ebb579a7c603b9827fde66a89">multiSDHLength</a>; i++) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            this-&gt;addSingleSDHToPacket(ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#ab16a95371f92bec7335cabc2211b70b7">multiSDH</a>[i]);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keywordtype">void</span> Telemetry::setPacketToZero() {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 120; i++) { <span class="comment">//Completely clear packet</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        this-&gt;packet[i] = 0;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">void</span> Telemetry::addEndMarker() {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    this-&gt;packet[nextEmptyPacketIndex] = 0;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    this-&gt;packet[nextEmptyPacketIndex+1] = 0;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    this-&gt;packet[nextEmptyPacketIndex+2] = 0;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    this-&gt;packet[nextEmptyPacketIndex+3] = <a class="code hl_define" href="Telemetry_8h.html#a5126c1e2dc63cec63fc73710e48a9b5d">END_BYTE</a>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    nextEmptyPacketIndex += 4;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classTelemetry.html#ad0468fa42f476c8e62a918390bee434d">   66</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classTelemetry.html#ad0468fa42f476c8e62a918390bee434d">Telemetry::tick</a>(uint32_t currentTime) {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordtype">bool</span> sendingPacketThisTick = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">int</span> currentPacketIndex = 0;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; this-&gt;ssdArrayLength; i++) {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">if</span> (ssdArray[i]-&gt;shouldBeSent(currentTime)) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            <span class="keywordflow">if</span> (!sendingPacketThisTick) {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                setPacketToZero();</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                preparePacket(currentTime);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                addSSDToPacket(ssdArray[i]);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                sendingPacketThisTick = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                addSSDToPacket(ssdArray[i]);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            ssdArray[i]-&gt;markWasSent(currentTime);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">if</span> (sendingPacketThisTick) {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        addEndMarker();</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; nextEmptyPacketIndex; i++) {</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            this-&gt;rfdSerialConnection.write(this-&gt;packet[i]);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordflow">return</span> sendingPacketThisTick;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>}</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="Telemetry_8cpp.html#a940953a2f68b6c90009f1597da573621">   18</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="Telemetry_8cpp.html#a940953a2f68b6c90009f1597da573621">hasRoom</a>(std::size_t nextIndex, std::size_t bytesToAdd) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">return</span> nextIndex + bytesToAdd &lt;= <a class="code hl_variable" href="namespaceTelemetryFmt.html#a52852cfa20b53926ef83ba0cb61865da">TelemetryFmt::kPacketCapacity</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keywordtype">void</span> Telemetry::preparePacket(std::uint32_t timestamp) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="comment">// This write the header of the packet with sync bytes, start byte, and timestamp.</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="comment">// Only clear what we own in the header (whole-packet clearing happens in setPacketToZero()).</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// Fill sync bytes with 0</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    std::fill_n(&amp;this-&gt;packet[0], <a class="code hl_variable" href="namespaceTelemetryFmt.html#abb7e7b425129ae70337299d22161a4c2">TelemetryFmt::kSyncZeros</a>, <span class="keyword">static_cast&lt;</span>std::uint8_t<span class="keyword">&gt;</span>(0));</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="comment">// Set the start byte after the sync bytes</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    this-&gt;packet[<a class="code hl_variable" href="namespaceTelemetryFmt.html#a22d3f55e65825d8c235819f7bf0616f1">TelemetryFmt::kStartByteIndex</a>] = <a class="code hl_variable" href="namespaceTelemetryFmt.html#a8ad6ca337b45c48d02775817f474a191">TelemetryFmt::kStartByteValue</a>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment">// Write the timestamp in big-endian format</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <a class="code hl_function" href="namespaceTelemetryFmt.html#a9c2aeed16361e4a956cb7cbcabd0da64">TelemetryFmt::write_u32_be</a>(&amp;this-&gt;packet[<a class="code hl_variable" href="namespaceTelemetryFmt.html#af398e9a4c4763876f2c2b3ec3b4e2431">TelemetryFmt::kTimestampIndex</a>], timestamp);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    nextEmptyPacketIndex = <a class="code hl_variable" href="namespaceTelemetryFmt.html#ae02bbf7c006f331122adaa61570916dd">TelemetryFmt::kHeaderBytes</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keywordtype">void</span> Telemetry::addSingleSDHToPacket(<a class="code hl_class" href="classSensorDataHandler.html">SensorDataHandler</a>* sdh) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">float</span> floatData = sdh-&gt;<a class="code hl_function" href="classSensorDataHandler.html#a66376d969a784c22e84e61e371ca1816">getLastDataPointSaved</a>().<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>; </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    uint32_t data = 0;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    memcpy(&amp;data, &amp;floatData, <span class="keyword">sizeof</span>(data)); <span class="comment">// Move float data into an uint32_t for bytewise access</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_function" href="namespaceTelemetryFmt.html#a9c2aeed16361e4a956cb7cbcabd0da64">TelemetryFmt::write_u32_be</a>(&amp;this-&gt;packet[nextEmptyPacketIndex], data);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    nextEmptyPacketIndex += <a class="code hl_variable" href="namespaceTelemetryFmt.html#ade0be7291d2d3e9509211964c19ed2a6">TelemetryFmt::kBytesIn32Bit</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">void</span> Telemetry::addSSDToPacket(<a class="code hl_struct" href="structSendableSensorData.html">SendableSensorData</a>* ssd) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_function" href="structSendableSensorData.html#a4880c92f8cded3ee485c50940f61fdcc">isSingle</a>()) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        this-&gt;packet[nextEmptyPacketIndex] = ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">singleSDH</a>-&gt;<a class="code hl_function" href="classSensorDataHandler.html#a7f561759d83a6c6c360e4a8d6dc1a123">getName</a>();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        nextEmptyPacketIndex += 1;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        this-&gt;addSingleSDHToPacket(ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">singleSDH</a>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_function" href="structSendableSensorData.html#a4462bf94153fb3ca5e3c05c2e9ff6cc1">isMulti</a>()) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        this-&gt;packet[nextEmptyPacketIndex] = ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a9871063b5ed50407ef3a00b3de773533">multiSDHDataLabel</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        nextEmptyPacketIndex += 1;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09">multiSDHLength</a>; i++) { </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="comment">// multiSDHLength comes directly from the array passed in by the client</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="comment">// So, we can ignore this raw pointer indexing warning</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            this-&gt;addSingleSDHToPacket(ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86">multiSDH</a>[i]); <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keywordtype">void</span> Telemetry::setPacketToZero() {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="namespaceTelemetryFmt.html#a52852cfa20b53926ef83ba0cb61865da">TelemetryFmt::kPacketCapacity</a>; i++) { <span class="comment">//Completely clear packet</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        this-&gt;packet[i] = 0;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="keywordtype">void</span> Telemetry::addEndMarker() {</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">// Adds the following 4 bytes to the end of the packet: 0x00 0x00 0x00 (kEndByteValue)</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    std::fill_n(&amp;this-&gt;packet[nextEmptyPacketIndex], <a class="code hl_variable" href="namespaceTelemetryFmt.html#abb7e7b425129ae70337299d22161a4c2">TelemetryFmt::kSyncZeros</a>, <span class="keyword">static_cast&lt;</span>std::uint8_t<span class="keyword">&gt;</span>(0));</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    this-&gt;packet[nextEmptyPacketIndex+<a class="code hl_variable" href="namespaceTelemetryFmt.html#abb7e7b425129ae70337299d22161a4c2">TelemetryFmt::kSyncZeros</a>] = <a class="code hl_variable" href="namespaceTelemetryFmt.html#ae4a351f87c120c47f0eefc8244014dcd">TelemetryFmt::kEndByteValue</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    nextEmptyPacketIndex += <a class="code hl_variable" href="namespaceTelemetryFmt.html#ac237c2ad3d1e9be17c0ecd47271a2107">TelemetryFmt::kEndMarkerBytes</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classTelemetry.html#a81066a9695efb4fd2a316a1699eb9c28">   77</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classTelemetry.html#a81066a9695efb4fd2a316a1699eb9c28">Telemetry::tick</a>(uint32_t currentTime) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">bool</span> sendingPacketThisTick = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; streamCount; i++) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="comment">// i is safe because streamCount comes from the array passed in by the client</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">if</span> (streams[i]-&gt;shouldBeSent(currentTime)) { <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            <span class="keywordflow">if</span> (!sendingPacketThisTick) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                setPacketToZero();</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                preparePacket(currentTime);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                sendingPacketThisTick = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="comment">// Compute how many bytes we need for this stream&#39;s payload.</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keyword">const</span> std::size_t payloadBytes = <a class="code hl_function" href="Telemetry_8cpp.html#ab862f1ba28fb569d482086bf4d77326f">bytesNeededForSSD</a>(streams[i]);  <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keyword">const</span> std::size_t totalBytesIfAdded = payloadBytes + <a class="code hl_variable" href="namespaceTelemetryFmt.html#ac237c2ad3d1e9be17c0ecd47271a2107">TelemetryFmt::kEndMarkerBytes</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="comment">// Only add if it fits (payload + end marker).</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">if</span> (<a class="code hl_function" href="Telemetry_8cpp.html#a940953a2f68b6c90009f1597da573621">hasRoom</a>(nextEmptyPacketIndex, totalBytesIfAdded)) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                addSSDToPacket(streams[i]); <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                streams[i]-&gt;markWasSent(currentTime); <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                <span class="comment">// Not enough room. Skip this stream for now.</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                <span class="comment">// It will be sent on the next tick as long as the packet isn&#39;t filled before reaching it again.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <span class="comment">// If we have too many high-frequency streams, the stream as the end of the list may be starved.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="comment">// Only send if we actually added any payload beyond the header.</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">if</span> (sendingPacketThisTick &amp;&amp; nextEmptyPacketIndex &gt; <a class="code hl_variable" href="namespaceTelemetryFmt.html#ae02bbf7c006f331122adaa61570916dd">TelemetryFmt::kHeaderBytes</a>) {</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="comment">// Ensure end marker itself fits</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="Telemetry_8cpp.html#a940953a2f68b6c90009f1597da573621">hasRoom</a>(nextEmptyPacketIndex, <a class="code hl_variable" href="namespaceTelemetryFmt.html#ac237c2ad3d1e9be17c0ecd47271a2107">TelemetryFmt::kEndMarkerBytes</a>)) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            addEndMarker();</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="comment">// Send used portion</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; nextEmptyPacketIndex; i++) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                rfdSerialConnection.write(packet[i]);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="comment">// If somehow we can&#39;t fit the end marker, drop the packet.</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="comment">// (This shouldn&#39;t happen with the checks above.)</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
 </div>
 <div class="ttc" id="aArduinoHAL_8h_html"><div class="ttname"><a href="ArduinoHAL_8h.html">ArduinoHAL.h</a></div></div>
-<div class="ttc" id="aTelemetry_8h_html"><div class="ttname"><a href="Telemetry_8h.html">Telemetry.h</a></div></div>
-<div class="ttc" id="aTelemetry_8h_html_a30d2043ca397843e08c43ade3aaee5b2"><div class="ttname"><a href="Telemetry_8h.html#a30d2043ca397843e08c43ade3aaee5b2">START_BYTE</a></div><div class="ttdeci">#define START_BYTE</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00011">Telemetry.h:11</a></div></div>
-<div class="ttc" id="aTelemetry_8h_html_a5126c1e2dc63cec63fc73710e48a9b5d"><div class="ttname"><a href="Telemetry_8h.html#a5126c1e2dc63cec63fc73710e48a9b5d">END_BYTE</a></div><div class="ttdeci">#define END_BYTE</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00012">Telemetry.h:12</a></div></div>
+<div class="ttc" id="aTelemetry_8cpp_html_a940953a2f68b6c90009f1597da573621"><div class="ttname"><a href="Telemetry_8cpp.html#a940953a2f68b6c90009f1597da573621">hasRoom</a></div><div class="ttdeci">bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd)</div><div class="ttdef"><b>Definition</b> <a href="#l00018">Telemetry.cpp:18</a></div></div>
+<div class="ttc" id="aTelemetry_8cpp_html_ab862f1ba28fb569d482086bf4d77326f"><div class="ttname"><a href="Telemetry_8cpp.html#ab862f1ba28fb569d482086bf4d77326f">bytesNeededForSSD</a></div><div class="ttdeci">std::size_t bytesNeededForSSD(const SendableSensorData *ssd)</div><div class="ttdef"><b>Definition</b> <a href="#l00006">Telemetry.cpp:6</a></div></div>
+<div class="ttc" id="aTelemetry_8h_html"><div class="ttname"><a href="Telemetry_8h.html">Telemetry.h</a></div><div class="ttdoc">Packs SensorDataHandler values into a fixed-size byte packet and streams over a Stream (UART).</div></div>
 <div class="ttc" id="aclassDataPoint_html_a22a179660ba6fd06f4a7149d2f80e86e"><div class="ttname"><a href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">DataPoint::data</a></div><div class="ttdeci">float data</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00014">DataPoint.h:14</a></div></div>
 <div class="ttc" id="aclassSensorDataHandler_html"><div class="ttname"><a href="classSensorDataHandler.html">SensorDataHandler</a></div><div class="ttdoc">Buffers sensor samples and forwards them to an IDataSaver at a controlled rate.</div><div class="ttdef"><b>Definition</b> <a href="SensorDataHandler_8h_source.html#l00024">SensorDataHandler.h:24</a></div></div>
 <div class="ttc" id="aclassSensorDataHandler_html_a66376d969a784c22e84e61e371ca1816"><div class="ttname"><a href="classSensorDataHandler.html#a66376d969a784c22e84e61e371ca1816">SensorDataHandler::getLastDataPointSaved</a></div><div class="ttdeci">DataPoint getLastDataPointSaved() const</div><div class="ttdef"><b>Definition</b> <a href="SensorDataHandler_8h_source.html#l00053">SensorDataHandler.h:53</a></div></div>
 <div class="ttc" id="aclassSensorDataHandler_html_a7f561759d83a6c6c360e4a8d6dc1a123"><div class="ttname"><a href="classSensorDataHandler.html#a7f561759d83a6c6c360e4a8d6dc1a123">SensorDataHandler::getName</a></div><div class="ttdeci">uint8_t getName() const</div><div class="ttdef"><b>Definition</b> <a href="SensorDataHandler_8h_source.html#l00051">SensorDataHandler.h:51</a></div></div>
-<div class="ttc" id="aclassStream_html"><div class="ttname"><a href="classStream.html">Stream</a></div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00069">serial_mock.h:69</a></div></div>
-<div class="ttc" id="aclassTelemetry_html_a1658104b0d310de0bf2559e13af03e46"><div class="ttname"><a href="classTelemetry.html#a1658104b0d310de0bf2559e13af03e46">Telemetry::Telemetry</a></div><div class="ttdeci">Telemetry(SendableSensorData *ssdArray[], int ssdArrayLength, Stream &amp;rfdSerialConnection)</div><div class="ttdoc">Initialize this object.</div><div class="ttdef"><b>Definition</b> <a href="#l00005">Telemetry.cpp:5</a></div></div>
-<div class="ttc" id="aclassTelemetry_html_ad0468fa42f476c8e62a918390bee434d"><div class="ttname"><a href="classTelemetry.html#ad0468fa42f476c8e62a918390bee434d">Telemetry::tick</a></div><div class="ttdeci">bool tick(uint32_t currentTime)</div><div class="ttdoc">No argument tick function that handles sending data at specified send frequencies.</div><div class="ttdef"><b>Definition</b> <a href="#l00066">Telemetry.cpp:66</a></div></div>
-<div class="ttc" id="astructSendableSensorData_html"><div class="ttname"><a href="structSendableSensorData.html">SendableSensorData</a></div><div class="ttdoc">Bundles one or more SensorDataHandler pointers for telemetry packing.</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00025">Telemetry.h:25</a></div></div>
-<div class="ttc" id="astructSendableSensorData_html_a27e46f2ebb579a7c603b9827fde66a89"><div class="ttname"><a href="structSendableSensorData.html#a27e46f2ebb579a7c603b9827fde66a89">SendableSensorData::multiSDHLength</a></div><div class="ttdeci">int multiSDHLength</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00028">Telemetry.h:28</a></div></div>
-<div class="ttc" id="astructSendableSensorData_html_a8264136aa34982bd7fa1eac614d9b53d"><div class="ttname"><a href="structSendableSensorData.html#a8264136aa34982bd7fa1eac614d9b53d">SendableSensorData::multiSDHDataLabel</a></div><div class="ttdeci">int multiSDHDataLabel</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00029">Telemetry.h:29</a></div></div>
-<div class="ttc" id="astructSendableSensorData_html_ab16a95371f92bec7335cabc2211b70b7"><div class="ttname"><a href="structSendableSensorData.html#ab16a95371f92bec7335cabc2211b70b7">SendableSensorData::multiSDH</a></div><div class="ttdeci">SensorDataHandler ** multiSDH</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00027">Telemetry.h:27</a></div></div>
-<div class="ttc" id="astructSendableSensorData_html_af9e8f1dd7bed77bf0d9da47e4ba04169"><div class="ttname"><a href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">SendableSensorData::singleSDH</a></div><div class="ttdeci">SensorDataHandler * singleSDH</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00026">Telemetry.h:26</a></div></div>
+<div class="ttc" id="aclassTelemetry_html_a81066a9695efb4fd2a316a1699eb9c28"><div class="ttname"><a href="classTelemetry.html#a81066a9695efb4fd2a316a1699eb9c28">Telemetry::tick</a></div><div class="ttdeci">bool tick(std::uint32_t currentTimeMs)</div><div class="ttdoc">Call every loop to send due telemetry streams.</div><div class="ttdef"><b>Definition</b> <a href="#l00077">Telemetry.cpp:77</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_a22d3f55e65825d8c235819f7bf0616f1"><div class="ttname"><a href="namespaceTelemetryFmt.html#a22d3f55e65825d8c235819f7bf0616f1">TelemetryFmt::kStartByteIndex</a></div><div class="ttdeci">constexpr std::size_t kStartByteIndex</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00040">Telemetry.h:40</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_a52852cfa20b53926ef83ba0cb61865da"><div class="ttname"><a href="namespaceTelemetryFmt.html#a52852cfa20b53926ef83ba0cb61865da">TelemetryFmt::kPacketCapacity</a></div><div class="ttdeci">constexpr std::size_t kPacketCapacity</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00031">Telemetry.h:31</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_a8ad6ca337b45c48d02775817f474a191"><div class="ttname"><a href="namespaceTelemetryFmt.html#a8ad6ca337b45c48d02775817f474a191">TelemetryFmt::kStartByteValue</a></div><div class="ttdeci">constexpr std::uint8_t kStartByteValue</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00048">Telemetry.h:48</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_a9c2aeed16361e4a956cb7cbcabd0da64"><div class="ttname"><a href="namespaceTelemetryFmt.html#a9c2aeed16361e4a956cb7cbcabd0da64">TelemetryFmt::write_u32_be</a></div><div class="ttdeci">void write_u32_be(std::uint8_t *dst, std::uint32_t v)</div><div class="ttdoc">Write a 32-bit value in big-endian order to dst[0..3].</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00065">Telemetry.h:65</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_abb7e7b425129ae70337299d22161a4c2"><div class="ttname"><a href="namespaceTelemetryFmt.html#abb7e7b425129ae70337299d22161a4c2">TelemetryFmt::kSyncZeros</a></div><div class="ttdeci">constexpr std::size_t kSyncZeros</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00034">Telemetry.h:34</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_ac237c2ad3d1e9be17c0ecd47271a2107"><div class="ttname"><a href="namespaceTelemetryFmt.html#ac237c2ad3d1e9be17c0ecd47271a2107">TelemetryFmt::kEndMarkerBytes</a></div><div class="ttdeci">constexpr std::size_t kEndMarkerBytes</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00045">Telemetry.h:45</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_ade0be7291d2d3e9509211964c19ed2a6"><div class="ttname"><a href="namespaceTelemetryFmt.html#ade0be7291d2d3e9509211964c19ed2a6">TelemetryFmt::kBytesIn32Bit</a></div><div class="ttdeci">constexpr std::size_t kBytesIn32Bit</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00054">Telemetry.h:54</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_ae02bbf7c006f331122adaa61570916dd"><div class="ttname"><a href="namespaceTelemetryFmt.html#ae02bbf7c006f331122adaa61570916dd">TelemetryFmt::kHeaderBytes</a></div><div class="ttdeci">constexpr std::size_t kHeaderBytes</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00042">Telemetry.h:42</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_ae4a351f87c120c47f0eefc8244014dcd"><div class="ttname"><a href="namespaceTelemetryFmt.html#ae4a351f87c120c47f0eefc8244014dcd">TelemetryFmt::kEndByteValue</a></div><div class="ttdeci">constexpr std::uint8_t kEndByteValue</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00051">Telemetry.h:51</a></div></div>
+<div class="ttc" id="anamespaceTelemetryFmt_html_af398e9a4c4763876f2c2b3ec3b4e2431"><div class="ttname"><a href="namespaceTelemetryFmt.html#af398e9a4c4763876f2c2b3ec3b4e2431">TelemetryFmt::kTimestampIndex</a></div><div class="ttdeci">constexpr std::size_t kTimestampIndex</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00041">Telemetry.h:41</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html"><div class="ttname"><a href="structSendableSensorData.html">SendableSensorData</a></div><div class="ttdoc">Declares one telemetry &quot;stream&quot; to include in packets.</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00104">Telemetry.h:104</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html_a2aeeedfbcd6203fb31a9549a34c7cf09"><div class="ttname"><a href="structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09">SendableSensorData::multiSDHLength</a></div><div class="ttdeci">const std::size_t multiSDHLength</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00116">Telemetry.h:116</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html_a4462bf94153fb3ca5e3c05c2e9ff6cc1"><div class="ttname"><a href="structSendableSensorData.html#a4462bf94153fb3ca5e3c05c2e9ff6cc1">SendableSensorData::isMulti</a></div><div class="ttdeci">bool isMulti() const</div><div class="ttdoc">Convenience: true if configured as a multi SDH stream.</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00177">Telemetry.h:177</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html_a4880c92f8cded3ee485c50940f61fdcc"><div class="ttname"><a href="structSendableSensorData.html#a4880c92f8cded3ee485c50940f61fdcc">SendableSensorData::isSingle</a></div><div class="ttdeci">bool isSingle() const</div><div class="ttdoc">Convenience: true if configured as a single SDH stream.</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00174">Telemetry.h:174</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html_a9871063b5ed50407ef3a00b3de773533"><div class="ttname"><a href="structSendableSensorData.html#a9871063b5ed50407ef3a00b3de773533">SendableSensorData::multiSDHDataLabel</a></div><div class="ttdeci">std::uint8_t multiSDHDataLabel</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00119">Telemetry.h:119</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html_ae72555f9158634f9aa7df58df6da8e86"><div class="ttname"><a href="structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86">SendableSensorData::multiSDH</a></div><div class="ttdeci">SensorDataHandler *const  * multiSDH</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00111">Telemetry.h:111</a></div></div>
+<div class="ttc" id="astructSendableSensorData_html_af9e8f1dd7bed77bf0d9da47e4ba04169"><div class="ttname"><a href="structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169">SendableSensorData::singleSDH</a></div><div class="ttdeci">SensorDataHandler * singleSDH</div><div class="ttdef"><b>Definition</b> <a href="Telemetry_8h_source.html#l00108">Telemetry.h:108</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
