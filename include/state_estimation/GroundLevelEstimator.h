@@ -1,6 +1,9 @@
 #ifndef AGL_DETECTOR_H
 #define AGL_DETECTOR_H
 #include <cstdint>
+
+#define DEFAULT_GLE_ALPHA 0.1F
+
 /*
 TWO RULES - 2 input functions, 1 output:
 
@@ -17,7 +20,7 @@ class GroundLevelEstimator{
         /**
          * @brief Constructs a GroundLevelEstimator.
          */
-        GroundLevelEstimator();
+        GroundLevelEstimator(float alpha = DEFAULT_GLE_ALPHA);
 
         /**
          * @brief Updates the ground level estimate or converts ASL to AGL.
@@ -46,10 +49,10 @@ class GroundLevelEstimator{
 
     private:
 
-        bool launched = false; //Turned true if launch is detected
-        float estimatedGroundLevel_m = 0.0F; //EGL in meters
-        uint32_t sampleCount = 0; //Number of samples used for ground level estimate
-        float alpha; //Determines how much weight the most recent number added has on the current EGL
+        bool launched = false; // Turned true if launch is detected
+        float estimatedGroundLevel_m = 0.0F; // EGL in meters
+        uint32_t sampleCount = 0; // Number of samples used for ground level estimate
+        float alpha; // Determines how much weight the most recent number added has on the current EGL
 
 };
 
