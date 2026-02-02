@@ -14,24 +14,38 @@
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
-// This class is used to store data from a sensor
-// Stores data in a pair of circular arrays
-// The temporal array stores data with evenly spaced timestamps
-//
-// @param temporalInterval_ms: The interval between each data point in the temporal array
-// @param temporalSize_ms: The size of the temporal array in milliseconds
-// @param name: The name of sensor as an 8 bit unsigned integer
+/**
+ * @brief Buffers sensor samples and forwards them to an IDataSaver at a
+ *        controlled rate.
+ * @note When to use: wrap any sensor stream that needs to be saved at a 
+ *      limited frequency to avoid overwhelming the saver or consuming excess
+ *      storage.
+ */
 class SensorDataHandler {
 public:
-    // Constructor
+    /**
+     * @brief Construct a handler for a specific sensor.
+     * @param name      8-bit identifier for the sensor/channel.
+     * @param dataSaver Destination used when saving samples.
+     * @note When to use: create one per sensor source and share a saver across
+     *       multiple handlers as needed.
+     */
     SensorDataHandler(uint8_t name, IDataSaver* dataSaver);
     
-    // Adds a data point to the sensor data handler
-    // Will save it if the saveInterval_ms has passed
-    // Returns the status
+    /**
+     * @brief Ingest a data point and persist it if the save interval elapsed.
+     * @param data Data point to record.
+     * @return Status from the underlying saver.
+     * @note When to use: on every new reading; rate limiting is handled
+     *       internally.
+     */
     int addData(DataPoint data);
 
-    // Sets the minimum time between each data point that is saved to the SD card
+    /**
+     * @brief Set the minimum gap between persisted samples.
+     * @param interval_ms Minimum milliseconds between writes.
+     * @note When to use: tune logging cadence to balance fidelity vs. storage.
+     */
     void restrictSaveSpeed(uint16_t interval_ms);
 
     uint8_t getName() const {return name;}

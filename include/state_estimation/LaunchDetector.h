@@ -12,6 +12,7 @@
 #include "state_estimation/StateEstimationTypes.h"
 
 constexpr float ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL = 0.5F;
+constexpr std::size_t CIRCULAR_ARRAY_ALLOCATED_SLOTS = 100; // 100 slots allocated for the circular array (100 * sizeof(DataPoint)) = 800 bytes allocated)
 
 // Potential returns from the update function
 // Positive values are errors
@@ -40,6 +41,11 @@ enum LaunchDetectorStatus {
  * The delay in launch detection will equal half the window size because
  * the median will only be high once half the window is high
  */
+/**
+ * @brief Sliding-window launch detector based on acceleration magnitude.
+ * @note When to use: detect liftoff robustly against spikes by requiring a
+ *       sustained acceleration median over a configurable window.
+ */
 class LaunchDetector
 {
 public:
@@ -59,9 +65,7 @@ public:
 
     /**
      * Updates the detector with new acceleration data
-     * @param xac: The x acceleration data point in ms^2
-     * @param yac: The y acceleration data point in ms^2
-     * @param zac: The z acceleration data point in ms^2
+     * @param accel: The newest acceleration data (triplet of x, y, and z acceleration data points)
      * @return: False if the data is ignored, true if the data is accepted
      */
     int update(AccelerationTriplet accel);
@@ -74,7 +78,7 @@ public:
     // Testing Methods
     // --------------
     // Gives a pointer to the window
-    CircularArray<DataPoint>* getWindowPtr() {return &AclMagSqWindow_ms2;}
+    CircularArray<DataPoint, CIRCULAR_ARRAY_ALLOCATED_SLOTS>* getWindowPtr() {return &AclMagSqWindow_ms2;}
     // Gives the threshold in ms^2 squared
     float getThreshold() {return accelerationThresholdSq_ms2;}
     // Gives the window interval in ms
@@ -93,7 +97,7 @@ private:
 
     uint16_t acceptableTimeDifference_ms;
     // The window holding the acceleration magnitude squared b/c sqrt is expensive
-    CircularArray<DataPoint> AclMagSqWindow_ms2;
+    CircularArray<DataPoint, CIRCULAR_ARRAY_ALLOCATED_SLOTS> AclMagSqWindow_ms2;
     bool launched;
     uint32_t launchedTime_ms;
 

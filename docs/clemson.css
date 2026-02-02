@@ -1,0 +1,278 @@
+/* Clemson-themed Doxygen skin (dark-mode only)
+   Drop into HTML via: HTML_EXTRA_STYLESHEET = clemson.css
+*/
+
+:root{
+  /* Clemson-ish palette */
+  --clemson-orange: #F56600;
+  --clemson-purple: #522D80;
+
+  /* Dark-only neutrals */
+  --bg: #0f1115;
+  --bg-soft: #0f1115;
+  --text: #e6e6e6;
+  --muted: #b1b6c2;
+  --border: #2a2f3a;
+
+  --card: #141823;
+  --card-2: #101421;
+  --shadow: 0 10px 26px rgba(0,0,0,.45);
+
+  /* Links */
+  --link: #c9b3ff;
+  --link-hover: #f2d1b8;
+
+  /* Code */
+  --code-bg: #0b1020;      /* deep navy */
+  --code-text: #e9edf6;
+
+  /* Tree-view palette (NOT purple-heavy) */
+  --nav-bg: #0f1320;              /* slightly cooler, lighter than purple */
+  --nav-border: #232a3a;
+  --nav-hover: rgba(245,102,0,.10);
+  --nav-selected: rgba(245,102,0,.14); /* orange-tinted selection instead of purple */
+  --nav-text: #d8dbea;
+  --nav-text-muted: #a9afc4;
+
+  --radius: 12px;
+  --radius-sm: 10px;
+}
+
+/* Base */
+html, body {
+  background: var(--bg-soft);
+  color: var(--text);
+}
+
+body, table, div, p, dl {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  line-height: 1.5;
+}
+
+/* Links */
+a, a:visited {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover, a:focus {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* Top bar / title area */
+#top {
+  background: linear-gradient(90deg, var(--clemson-purple), #31194f);
+  border-bottom: 4px solid var(--clemson-orange);
+}
+
+#titlearea {
+  background: transparent;
+  color: #fff;
+  border: 0;
+}
+
+#projectname {
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+#projectbrief, #projectnumber {
+  color: rgba(255,255,255,.85);
+}
+
+/* Tabs (nav rows) */
+.tabs, .tabs2, .tabs3 {
+  background: transparent;
+  border: 0;
+}
+
+.tablist li a {
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  border-bottom: 0;
+  color: #fff;
+  border-top-left-radius: var(--radius-sm);
+  border-top-right-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+.tablist li a:hover {
+  background: rgba(245,102,0,.18);
+  border-color: rgba(245,102,0,.35);
+  color: #fff;
+  text-decoration: none;
+}
+.tablist li.current a {
+  background: var(--card);
+  color: var(--link);
+  border-color: var(--border);
+}
+
+/* Breadcrumb / navpath */
+.navpath {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.navpath ul {
+  padding: 10px 12px;
+}
+.navpath li {
+  color: var(--muted);
+}
+
+/* Main content container feel */
+#doc-content, .contents, .header, .footer {
+  background: transparent;
+}
+
+.contents {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 18px;
+  margin: 16px 10px;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: var(--link);
+  letter-spacing: .1px;
+}
+h1 {
+  border-bottom: 2px solid rgba(245,102,0,.35);
+  padding-bottom: 8px;
+}
+
+/* Member documentation blocks */
+.memitem, .memproto, .memdoc, .memtitle, .groupheader {
+  border-color: var(--border) !important;
+}
+.memtitle {
+  background: linear-gradient(90deg, rgba(82,45,128,.22), rgba(245,102,0,.10));
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: #e6dcff;
+  font-weight: 750;
+}
+.memitem {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.memproto, .memdoc {
+  background: var(--card);
+}
+
+/* Tables */
+table.doxtable, table.markdownTable, table.fieldtable {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.18);
+}
+table.doxtable th, table.markdownTable th, table.fieldtable th {
+  background: rgba(82,45,128,.22);
+  color: #e6dcff;
+  font-weight: 750;
+  border-bottom: 1px solid var(--border);
+}
+table.doxtable td, table.markdownTable td, table.fieldtable td {
+  border-bottom: 1px solid var(--border);
+}
+
+/* Code blocks */
+div.fragment, pre.fragment, div.line, .line {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+div.fragment, pre.fragment {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border: 1px solid rgba(245,102,0,.28);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,.30);
+}
+code, .inlinecode, tt {
+  background: rgba(245,102,0,.14);
+  border: 1px solid rgba(245,102,0,.22);
+  border-radius: 8px;
+  padding: 1px 6px;
+}
+
+/* Search */
+#MSearchBox {
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 999px;
+}
+#MSearchField {
+  color: #fff !important;
+}
+#MSearchField::placeholder {
+  color: rgba(255,255,255,.70);
+}
+
+/* Tree view sidebar (lighter, cooler, not purple-heavy) */
+#side-nav, #nav-tree, #nav-tree-contents {
+  background: var(--nav-bg) !important;
+}
+#nav-tree {
+  border-right: 1px solid var(--nav-border) !important;
+}
+
+#nav-tree .label a,
+#nav-tree a {
+  color: var(--nav-text) !important;
+}
+#nav-tree .label {
+  color: var(--nav-text-muted) !important;
+}
+
+#nav-tree .item:hover,
+#nav-tree .label a:hover {
+  background: var(--nav-hover) !important;
+  text-decoration: none;
+}
+
+/* Selected item: orange accent + subtle highlight (no purple block) */
+#nav-tree .selected,
+#nav-tree .selected a {
+  background: var(--nav-selected) !important;
+  color: #fff !important;
+}
+#nav-tree .selected {
+  border-left: 4px solid var(--clemson-orange);
+}
+
+/* Tree expand/collapse icons sometimes inherit colors oddly */
+#nav-tree img {
+  filter: brightness(1.2) contrast(1.1);
+  opacity: .9;
+}
+
+/* Footer */
+.footer, #nav-path, #nav-path ul {
+  background: transparent;
+}
+.footer {
+  color: var(--muted);
+}
+
+/* Small polish */
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+dl.note, dl.warning, dl.attention, dl.todo {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 2px 10px rgba(0,0,0,.18);
+}
+dl.warning > dt {
+  background: rgba(245,102,0,.16);
+  color: #ffd3b6;
+}
+dl.note > dt {
+  background: rgba(82,45,128,.22);
+  color: #e6dcff;
+}

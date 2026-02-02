@@ -2,11 +2,14 @@
 #define CIRCULARARRAY_H
 
 #include <algorithm>
+#include <array>
+#include <assert.h>
 #include <cstdint>
-#include <vector>
 
-template<typename T>
-int partition(std::vector<T>& array, int left, int right, int pivotIndex) {
+constexpr std::size_t MAX_CIRCULAR_ARRAY_CAPACITY = 255;
+
+template<typename T, std::size_t N>
+int partition(std::array<T, N>& array, int left, int right, int pivotIndex) {
     T pivotValue = array[pivotIndex];
     std::swap(array[pivotIndex], array[right]); // Move pivot to end
     int storeIndex = left;
@@ -26,8 +29,8 @@ int partition(std::vector<T>& array, int left, int right, int pivotIndex) {
 // O(n) average time complexity
 // O(n^2) worst case time complexity
 // If we were to just use bubble sort, that would be O(n^2) time complexity
-template<typename T>
-T quickSelect(std::vector<T> &array, int left, int right, int k){
+template<typename T, std::size_t N>
+T quickSelect(std::array<T, N> &array, int left, int right, int k){
     while (left < right){
         int pivotIndex = (left + right) / 2;
         int pivotNewIndex = partition(array, left, right, pivotIndex);
@@ -43,41 +46,48 @@ T quickSelect(std::vector<T> &array, int left, int right, int k){
 }
 
 
-template<typename T>
+template<typename T, std::size_t Capacity>
+/**
+ * @brief Fixed-size circular buffer with median helper and head tracking.
+ * @note When to use: maintain a rolling window of recent samples for filters
+ *       or detectors without reallocations.
+ */
 class CircularArray {
   protected:
-    std::vector<T> array; 
-    uint8_t head;       // 0 to 255
+    std::array<T, Capacity> array; 
+    std::array<T, Capacity> scratchArray; // For median calculation
     uint8_t maxSize;    // 0 to 255
-    uint16_t pushCount; // 0 to 65535
+    uint8_t head;       // 0 to 255
+    uint8_t currentSize; // 0 to 255
 
   public:
-    CircularArray(uint8_t maxSize){
-        this->maxSize = maxSize;
+    CircularArray(uint8_t maxSize = Capacity) : maxSize(maxSize) {
+        static_assert(Capacity > 0, "CircularArray capacity must be greater than 0");
+        static_assert(Capacity <= MAX_CIRCULAR_ARRAY_CAPACITY, "CircularArray capacity must be less than or equal to 255 b/c of head being uint8_t");
+        assert(maxSize > 0 && maxSize <= Capacity);
         this->head = 0;
-        this->pushCount = 0;
-        this->array = std::vector<T>(maxSize, T());
-    }
-
-    ~CircularArray(){
-        array.clear();
+        this->currentSize = 0; // How full is the circular buffer? 
     }
 
     void push(T data){
         // After the first push, start moving the head
-        if (pushCount)
+        if (currentSize)
             head = (head + 1) % maxSize;
         array[head] = data;
-        pushCount++;
+
+        // Cap current size at maxSize
+        if (currentSize < maxSize){
+            currentSize++;
+        }
     }
 
     T pop(){
-        if (pushCount == 0){
+        if (currentSize == 0){
             return T();
         }
         T data = array[head];
         head = (head + maxSize - 1) % maxSize;
-        pushCount--;
+        currentSize--;
         return data;
     }
 
@@ -88,11 +98,11 @@ class CircularArray {
 
     // Has the circular array been filled          
     bool isFull(){
-        return pushCount >= maxSize;
+        return currentSize >= maxSize;
     }
     
     bool isEmpty(){
-        return pushCount == 0;
+        return currentSize == 0;
     }
 
     uint8_t getHead(){
@@ -104,28 +114,27 @@ class CircularArray {
     }
 
     T getMedian(){
-        if (pushCount == 0) {
+        if (currentSize == 0) {
         // Handle the case when the array is empty
         return T();
         }
 
-        size_t count = std::min(static_cast<size_t>(pushCount), static_cast<size_t>(maxSize));
-        std::vector<T> copyArray(count);
+        size_t count = std::min(static_cast<size_t>(currentSize), static_cast<size_t>(maxSize));
 
         // Collect the valid elements from the circular array
-        // TODO: Optimize (or just copy everything and restrict this function to only running when the array is full)
         for (size_t i = 0; i < count; ++i) {
-            copyArray[i] = array[(head + maxSize - i) % maxSize];
+            scratchArray[i] = array[(head + maxSize - i) % maxSize];
         }
 
         // Find the median
-        return quickSelect(copyArray, 0, count - 1, count / 2);
+        int n = static_cast<int>(count);
+        return quickSelect(scratchArray, 0, n - 1, n / 2);
     }
 
     void clear(){
         head = 0;
-        pushCount = 0;
-        for (int i = 0; i < maxSize; i++){
+        currentSize = 0;
+        for (uint8_t i = 0; i < maxSize; i++){
             array[i] = T();
         }
     }
