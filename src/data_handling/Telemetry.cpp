@@ -69,12 +69,12 @@ bool Telemetry::tick(uint32_t currentTime) {
     for (int i = 0; i < this->ssdArrayLength; i++) {
         if (ssdArray[i]->shouldBeSent(currentTime)) {
             if (!sendingPacketThisTick) {
-                setPacketToZero();
-                preparePacket(currentTime);
-                addSSDToPacket(ssdArray[i]);
+                setPacketToZero(); //Clears the packet buffer
+                preparePacket(currentTime); //Adds header with timestamp
+                addSSDToPacket(ssdArray[i]); //Add the first sensors data
                 sendingPacketThisTick = true;
             } else {
-                addSSDToPacket(ssdArray[i]);
+                addSSDToPacket(ssdArray[i]); //Add more sensors to the packet
             }
             ssdArray[i]->markWasSent(currentTime);
         }
