@@ -12,6 +12,7 @@
 #include "state_estimation/StateEstimationTypes.h"
 
 constexpr float ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL = 0.5F;
+constexpr std::size_t CIRCULAR_ARRAY_ALLOCATED_SLOTS = 100; // 100 slots allocated for the circular array (100 * sizeof(DataPoint)) = 800 bytes allocated)
 
 // Potential returns from the update function
 // Positive values are errors
@@ -77,7 +78,7 @@ public:
     // Testing Methods
     // --------------
     // Gives a pointer to the window
-    CircularArray<DataPoint>* getWindowPtr() {return &AclMagSqWindow_ms2;}
+    CircularArray<DataPoint, CIRCULAR_ARRAY_ALLOCATED_SLOTS>* getWindowPtr() {return &AclMagSqWindow_ms2;}
     // Gives the threshold in ms^2 squared
     float getThreshold() {return accelerationThresholdSq_ms2;}
     // Gives the window interval in ms
@@ -96,7 +97,7 @@ private:
 
     uint16_t acceptableTimeDifference_ms;
     // The window holding the acceleration magnitude squared b/c sqrt is expensive
-    CircularArray<DataPoint> AclMagSqWindow_ms2;
+    CircularArray<DataPoint, CIRCULAR_ARRAY_ALLOCATED_SLOTS> AclMagSqWindow_ms2;
     bool launched;
     uint32_t launchedTime_ms;
 
