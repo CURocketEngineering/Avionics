@@ -39,7 +39,8 @@ constexpr std::size_t kU32Bytes = 4;
 /** Header layout: [0..2]=0, [3]=START, [4..7]=timestamp (big-endian). */
 constexpr std::size_t kStartByteIndex = kSyncZeros;          // 3
 constexpr std::size_t kTimestampIndex = kStartByteIndex + 1; // 4
-constexpr std::size_t kHeaderBytes    = kSyncZeros + 1 + kU32Bytes;
+constexpr std::size_t kPacketCounterIndex = kTimestampIndex + kU32Bytes; // 8
+constexpr std::size_t kHeaderBytes = kSyncZeros + 1 + kU32Bytes + kU32Bytes; // 12 (CHANGED from 8 to 12)
 
 /** End marker layout: 3 zeros followed by an end byte. */
 constexpr std::size_t kEndMarkerBytes = kSyncZeros + 1;
@@ -230,6 +231,7 @@ private:
     Stream& rfdSerialConnection;
 
     // Packet state
+    std::uint32_t packetCounter = 0;
     std::size_t nextEmptyPacketIndex;
     std::array<std::uint8_t, TelemetryFmt::kPacketCapacity> packet;
 };
