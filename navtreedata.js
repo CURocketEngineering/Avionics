@@ -55,6 +55,14 @@ var NAVTREE =
       ] ],
       [ "Flight Test History (most recent first)", "md_docs_2FlightTests.html#autotoc_md36", null ]
     ] ],
+    [ "Telemetry", "md_docs_2Telemetry.html", [
+      [ "Lifecycle", "md_docs_2Telemetry.html#autotoc_md38", null ],
+      [ "Packet structure", "md_docs_2Telemetry.html#autotoc_md39", [
+        [ "Single number data format", "md_docs_2Telemetry.html#autotoc_md40", null ],
+        [ "Multi number data format", "md_docs_2Telemetry.html#autotoc_md41", null ]
+      ] ],
+      [ "Practical implementation notes", "md_docs_2Telemetry.html#autotoc_md42", null ]
+    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [

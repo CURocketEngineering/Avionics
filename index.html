@@ -96,7 +96,7 @@ $(function(){initNavTree('index.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
 <p>Avionics is a modular, Arduino-core based system powering the flight computers of Clemson University Rocket Engineering. Designed for high reliability and efficiency, it supports real-time state estimation, data logging, and robust communication across multiple rockets.</p>
 <p><b>Documentation Website: 🚀<a href="https://curocketengineering.github.io/Avionics/">Avionics Docs</a>🚀</b></p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
 Table of Contents</h1>
 <ul>
 <li>Introduction</li>
@@ -111,10 +111,10 @@ Table of Contents</h1>
 </ul>
 </li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
 Introduction</h1>
 <p>This repository contains the avionics system used across various flight computers within the Clemson University Rocket Engineering organization. Designed to be modular and highly configurable, the system supports critical functions such as state detection, data logging, and robust communication.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
 Project Goals</h1>
 <ul>
 <li>Deliver a reusable avionics toolbox that can be utilized across multiple rocket platforms.</li>
@@ -122,7 +122,7 @@ Project Goals</h1>
 <li>Maintain traceable telemetry and post-flight data for analysis and certification.</li>
 <li>Enable rapid iteration with simulation hooks, configurable command interfaces, and host-side unit testing.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
 Architecture Overview</h1>
 <ul>
 <li><b>State estimation:</b> Launch/apogee detection, burnout/landing state machines, and vertical velocity filtering to gate deployment logic.</li>
@@ -131,12 +131,12 @@ Architecture Overview</h1>
 <li><b>Power and platform:</b> Power management utilities plus HAL abstractions to keep sensor/MCU specifics isolated from flight logic.</li>
 <li><b>Simulation:</b> Serial-driven sensor simulators (e.g., LSM6DSOX, LIS3MDL, BMP390) to inject prerecorded data for hardware-in-the-loop testing.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
 Flight Tests</h1>
 <p>See a comprehensive list of all flights using this software at <em><b>🚀<a class="el" href="md_docs_2FlightTests.html" title="Flight Test History">Flight Tests</a>🚀</b></em>.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
 Features</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md44"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
 State Detection Tools</h2>
 <ul>
 <li><b>Launch Detection:</b> <br  />
@@ -148,7 +148,7 @@ State Detection Tools</h2>
 <li><b>Apogee Prediction:</b> <br  />
  The <a href="include/state_estimation/ApogeePredictor.h">Apogee Predictor</a> utilizes the vertical velocity estimator to predict the time until apogee and the maximum altitude.</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md45"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md51"></a>
 Data Logging</h2>
 <ul>
 <li><b>SPI Embedded Flash-based Logging:</b> <br  />
@@ -158,13 +158,13 @@ Data Logging</h2>
 <li><b>Serial-based Logging:</b> <br  />
  <a href="include/data_handling/DataSaverSDSerial.h">DataSaverSDSerial</a> provides an alternative logging mechanism by streaming binary data to a serial interface. Although less space-efficient than "Byte5", it is designed for applications with large SD cards. Refer to the <a href="https://github.com/CURocketEngineering/Serial-Logger-Decoding">Serial-Logger-Decoding</a> repository for decoding instructions.</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md46"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md52"></a>
 Communication</h2>
 <ul>
 <li><b>Serial Command Handler:</b> <br  />
  The <a href="include/UARTCommandHandler.h">UARTCommandHandler</a> offers a fully configurable command interface for runtime configuration, debugging, and data retrieval, using function pointers for flexibility.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md47"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md53"></a>
 Dependent Systems</h1>
 <p>The following systems integrate Avionics as a submodule:</p>
 <ul>
@@ -173,7 +173,7 @@ Dependent Systems</h1>
 <li><a href="https://github.com/CURocketEngineering/MARTHA-1.1">MARTHA 1.1</a></li>
 <li><a href="https://github.com/CURocketEngineering/Native">Native</a></li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md48"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md54"></a>
 Documentation</h1>
 <ul>
 <li>Doxygen: run <span class="tt">doxygen Doxyfile</span> from the repository root. HTML output is placed in <span class="tt">build/doxygen/index.html</span> (README is used as the main page). You can then use Python to serve the files locally: <span class="tt">python -m http.server --directory build/doxygen 8000</span> and navigate to <span class="tt"><a href="http://localhost:8000">http://localhost:8000</a></span> in your browser. We have a workflow that will autogenerate and deploy the docs to GitHub Pages on each push to main.</li>
@@ -181,11 +181,11 @@ Documentation</h1>
 <li>Flight history: see <span class="tt"><a class="el" href="FlightTests_8md.html">docs/FlightTests.md</a></span> for vehicles and dates that have flown with this codebase.</li>
 <li>Target Audience: The documentation is written for compsci students with very little background in C++ or embedded systems.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md49"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md55"></a>
 Unit Testing</h1>
 <p>Unit tests are managed by the <a href="https://github.com/CURocketEngineering/Native">Native</a> repository, allowing for module testing without requiring embedded hardware.</p>
 <p>Never in the Avionics repo should you <span class="tt">#include &lt;Arduino.h&gt;</span> or any other Arduino-specific headers. Instead, always include <span class="tt"><a class="el" href="ArduinoHAL_8h.html">ArduinoHAL.h</a></span> from the <span class="tt">hal</span> directory, which will either pull in the real Arduino core (when compiling for an Arduino target) or a mock implementation (when compiling for Native). This ensures that Avionics can be tested via the Native repo on a laptop without any Arduino dependencies.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md50"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md56"></a>
 License</h1>
 <p>This project is licensed under the [MIT License](LICENSE). Please review the LICENSE file for complete details. </p>
 </div></div><!-- PageDoc -->

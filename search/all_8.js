@@ -48,7 +48,7 @@ var searchData=
   ['getverticaldirection_45',['getVerticalDirection',['../classApogeeDetector.html#a88e4571939bca604ce15077fba5916a5',1,'ApogeeDetector::getVerticalDirection()'],['../classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e',1,'VerticalVelocityEstimator::getVerticalDirection()']]],
   ['getwindowinterval_46',['getWindowInterval',['../classLaunchDetector.html#a847360fa6e3b8d61f2989ec2c329f2d0',1,'LaunchDetector']]],
   ['getwindowptr_47',['getWindowPtr',['../classLaunchDetector.html#ac06864bc7b0b8b8e262faaf6d02abc36',1,'LaunchDetector']]],
-  ['goals_48',['Project Goals',['../index.html#autotoc_md40',1,'']]],
+  ['goals_48',['Project Goals',['../index.html#autotoc_md46',1,'']]],
   ['gravity_49',['GRAVITY',['../BurnoutStateMachine_8cpp.html#a092ac0b7bad687dc9ec712e408b859dc',1,'BurnoutStateMachine.cpp']]],
   ['groundlevelestimator_50',['GroundLevelEstimator',['../classGroundLevelEstimator.html',1,'GroundLevelEstimator'],['../classGroundLevelEstimator.html#a179f187ff2015292b18f9cf3776fd60e',1,'GroundLevelEstimator::GroundLevelEstimator()']]],
   ['groundlevelestimator_2ecpp_51',['GroundLevelEstimator.cpp',['../GroundLevelEstimator_8cpp.html',1,'']]],
