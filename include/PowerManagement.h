@@ -6,8 +6,18 @@
 
 /**
  * @brief Simple ADC-based battery voltage helper.
- * @note When to use: quick health checks of the main battery using an analog
- *       pin and known divider scaling.
+ * This class provides a way to read the battery voltage using an ADC pin and a scaling factor.
+ * It also includes a simple "isAlive" check to determine if the voltage is above a certain threshold.
+ * 
+ * The correct pin can be found in the hardware scematics under "ADC_VOLTAGE"
+ * and the scaling factor can be calculated based on the voltage divider used in the hardware design. 
+ * For MARTHA 1.4, the voltage divider is 200k and 1k5, so the factor is (200k + 1k5) / 1k5 = 134.33333.
+ * 
+ * The voltage at the pin is calculated as:
+ * vPin = (rawValue / (2^numAdcBits - 1)) * vRef
+ * where rawValue is the ADC reading, numAdcBits is the resolution of the ADC, and vRef is the reference voltage for the ADC (3.3V for MARTHA 1.4).
+ * The battery voltage is then calculated as:
+ * vBat = vPin * factor
  */
 class BatteryVoltage {
     public:
