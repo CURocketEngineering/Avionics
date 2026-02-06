@@ -44,8 +44,11 @@ inline void analogReadResolution(int bits) {
 inline uint32_t analogRead(int pin) {
     // Return a dummy 12 bit value for the voltage pin, and 0 for other pins. 
     // This allows us to test the battery voltage reading functionality without needing a real ADC.
-    if (pin == ADC_VOLTAGE) {
+    if (pin == 192) {
         return 4090;
+    }
+    if (pin == 193) { // fake pin for testing the low voltage case
+        return 0;
     }
     return 0; // Default dummy value for other pins
 }
