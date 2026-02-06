@@ -29,7 +29,6 @@ using String = std::string;
 #define HIGH 1
 #define LOW 0
 #define ADC_VOLTAGE 192
-#define ADC_VOLTAGE_LOW 193
 
 inline void pinMode(int pin, int mode) { //NOLINT
     // Do nothing
