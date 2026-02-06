@@ -1,8 +1,7 @@
 #ifndef PowerManagement_H
 #define PowerManagement_H
 
-#include "Arduino.h"
-#include "pins.h"
+#include "ArduinoHAL.h"
 
 /**
  * @brief Simple ADC-based battery voltage helper.
