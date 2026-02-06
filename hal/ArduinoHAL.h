@@ -28,6 +28,8 @@ using String = std::string;
 #define INPUT 0
 #define HIGH 1
 #define LOW 0
+#define ADC_VOLTAGE 192
+#define ADC_VOLTAGE_LOW 193
 
 inline void pinMode(int pin, int mode) { //NOLINT
     // Do nothing
@@ -44,10 +46,10 @@ inline void analogReadResolution(int bits) {
 inline uint32_t analogRead(int pin) {
     // Return a dummy 12 bit value for the voltage pin, and 0 for other pins. 
     // This allows us to test the battery voltage reading functionality without needing a real ADC.
-    if (pin == 192) {
-        return 4090;
+    if (pin == ADC_VOLTAGE) {
+        return static_cast<uint32_t>((1 << 12) - 1); // Return full-scale value for a 12-bit ADC
     }
-    if (pin == 193) { // fake pin for testing the low voltage case
+    if (pin == ADC_VOLTAGE_LOW) { // fake pin for testing the low voltage case
         return 0;
     }
     return 0; // Default dummy value for other pins
