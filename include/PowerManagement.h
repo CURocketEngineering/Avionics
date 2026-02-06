@@ -24,9 +24,10 @@ class BatteryVoltage {
          * @param adcPin The ADC pin connected to the battery voltage divider.
          * @param factor The scaling factor to convert the pin voltage to battery voltage.
          * @param numAdcBits The resolution of the ADC (e.g., 12 for 12-bit ADC).
+         * @param voltageThreshold A threshold voltage for low battery checks (not used in current implementation but can be useful for future extensions).
          */
-        BatteryVoltage(uint8_t adcPin, float factor, int numAdcBits)
-            : pin(adcPin), factor(factor), numAdcBits(numAdcBits) {analogReadResolution(numAdcBits);}
+        BatteryVoltage(uint8_t adcPin, float factor, int numAdcBits, float voltageThreshold)
+            : pin(adcPin), factor(factor), numAdcBits(numAdcBits), voltageThreshold(voltageThreshold) {analogReadResolution(numAdcBits);}
     
         /**
          * @brief Sample the ADC and convert to battery voltage.
@@ -44,11 +45,21 @@ class BatteryVoltage {
 
             return vBat;
         }
+      
+        /**
+         * @brief Check whether voltage exceeds a minimal threshold.
+         * @return true if voltage is above the survival threshold.
+         * @note Could be useful for future extension, like triggering a low power mode
+         */
+        bool isLow(){
+            return readVoltage() < voltageThreshold;
+    }
     
     private:
         uint8_t pin;
         float factor;
         int numAdcBits;
+        float voltageThreshold;
     };
     
     #endif // PowerManagement_H
