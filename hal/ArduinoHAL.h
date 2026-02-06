@@ -49,9 +49,6 @@ inline uint32_t analogRead(int pin) {
     if (pin == ADC_VOLTAGE) {
         return static_cast<uint32_t>((1 << 12) - 1); // Return full-scale value for a 12-bit ADC
     }
-    if (pin == ADC_VOLTAGE_LOW) { // fake pin for testing the low voltage case
-        return 0;
-    }
     return 0; // Default dummy value for other pins
 }
 
