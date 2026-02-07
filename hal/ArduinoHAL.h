@@ -28,6 +28,7 @@ using String = std::string;
 #define INPUT 0
 #define HIGH 1
 #define LOW 0
+#define ADC_VOLTAGE 192
 
 inline void pinMode(int pin, int mode) { //NOLINT
     // Do nothing
@@ -37,6 +38,18 @@ inline void digitalWrite(int pin, int value) { //NOLINT
     // Do nothing
 }
 
+inline void analogReadResolution(int bits) {
+    // Do nothing, we will just return a 12-bit value in analogRead
+}
+
+inline uint32_t analogRead(int pin) {
+    // Return a dummy 12 bit value for the voltage pin, and 0 for other pins. 
+    // This allows us to test the battery voltage reading functionality without needing a real ADC.
+    if (pin == ADC_VOLTAGE) {
+        return static_cast<uint32_t>((1 << 12) - 1); // Return full-scale value for a 12-bit ADC
+    }
+    return 0; // Default dummy value for other pins
+}
 
 // millis mock which still gives us the time since the program started in milliseconds
 static auto program_start = std::chrono::high_resolution_clock::now();
