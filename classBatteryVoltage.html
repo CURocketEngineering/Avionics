@@ -94,7 +94,7 @@ $(function(){initNavTree('classBatteryVoltage.html','','classBatteryVoltage-memb
 </div><!--header-->
 <div class="contents">
 
-<p>Simple ADC-based battery voltage helper.  
+<p>Simple ADC-based battery voltage helper. This class provides a way to read the battery voltage using an ADC pin and a scaling factor.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>&gt;</code></p>
@@ -103,26 +103,27 @@ Collaboration diagram for BatteryVoltage:</div>
 <div class="dyncontent">
 <div class="center"><img src="classBatteryVoltage__coll__graph.png" border="0" usemap="#aBatteryVoltage_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aBatteryVoltage_coll__map" id="aBatteryVoltage_coll__map">
-<area shape="rect" title="Simple ADC&#45;based battery voltage helper." alt="" coords="5,5,141,111"/>
+<area shape="rect" title="Simple ADC&#45;based battery voltage helper. This class provides a way to read the battery voltage using ..." alt="" coords="5,5,141,111"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6b8b9c7eb7fcf9c99d995ffd43b7caed" id="r_a6b8b9c7eb7fcf9c99d995ffd43b7caed"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a6b8b9c7eb7fcf9c99d995ffd43b7caed">BatteryVoltage</a> (uint8_t adcPin, float conversionFactor)</td></tr>
+<tr class="memitem:ab55a05a6c577d769bcd76b782b6b7424" id="r_ab55a05a6c577d769bcd76b782b6b7424"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ab55a05a6c577d769bcd76b782b6b7424">BatteryVoltage</a> (uint8_t adcPin, float factor, int numAdcBits, float voltageThreshold)</td></tr>
 <tr class="memitem:a0b863d8ac1103926797c004ac152a475" id="r_a0b863d8ac1103926797c004ac152a475"><td class="memItemLeft">float&#160;</td><td class="memItemRight"><a class="el" href="#a0b863d8ac1103926797c004ac152a475">readVoltage</a> ()</td></tr>
 <tr class="memdesc:a0b863d8ac1103926797c004ac152a475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sample the ADC and convert to battery voltage.  <br /></td></tr>
-<tr class="memitem:aab9f49c1731aaccd4072b742c8cbea6f" id="r_aab9f49c1731aaccd4072b742c8cbea6f"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aab9f49c1731aaccd4072b742c8cbea6f">isAlive</a> ()</td></tr>
-<tr class="memdesc:aab9f49c1731aaccd4072b742c8cbea6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether voltage exceeds a minimal threshold.  <br /></td></tr>
+<tr class="memitem:a92adbc9d223f27da1d3ec769ce07a5b9" id="r_a92adbc9d223f27da1d3ec769ce07a5b9"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a92adbc9d223f27da1d3ec769ce07a5b9">isLow</a> ()</td></tr>
+<tr class="memdesc:a92adbc9d223f27da1d3ec769ce07a5b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether voltage exceeds a minimal threshold.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Simple ADC-based battery voltage helper. </p>
-<dl class="section note"><dt>Note</dt><dd>When to use: quick health checks of the main battery using an analog pin and known divider scaling. </dd></dl>
+<div class="textblock"><p>Simple ADC-based battery voltage helper. This class provides a way to read the battery voltage using an ADC pin and a scaling factor. </p>
+<p>The correct pin can be found in the hardware scematics under "ADC_VOLTAGE" and the scaling factor can be calculated based on the voltage divider used in the hardware design. For MARTHA 1.4, the voltage divider is 200k and 1k5, so the factor is (200k + 1k5) / 1k5 = 134.33333.</p>
+<p>The voltage at the pin is calculated as: vPin = (rawValue / (2^numAdcBits - 1)) * vRef where rawValue is the ADC reading, numAdcBits is the resolution of the ADC, and vRef is the reference voltage for the ADC (3.3V for MARTHA 1.4). The battery voltage is then calculated as: vBat = vPin * factor </p>
 
-<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00012">12</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00020">20</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6b8b9c7eb7fcf9c99d995ffd43b7caed" name="a6b8b9c7eb7fcf9c99d995ffd43b7caed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b8b9c7eb7fcf9c99d995ffd43b7caed">&#9670;&#160;</a></span>BatteryVoltage()</h2>
+<a id="ab55a05a6c577d769bcd76b782b6b7424" name="ab55a05a6c577d769bcd76b782b6b7424"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab55a05a6c577d769bcd76b782b6b7424">&#9670;&#160;</a></span>BatteryVoltage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,7 +139,17 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>conversionFactor</em></span>&#160;)</td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>factor</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>numAdcBits</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float</td>          <td class="paramname"><span class="paramname"><em>voltageThreshold</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -147,14 +158,23 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">adcPin</td><td>The ADC pin connected to the battery voltage divider. </td></tr>
+    <tr><td class="paramname">factor</td><td>The scaling factor to convert the pin voltage to battery voltage. </td></tr>
+    <tr><td class="paramname">numAdcBits</td><td>The resolution of the ADC (e.g., 12 for 12-bit ADC). </td></tr>
+    <tr><td class="paramname">voltageThreshold</td><td>A threshold voltage for low battery checks (not used in current implementation but can be useful for future extensions). </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00014">14</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00028">28</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="aab9f49c1731aaccd4072b742c8cbea6f" name="aab9f49c1731aaccd4072b742c8cbea6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab9f49c1731aaccd4072b742c8cbea6f">&#9670;&#160;</a></span>isAlive()</h2>
+<a id="a92adbc9d223f27da1d3ec769ce07a5b9" name="a92adbc9d223f27da1d3ec769ce07a5b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92adbc9d223f27da1d3ec769ce07a5b9">&#9670;&#160;</a></span>isLow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,7 +183,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool BatteryVoltage::isAlive </td>
+          <td class="memname">bool BatteryVoltage::isLow </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -178,9 +198,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Check whether voltage exceeds a minimal threshold. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if voltage is above the survival threshold. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>When to use: lightweight go/no-go checks before more detailed power analysis. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Could be useful for future extension, like triggering a low power mode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00041">41</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00053">53</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
 
 </div>
 </div>
@@ -209,9 +229,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Sample the ADC and convert to battery voltage. </p>
 <dl class="section return"><dt>Returns</dt><dd>Converted voltage reading. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>When to use: periodic health checks or brownout warnings. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00022">22</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="PowerManagement_8h_source.html#l00035">35</a> of file <a class="el" href="PowerManagement_8h_source.html">PowerManagement.h</a>.</p>
 
 </div>
 </div>

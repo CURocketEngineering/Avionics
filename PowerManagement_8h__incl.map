@@ -1,7 +1,17 @@
 <map id="PowerManagement.h" name="PowerManagement.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="15,5,175,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,89,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,33,65,69,60,66,85,30"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="114,79,175,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="106,29,131,66,127,69,101,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="337,5,497,31"/>
+<area shape="rect" id="Node000002" href="$ArduinoHAL_8h.html" title=" " alt="" coords="361,79,472,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="419,31,419,65,414,65,414,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,89,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="362,105,103,154,102,149,361,100"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="113,152,261,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="381,107,239,150,237,145,379,101"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="286,152,422,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="408,106,375,143,371,140,404,103"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="446,152,515,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="429,103,463,140,459,144,425,106"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="540,152,651,177"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="446,102,555,144,553,149,444,107"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="675,152,729,177"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="468,102,662,149,661,154,467,107"/>
 </map>

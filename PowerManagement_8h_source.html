@@ -96,49 +96,50 @@ $(function(){initNavTree('PowerManagement_8h_source.html','',''); });
 <a href="PowerManagement_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef PowerManagement_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define PowerManagement_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;Arduino.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;pins.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span></div>
-<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html">   12</a></span><span class="keyword">class </span><a class="code hl_function" href="classBatteryVoltage.html#a6b8b9c7eb7fcf9c99d995ffd43b7caed">BatteryVoltage</a> {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html#a6b8b9c7eb7fcf9c99d995ffd43b7caed">   14</a></span>        <a class="code hl_function" href="classBatteryVoltage.html#a6b8b9c7eb7fcf9c99d995ffd43b7caed">BatteryVoltage</a>(uint8_t adcPin, <span class="keywordtype">float</span> conversionFactor)</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            : pin(adcPin), factor(conversionFactor) {}</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="ArduinoHAL_8h.html">ArduinoHAL.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span></div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html">   20</a></span><span class="keyword">class </span><a class="code hl_function" href="classBatteryVoltage.html#ab55a05a6c577d769bcd76b782b6b7424">BatteryVoltage</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html#ab55a05a6c577d769bcd76b782b6b7424">   28</a></span>        <a class="code hl_function" href="classBatteryVoltage.html#ab55a05a6c577d769bcd76b782b6b7424">BatteryVoltage</a>(uint8_t adcPin, <span class="keywordtype">float</span> factor, <span class="keywordtype">int</span> numAdcBits, <span class="keywordtype">float</span> voltageThreshold)</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            : pin(adcPin), factor(factor), numAdcBits(numAdcBits), voltageThreshold(voltageThreshold) {analogReadResolution(numAdcBits);}</div>
 </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    </div>
-<div class="foldopen" id="foldopen00022" data-start="{" data-end="}">
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">   22</a></span>        <span class="keywordtype">float</span> <a class="code hl_function" href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">readVoltage</a>() {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>            <span class="comment">// Set the pin for reading</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            pinMode(pin, INPUT);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            uint32_t rawValue = 0;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            rawValue = analogRead(pin);  <span class="comment">// Should give a value between 0 and 1023, not sure how to convert this to the true voltage. </span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            <span class="comment">// Conversion notes -&gt;  respect to Vref you would do Vref * analogRead()/2^12. </span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>            <span class="comment">// After that you can use the voltage divider equation to get the battery voltage level</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>            <span class="comment">// Vref is 134.33? </span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>            <span class="comment">// float voltage = pow((rawValue/2),12) * factor; </span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>            <a class="code hl_variable" href="serial__mock_8h.html#a20ff0bc99522ec4c094aa2bebd8ce796">Serial</a>.println(rawValue);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keywordflow">return</span> rawValue;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">   35</a></span>        <span class="keywordtype">float</span> <a class="code hl_function" href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">readVoltage</a>() {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <span class="comment">// Set the pin for reading</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            pinMode(pin, INPUT);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            uint32_t rawValue = analogRead(pin);  <span class="comment">// Should give a value between 0 and 2^numAdcBits - 1</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordtype">float</span> vRef = 3.3f; <span class="comment">// reference voltage for the ADC on MARTHA 1.4</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="comment">// Convert raw ADC value to voltage at the pin, then apply the factor to get battery voltage</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordtype">float</span> vPin = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(rawValue) / (<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(1 &lt;&lt; numAdcBits) - 1)) * vRef;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordtype">float</span> vBat = vPin * factor;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            <span class="keywordflow">return</span> vBat;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        }</div>
 </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      </div>
-<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html#aab9f49c1731aaccd4072b742c8cbea6f">   41</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classBatteryVoltage.html#aab9f49c1731aaccd4072b742c8cbea6f">isAlive</a>(){</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">readVoltage</a>() &gt; .3; <span class="comment">// Not sure what a good cutoff is </span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      </div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classBatteryVoltage.html#a92adbc9d223f27da1d3ec769ce07a5b9">   53</a></span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classBatteryVoltage.html#a92adbc9d223f27da1d3ec769ce07a5b9">isLow</a>(){</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">readVoltage</a>() &lt; voltageThreshold;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
 </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        uint8_t pin;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordtype">float</span> factor;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    };</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        uint8_t pin;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordtype">float</span> factor;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordtype">int</span> numAdcBits;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordtype">float</span> voltageThreshold;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    };</div>
 </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">    #endif </span><span class="comment">// PowerManagement_H</span></div>
-<div class="ttc" id="aclassBatteryVoltage_html_a0b863d8ac1103926797c004ac152a475"><div class="ttname"><a href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">BatteryVoltage::readVoltage</a></div><div class="ttdeci">float readVoltage()</div><div class="ttdoc">Sample the ADC and convert to battery voltage.</div><div class="ttdef"><b>Definition</b> <a href="#l00022">PowerManagement.h:22</a></div></div>
-<div class="ttc" id="aclassBatteryVoltage_html_a6b8b9c7eb7fcf9c99d995ffd43b7caed"><div class="ttname"><a href="classBatteryVoltage.html#a6b8b9c7eb7fcf9c99d995ffd43b7caed">BatteryVoltage::BatteryVoltage</a></div><div class="ttdeci">BatteryVoltage(uint8_t adcPin, float conversionFactor)</div><div class="ttdef"><b>Definition</b> <a href="#l00014">PowerManagement.h:14</a></div></div>
-<div class="ttc" id="aclassBatteryVoltage_html_aab9f49c1731aaccd4072b742c8cbea6f"><div class="ttname"><a href="classBatteryVoltage.html#aab9f49c1731aaccd4072b742c8cbea6f">BatteryVoltage::isAlive</a></div><div class="ttdeci">bool isAlive()</div><div class="ttdoc">Check whether voltage exceeds a minimal threshold.</div><div class="ttdef"><b>Definition</b> <a href="#l00041">PowerManagement.h:41</a></div></div>
-<div class="ttc" id="aserial__mock_8h_html_a20ff0bc99522ec4c094aa2bebd8ce796"><div class="ttname"><a href="serial__mock_8h.html#a20ff0bc99522ec4c094aa2bebd8ce796">Serial</a></div><div class="ttdeci">MockSerial Serial</div></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">    #endif </span><span class="comment">// PowerManagement_H</span></div>
+<div class="ttc" id="aArduinoHAL_8h_html"><div class="ttname"><a href="ArduinoHAL_8h.html">ArduinoHAL.h</a></div></div>
+<div class="ttc" id="aclassBatteryVoltage_html_a0b863d8ac1103926797c004ac152a475"><div class="ttname"><a href="classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475">BatteryVoltage::readVoltage</a></div><div class="ttdeci">float readVoltage()</div><div class="ttdoc">Sample the ADC and convert to battery voltage.</div><div class="ttdef"><b>Definition</b> <a href="#l00035">PowerManagement.h:35</a></div></div>
+<div class="ttc" id="aclassBatteryVoltage_html_a92adbc9d223f27da1d3ec769ce07a5b9"><div class="ttname"><a href="classBatteryVoltage.html#a92adbc9d223f27da1d3ec769ce07a5b9">BatteryVoltage::isLow</a></div><div class="ttdeci">bool isLow()</div><div class="ttdoc">Check whether voltage exceeds a minimal threshold.</div><div class="ttdef"><b>Definition</b> <a href="#l00053">PowerManagement.h:53</a></div></div>
+<div class="ttc" id="aclassBatteryVoltage_html_ab55a05a6c577d769bcd76b782b6b7424"><div class="ttname"><a href="classBatteryVoltage.html#ab55a05a6c577d769bcd76b782b6b7424">BatteryVoltage::BatteryVoltage</a></div><div class="ttdeci">BatteryVoltage(uint8_t adcPin, float factor, int numAdcBits, float voltageThreshold)</div><div class="ttdef"><b>Definition</b> <a href="#l00028">PowerManagement.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->
