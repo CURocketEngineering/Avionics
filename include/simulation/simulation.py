@@ -2,9 +2,18 @@ import serial
 import time
 import pandas as pd 
 import matplotlib.pyplot as plt
+import sys 
+
+# Serial port is the first arg
+if len(sys.argv) <= 1:
+    raise ValueError("Please provide the serial port as the first argument, e.g. 'COM3' or '/dev/ttyACM0'"
+    " This is the same port you use to monitor or send commands via the UARTCommandHandler")
+
+
+serial_port = sys.argv[1]
 
 # Set up the serial connection (adjust the port to your system)
-ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)  # Replace 'COM3' with your port name
+ser = serial.Serial(serial_port, 115200, timeout=1)  # Replace 'COM3' with your port name
 time.sleep(2)  # Allow time for the connection to be established
 
 # Clear the buffer
@@ -105,18 +114,24 @@ def stream_csv_data(csv_file):
 
         # Wait for acknowledgment before continuing
         buffer = b''
+        wait_for_ack_start_time = time.time()
         while True:
             if ser.in_waiting > 0:
                 buffer += ser.read_all()   
-                if b'\x06' in buffer:
-                    # The byte after ack is the current state of the rocket
-                    loc = buffer.index(b'\x06')
+                # Check for the series of 0xaa, 0xbb, 0xcc in the buffer to confirm acknowledgment
+                if b'\xaa\xbb\xcc' in buffer:
+                    # The byte right before the ack series is the state
+                    loc = buffer.find(b'\xaa\xbb\xcc')
                     print("Received acknowledgment: ", buffer)
                     state = buffer[loc - 1]
                     break
                 else:
                     # pass 
                     print("Waiting for acknowledgment got: ", buffer)
+            if time.time() - wait_for_ack_start_time > 5:  # Timeout after 5 seconds
+                print("Timeout waiting for acknowledgment, resending data.")
+                ser.write(interpolated_data.encode())
+                wait_for_ack_start_time = time.time()  # Reset the timer
 
         sent_data.append(interpolated_data.split(',') + [state])
 
@@ -154,6 +169,9 @@ def stream_csv_data(csv_file):
     plt.title('Serial Simulation with State Changes')
     plt.legend()
     plt.show()
+
+    # Save the plot as an image
+    plt.savefig('serial_simulation_plot.png')
 
 try:
     # Wait for the start command before streaming

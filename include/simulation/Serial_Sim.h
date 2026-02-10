@@ -160,10 +160,13 @@ private:
         return value;
     }
 
-    // Send ACK (0x06) alongside the current state to the serial port
+    // Send ACK alongside the current state to the serial port
     void ack(){
         serial->write(stateMachine->getState());
-        serial->write(0x06);
+        // Ack will be a series of 0xaa, 0xbb, 0xcc
+        serial->write(0xaa);
+        serial->write(0xbb);
+        serial->write(0xcc);
     }
 
 private:
