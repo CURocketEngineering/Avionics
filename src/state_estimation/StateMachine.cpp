@@ -46,7 +46,9 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Put the data saver into post-launch mode
                 dataSaver->launchDetected(fastLaunchDetector->getLaunchedTime());
             }
-            else if (launchDetector->isLaunched()) {
+            
+            // The FLD should always trigger before the LP, but we check for LP launch just in case
+            if (launchDetector->isLaunched()) {
                 // Change state to ascent
                 state = STATE_ASCENT;
 
