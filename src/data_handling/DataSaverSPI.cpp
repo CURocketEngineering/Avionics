@@ -133,7 +133,6 @@ void DataSaverSPI::clearPostLaunchMode() {
     
     uint8_t flag = POST_LAUNCH_FLAG_FALSE;
     flash->writeBuffer(POST_LAUNCH_FLAG_ADDRESS, &flag, sizeof(flag));
-    clearInternalState();
 }
 
 void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) { //NOLINT(readability-function-cognitive-complexity)
