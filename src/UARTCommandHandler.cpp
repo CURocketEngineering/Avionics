@@ -47,6 +47,11 @@ void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complex
         if (isBackspace_(c)) {
             handleBackspace_();
         } else if (isNewline_(c)) {
+            if (lastWasCR_){
+                lastWasCR_ = false; // Handle \r\n by ignoring the \n
+                continue;
+            }
+            lastWasCR_ = (c == '\r');
             handleNewline_();
         } else {
             handleChar_(c);

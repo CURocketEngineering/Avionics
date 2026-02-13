@@ -67,6 +67,8 @@ private:
     void handleBackspace_();
     void handleNewline_();
     void handleChar_(char c);
+
+    bool lastWasCR_ = false;  // Track if the last character was a carriage return for proper newline handling
 };
 
 #endif
