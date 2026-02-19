@@ -2,190 +2,118 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 
+constexpr int COMMAND_CHARS_ASCII_END = 31; // ASCII control characters end at 31, so we can ignore those in input
+
 
 CommandLine::CommandLine(Stream * UART) : UART(UART) {
 }
 
 void CommandLine::begin() {
     help();
-    UART->print("CL> "); 
+    UART->print(SHELL_PROMPT); 
 }
 
+static bool isBackspace_(char receivedChar) {
+    return receivedChar == static_cast<char>(AsciiKey::Backspace) ||
+           receivedChar == static_cast<char>(AsciiKey::Delete);
+}
 
-void CommandLine::readInput() { //NOLINT(readability-function-cognitive-complexity)
+static bool isNewline_(char receivedChar) {
+    return receivedChar == '\n' || receivedChar == '\r';
+}
 
+namespace {
+// Small helper: split on spaces/tabs (no quoting support)
+// Parses a line into a command and arguments, e.g. "foo bar baz" -> cmd="foo", args={"bar", "baz"}
+void tokenizeWhitespace(const std::string& line,
+                              std::string& outCmd,
+                              std::queue<std::string>& outArgs)
+{
+    outCmd.clear();
+    while (!outArgs.empty()) {
+        outArgs.pop();
+    }
+
+    std::string token;
+    auto flush = [&]() {
+        if (token.empty()) {return;}
+        if (outCmd.empty()) {outCmd = token;}
+        else {outArgs.push(token);}
+        token.clear();
+    };
+
+    for (char ch : line) {
+        if (ch == ' ' || ch == '\t') {flush();}
+        else {token += ch;}
+    }
+    flush();
+}
+} // namespace
+
+void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complexity)
     while (UART->available() > 0) {
-        char incomingByte = static_cast<char>(UART->read()); 
+        const char receivedChar = static_cast<char>(UART->read());
 
-        // Handle the Up Arrow key (ASCII 27 + [ + ([A] || [B]))
-        if (incomingByte == static_cast<char>(AsciiKey::Escape)) {  // ASCII ESC (start of escape sequence)
-            // Read the escape sequence buffer
-            delay(2);
-            incomingByte = static_cast<char>(UART->read());  
-            if(incomingByte == '[')
-            {
-                delay(2);
-                incomingByte = static_cast<char>(UART->read()); 
-                // Check if the full sequence matches an arrow key
-                if (incomingByte == 'A') {
-                    // Up Arrow
-                    if (historyIndex > 0) {
-                        historyIndex--;
-                    }
-                    displayCommandFromHistory();
-                } else if (incomingByte == 'B') {
-                    // Down Arrow
-                    if (historyIndex < MAX_HISTORY) {
-                        historyIndex++;
-                    }
-                    displayCommandFromHistory();
-                } else {
-                    // Handle other escape sequences or ignore unknown ones
-                    UART->println("Unknown escape sequence: ");
-                }
+        if (isBackspace_(receivedChar)) {
+            handleBackspace_();
+        } else if (isNewline_(receivedChar)) {
+            if (lastWasCR_){
+                lastWasCR_ = false; // Handle \r\n by ignoring the \n
+                continue;
             }
-        }
-        else if (incomingByte == static_cast<char>(AsciiKey::Backspace) || incomingByte == static_cast<char>(AsciiKey::Delete))  // 8 = Backspace, 127 = Delete
-        { 
-            if (!fullLine.empty()) {
-                fullLine.pop_back();  // Remove the last character from the buffer
-                UART->print("\b \b");  // Move cursor back, print a space, and move cursor back again
-                
-                if(!inputBuffer.empty()){
-                    inputBuffer.pop_back(); 
-                }
-                //TODO(mvari) FIX: If you back space on a history command it will not erase
-                //the command or argument buffer, so if you press enter it will
-                // return prevous commmand
-            }
-        }
-        else if (incomingByte == ' ')
-        {
-            UART->print(incomingByte);
-            fullLine += incomingByte;
-
-            if (!inputBuffer.empty()) {
-                if (!isCommandParsed) {
-                    command = inputBuffer;
-                    isCommandParsed = true;
-                } else {
-                    if(argSize[historyIndex] < MAX_ARGUMENTS){
-                        argumentQueue.push(inputBuffer);  // Push subsequent words as arguments
-                        argSize[historyIndex]++;
-                    }
-                }
-            }
-            inputBuffer.clear();
-        }
-        else if (incomingByte == '\n' || incomingByte == '\r') 
-        {
-            UART->println();
-            int idx= 0;
-            // If it's a newline, process the current buffer and add to history
-            if (!inputBuffer.empty()) {
-                if(isCommandParsed || !command.empty()) //NOLINT(bugprone-branch-clone)
-                {   
-                    argumentQueue.push(inputBuffer);
-                    argSize[historyIndex]++;
-                }
-                else
-                {
-                    command = inputBuffer; // Set the command based on the input buffer
-                }
-            }
-
-            if(!command.empty() || !argumentQueue.empty())
-            {
-                executeCommand(command, argumentQueue);
-                commandHistory[historyIndex] = command;
-                fullLineHistory[historyIndex] = fullLine;
-                
-                
-                while (!argumentQueue.empty()) { //NOLINT(altera-unroll-loops)
-                    argumentHistory[historyIndex][idx] = argumentQueue.front();
-                    argumentQueue.pop();  // Clear the argument queue
-                    idx++;
-                }
-                historyIndex++;
-            }
-
-            inputBuffer.clear();  // Clear the buffer for the next input
-            command.clear();
-            fullLine.clear();
-            isCommandParsed = false;
-            UART->print("CL> "); 
-
-            
+            lastWasCR_ = (receivedChar == '\r');
+            handleNewline_();
         } else {
-            // Add the incoming byte to the buffer, and update the UART display
-            if (inputBuffer.length() < UART_BUFFER_SIZE - 1) {  // Ensure we don't overflow the buffer
-                inputBuffer += incomingByte;
-                fullLine += incomingByte;
-                UART->print(incomingByte);  // Echo the character to the terminal
-
-            } else {
-                UART->println("Buffer overflow, input ignored.");
-            }
+            handleChar_(receivedChar);
         }
-
     }
 }
 
-void CommandLine::displayCommandFromHistory() {
+void CommandLine::handleBackspace_() {
+    if (fullLine.empty()) {return;}
+    fullLine.pop_back();
+    UART->print("\b \b"); // erase last char on terminal
+}
 
-    if (historyIndex >= MAX_HISTORY) {
-        // Reset the history index to 0 (wrap around) and clear the history buffer
-        historyIndex = 0;  // Reset to the beginning of history
+void CommandLine::handleNewline_() {
+    UART->println();
 
-        // Optionally clear the history buffer or handle how you want to reset the entries
-        // For example, clearing all argumentHistory buffers:
-        #pragma unroll
-        for (int i = 0; i < MAX_HISTORY; i++) {
+    std::string line = fullLine;
+    fullLine.clear();
 
-            #pragma unroll
-            for (int idx = 0; idx < MAX_ARGUMENTS; idx++) {
-                argumentHistory[i][idx] = "";
-            }
-            commandHistory[i] = "";
-            fullLineHistory[i] = "";
-        }
+    trimSpaces(line);
+    if (line.empty()) {
+        UART->print(SHELL_PROMPT);
+        return;
     }
 
-    if (historyIndex >= 0 && historyIndex < MAX_HISTORY) {
-        // Clear current input and display the previous/next command from history
-        inputBuffer.clear(); 
-        command.clear();
+    std::string cmd = {""};
+    std::queue<std::string> args = {}; //NOLINT(cppcoreguidelines-init-variables)
+    tokenizeWhitespace(line, cmd, args);
+
+    if (!cmd.empty()) {
+        executeCommand(cmd, args);
+    }
+
+    UART->print(SHELL_PROMPT);
+}
+
+void CommandLine::handleChar_(char receivedChar) {
+    // Optional: ignore other control chars (keep tab if you want)
+    if (static_cast<unsigned char>(receivedChar) <= COMMAND_CHARS_ASCII_END && receivedChar != '\t') {return;}
+
+    if (fullLine.length() >= UART_BUFFER_SIZE - 1) {
+        UART->println();
+        UART->println("Buffer overflow, input ignored.");
         fullLine.clear();
+        UART->print(SHELL_PROMPT);
+        return;
+    }
 
-        #pragma unroll
-        while (!argumentQueue.empty()) {
-            argumentQueue.front();
-            argumentQueue.pop();  
-        }
-
-        fullLine = fullLineHistory[historyIndex];
-        command = commandHistory[historyIndex];
-
-        #pragma unroll
-        for (int idx = 0; idx < argSize[historyIndex]; idx++)  {
-            argumentQueue.push(argumentHistory[historyIndex][idx]);
-        }
-
-        UART->print("\r");  // Move the cursor to the beginning of the line
-
-        #pragma unroll
-        for(int len = 0; len < MAX_ROW_LENGTH; len++){
-            UART->print(" ");  // Clear the current line (clear any previous characters)
-        }
-
-
-        UART->print("\r");  // Move back to the beginning of the line
-        UART->print("CL> "); 
-        UART->print(fullLine.c_str());  // Print the command from history
-    } 
-
-
+    fullLine += receivedChar;
+    UART->print(receivedChar);
 }
+
 
 // Add a command with its long name, short name, and function pointer
 void CommandLine::addCommand(const std::string& longName, const std::string& shortName, std::function<void(std::queue<std::string>, std::string&)> funcPtr) { //NOLINT(readability-convert-member-functions-to-static)
@@ -210,8 +138,9 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
         }
     }
 
-   UART->println("Command not found");
-
+    // Print the name of the command that was not found, and suggest using "help" to see available commands
+    UART->println("Command not found: " + String(command.c_str()));
+    UART->println("Type 'help' or '?' to see available commands.");
 }
 
 // Help function to list all commands with their long and short names

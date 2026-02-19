@@ -8,6 +8,8 @@
 
 #include "ArduinoHAL.h"
 
+#define SHELL_PROMPT "AS> "  // AS = Avionics Shell
+
 enum class AsciiKey : uint8_t {
     Escape      = 27,
     UpArrow     = 65,
@@ -17,7 +19,6 @@ enum class AsciiKey : uint8_t {
 };
 
 constexpr int UART_BUFFER_SIZE = 128;
-constexpr int MAX_HISTORY = 20;
 constexpr int MAX_ARGUMENTS = 5;
 constexpr int MAX_ROW_LENGTH = 40;
 
@@ -55,23 +56,16 @@ private:
 
     // Class member variables for buffering and history
     std::string fullLine = {""}; 
-    std::string inputBuffer = "";  // Current input buffer
-    std::string argBuffer = "";
-    std::string command = "";
-    int historyIndex = 0;  // Keeps track of the current position in the command history
-    std::queue<std::string> argumentQueue{};
-    bool isCommandParsed = false;
-
-    std::array<std::string, MAX_HISTORY> fullLineHistory = {};
-    std::array<std::string, MAX_HISTORY> commandHistory = {};
-    std::array<std::array<std::string, MAX_ARGUMENTS>, MAX_HISTORY> argumentHistory = {};
-    std::array<int, MAX_HISTORY> argSize = {};
 
 
     void help();
-    void displayCommandFromHistory();
-    std::string combineArguments(std::queue<std::string> arguments);
     void trimSpaces(std::string& str);
+
+    void handleBackspace_();
+    void handleNewline_();
+    void handleChar_(char receivedChar);
+
+    bool lastWasCR_ = false;  // Track if the last character was a carriage return for proper newline handling
 };
 
 #endif
