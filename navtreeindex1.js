@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classAdafruit__LIS3MDL.html#afb871be0922972307ba3971ec8ee390b":[5,0,3,2],
 "classAdafruit__LSM6DSOX.html":[5,0,4],
 "classAdafruit__LSM6DSOX.html#a172840ced6b36c308c5f773cbcec4966":[5,0,4,2],
 "classAdafruit__LSM6DSOX.html#a6939cf3339eb89f1a0e049b3fa05ecec":[5,0,4,6],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "functions_d.html":[5,3,0,3],
 "functions_e.html":[5,3,0,4],
 "functions_f.html":[5,3,0,5],
-"functions_func.html":[5,3,1],
-"functions_func.html":[5,3,1,0]
+"functions_func.html":[5,3,1]
 };
