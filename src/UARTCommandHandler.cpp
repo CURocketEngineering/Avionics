@@ -138,8 +138,9 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
         }
     }
 
-   UART->println("Command not found");
-
+    // Print the name of the command that was not found, and suggest using "help" to see available commands
+    UART->println("Command not found: " + String(command.c_str()));
+    UART->println("Type 'help' or '?' to see available commands.");
 }
 
 // Help function to list all commands with their long and short names
