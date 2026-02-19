@@ -61,12 +61,9 @@ private:
     void help();
     void trimSpaces(std::string& str);
 
-
-    bool isBackspace_(char c) const;
-    bool isNewline_(char c) const;
     void handleBackspace_();
     void handleNewline_();
-    void handleChar_(char c);
+    void handleChar_(char receivedChar);
 
     bool lastWasCR_ = false;  // Track if the last character was a carriage return for proper newline handling
 };

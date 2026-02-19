@@ -2,6 +2,8 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 
+constexpr int COMMAND_CHARS_ASCII_END = 31; // ASCII control characters end at 31, so we can ignore those in input
+
 
 CommandLine::CommandLine(Stream * UART) : UART(UART) {
 }
@@ -11,30 +13,38 @@ void CommandLine::begin() {
     UART->print(SHELL_PROMPT); 
 }
 
+static bool isBackspace_(char receivedChar) {
+    return receivedChar == static_cast<char>(AsciiKey::Backspace) ||
+           receivedChar == static_cast<char>(AsciiKey::Delete);
+}
 
-// ---- CommandLine.cpp ----
+static bool isNewline_(char receivedChar) {
+    return receivedChar == '\n' || receivedChar == '\r';
+}
 
 namespace {
 // Small helper: split on spaces/tabs (no quoting support)
 // Parses a line into a command and arguments, e.g. "foo bar baz" -> cmd="foo", args={"bar", "baz"}
-static void tokenizeWhitespace(const std::string& line,
+void tokenizeWhitespace(const std::string& line,
                               std::string& outCmd,
                               std::queue<std::string>& outArgs)
 {
     outCmd.clear();
-    while (!outArgs.empty()) outArgs.pop();
+    while (!outArgs.empty()) {
+        outArgs.pop();
+    }
 
     std::string token;
     auto flush = [&]() {
-        if (token.empty()) return;
-        if (outCmd.empty()) outCmd = token;
-        else outArgs.push(token);
+        if (token.empty()) {return;}
+        if (outCmd.empty()) {outCmd = token;}
+        else {outArgs.push(token);}
         token.clear();
     };
 
     for (char ch : line) {
-        if (ch == ' ' || ch == '\t') flush();
-        else token += ch;
+        if (ch == ' ' || ch == '\t') {flush();}
+        else {token += ch;}
     }
     flush();
 }
@@ -42,34 +52,25 @@ static void tokenizeWhitespace(const std::string& line,
 
 void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complexity)
     while (UART->available() > 0) {
-        const char c = static_cast<char>(UART->read());
+        const char receivedChar = static_cast<char>(UART->read());
 
-        if (isBackspace_(c)) {
+        if (isBackspace_(receivedChar)) {
             handleBackspace_();
-        } else if (isNewline_(c)) {
+        } else if (isNewline_(receivedChar)) {
             if (lastWasCR_){
                 lastWasCR_ = false; // Handle \r\n by ignoring the \n
                 continue;
             }
-            lastWasCR_ = (c == '\r');
+            lastWasCR_ = (receivedChar == '\r');
             handleNewline_();
         } else {
-            handleChar_(c);
+            handleChar_(receivedChar);
         }
     }
 }
 
-bool CommandLine::isBackspace_(char c) const {
-    return c == static_cast<char>(AsciiKey::Backspace) ||
-           c == static_cast<char>(AsciiKey::Delete);
-}
-
-bool CommandLine::isNewline_(char c) const {
-    return c == '\n' || c == '\r';
-}
-
 void CommandLine::handleBackspace_() {
-    if (fullLine.empty()) return;
+    if (fullLine.empty()) {return;}
     fullLine.pop_back();
     UART->print("\b \b"); // erase last char on terminal
 }
@@ -86,8 +87,8 @@ void CommandLine::handleNewline_() {
         return;
     }
 
-    std::string cmd;
-    std::queue<std::string> args;
+    std::string cmd = {""};
+    std::queue<std::string> args = {}; //NOLINT(cppcoreguidelines-init-variables)
     tokenizeWhitespace(line, cmd, args);
 
     if (!cmd.empty()) {
@@ -97,9 +98,9 @@ void CommandLine::handleNewline_() {
     UART->print(SHELL_PROMPT);
 }
 
-void CommandLine::handleChar_(char c) {
+void CommandLine::handleChar_(char receivedChar) {
     // Optional: ignore other control chars (keep tab if you want)
-    if (static_cast<unsigned char>(c) < 0x20 && c != '\t') return;
+    if (static_cast<unsigned char>(receivedChar) <= COMMAND_CHARS_ASCII_END && receivedChar != '\t') {return;}
 
     if (fullLine.length() >= UART_BUFFER_SIZE - 1) {
         UART->println();
@@ -109,8 +110,8 @@ void CommandLine::handleChar_(char c) {
         return;
     }
 
-    fullLine += c;
-    UART->print(c);
+    fullLine += receivedChar;
+    UART->print(receivedChar);
 }
 
 

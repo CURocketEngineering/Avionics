@@ -55,7 +55,7 @@ inline uint32_t analogRead(int pin) {
         return static_cast<uint32_t>((1 << 12) - 1) / 2; // Return mid-scale value for a 12-bit ADC (2047)
     }
     if (pin == HAL_LOW_VOLTAGE_ADC_PIN) {
-        return 0.1; // Return zero for low voltage
+        return static_cast<uint32_t>(1 << 12) / 10; // Return a very low value (4095 / 10 = 409)
     }
     return 0; // Default dummy value for other pins
 }
