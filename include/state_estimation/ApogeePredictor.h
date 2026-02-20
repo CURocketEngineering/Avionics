@@ -5,6 +5,7 @@
 
 #include "state_estimation/VerticalVelocityEstimator.h"
 
+
 /**
  * @brief Predicts time‑to‑apogee and altitude‑at‑apogee from real‑time kinematics.
  *
@@ -42,12 +43,16 @@ public:
 
     void poly_update();
 
+    void analytic_update();
+
     // ----- Accessors -----
     [[nodiscard]] bool     isPredictionValid()            const;
     [[nodiscard]] float    getTimeToApogee_s()            const;
     [[nodiscard]] uint32_t getPredictedApogeeTimestamp_ms() const;
     [[nodiscard]] float    getPredictedApogeeAltitude_m() const;
     [[nodiscard]] float    getFilteredDeceleration()      const;
+    [[nodiscard]] float    getdragCoefficient()      const;
+
 
 private:
     const VerticalVelocityEstimator& vve_;
@@ -61,6 +66,7 @@ private:
     float    tToApogee_;    ///< Time until apogee (seconds)
     uint32_t predApogeeTs_; ///< Timestamp of predicted apogee (ms)
     float    predApogeeAlt_;///< Predicted altitude at apogee (m)
+    float k_ = 0.0025F;     ///< Drag coefficient
 
     // Bookkeeping
     uint32_t lastTs_;       ///< Last timestamp received
