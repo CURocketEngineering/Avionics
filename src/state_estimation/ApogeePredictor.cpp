@@ -172,51 +172,66 @@ void ApogeePredictor::poly_update() {
     //        currentTimestamp_ms, altitude_m, velocity_ms, acceleration_ms2, apogeeRemaining_m, delta_h_simple);
 }
 
+
 void ApogeePredictor::analytic_update()
 {
     //gets the gravity constant and the current velocity and altitude of the rocket
-    const float g = 9.80665F;
-    float v = vve_.getEstimatedVelocity();
-    float h = vve_.getEstimatedAltitude();
+    const float gravity = 9.80665F;
+    const float velocity = vve_.getEstimatedVelocity();
+    const float height = vve_.getEstimatedAltitude();
+
+
+    //variables for analytical calculation
+    const float kVelocityEpsilon = 0.001F;
+    const float kVelocityScaleForAlpha = 150.0F;
+    const float kAlphaMin = 0.02F;
+    const float kAlphaMax = 0.25F;
+    const float kMinDragCoefficient = 0.00001F;
+    const float kApogeeFactor = 0.5F;
+    const float kBallisticDenominator = 2.0F;
+
 
     //if the velocity is less than or equal to zero, the rocket has already reach apogee and the apogee is the current altitude
-    if (v <= 0.0F)
+    if (velocity <= 0.0F)
     {
-        predApogeeAlt_ = h;
+        predApogeeAlt_ = height;
         valid_ = true;
         return;
     }
 
     //gets the current acceleration of the rocket
-    float a = vve_.getInertialVerticalAcceleration();
+    const float acceleration = vve_.getInertialVerticalAcceleration();
 
     //calculates the measured drag coefficient
-    float kMeasured = -(a + g) / (v*v + 0.001F);
+const float kMeasured = -(acceleration + gravity) /
+    (velocity * velocity + kVelocityEpsilon);
 
     if (kMeasured > 0.0F && kMeasured < 1.0F)
     {
-        float alpha = clamp(std::fabs(v) / 150.0F, 0.02F, 0.25F);
+        float alpha = clamp(std::fabs(velocity) / kVelocityScaleForAlpha,
+                    kAlphaMin,
+                    kAlphaMax);
         k_ = (1.0F - alpha) * k_ + alpha * kMeasured;
     }
 
     // Analytic apogee calculation
     float apogee = 0.0F;
 
-    if (k_ > 0.00001F)
+    if (k_ > kMinDragCoefficient)
     {
-        apogee = h + (0.5F / k_) *
-            logf((g + k_ * v * v) / g);
+        apogee = height + (kApogeeFactor / k_) *
+        logf((gravity + k_ * velocity * velocity) / gravity);
     }
     else
     {
         // fallback if drag unknown
-        apogee = h + (v * v) / (2.0F * g);
+        apogee = height + (velocity * velocity) /
+        (kBallisticDenominator * gravity);
     }
 
     predApogeeAlt_ = apogee;
     valid_ = true;
 }
-
 
 // Simple getters
 bool ApogeePredictor::isPredictionValid() const { return valid_; }
