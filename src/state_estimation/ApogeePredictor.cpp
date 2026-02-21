@@ -195,7 +195,7 @@ void ApogeePredictor::analytic_update()
 
     if (kMeasured > 0.0F && kMeasured < 1.0F)
     {
-        float alpha = clamp(fabs(v) / 150.0F, 0.02F, 0.25F);
+        float alpha = clamp(std::fabs(v) / 150.0F, 0.02F, 0.25F);
         k_ = (1.0F - alpha) * k_ + alpha * kMeasured;
     }
 
