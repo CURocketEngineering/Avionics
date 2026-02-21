@@ -15,8 +15,11 @@ std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
     return 0U;
 }
 
-bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd) {
-    return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity;
+// Checks if we have room in the packet and the TX buffer to add the next stream's data
+// If we try to send data when the TX buffer is full, the program will block until there is room (HardwareSerial::write() behavior). 
+bool Telemetry::hasRoom(std::size_t nextIndex, std::size_t bytesToAdd) {
+    size_t availableOnTXBuffer = rfdSerialConnection.availableForWrite();
+    return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity && availableOnTXBuffer >= (nextIndex + bytesToAdd);
 }
 
 void Telemetry::preparePacket(std::uint32_t timestamp) {
@@ -77,6 +80,8 @@ void Telemetry::addEndMarker() {
 bool Telemetry::tick(uint32_t currentTime) {
     bool sendingPacketThisTick = false;
 
+    size_t availableRoomOnTXBuffer = rfdSerialConnection.availableForWrite();
+
     for (std::size_t i = 0; i < streamCount; i++) {
         // i is safe because streamCount comes from the array passed in by the client
         if (streams[i]->shouldBeSent(currentTime)) { // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -91,7 +96,7 @@ bool Telemetry::tick(uint32_t currentTime) {
             const std::size_t payloadBytes = bytesNeededForSSD(streams[i]);  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             const std::size_t totalBytesIfAdded = payloadBytes + TelemetryFmt::kEndMarkerBytes;
 
-            // Only add if it fits (payload + end marker).
+            // Only add if it fits (payload + end marker) and we have room in the TX buffer to send the packet this tick if we add it.
             if (hasRoom(nextEmptyPacketIndex, totalBytesIfAdded)) {
                 addSSDToPacket(streams[i]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
                 streams[i]->markWasSent(currentTime); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
