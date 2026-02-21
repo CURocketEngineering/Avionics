@@ -199,7 +199,7 @@ void ApogeePredictor::analytic_update()
         k_ = (1.0F - alpha) * k_ + alpha * kMeasured;
     }
 
-    // Analytic apogee calculation (instant, no simulation)
+    // Analytic apogee calculation
     float apogee = 0.0F;
 
     if (k_ > 0.00001F)
