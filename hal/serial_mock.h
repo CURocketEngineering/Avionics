@@ -122,4 +122,8 @@ public:
     void println(const char* message) {
         std::cout << message << std::endl;
     }
+
+    size_t availableForWrite() {
+        return 64; // Simulate a TX buffer with 64 bytes of available space
+    }
 };
