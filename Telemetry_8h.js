@@ -11,6 +11,7 @@ var Telemetry_8h =
     [ "TelemetryFmt::kEndMarkerBytes", "namespaceTelemetryFmt.html#ac237c2ad3d1e9be17c0ecd47271a2107", null ],
     [ "TelemetryFmt::kHeaderBytes", "namespaceTelemetryFmt.html#ae02bbf7c006f331122adaa61570916dd", null ],
     [ "TelemetryFmt::kPacketCapacity", "namespaceTelemetryFmt.html#a52852cfa20b53926ef83ba0cb61865da", null ],
+    [ "TelemetryFmt::kPacketCounterIndex", "namespaceTelemetryFmt.html#a94d12dc13ea46594438c858089d8443b", null ],
     [ "TelemetryFmt::kStartByteIndex", "namespaceTelemetryFmt.html#a22d3f55e65825d8c235819f7bf0616f1", null ],
     [ "TelemetryFmt::kStartByteValue", "namespaceTelemetryFmt.html#a8ad6ca337b45c48d02775817f474a191", null ],
     [ "TelemetryFmt::kSyncZeros", "namespaceTelemetryFmt.html#abb7e7b425129ae70337299d22161a4c2", null ],

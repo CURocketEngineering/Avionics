@@ -108,7 +108,8 @@ Variables</h2></td></tr>
 <tr class="memitem:af5cd7e40f102d8e27b60bf5e4d3c9b7d" id="r_af5cd7e40f102d8e27b60bf5e4d3c9b7d"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a> = 4</td></tr>
 <tr class="memitem:a22d3f55e65825d8c235819f7bf0616f1" id="r_a22d3f55e65825d8c235819f7bf0616f1"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a22d3f55e65825d8c235819f7bf0616f1">kStartByteIndex</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a></td></tr>
 <tr class="memitem:af398e9a4c4763876f2c2b3ec3b4e2431" id="r_af398e9a4c4763876f2c2b3ec3b4e2431"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> = <a class="el" href="#a22d3f55e65825d8c235819f7bf0616f1">kStartByteIndex</a> + 1</td></tr>
-<tr class="memitem:ae02bbf7c006f331122adaa61570916dd" id="r_ae02bbf7c006f331122adaa61570916dd"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ae02bbf7c006f331122adaa61570916dd">kHeaderBytes</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1 + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td></tr>
+<tr class="memitem:a94d12dc13ea46594438c858089d8443b" id="r_a94d12dc13ea46594438c858089d8443b"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a94d12dc13ea46594438c858089d8443b">kPacketCounterIndex</a> = <a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td></tr>
+<tr class="memitem:ae02bbf7c006f331122adaa61570916dd" id="r_ae02bbf7c006f331122adaa61570916dd"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ae02bbf7c006f331122adaa61570916dd">kHeaderBytes</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1 + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td></tr>
 <tr class="memitem:ac237c2ad3d1e9be17c0ecd47271a2107" id="r_ac237c2ad3d1e9be17c0ecd47271a2107"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ac237c2ad3d1e9be17c0ecd47271a2107">kEndMarkerBytes</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1</td></tr>
 <tr class="memitem:a8ad6ca337b45c48d02775817f474a191" id="r_a8ad6ca337b45c48d02775817f474a191"><td class="memItemLeft">constexpr std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a8ad6ca337b45c48d02775817f474a191">kStartByteValue</a> = 51</td></tr>
 <tr class="memitem:ae4a351f87c120c47f0eefc8244014dcd" id="r_ae4a351f87c120c47f0eefc8244014dcd"><td class="memItemLeft">constexpr std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#ae4a351f87c120c47f0eefc8244014dcd">kEndByteValue</a> = 52</td></tr>
@@ -143,7 +144,7 @@ Variables</h2></td></tr>
 <p>Convert frequency (Hz) to period (ms), using integer math. </p>
 <p>Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00079">79</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00080">80</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -177,7 +178,7 @@ Variables</h2></td></tr>
 <p>Write a 32-bit value in big-endian order to dst[0..3]. </p>
 <p>Assumptions used by float packing. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00065">65</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00066">66</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -202,7 +203,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00056">56</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00057">57</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -226,7 +227,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00055">55</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00056">56</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -251,7 +252,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>32-bit helper constants </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00054">54</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00055">55</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -276,7 +277,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>End-of-packet marker byte value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00051">51</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00052">52</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -301,7 +302,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>End marker layout: 3 zeros followed by an end byte. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00045">45</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00046">46</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +316,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kHeaderBytes = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1 + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td>
+          <td class="memname">std::size_t TelemetryFmt::kHeaderBytes = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1 + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td>
         </tr>
       </table>
   </td>
@@ -325,7 +326,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00042">42</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00043">43</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -351,6 +352,30 @@ Variables</h2></td></tr>
 <p>Maximum packet size (bytes). Must match your radio/modem configuration. </p>
 
 <p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00031">31</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
+<a id="a94d12dc13ea46594438c858089d8443b" name="a94d12dc13ea46594438c858089d8443b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94d12dc13ea46594438c858089d8443b">&#9670;&#160;</a></span>kPacketCounterIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t TelemetryFmt::kPacketCounterIndex = <a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00042">42</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -400,7 +425,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Start-of-packet marker byte value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00048">48</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00049">49</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
