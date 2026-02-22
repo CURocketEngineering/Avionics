@@ -1,6 +1,8 @@
 var classApogeePredictor =
 [
     [ "ApogeePredictor", "classApogeePredictor.html#a4c7e74c92f9d7aba8e2eeee5bb405ebc", null ],
+    [ "analytic_update", "classApogeePredictor.html#a45238168e4c3d50aed1357e5d912254a", null ],
+    [ "getdragCoefficient", "classApogeePredictor.html#a6ef3bfb35c02e8cc24d08835de317bea", null ],
     [ "getFilteredDeceleration", "classApogeePredictor.html#ae7779f61c4dac1880a0cd764503e31d0", null ],
     [ "getPredictedApogeeAltitude_m", "classApogeePredictor.html#a01b8b22cc0b252900d98299484b0741d", null ],
     [ "getPredictedApogeeTimestamp_ms", "classApogeePredictor.html#a3ab0badaced6a6d8313dca8abb815103", null ],

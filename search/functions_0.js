@@ -7,8 +7,9 @@ var searchData=
   ['adafruit_5fspiflash_4',['Adafruit_SPIFlash',['../classAdafruit__SPIFlash.html#a993575793e5e7c83e33254222b3ffe9d',1,'Adafruit_SPIFlash']]],
   ['addcommand_5',['addCommand',['../classCommandLine.html#a73c1b4e14f70f7e145f2c8c7971f57c2',1,'CommandLine']]],
   ['adddata_6',['addData',['../classSensorDataHandler.html#ad3849ff0650e855f85700eca070cb335',1,'SensorDataHandler']]],
-  ['apogeedetector_7',['ApogeeDetector',['../classApogeeDetector.html#a0ccaeba723e9ec1d7469e1e3c7a68b0a',1,'ApogeeDetector::ApogeeDetector(float apogeeThreshold_m)'],['../classApogeeDetector.html#ae037836551355b7c8125f7bb8615b785',1,'ApogeeDetector::ApogeeDetector()']]],
-  ['apogeepredictor_8',['ApogeePredictor',['../classApogeePredictor.html#a4c7e74c92f9d7aba8e2eeee5bb405ebc',1,'ApogeePredictor']]],
-  ['assertsavedatapointcalledwith_9',['assertSaveDataPointCalledWith',['../classDataSaverMock.html#a0738da16e49b142c8136b8d87ecb77f9',1,'DataSaverMock']]],
-  ['available_10',['available',['../classStream.html#a4dcdea71acf9df53627cde6cf909c176',1,'Stream']]]
+  ['analytic_5fupdate_7',['analytic_update',['../classApogeePredictor.html#a45238168e4c3d50aed1357e5d912254a',1,'ApogeePredictor']]],
+  ['apogeedetector_8',['ApogeeDetector',['../classApogeeDetector.html#a0ccaeba723e9ec1d7469e1e3c7a68b0a',1,'ApogeeDetector::ApogeeDetector(float apogeeThreshold_m)'],['../classApogeeDetector.html#ae037836551355b7c8125f7bb8615b785',1,'ApogeeDetector::ApogeeDetector()']]],
+  ['apogeepredictor_9',['ApogeePredictor',['../classApogeePredictor.html#a4c7e74c92f9d7aba8e2eeee5bb405ebc',1,'ApogeePredictor']]],
+  ['assertsavedatapointcalledwith_10',['assertSaveDataPointCalledWith',['../classDataSaverMock.html#a0738da16e49b142c8136b8d87ecb77f9',1,'DataSaverMock']]],
+  ['available_11',['available',['../classStream.html#a4dcdea71acf9df53627cde6cf909c176',1,'Stream']]]
 ];
