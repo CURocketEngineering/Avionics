@@ -66,7 +66,7 @@ private:
     float    tToApogee_;    ///< Time until apogee (seconds)
     uint32_t predApogeeTs_; ///< Timestamp of predicted apogee (ms)
     float    predApogeeAlt_;///< Predicted altitude at apogee (m)
-    float k_ = 0.0025F;     ///< Drag coefficient
+    float currentDragCoefficient = 0.0025F;     ///< Drag coefficient
 
     // Bookkeeping
     uint32_t lastTs_;       ///< Last timestamp received

@@ -211,16 +211,16 @@ const float kMeasured = -(acceleration + gravity) /
         float alpha = clamp(std::fabs(velocity) / kVelocityScaleForAlpha,
                     kAlphaMin,
                     kAlphaMax);
-        k_ = (1.0F - alpha) * k_ + alpha * kMeasured;
+        currentDragCoefficient = (1.0F - alpha) * currentDragCoefficient + alpha * kMeasured;
     }
 
     // Analytic apogee calculation
     float apogee = 0.0F;
 
-    if (k_ > kMinDragCoefficient)
+    if (currentDragCoefficient > kMinDragCoefficient)
     {
-        apogee = height + (kApogeeFactor / k_) *
-        logf((gravity + k_ * velocity * velocity) / gravity);
+        apogee = height + (kApogeeFactor / currentDragCoefficient) *
+        logf((gravity + currentDragCoefficient * velocity * velocity) / gravity);
     }
     else
     {
@@ -253,5 +253,5 @@ float ApogeePredictor::getFilteredDeceleration() const {
 }
 
 float ApogeePredictor::getdragCoefficient() const {
-    return k_;
+    return currentDragCoefficient;
 }
