@@ -32,6 +32,9 @@ void Telemetry::preparePacket(std::uint32_t timestamp) {
     // Write the timestamp in big-endian format
     TelemetryFmt::write_u32_be(&this->packet[TelemetryFmt::kTimestampIndex], timestamp);
 
+    // Packet counter (4 bytes, big-endian)
+    TelemetryFmt::write_u32_be(&this->packet[TelemetryFmt::kPacketCounterIndex], packetCounter);
+
     nextEmptyPacketIndex = TelemetryFmt::kHeaderBytes;
 }
 
@@ -113,6 +116,9 @@ bool Telemetry::tick(uint32_t currentTime) {
             for (std::size_t i = 0; i < nextEmptyPacketIndex; i++) {
                 rfdSerialConnection.write(packet[i]);
             }
+
+            packetCounter++; //Increment after each successful send
+            
             return true;
         }
 
