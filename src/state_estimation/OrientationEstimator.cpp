@@ -1,7 +1,7 @@
 #include "state_estimation/OrientationEstimator.h"
 #include <cmath>
 
-void MadgwickAHRS::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag)
+void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag)
 {
     // Extract raw sensor data from DataPoints
     // accleration
@@ -104,7 +104,7 @@ void MadgwickAHRS::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriple
 }
 
 // Convert quaternion to Euler angles (roll, pitch, yaw) in degrees
-void MadgwickAHRS::getEuler(float &roll, float &pitch, float &yaw)
+void OrientationEstimator::getEuler(float &roll, float &pitch, float &yaw)
 {
     roll  = atan2(2*(q0*q1 + q2*q3),
                   1 - 2*(q1*q1 + q2*q2));
