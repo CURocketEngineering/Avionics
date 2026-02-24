@@ -1,7 +1,7 @@
 #include "state_estimation/OrientationEstimator.h"
 #include <cmath>
 
-void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag)
+void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, float dt_s)
 {
     // Extract raw sensor data from DataPoints
     // accleration
@@ -89,11 +89,11 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
     qDot3 = 0.5f * ( q0*gy - q1*gz + q3*gx) - beta * s2;
     qDot4 = 0.5f * ( q0*gz + q1*gy - q2*gx) - beta * s3;
 
-    // Integrate
-    q0 += qDot1 * (1.0f / sampleFreq);
-    q1 += qDot2 * (1.0f / sampleFreq);
-    q2 += qDot3 * (1.0f / sampleFreq);
-    q3 += qDot4 * (1.0f / sampleFreq);
+    // Integrate using actual dt
+    q0 += qDot1 * dt_s;
+    q1 += qDot2 * dt_s;
+    q2 += qDot3 * dt_s;
+    q3 += qDot4 * dt_s;
 
     // Normalize quaternion
     recipNorm = 1.0f / std::sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
@@ -104,7 +104,7 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
 }
 
 // Convert quaternion to Euler angles (roll, pitch, yaw) in degrees
-void OrientationEstimator::getEuler(float &roll, float &pitch, float &yaw)
+void OrientationEstimator::getEuler()
 {
     roll  = atan2(2*(q0*q1 + q2*q3),
                   1 - 2*(q1*q1 + q2*q2));
