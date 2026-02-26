@@ -17,12 +17,13 @@ public:
     float beta;             // algorithm gain
     float sampleFreq;       // sample frequency in Hz
     float roll, pitch, yaw; // Euler angles in degrees
+    uint32_t lastUpdateTime;   // timestamp of the last update in milliseconds
 
-    OrientationEstimator(float freq, float gain = 0.1f)
+    OrientationEstimator(float gain = 0.1f)
         : q0(1), q1(0), q2(0), q3(0),
-          beta(gain), sampleFreq(freq) {}
+          beta(gain), lastUpdateTime(0) {}
 
-    void update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, float dt);
+    void update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime);
 
     void getEuler();
 

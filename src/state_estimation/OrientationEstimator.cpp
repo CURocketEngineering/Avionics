@@ -1,8 +1,13 @@
 #include "state_estimation/OrientationEstimator.h"
 #include <cmath>
 
-void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, float dt_s)
+#define M_PI 3.14159265358979323846
+
+void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime)
 {
+     // Calculate time step in seconds
+     float dt_s = (lastUpdateTime > 0) ? (currentTime - lastUpdateTime) / 1000.0f : 0.04f; // Default to 40ms for first point
+
     // Extract raw sensor data from DataPoints
     // accleration
     float ax = accel.x.data;
@@ -101,6 +106,8 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
     q1 *= recipNorm;
     q2 *= recipNorm;
     q3 *= recipNorm;
+
+    getEuler();
 }
 
 // Convert quaternion to Euler angles (roll, pitch, yaw) in degrees
