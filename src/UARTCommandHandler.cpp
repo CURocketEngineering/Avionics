@@ -55,15 +55,17 @@ void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complex
         const char receivedChar = static_cast<char>(UART->read());
 
         if (isBackspace_(receivedChar)) {
+            lastWasCR_ = false;
             handleBackspace_();
         } else if (isNewline_(receivedChar)) {
-            if (lastWasCR_){
-                lastWasCR_ = false; // Handle \r\n by ignoring the \n
+            if (lastWasCR_ && receivedChar == '\n') {
+                lastWasCR_ = false; // Treat CRLF as a single newline event.
                 continue;
             }
             lastWasCR_ = (receivedChar == '\r');
             handleNewline_();
         } else {
+            lastWasCR_ = false;
             handleChar_(receivedChar);
         }
     }
