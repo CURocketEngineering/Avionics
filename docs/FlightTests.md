@@ -5,6 +5,10 @@
 
 The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **same rocket / flight-computer pair on the same day**.
 
+## Flight Data
+
+All of the flight data can be found on our OneDrive at [Flight Data](https://clemson.sharepoint.com/:f:/r/teams/ClemsonUniversityRocketEngineering/Shared%20Documents/CURE/Engineering%20Division/Flight%20Data?csf=1&web=1&e=lf1kod).
+
 ### Rocket Types
 | Code | Description                |
 |------|----------------------------|
@@ -24,6 +28,14 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
 ---
 
 ## Flight Test History (most recent first)
+
+* **CV-MA-2026-3-7-0 [MARTHA 1.4 CV Test Launch](https://github.com/CURocketEngineering/MARTHA-1.4/releases/tag/0.1.0):**
+  Flew on the CV vehicle to about 8,000 feet. Ran 5 Hz telemetry instead of 2 Hz as seen in **L2-MA-2025-11-09-0*. Orientation visualizer
+  worked better but still had major issues during flight (need to switch to on-board AHRS).
+  The RFD900xs lost connection after landing. The on-board RFD900x was configured to 
+  25 dbm rather than the 30 dbm used in the previous test. Utilized a set of 2 9V batteries to power the radio + MARTHA assembly. 
+  Both drogue and main deployed. We saw a signal integrity as low at 97% (received 97 of the last 100 packets) while sitting on the pad. 
+  MARTHA never lost power because the same flight ID was seen via telemetry after the rocket was recovered and the timestamp had not reset compared to at launch.
 
 * **L2-MA-2025-11-09-0 [MARTHA 1.3 B1 Sam's L2 Live Telemetry Test](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.2.0):**
   Flew on Sam's L2 test vehicle to about 1,300 feet. Live telemetry worked at 2 Hz with a live updating ground station dashboard and we could tell apogee and
