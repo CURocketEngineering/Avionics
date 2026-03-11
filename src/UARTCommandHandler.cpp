@@ -10,7 +10,6 @@ CommandLine::CommandLine(Stream * UART) : UART(UART) {
 
 void CommandLine::setUART(Stream* newUART) {
     UART = newUART;
-    UART->print(SHELL_PROMPT);
 }
 
 void CommandLine::begin() {
