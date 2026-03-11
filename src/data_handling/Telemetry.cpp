@@ -19,6 +19,28 @@ bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd) {
     return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity;
 }
 
+void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
+    if (inCommandMode) {
+        return;
+    }
+
+    while (rfdSerialConnection.available() > 0) {
+        const char receivedChar = static_cast<char>(rfdSerialConnection.read());
+
+        if (receivedChar == TelemetryFmt::kCommandEntryChar) {
+            ++commandEntryProgress;
+            if (commandEntryProgress >= TelemetryFmt::kCommandEntrySequenceLength) {
+                inCommandMode = true;
+                commandModeEnteredTimestamp = currentTimeMs;
+                commandModeLastInputTimestamp = currentTimeMs;
+                commandEntryProgress = 0;
+            }
+        } else {
+            commandEntryProgress = 0;
+        }
+    }
+}
+
 void Telemetry::preparePacket(std::uint32_t timestamp) {
     // This write the header of the packet with sync bytes, start byte, and timestamp.
     // Only clear what we own in the header (whole-packet clearing happens in setPacketToZero()).
@@ -78,6 +100,23 @@ void Telemetry::addEndMarker() {
 }
 
 bool Telemetry::tick(uint32_t currentTime) {
+    // Checks if we should put the telemetry into command mode
+    checkForRadioCommandSequence(currentTime);
+
+    // Checks if we should exit command mode due to inactivity.
+    if (inCommandMode) {
+        if ((currentTime - commandModeLastInputTimestamp) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
+            inCommandMode = false;
+            // Exited command mode, so continue with sending telemetry as normal below.
+        } else {
+            // staying in command mode, so don't send any telemetry data this tick
+            // to keep the radio free for command responses. 
+            return false;
+        }
+    }
+
+    // All the logic below is for building and sending telemetry packets
+
     bool sendingPacketThisTick = false;
 
     for (std::size_t i = 0; i < streamCount; i++) {

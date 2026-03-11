@@ -36,6 +36,7 @@ public:
     void readInput();
     void processCommand(const std::string& command);
     void begin();
+    void setUART(Stream* newUART);
 
     // Pass-through functions for the UART object
     void println(const std::string& message){

@@ -55,6 +55,9 @@ constexpr std::uint8_t kEndByteValue = 52;
 constexpr std::size_t kBytesIn32Bit = 4;
 constexpr unsigned kBitsPerByte = 8;
 constexpr std::uint8_t kAllOnesByte = 0xFF;
+constexpr std::uint32_t kCommandModeInactivityTimeoutMs = 10000;
+constexpr std::size_t kCommandEntrySequenceLength = 3;
+constexpr char kCommandEntryChar = 'c';
 
 /** Assumptions used by float packing. */
 static_assert(sizeof(std::uint32_t) == 4, "Expected 32-bit uint32_t");
@@ -211,6 +214,20 @@ public:
      */
     bool tick(std::uint32_t currentTimeMs);
 
+    /**
+     * @brief True if telemetry is currently paused for radio command mode.
+     */
+    bool isInCommandMode() const { return inCommandMode; }
+
+    /**
+     * @brief Refresh command mode inactivity timer after external input handling.
+     */
+    void noteCommandInput(std::uint32_t currentTimeMs) {
+        if (inCommandMode) {
+            commandModeLastInputTimestamp = currentTimeMs;
+        }
+    }
+
 private:
     // Packet building helpers
     void preparePacket(std::uint32_t timestamp);
@@ -218,6 +235,7 @@ private:
     void addSSDToPacket(SendableSensorData* ssd);
     void setPacketToZero();
     void addEndMarker();
+    void checkForRadioCommandSequence(std::uint32_t currentTimeMs);
 
     // Non-owning view of the stream list
     SendableSensorData* const* streams;
@@ -234,6 +252,12 @@ private:
     std::uint32_t packetCounter = 0;
     std::size_t nextEmptyPacketIndex;
     std::array<std::uint8_t, TelemetryFmt::kPacketCapacity> packet;
+
+    // Command mode handling
+    bool inCommandMode = false; 
+    std::uint32_t commandModeEnteredTimestamp = 0;
+    std::uint32_t commandModeLastInputTimestamp = 0;
+    std::size_t commandEntryProgress = 0;
 };
 
 #endif

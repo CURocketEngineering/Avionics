@@ -8,6 +8,11 @@ constexpr int COMMAND_CHARS_ASCII_END = 31; // ASCII control characters end at 3
 CommandLine::CommandLine(Stream * UART) : UART(UART) {
 }
 
+void CommandLine::setUART(Stream* newUART) {
+    UART = newUART;
+    UART->print(SHELL_PROMPT);
+}
+
 void CommandLine::begin() {
     help();
     UART->print(SHELL_PROMPT); 
