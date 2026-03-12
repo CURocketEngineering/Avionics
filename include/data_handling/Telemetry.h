@@ -239,7 +239,7 @@ private:
     void exitCommandMode();
     bool shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs);
     bool canFitStreamWithEndMarker(const SendableSensorData* ssd) const;
-    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& packetStarted, bool& payloadAdded);
+    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded);
     bool finalizeAndSendPacket();
 
     // Non-owning view of the stream list

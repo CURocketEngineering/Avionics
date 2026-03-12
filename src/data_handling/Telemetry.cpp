@@ -146,15 +146,9 @@ bool Telemetry::canFitStreamWithEndMarker(const SendableSensorData* ssd) const {
     return hasRoom(nextEmptyPacketIndex, payloadBytes + TelemetryFmt::kEndMarkerBytes);
 }
 
-void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& packetStarted, bool& payloadAdded) {
+void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded) {
     if (!stream->shouldBeSent(currentTimeMs)) {
         return;
-    }
-
-    if (!packetStarted) {
-        setPacketToZero();
-        preparePacket(currentTimeMs);
-        packetStarted = true;
     }
 
     if (!canFitStreamWithEndMarker(stream)) {
@@ -192,12 +186,14 @@ bool Telemetry::tick(uint32_t currentTime) {
         return false;
     }
 
-    bool packetStarted = false;
+    setPacketToZero();
+    preparePacket(currentTime);
+
     bool payloadAdded = false;
 
     for (std::size_t i = 0; i < streamCount; i++) {
         // i is safe because streamCount comes from the array passed in by the client
-        tryAppendStream(streams[i], currentTime, packetStarted, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        tryAppendStream(streams[i], currentTime, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
     if (!payloadAdded) {
