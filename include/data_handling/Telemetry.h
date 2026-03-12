@@ -7,9 +7,8 @@
 #include <cstring>
 
 #include "ArduinoHAL.h"
+#include "UARTCommandHandler.h"
 #include "data_handling/SensorDataHandler.h"
-
-class CommandLine;
 
 /**
  * @file Telemetry.h

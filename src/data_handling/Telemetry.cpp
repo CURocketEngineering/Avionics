@@ -1,6 +1,5 @@
 #include "data_handling/Telemetry.h"
 #include "ArduinoHAL.h"
-#include "UARTCommandHandler.h"
 #include <algorithm>
 #include <cstdint>
 
