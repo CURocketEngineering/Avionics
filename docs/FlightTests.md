@@ -48,7 +48,7 @@ All of the flight data can be found on our OneDrive at [Flight Data](https://cle
 
 - **CV-MA-2025-06-11-0 [MARTHA 1.3 B1 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**
   Flew on the competition vehicle for IREC 2025 to about 9900 feet. It lost power at drogue deployment. It flew the same software as
-  **AA-MA-2025-04-13-0**, including apogee detection, which performed poorly in the same way as before (underestimating throughout the flight).
+  **AA-MA-2025-04-13-0**, including apogee prediction, which performed poorly in the same way as before (underestimating throughout the flight).
   The main chute was deployed at apogee; drogue was never deployed.
   Launch was detected 0.19 seconds late, and apogee was detected 0.55 seconds late. Reported apogee was 9917 feet.
   Both boards were powered at 3:00 AM and then launched at around 1:30 PM, so the battery was on for
