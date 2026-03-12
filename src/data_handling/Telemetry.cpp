@@ -63,6 +63,26 @@ void Telemetry::exitCommandMode() {
     }
 }
 
+bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) {
+    if (!inCommandMode) {
+        return false;
+    }
+
+    if (commandLine != nullptr) {
+        const std::uint32_t lastInteractionTimestamp = commandLine->getLastInteractionTimestamp();
+        if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp)) {
+            commandModeLastInputTimestamp = lastInteractionTimestamp;
+        }
+    }
+
+    if ((currentTimeMs - commandModeLastInputTimestamp) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
+        exitCommandMode();
+        return false;
+    }
+
+    return true;
+}
+
 void Telemetry::preparePacket(std::uint32_t timestamp) {
     // This write the header of the packet with sync bytes, start byte, and timestamp.
     // Only clear what we own in the header (whole-packet clearing happens in setPacketToZero()).
@@ -121,78 +141,68 @@ void Telemetry::addEndMarker() {
     nextEmptyPacketIndex += TelemetryFmt::kEndMarkerBytes;
 }
 
+bool Telemetry::canFitStreamWithEndMarker(const SendableSensorData* ssd) const {
+    const std::size_t payloadBytes = bytesNeededForSSD(ssd);
+    return hasRoom(nextEmptyPacketIndex, payloadBytes + TelemetryFmt::kEndMarkerBytes);
+}
+
+void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& packetStarted, bool& payloadAdded) {
+    if (!stream->shouldBeSent(currentTimeMs)) {
+        return;
+    }
+
+    if (!packetStarted) {
+        setPacketToZero();
+        preparePacket(currentTimeMs);
+        packetStarted = true;
+    }
+
+    if (!canFitStreamWithEndMarker(stream)) {
+        return;
+    }
+
+    addSSDToPacket(stream);
+    stream->markWasSent(currentTimeMs);
+    payloadAdded = true;
+}
+
+bool Telemetry::finalizeAndSendPacket() {
+    if (nextEmptyPacketIndex <= TelemetryFmt::kHeaderBytes) {
+        return false;
+    }
+
+    if (!hasRoom(nextEmptyPacketIndex, TelemetryFmt::kEndMarkerBytes)) {
+        return false;
+    }
+
+    addEndMarker();
+    for (std::size_t i = 0; i < nextEmptyPacketIndex; i++) {
+        rfdSerialConnection.write(packet[i]);
+    }
+
+    packetCounter++;
+    return true;
+}
+
 bool Telemetry::tick(uint32_t currentTime) {
     // Checks if we should put the telemetry into command mode
     checkForRadioCommandSequence(currentTime);
 
-    // Checks if we should exit command mode due to inactivity.
-    if (inCommandMode) {
-        if (commandLine != nullptr) {
-            const std::uint32_t lastInteractionTimestamp = commandLine->getLastInteractionTimestamp();
-            if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp)) {
-                commandModeLastInputTimestamp = lastInteractionTimestamp;
-            }
-        }
-
-        if ((currentTime - commandModeLastInputTimestamp) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
-            exitCommandMode();
-            // Exited command mode, so continue with sending telemetry as normal below.
-        } else {
-            // staying in command mode, so don't send any telemetry data this tick
-            // to keep the radio free for command responses. 
-            return false;
-        }
+    if (shouldPauseTelemetryForCommandMode(currentTime)) {
+        return false;
     }
 
-    // All the logic below is for building and sending telemetry packets
-
-    bool sendingPacketThisTick = false;
+    bool packetStarted = false;
+    bool payloadAdded = false;
 
     for (std::size_t i = 0; i < streamCount; i++) {
         // i is safe because streamCount comes from the array passed in by the client
-        if (streams[i]->shouldBeSent(currentTime)) { // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-
-            if (!sendingPacketThisTick) {
-                setPacketToZero();
-                preparePacket(currentTime);
-                sendingPacketThisTick = true;
-            }
-
-            // Compute how many bytes we need for this stream's payload.
-            const std::size_t payloadBytes = bytesNeededForSSD(streams[i]);  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            const std::size_t totalBytesIfAdded = payloadBytes + TelemetryFmt::kEndMarkerBytes;
-
-            // Only add if it fits (payload + end marker).
-            if (hasRoom(nextEmptyPacketIndex, totalBytesIfAdded)) {
-                addSSDToPacket(streams[i]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-                streams[i]->markWasSent(currentTime); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            } else {
-                // Not enough room. Skip this stream for now.
-                // It will be sent on the next tick as long as the packet isn't filled before reaching it again.
-                // If we have too many high-frequency streams, the stream as the end of the list may be starved.
-            }
-        }
+        tryAppendStream(streams[i], currentTime, packetStarted, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
-    // Only send if we actually added any payload beyond the header.
-    if (sendingPacketThisTick && nextEmptyPacketIndex > TelemetryFmt::kHeaderBytes) {
-        // Ensure end marker itself fits
-        if (hasRoom(nextEmptyPacketIndex, TelemetryFmt::kEndMarkerBytes)) {
-            addEndMarker();
-
-            // Send used portion
-            for (std::size_t i = 0; i < nextEmptyPacketIndex; i++) {
-                rfdSerialConnection.write(packet[i]);
-            }
-
-            packetCounter++; //Increment after each successful send
-            
-            return true;
-        }
-
-        // If somehow we can't fit the end marker, drop the packet.
-        // (This shouldn't happen with the checks above.)
+    if (!payloadAdded) {
+        return false;
     }
 
-    return false;
+    return finalizeAndSendPacket();
 }

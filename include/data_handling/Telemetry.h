@@ -237,6 +237,10 @@ private:
     void checkForRadioCommandSequence(std::uint32_t currentTimeMs);
     void enterCommandMode(std::uint32_t currentTimeMs);
     void exitCommandMode();
+    bool shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs);
+    bool canFitStreamWithEndMarker(const SendableSensorData* ssd) const;
+    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& packetStarted, bool& payloadAdded);
+    bool finalizeAndSendPacket();
 
     // Non-owning view of the stream list
     SendableSensorData* const* streams;
