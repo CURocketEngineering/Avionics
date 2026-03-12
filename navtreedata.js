@@ -49,19 +49,20 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Flight Test History", "md_docs_2FlightTests.html", [
-      [ "Flight-Number Format", "md_docs_2FlightTests.html#autotoc_md32", [
-        [ "Rocket Types", "md_docs_2FlightTests.html#autotoc_md33", null ],
-        [ "Flight-Computer Types", "md_docs_2FlightTests.html#autotoc_md34", null ]
+      [ "Flight-Number Format", "md_docs_2FlightTests.html#autotoc_md32", null ],
+      [ "Flight Data", "md_docs_2FlightTests.html#autotoc_md33", [
+        [ "Rocket Types", "md_docs_2FlightTests.html#autotoc_md34", null ],
+        [ "Flight-Computer Types", "md_docs_2FlightTests.html#autotoc_md35", null ]
       ] ],
-      [ "Flight Test History (most recent first)", "md_docs_2FlightTests.html#autotoc_md36", null ]
+      [ "Flight Test History (most recent first)", "md_docs_2FlightTests.html#autotoc_md37", null ]
     ] ],
     [ "Telemetry", "md_docs_2Telemetry.html", [
-      [ "Lifecycle", "md_docs_2Telemetry.html#autotoc_md38", null ],
-      [ "Packet structure", "md_docs_2Telemetry.html#autotoc_md39", [
-        [ "Single number data format", "md_docs_2Telemetry.html#autotoc_md40", null ],
-        [ "Multi number data format", "md_docs_2Telemetry.html#autotoc_md41", null ]
+      [ "Lifecycle", "md_docs_2Telemetry.html#autotoc_md39", null ],
+      [ "Packet structure", "md_docs_2Telemetry.html#autotoc_md40", [
+        [ "Single number data format", "md_docs_2Telemetry.html#autotoc_md41", null ],
+        [ "Multi number data format", "md_docs_2Telemetry.html#autotoc_md42", null ]
       ] ],
-      [ "Practical implementation notes", "md_docs_2Telemetry.html#autotoc_md42", null ]
+      [ "Practical implementation notes", "md_docs_2Telemetry.html#autotoc_md43", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

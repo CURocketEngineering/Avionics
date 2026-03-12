@@ -26,7 +26,7 @@ var searchData=
   ['apogeepredictor_2ecpp_23',['ApogeePredictor.cpp',['../ApogeePredictor_8cpp.html',1,'']]],
   ['apogeepredictor_2eh_24',['ApogeePredictor.h',['../ApogeePredictor_8h.html',1,'']]],
   ['approach_3a_2064_20byte_20chunks_25',['&lt;b&gt;Alternative Approach: 64-Byte Chunks&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md26',1,'']]],
-  ['architecture_20overview_26',['Architecture Overview',['../index.html#autotoc_md47',1,'']]],
+  ['architecture_20overview_26',['Architecture Overview',['../index.html#autotoc_md48',1,'']]],
   ['arduinohal_2eh_27',['ArduinoHAL.h',['../ArduinoHAL_8h.html',1,'']]],
   ['array_28',['array',['../classCircularArray.html#ae2590066160e5580a03433ee6fdd3197',1,'CircularArray']]],
   ['asciikey_29',['AsciiKey',['../UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5',1,'UARTCommandHandler.h']]],

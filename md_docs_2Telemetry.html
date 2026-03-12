@@ -93,12 +93,12 @@ $(function(){initNavTree('md_docs_2Telemetry.html','',''); });
   <div class="headertitle"><div class="title">Telemetry </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md37"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md38"></a></p>
 <p>The telemetry system allows the flight computer to send data over a UART stream to a radio modem which transmits the data OTA in real time to the ground station. From the flight computer software standpoint, we are simply sending data over a serial line.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md38"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
 Lifecycle</h1>
 <p>Once the flight computer is powered on, the <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> object is constructed with the desired <a class="el" href="classSensorDataHandler.html" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate.">SensorDataHandler</a> objects and their corresponding send frequencies. Every loop, the tick() method should be called, which checks if it is time to send data, the format of which is discussed below.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md39"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
 Packet structure</h1>
 <p><b>All specific signal bytes and lengths are defined in the <a class="el" href="namespaceTelemetryFmt.html">TelemetryFmt</a> namespace and may change after the time of writing this documentation.</b></p>
 <p><b>All bytes are in big endian format.</b></p>
@@ -115,7 +115,7 @@ Packet structure</h1>
 <li>End marker, which has a similar structure to the sync part.</li>
 </ul>
 <p>Within the data part of the packet, there are two ways to format data.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md40"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
 Single number data format</h2>
 <p>If the data simply consists of one number (eg. altitude reading, battery voltage), then it is sent like this:</p>
 <table class="markdownTable">
@@ -125,7 +125,7 @@ Single number data format</h2>
 <td class="markdownTableBodyNone">1 byte  </td><td class="markdownTableBodyNone">4 bytes  </td></tr>
 </table>
 <p>for a total of 5 bytes, where the label is a data label as defined in <a class="el" href="DataNames_8h.html">DataNames.h</a> and the data is simply the big endian byte description of the data.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md41"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
 Multi number data format</h2>
 <p>If the data intuitively comes in groups (eg. accelerometer x, y, and z readings), then it is sent like this:</p>
 <table class="markdownTable">
@@ -138,7 +138,7 @@ Multi number data format</h2>
 <li>There is no limit to the amount of numbers you can send per group.</li>
 <li>The labels for these groups are not present in <a class="el" href="DataNames_8h.html">DataNames.h</a>, they have their own convention, which at the time of this writing is (100 + label number of first number in group). For example, ACCELEROMETER_X is 0 so the accelerometer group label would be 100.</li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md42"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md43"></a>
 Practical implementation notes</h1>
 <ul>
 <li>The RFD that we used at the time of this writing has an AT mode than can be activated by sending it '+++' over the Serial line. Therefore, do NOT make the sync or end markers "43 43 43". More information on the AT mode of the RFD can be found <a href="https://files.rfdesign.com.au/Files/documents/RFD900x%20DataSheet%20V1.2.pdf">here</a>.</li>
