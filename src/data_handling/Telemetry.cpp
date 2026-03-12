@@ -1,6 +1,8 @@
 #include "data_handling/Telemetry.h"
 #include "ArduinoHAL.h"
+#include "UARTCommandHandler.h"
 #include <algorithm>
+#include <cstdint>
 
 // Helpers for checking if the packet has room for more data
 std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
@@ -19,6 +21,10 @@ bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd) {
     return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity;
 }
 
+bool isTimestampNewer(std::uint32_t lhs, std::uint32_t rhs) {
+    return static_cast<std::int32_t>(lhs - rhs) > 0;
+}
+
 void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
     if (inCommandMode) {
         return;
@@ -30,14 +36,31 @@ void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
         if (receivedChar == TelemetryFmt::kCommandEntryChar) {
             ++commandEntryProgress;
             if (commandEntryProgress >= TelemetryFmt::kCommandEntrySequenceLength) {
-                inCommandMode = true;
-                commandModeEnteredTimestamp = currentTimeMs;
-                commandModeLastInputTimestamp = currentTimeMs;
-                commandEntryProgress = 0;
+                enterCommandMode(currentTimeMs);
             }
         } else {
             commandEntryProgress = 0;
         }
+    }
+}
+
+void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
+    inCommandMode = true;
+    commandModeEnteredTimestamp = currentTimeMs;
+    commandModeLastInputTimestamp = currentTimeMs;
+    commandEntryProgress = 0;
+
+    if (commandLine != nullptr) {
+        commandLine->switchUART(&rfdSerialConnection);
+        commandLine->print(SHELL_PROMPT);
+    }
+}
+
+void Telemetry::exitCommandMode() {
+    inCommandMode = false;
+
+    if (commandLine != nullptr) {
+        commandLine->useDefaultUART();
     }
 }
 
@@ -105,8 +128,15 @@ bool Telemetry::tick(uint32_t currentTime) {
 
     // Checks if we should exit command mode due to inactivity.
     if (inCommandMode) {
+        if (commandLine != nullptr) {
+            const std::uint32_t lastInteractionTimestamp = commandLine->getLastInteractionTimestamp();
+            if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp)) {
+                commandModeLastInputTimestamp = lastInteractionTimestamp;
+            }
+        }
+
         if ((currentTime - commandModeLastInputTimestamp) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
-            inCommandMode = false;
+            exitCommandMode();
             // Exited command mode, so continue with sending telemetry as normal below.
         } else {
             // staying in command mode, so don't send any telemetry data this tick

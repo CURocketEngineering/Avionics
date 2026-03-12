@@ -9,6 +9,8 @@
 #include "ArduinoHAL.h"
 #include "data_handling/SensorDataHandler.h"
 
+class CommandLine;
+
 /**
  * @file Telemetry.h
  * @brief Packs SensorDataHandler values into a fixed-size byte packet and streams over a Stream (UART).
@@ -201,10 +203,12 @@ public:
      */
     template <std::size_t N>
     Telemetry(const std::array<SendableSensorData*, N>& streams,
-              Stream& rfdSerialConnection)
+              Stream& rfdSerialConnection,
+              CommandLine* commandLine = nullptr)
         : streams(streams.data()),
           streamCount(N),
           rfdSerialConnection(rfdSerialConnection),
+          commandLine(commandLine),
           nextEmptyPacketIndex(0),
           packet{} {}
     /**
@@ -220,13 +224,9 @@ public:
     bool isInCommandMode() const { return inCommandMode; }
 
     /**
-     * @brief Refresh command mode inactivity timer after external input handling.
+     * @brief Optional command line interface to drive while telemetry manages command mode.
      */
-    void noteCommandInput(std::uint32_t currentTimeMs) {
-        if (inCommandMode) {
-            commandModeLastInputTimestamp = currentTimeMs;
-        }
-    }
+    void setCommandLine(CommandLine* newCommandLine) { commandLine = newCommandLine; }
 
 private:
     // Packet building helpers
@@ -236,6 +236,8 @@ private:
     void setPacketToZero();
     void addEndMarker();
     void checkForRadioCommandSequence(std::uint32_t currentTimeMs);
+    void enterCommandMode(std::uint32_t currentTimeMs);
+    void exitCommandMode();
 
     // Non-owning view of the stream list
     SendableSensorData* const* streams;
@@ -247,6 +249,7 @@ private:
 
     // Output
     Stream& rfdSerialConnection;
+    CommandLine* commandLine;
 
     // Packet state
     std::uint32_t packetCounter = 0;
