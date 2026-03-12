@@ -218,7 +218,6 @@ private:
     void addSSDToPacket(SendableSensorData* ssd);
     void setPacketToZero();
     void addEndMarker();
-    bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd);
 
     // Non-owning view of the stream list
     SendableSensorData* const* streams;
