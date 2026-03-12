@@ -1,9 +1,15 @@
 # Flight Test History
 
-## Flight-Number Format  
+## Flight-Number Format
 `<rocket type>-<flight computer type>-<year>-<month>-<day>-<index>`
 
 The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **same rocket / flight-computer pair on the same day**.
+
+Year, month, and day are the local date of the launch in the form `YYYY-MM-DD`.
+
+## Flight Data
+
+All of the flight data can be found on our OneDrive at [Flight Data](https://clemson.sharepoint.com/:f:/r/teams/ClemsonUniversityRocketEngineering/Shared%20Documents/CURE/Engineering%20Division/Flight%20Data?csf=1&web=1&e=lf1kod).
 
 ### Rocket Types
 | Code | Description                |
@@ -25,42 +31,53 @@ The trailing **index** (`0`, `1`, …) distinguishes multiple flights of the **s
 
 ## Flight Test History (most recent first)
 
-* **L2-MA-2025-11-09-0 [MARTHA 1.3 B1 Sam's L2 Live Telemetry Test](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.2.0):**
+- **CV-MA-2026-03-07-0 [MARTHA 1.4 CV Test Launch](https://github.com/CURocketEngineering/MARTHA-1.4/releases/tag/0.1.0):**
+  MARTHA 1.4 (C1) flew on the CV vehicle to about 8,000 feet. Ran 5 Hz telemetry instead of 2 Hz as seen in **L2-MA-2025-11-09-0**. Orientation visualizer
+  worked better but still had major issues during flight (need to switch to on-board AHRS).
+  The RFD900xs lost connection after landing. The on-board RFD900x was configured to
+  25 dbm rather than the 30 dbm used in the previous test. Utilized a set of 2 9V batteries to power the radio + MARTHA assembly.
+  Both drogue and main deployed. We saw a signal integrity as low at 97% (received 97 of the last 100 packets) while sitting on the pad.
+  MARTHA never lost power because the same flight ID was seen via telemetry after the rocket was recovered and the timestamp had not reset compared to at launch. Data dump was successful. Altitude data was only captured at 50 Hz due to a conversion delay of 10ms being slightly too high. The analytic apogee prediction performed poorly due to the VVE not handling duplicate altimeter data well (each altimeter data point we being used twice). The new ground level estimator performed well. Saw weird packet timing in the telemetry log due to different streams being out of sync, so it is not a clean packet every 200 ms. The GUI froze at 750 feet in the descent which is while on drogue and many seconds prior to the main deploying. Strange acceleration on both horizontal axes at burnout.
+
+- **L2-MA-2025-11-09-0 [MARTHA 1.3 B1 Sam's L2 Live Telemetry Test](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.2.0):**
   Flew on Sam's L2 test vehicle to about 1,300 feet. Live telemetry worked at 2 Hz with a live updating ground station dashboard and we could tell apogee and
   all the parachute events prior to recovery. No data was saved on the flash chip due to a hardware issue.
-  The little blue spider wires on B1's flash chip likely got broken when placing the board in the 
-  radio-MARTHA assembly. Used a custom mount to hold the radio and MARTHA together and only one support 
-  struct sheared. Main chute did not come out, landed under drogue. 
+  The little blue spider wires on B1's flash chip likely got broken when placing the board in the
+  radio-MARTHA assembly. Used a custom mount to hold the radio and MARTHA together and only one support
+  struct sheared. Main chute did not come out, landed under drogue.
 
-* **CV-MA-2025-06-11-0 [MARTHA 1.3 B1 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**
+- **CV-MA-2025-06-11-0 [MARTHA 1.3 B1 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**
   Flew on the competition vehicle for IREC 2025 to about 9900 feet. It lost power at drogue deployment. It flew the same software as
-  **AA-MA-2025-04-13-0**, including apogee detection, which performed poorly in the same way as before (underestimating throughout the flight).
+  **AA-MA-2025-04-13-0**, including apogee prediction, which performed poorly in the same way as before (underestimating throughout the flight).
   The main chute was deployed at apogee; drogue was never deployed.
   Launch was detected 0.19 seconds late, and apogee was detected 0.55 seconds late. Reported apogee was 9917 feet.
   Both boards were powered at 3:00 AM and then launched at around 1:30 PM, so the battery was on for
   about 10.5 hours. This was a 9V alkaline battery.
 
-* **CV-MA-2025-06-11-1 [MARTHA 1.3 B2 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**
+- **CV-MA-2025-06-11-1 [MARTHA 1.3 B2 IREC 2025 Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**
   Flew on the same rocket as **CV-MA-2025-06-11-0** to about 9900 feet. It also lost power at drogue deployment. It flew older software, the same as
   **L1-MA-2025-03-08-0**. Launch was detected 0.19 seconds late, and apogee was detected 0.70 seconds late. Reported apogee was 9904 feet.
 
-- **AA-AA-2025-04-13-0 [Active Aero FC Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/Active-Aero/releases/tag/1.0):**  
-  Flew on the same flight as **AA-MA-04-13-2025-0** and was connected to the air brakes. It successfully detected launch, engine burnout, and apogee (based on post-fight data analysis). The brakes were accurately deployed at 1 second after engine burnout and retracted 3 seconds before apogee (according to the software). There is no way of knowing if the fins actually deployed and then retracted or never deployed in the first place. Utilized the [new SD card data saver](../include/data_handling/DataSaverBigSD.h) which worked well. 
+- **AA-AA-2025-04-13-0 [Active Aero FC Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/Active-Aero/releases/tag/1.0):**
+  Flew on the same flight as **AA-MA-2025-04-13-0** and was connected to the air brakes. It successfully detected launch, engine burnout, and apogee (based on post-fight data analysis). The brakes were accurately deployed at 1 second after engine burnout and retracted 3 seconds before apogee (according to the software). There is no way of knowing if the fins actually deployed and then retracted or never deployed in the first place. Utilized the [new SD card data saver](../include/data_handling/DataSaverBigSD.h) which worked well.
 
-- **AA-MA-2025-04-13-0 [MARTHA 1.3 Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**  
-  MARTHA 1.3 Board 1 (B1) was flown the Active Aero vehicle to around 3800 feet. It detected launch and apogee successfully. It also performed live apogee prediction which had poor performance (tended to underestimate throughout the entire flight). All data was recovered successfully. Only the drogue chute deployed but MARTHA survived the hard landing. 
+- **AA-MA-2025-04-13-0 [MARTHA 1.3 Apr 13th 2025 Active Aero Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.1.0):**
+  MARTHA 1.3 Board 1 (B1) was flown the Active Aero vehicle to around 3800 feet. It detected launch and apogee successfully. It also performed live apogee prediction which had poor performance (tended to underestimate throughout the entire flight). All data was recovered successfully. Only the drogue chute deployed but MARTHA survived the hard landing.
 
-- **L1-MA-2025-04-12-0 [MARTHA 1.3 Apr 12th 2025 L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.2-no-alt):**  
+- **L1-MA-2025-04-12-0 [MARTHA 1.3 Apr 12th 2025 L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.2-no-alt):**
   MARTHA 1.3 Board 3 (B3) flew on an L1 cert. It successfully collected all data metrics except for altimeter data due to B3 having a malfunctioning altimeter. It ran a custom version of MARTHA software with the altimeter collection calls commented out. The parachute deployed partially, but B3 survived the hard landing. Launch detection was successful; apogee detection failed due to lack of altitude data.
 
-- **L1-MA-2025-03-08-0 [MARTHA 1.3 Mar 8th 2025 L1 Cert Launches](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**  
-  The MARTHA 1.3 system successfully completed its first altitude data collection and apogee detection. Two separate MARTHA 1.3 boards, B1 and B2, were flown on different rockets, each accurately detecting both launch and apogee. MARTHA was used solely for data collection; parachute deployment was managed by a Stratologger. Notably, B1’s rocket did not experience a deployment event, whereas B2’s did, demonstrating that MARTHA’s apogee detection is independent of Stratologger deployment.
+- **L1-MA-2025-03-08-1 [MARTHA 1.3 Mar 8th 2025 L1 Cert Launch (B2)](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**
+  MARTHA 1.3 Board 2 (B2) flew on a separate L1 cert launch and successfully detected both launch and apogee. MARTHA was used solely for data collection; parachute deployment was managed by a Stratologger. B2's rocket experienced a deployment event.
 
-- **AA-MA-2025-02-08-0 [MARTHA 1.3 Feb 8th 2025 Test Vehicle Launch Attempt](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.0):**  
+- **L1-MA-2025-03-08-0 [MARTHA 1.3 Mar 8th 2025 L1 Cert Launch (B1)](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.1):**
+  MARTHA 1.3 Board 1 (B1) flew on an L1 cert launch and successfully completed the first altitude data collection and apogee detection for the MARTHA 1.3 system. MARTHA was used solely for data collection; parachute deployment was managed by a Stratologger. B1's rocket did not experience a deployment event, confirming MARTHA's apogee detection is independent of Stratologger deployment.
+
+- **AA-MA-2025-02-08-0 [MARTHA 1.3 Feb 8th 2025 Test Vehicle Launch Attempt](https://github.com/CURocketEngineering/MARTHA-1.3/releases/tag/1.0.0):**
   MARTHA was mounted to the Active Aero test vehicle, but the vehicle never launched due to incomplete assembly. MARTHA collected data for 14.18 hours before the 9V battery expired. Data was successfully dumped, and the last hour before shutdown was recorded. A consistent 100Hz loop speed was achieved, and despite large accelerations during rough handling, the LaunchDetector showed no false positives.
 
-- **L1-MA-2024-11-09-0 [MARTHA 1.1 Nov 9th 2024 L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.1.0):**  
+- **L1-MA-2024-11-09-0 [MARTHA 1.1 Nov 9th 2024 L1 Cert Launch](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.1.0):**
   Launch detection and SD card data logging performed as expected. No altitude data was recorded, likely due to issues with sensor drivers or hardware damage.
 
-- **CV-MA-2024-06-22-0 [MARTHA 1.1 Spaceport 2024](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.0.0):**  
+- **CV-MA-2024-06-22-0 [MARTHA 1.1 Spaceport 2024](https://github.com/CURocketEngineering/MARTHA-1.1/releases/tag/v1.0.0):**
   Although data was captured via the serial logger, a battery failure on the pad resulted in no launch data being recorded. The log from being on the pad for 6 hours was only 30 minutes long.
