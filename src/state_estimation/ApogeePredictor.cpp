@@ -190,7 +190,6 @@ void ApogeePredictor::analytic_update()
     const float kApogeeFactor = 0.5F;
     const float kBallisticDenominator = 2.0F;
 
-
     //if the velocity is less than or equal to zero, the rocket has already reach apogee and the apogee is the current altitude
     if (velocity <= 0.0F)
     {
@@ -230,6 +229,68 @@ const float kMeasured = -(acceleration + gravity) /
     }
 
     predApogeeAlt_ = apogee;
+    valid_ = true;
+}
+
+
+void ApogeePredictor::simulate_update()
+{
+    const float g = 9.80665F;
+
+    float velocity = vve_.getEstimatedVelocity();
+    float altitude = vve_.getEstimatedAltitude();
+    float accel = vve_.getInertialVerticalAcceleration();
+
+    const float kVelocityEpsilon = 0.001F;
+    const float kMinVelocityForDrag = 15.0F;
+
+    // Already descending
+    if (velocity <= 0.0F)
+    {
+        predApogeeAlt_ = altitude;
+        valid_ = true;
+        return;
+    }
+
+    // Only update drag during ballistic phase
+    if (velocity > kMinVelocityForDrag)
+    {
+        float kMeasured =
+            -(accel + g) / (velocity * velocity + kVelocityEpsilon);
+
+        if (kMeasured > 0.0F && kMeasured < 0.05F)
+        {
+            const float alpha = 0.05F; // slow filter
+            currentDragCoefficient =
+                (1.0F - alpha) * currentDragCoefficient +
+                alpha * kMeasured;
+        }
+    }
+
+    // -------- Forward simulate trajectory --------
+
+    float simAltitude = altitude;
+    
+    float simVelocity = velocity;
+
+    const float dt = 0.02F;   // 50 Hz integration
+    const int maxSteps = 500; // safety
+
+    for (int i = 0; i < maxSteps; i++)
+    {
+        float dragAccel =
+            currentDragCoefficient * simVelocity * simVelocity;
+
+        float a = -g - dragAccel;
+
+        simVelocity += a * dt;
+        simAltitude += simVelocity * dt;
+
+        if (simVelocity <= 0.0F)
+            break;
+    }
+
+    predApogeeAlt_ = simAltitude;
     valid_ = true;
 }
 
