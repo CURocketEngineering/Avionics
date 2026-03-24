@@ -10,7 +10,6 @@ const std::vector<std::string> kRequiredPreprocessedCsvFiles = {
     "data/MARTHA_3-8_1.3_B2_SingleID_transformed.csv",
     "data/MARTHA_IREC_2025_B2_transformed.csv",
     "data/AA Data Collection - Second Launch Trimmed.csv",
-    "data/data_transformed.csv",
 };
 
 bool fileExists(const std::string& path) {
