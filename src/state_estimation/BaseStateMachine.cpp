@@ -11,13 +11,22 @@ bool BaseStateMachine::registerOnStateEntry(FlightState targetState, StateEntryC
         return false;
     }
 
-    for (const StateCallbackRegistration& registration : onStateEntryCallbacks) {
+    // Searching for a duplicate registration
+    for (std::size_t i = 0; i < callbackCount; i++) {
+        const StateCallbackRegistration& registration = onStateEntryCallbacks[i];
         if (registration.state == targetState && registration.fn == fn) {
             return false;
         }
     }
 
-    onStateEntryCallbacks.push_back({targetState, fn});
+    // Checking if we have room for another callback
+    if (callbackCount >= kMaxStateEntryCallbacks) {
+        return false;
+    }
+
+    // Register the new callback
+    onStateEntryCallbacks[callbackCount] = {targetState, fn};
+    callbackCount++;
     return true;
 }
 
@@ -28,7 +37,9 @@ bool BaseStateMachine::changeState(FlightState newState) {
 
     state = newState;
 
-    for (const StateCallbackRegistration& registration : onStateEntryCallbacks) {
+    // Calling the registered callbacks for the new state
+    for (std::size_t i = 0; i < callbackCount; i++) {
+        const StateCallbackRegistration& registration = onStateEntryCallbacks[i];
         if (registration.state == state) {
             registration.fn();
         }

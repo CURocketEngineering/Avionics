@@ -5,7 +5,7 @@ Tools for detecting flight events, fusing sensors, and managing rocket flight-st
 ## Files
 - `ApogeeDetector.h`: Detects apogee when filtered altitude peaks and velocity goes negative. More robust than zero-velocity crossing, especially with noisy baro data.
 - `ApogeePredictor.h`: Projects time/altitude to apogee using current velocity and deceleration; use for active-aero or adaptive control while still climbing.
-- `BaseStateMachine.h`: Shared state ownership and callback-registration base for flight state machines.
+- `BaseStateMachine.h`: Shared state ownership and callback-registration base for flight state machines; callback storage is fixed-capacity (32 entries, no dynamic allocation).
 - `BurnoutStateMachine.h`: State machine variant with an explicit burnout phase before coast; use when burnout-specific logic or logging matters.
 - `GroundLevelEstimator.h`: Learns launch-site altitude pre-launch, then converts ASL to AGL after launch; use to normalize baro data.
 - `LaunchDetector.h`: Sliding-window accelerometer detector that marks liftoff when sustained acceleration exceeds a threshold; use to gate launch-critical events.
