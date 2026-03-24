@@ -45,11 +45,11 @@ class BaseStateMachine {
         /**
          * @brief Register a callback to invoke each time a target state is entered.
          * @param state The state that triggers the callback.
-         * @param fn Function to call when entering @p state.
+         * @param functionPtr Function to call when entering @p state.
          * @return true if callback was registered, false for nullptr, duplicate,
          *         or full callback buffer.
          */
-        bool registerOnStateEntry(FlightState targetState, StateEntryCallback fn);
+        bool registerOnStateEntry(FlightState targetState, StateEntryCallback functionPtr);
 
         static constexpr std::size_t getMaxStateEntryCallbacks() {
             return kMaxStateEntryCallbacks;
@@ -71,7 +71,7 @@ class BaseStateMachine {
     private:
         struct StateCallbackRegistration {
             FlightState state;
-            StateEntryCallback fn;
+            StateEntryCallback functionPtr;
         };
 
         FlightState state;

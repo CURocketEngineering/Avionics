@@ -6,15 +6,15 @@ uint8_t BaseStateMachine::getState() const {
     return static_cast<uint8_t>(state);
 }
 
-bool BaseStateMachine::registerOnStateEntry(FlightState targetState, StateEntryCallback fn) {
-    if (fn == nullptr) {
+bool BaseStateMachine::registerOnStateEntry(FlightState targetState, StateEntryCallback functionPtr) {
+    if (functionPtr == nullptr) {
         return false;
     }
 
     // Searching for a duplicate registration
     for (std::size_t i = 0; i < callbackCount; i++) {
         const StateCallbackRegistration& registration = onStateEntryCallbacks[i];
-        if (registration.state == targetState && registration.fn == fn) {
+        if (registration.state == targetState && registration.functionPtr == functionPtr) {
             return false;
         }
     }
@@ -25,7 +25,7 @@ bool BaseStateMachine::registerOnStateEntry(FlightState targetState, StateEntryC
     }
 
     // Register the new callback
-    onStateEntryCallbacks[callbackCount] = {targetState, fn};
+    onStateEntryCallbacks[callbackCount] = {targetState, functionPtr};
     callbackCount++;
     return true;
 }
@@ -41,7 +41,7 @@ bool BaseStateMachine::changeState(FlightState newState) {
     for (std::size_t i = 0; i < callbackCount; i++) {
         const StateCallbackRegistration& registration = onStateEntryCallbacks[i];
         if (registration.state == state) {
-            registration.fn();
+            registration.functionPtr();
         }
     }
 
