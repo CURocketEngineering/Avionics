@@ -10,12 +10,12 @@ StateMachine::StateMachine(IDataSaver* dataSaver,
                            ApogeeDetector* apogeeDetector,
                            VerticalVelocityEstimator* verticalVelocityEstimator,
                            FastLaunchDetector* fastLaunchDetector)
-    : dataSaver(dataSaver),
+    : BaseStateMachine(STATE_ARMED),
+      dataSaver(dataSaver),
       launchDetector(launchDetector),
       apogeeDetector(apogeeDetector),
       verticalVelocityEstimator(verticalVelocityEstimator),
-      fastLaunchDetector(fastLaunchDetector),
-      state(STATE_ARMED)
+      fastLaunchDetector(fastLaunchDetector)
 {
 }
 
@@ -24,7 +24,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
     int lpStatus = LP_DEFAULT_FAIL; 
     int fldStatus = FLD_DEFAULT_FAIL;
 
-    switch (state) {
+    switch (getFlightState()) {
         case STATE_ARMED:
             // Serial.println("lp update");
             lpStatus = launchDetector->update(accel);
@@ -32,7 +32,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             // Serial.println(lpStatus);
             if (fastLaunchDetector->hasLaunched()) {
                 // Change state to soft ascent
-                state = STATE_SOFT_ASCENT;
+                changeState(STATE_SOFT_ASCENT);
 
                 // Save the FLD launch time
                 fldLaunchTime_ms = fastLaunchDetector->getLaunchedTime();
@@ -50,7 +50,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             // The FLD should always trigger before the LP, but we check for LP launch just in case
             if (launchDetector->isLaunched()) {
                 // Change state to ascent
-                state = STATE_ASCENT;
+                changeState(STATE_ASCENT);
 
                 // Log the state change
                 dataSaver->saveDataPoint(
@@ -81,7 +81,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             // Serial.println(lpStatus);
             if (launchDetector->isLaunched()) {
                 // Change state to ascent
-                state = STATE_ASCENT;
+                changeState(STATE_ASCENT);
 
                 // Log the state change
                 dataSaver->saveDataPoint(
@@ -98,7 +98,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             else if (accel.x.timestamp_ms - fldLaunchTime_ms > fastLaunchDetector->getConfirmationWindow()) {
                 // If the confirmation window has passed without launch detected by LaunchDetector,
                 // revert to ARMED state
-                state = STATE_ARMED;
+                changeState(STATE_ARMED);
                 fldLaunchTime_ms = 0;
                 fastLaunchDetector->reset();
 
@@ -119,7 +119,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
             verticalVelocityEstimator->update(accel, alt);
             apogeeDetector->update(verticalVelocityEstimator);
             if (apogeeDetector->isApogeeDetected()) {
-                state = STATE_DESCENT;
+                changeState(STATE_DESCENT);
 
                 // Log the state change
                 dataSaver->saveDataPoint(
@@ -135,8 +135,4 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
     }
 
     return 0;
-}
-
-uint8_t StateMachine::getState() const {
-    return state;
 }
