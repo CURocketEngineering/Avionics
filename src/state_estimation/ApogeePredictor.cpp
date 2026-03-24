@@ -256,7 +256,7 @@ void ApogeePredictor::simulate_update()
         return;
     }
 
-    // Only update drag during ballistic phase
+    // Only update drag during cost phase
     if (estimatedVelocity > kMinVelocityForDrag)
     {
         const float measuredDrag =

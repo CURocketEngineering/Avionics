@@ -79,7 +79,7 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
 
 
 
-    // checks the time stamps for both altitude and acceleration timestamps
+    // Ensures the data is newer than the previous data and that is not the same as the last data
     if (currentTimestamp_ms <= lastTimestamp_ms)
     {
         return;

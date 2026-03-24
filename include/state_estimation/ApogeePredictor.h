@@ -45,7 +45,7 @@ public:
 
     void analytic_update();
 
-     void simulate_update();
+    void simulate_update();
 
     // ----- Accessors -----
     [[nodiscard]] bool     isPredictionValid()            const;
