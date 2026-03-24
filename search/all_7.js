@@ -30,6 +30,7 @@ var searchData=
   ['flighttests_2emd_27',['FlightTests.md',['../FlightTests_8md.html',1,'']]],
   ['flush_28',['flush',['../classStream.html#abfc59a5b36c981eb794847060052c8d5',1,'Stream']]],
   ['for_20clemson_20university_20rocket_20engineering_29',['Avionics for Clemson University Rocket Engineering',['../index.html',1,'']]],
-  ['format_30',['Format',['../md_docs_2FlashDataSaving.html#autotoc_md23',1,'&lt;b&gt;Byte5 Data Format&lt;/b&gt;'],['../md_docs_2FlashDataSaving.html#autotoc_md25',1,'&lt;b&gt;Data Save Rates (Byte5 Format)&lt;/b&gt;'],['../md_docs_2FlightTests.html#autotoc_md32',1,'Flight-Number Format']]],
-  ['format_31',['format',['../md_docs_2Telemetry.html#autotoc_md42',1,'Multi number data format'],['../md_docs_2Telemetry.html#autotoc_md41',1,'Single number data format']]]
+  ['forceexitcommandmode_30',['forceExitCommandMode',['../classTelemetry.html#a01955cd86d13bed3b5f88213658cfbbb',1,'Telemetry']]],
+  ['format_31',['Format',['../md_docs_2FlashDataSaving.html#autotoc_md23',1,'&lt;b&gt;Byte5 Data Format&lt;/b&gt;'],['../md_docs_2FlashDataSaving.html#autotoc_md25',1,'&lt;b&gt;Data Save Rates (Byte5 Format)&lt;/b&gt;'],['../md_docs_2FlightTests.html#autotoc_md32',1,'Flight-Number Format']]],
+  ['format_32',['format',['../md_docs_2Telemetry.html#autotoc_md42',1,'Multi number data format'],['../md_docs_2Telemetry.html#autotoc_md41',1,'Single number data format']]]
 ];

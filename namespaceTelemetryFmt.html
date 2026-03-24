@@ -116,6 +116,9 @@ Variables</h2></td></tr>
 <tr class="memitem:ade0be7291d2d3e9509211964c19ed2a6" id="r_ade0be7291d2d3e9509211964c19ed2a6"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ade0be7291d2d3e9509211964c19ed2a6">kBytesIn32Bit</a> = 4</td></tr>
 <tr class="memitem:a3eaa9726b2097f7bf2f15ea5e065feb9" id="r_a3eaa9726b2097f7bf2f15ea5e065feb9"><td class="memItemLeft">constexpr unsigned&#160;</td><td class="memItemRight"><a class="el" href="#a3eaa9726b2097f7bf2f15ea5e065feb9">kBitsPerByte</a> = 8</td></tr>
 <tr class="memitem:a9714d318a7adf89fece7a9c32e31f4b6" id="r_a9714d318a7adf89fece7a9c32e31f4b6"><td class="memItemLeft">constexpr std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a9714d318a7adf89fece7a9c32e31f4b6">kAllOnesByte</a> = 0xFF</td></tr>
+<tr class="memitem:adb74c85b8d882ccafc44b7e829a9f37f" id="r_adb74c85b8d882ccafc44b7e829a9f37f"><td class="memItemLeft">constexpr std::uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#adb74c85b8d882ccafc44b7e829a9f37f">kCommandModeInactivityTimeoutMs</a> = 10000</td></tr>
+<tr class="memitem:a6ebbb5bcae1386708b523c828a91857a" id="r_a6ebbb5bcae1386708b523c828a91857a"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a6ebbb5bcae1386708b523c828a91857a">kCommandEntrySequenceLength</a> = 3</td></tr>
+<tr class="memitem:a39689e2f967cdb74f24b2e3e0136c35c" id="r_a39689e2f967cdb74f24b2e3e0136c35c"><td class="memItemLeft">constexpr char&#160;</td><td class="memItemRight"><a class="el" href="#a39689e2f967cdb74f24b2e3e0136c35c">kCommandEntryChar</a> = 'c'</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="a03b547a62df77b72a58e93b32250efac" name="a03b547a62df77b72a58e93b32250efac"></a>
@@ -144,7 +147,7 @@ Variables</h2></td></tr>
 <p>Convert frequency (Hz) to period (ms), using integer math. </p>
 <p>Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00080">80</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00084">84</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -178,7 +181,7 @@ Variables</h2></td></tr>
 <p>Write a 32-bit value in big-endian order to dst[0..3]. </p>
 <p>Assumptions used by float packing. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00066">66</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00070">70</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -203,7 +206,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00057">57</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00058">58</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -227,7 +230,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00056">56</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00057">57</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -252,7 +255,79 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>32-bit helper constants </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00055">55</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00056">56</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
+<a id="a39689e2f967cdb74f24b2e3e0136c35c" name="a39689e2f967cdb74f24b2e3e0136c35c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39689e2f967cdb74f24b2e3e0136c35c">&#9670;&#160;</a></span>kCommandEntryChar</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char TelemetryFmt::kCommandEntryChar = 'c'</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00061">61</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
+<a id="a6ebbb5bcae1386708b523c828a91857a" name="a6ebbb5bcae1386708b523c828a91857a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ebbb5bcae1386708b523c828a91857a">&#9670;&#160;</a></span>kCommandEntrySequenceLength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t TelemetryFmt::kCommandEntrySequenceLength = 3</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00060">60</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
+<a id="adb74c85b8d882ccafc44b7e829a9f37f" name="adb74c85b8d882ccafc44b7e829a9f37f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb74c85b8d882ccafc44b7e829a9f37f">&#9670;&#160;</a></span>kCommandModeInactivityTimeoutMs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::uint32_t TelemetryFmt::kCommandModeInactivityTimeoutMs = 10000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00059">59</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -277,7 +352,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>End-of-packet marker byte value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00052">52</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00053">53</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -302,7 +377,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>End marker layout: 3 zeros followed by an end byte. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00046">46</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00047">47</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +401,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00043">43</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00044">44</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -351,7 +426,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Maximum packet size (bytes). Must match your radio/modem configuration. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00031">31</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00032">32</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +450,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00042">42</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00043">43</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -400,7 +475,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Header layout: [0..2]=0, [3]=START, [4..7]=timestamp (big-endian). </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00040">40</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00041">41</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -425,7 +500,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Start-of-packet marker byte value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00049">49</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00050">50</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -450,7 +525,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Header markers: 3 sync zeros followed by a start byte. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00034">34</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00035">35</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -474,7 +549,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00041">41</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00042">42</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -499,7 +574,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <p>Number of bytes in a packed 32-bit value. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00037">37</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00038">38</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>

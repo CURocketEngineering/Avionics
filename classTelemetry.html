@@ -103,17 +103,27 @@ Collaboration diagram for Telemetry:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTelemetry__coll__graph.png" border="0" usemap="#aTelemetry_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aTelemetry_coll__map" id="aTelemetry_coll__map">
-<area shape="rect" title="Packetizes telemetry streams and sends them out over a Stream." alt="" coords="5,5,109,91"/>
+<area shape="rect" title="Packetizes telemetry streams and sends them out over a Stream." alt="" coords="5,5,244,191"/>
 </map>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac393a0bf389feebadc2b780d1d8a3d77" id="r_ac393a0bf389feebadc2b780d1d8a3d77"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
-<tr class="memitem:ac393a0bf389feebadc2b780d1d8a3d77 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac393a0bf389feebadc2b780d1d8a3d77">Telemetry</a> (const std::array&lt; <a class="el" href="structSendableSensorData.html">SendableSensorData</a> *, N &gt; &amp;streams, <a class="el" href="classStream.html">Stream</a> &amp;rfdSerialConnection)</td></tr>
-<tr class="memdesc:ac393a0bf389feebadc2b780d1d8a3d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct from std::array (convenient and compile-time sized). The std::array must outlive the <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> instance.  <br /></td></tr>
+<tr class="memitem:ae8620a209e372a9e1f7d759718805230" id="r_ae8620a209e372a9e1f7d759718805230"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
+<tr class="memitem:ae8620a209e372a9e1f7d759718805230 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae8620a209e372a9e1f7d759718805230">Telemetry</a> (const std::array&lt; <a class="el" href="structSendableSensorData.html">SendableSensorData</a> *, N &gt; &amp;streams, <a class="el" href="classStream.html">Stream</a> &amp;rfdSerialConnection, <a class="el" href="classCommandLine.html">CommandLine</a> *commandLine=nullptr)</td></tr>
+<tr class="memdesc:ae8620a209e372a9e1f7d759718805230"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct from std::array (convenient and compile-time sized). The std::array must outlive the <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> instance.  <br /></td></tr>
 <tr class="memitem:a81066a9695efb4fd2a316a1699eb9c28" id="r_a81066a9695efb4fd2a316a1699eb9c28"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a81066a9695efb4fd2a316a1699eb9c28">tick</a> (std::uint32_t currentTimeMs)</td></tr>
 <tr class="memdesc:a81066a9695efb4fd2a316a1699eb9c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call every loop to send due telemetry streams.  <br /></td></tr>
+<tr class="memitem:a86abb230ca0b3cf773ac9212fa88a0b1" id="r_a86abb230ca0b3cf773ac9212fa88a0b1"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a86abb230ca0b3cf773ac9212fa88a0b1">isInCommandMode</a> () const</td></tr>
+<tr class="memdesc:a86abb230ca0b3cf773ac9212fa88a0b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if telemetry is currently paused for radio command mode.  <br /></td></tr>
+<tr class="memitem:a3d84d7ea9a966d5822dcfbb027537416" id="r_a3d84d7ea9a966d5822dcfbb027537416"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3d84d7ea9a966d5822dcfbb027537416">setCommandLine</a> (<a class="el" href="classCommandLine.html">CommandLine</a> *newCommandLine)</td></tr>
+<tr class="memdesc:a3d84d7ea9a966d5822dcfbb027537416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optional command line interface to drive while telemetry manages command mode.  <br /></td></tr>
+<tr class="memitem:a63c63ec4d41a5ac530f10beae26bbe35" id="r_a63c63ec4d41a5ac530f10beae26bbe35"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a63c63ec4d41a5ac530f10beae26bbe35">lockCommandModeTimeout</a> (std::uint32_t lockDurationMs)</td></tr>
+<tr class="memdesc:a63c63ec4d41a5ac530f10beae26bbe35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temporarily disable command-mode inactivity timeout.  <br /></td></tr>
+<tr class="memitem:a7d95b4f10d9d5859de891108799eac8d" id="r_a7d95b4f10d9d5859de891108799eac8d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a7d95b4f10d9d5859de891108799eac8d">unlockCommandModeTimeout</a> ()</td></tr>
+<tr class="memdesc:a7d95b4f10d9d5859de891108799eac8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Re-enable command-mode inactivity timeout immediately.  <br /></td></tr>
+<tr class="memitem:a01955cd86d13bed3b5f88213658cfbbb" id="r_a01955cd86d13bed3b5f88213658cfbbb"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a01955cd86d13bed3b5f88213658cfbbb">forceExitCommandMode</a> ()</td></tr>
+<tr class="memdesc:a01955cd86d13bed3b5f88213658cfbbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Immediately exit command mode if currently active.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Packetizes telemetry streams and sends them out over a <a class="el" href="classStream.html">Stream</a>. </p>
@@ -125,10 +135,10 @@ Public Member Functions</h2></td></tr>
 <li><a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> stores a pointer to the provided list of streams (non-owning). The list must outlive <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a>. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00192">192</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00196">196</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac393a0bf389feebadc2b780d1d8a3d77" name="ac393a0bf389feebadc2b780d1d8a3d77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac393a0bf389feebadc2b780d1d8a3d77">&#9670;&#160;</a></span>Telemetry()</h2>
+<a id="ae8620a209e372a9e1f7d759718805230" name="ae8620a209e372a9e1f7d759718805230"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8620a209e372a9e1f7d759718805230">&#9670;&#160;</a></span>Telemetry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,7 +156,12 @@ template&lt;std::size_t N&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rfdSerialConnection</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>rfdSerialConnection</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classCommandLine.html">CommandLine</a> *</td>          <td class="paramname"><span class="paramname"><em>commandLine</em></span><span class="paramdefsep"> = </span><span class="paramdefval">nullptr</span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -158,11 +173,117 @@ template&lt;std::size_t N&gt; </div>
 
 <p>Construct from std::array (convenient and compile-time sized). The std::array must outlive the <a class="el" href="classTelemetry.html" title="Packetizes telemetry streams and sends them out over a Stream.">Telemetry</a> instance. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00200">200</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00204">204</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a01955cd86d13bed3b5f88213658cfbbb" name="a01955cd86d13bed3b5f88213658cfbbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01955cd86d13bed3b5f88213658cfbbb">&#9670;&#160;</a></span>forceExitCommandMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Telemetry::forceExitCommandMode </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Immediately exit command mode if currently active. </p>
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00100">100</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a86abb230ca0b3cf773ac9212fa88a0b1" name="a86abb230ca0b3cf773ac9212fa88a0b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86abb230ca0b3cf773ac9212fa88a0b1">&#9670;&#160;</a></span>isInCommandMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Telemetry::isInCommandMode </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if telemetry is currently paused for radio command mode. </p>
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00223">223</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
+<a id="a63c63ec4d41a5ac530f10beae26bbe35" name="a63c63ec4d41a5ac530f10beae26bbe35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63c63ec4d41a5ac530f10beae26bbe35">&#9670;&#160;</a></span>lockCommandModeTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Telemetry::lockCommandModeTimeout </td>
+          <td>(</td>
+          <td class="paramtype">std::uint32_t</td>          <td class="paramname"><span class="paramname"><em>lockDurationMs</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Temporarily disable command-mode inactivity timeout. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lockDurationMs</td><td>Duration before auto-unlock fallback. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00080">80</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a3d84d7ea9a966d5822dcfbb027537416" name="a3d84d7ea9a966d5822dcfbb027537416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d84d7ea9a966d5822dcfbb027537416">&#9670;&#160;</a></span>setCommandLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Telemetry::setCommandLine </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCommandLine.html">CommandLine</a> *</td>          <td class="paramname"><span class="paramname"><em>newCommandLine</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Optional command line interface to drive while telemetry manages command mode. </p>
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00228">228</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
 <a id="a81066a9695efb4fd2a316a1699eb9c28" name="a81066a9695efb4fd2a316a1699eb9c28"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a81066a9695efb4fd2a316a1699eb9c28">&#9670;&#160;</a></span>tick()</h2>
 
@@ -187,7 +308,28 @@ template&lt;std::size_t N&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if a packet was sent on this tick. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00080">80</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00240">240</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7d95b4f10d9d5859de891108799eac8d" name="a7d95b4f10d9d5859de891108799eac8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d95b4f10d9d5859de891108799eac8d">&#9670;&#160;</a></span>unlockCommandModeTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Telemetry::unlockCommandModeTimeout </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Re-enable command-mode inactivity timeout immediately. </p>
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8cpp_source.html#l00091">91</a> of file <a class="el" href="Telemetry_8cpp_source.html">Telemetry.cpp</a>.</p>
 
 </div>
 </div>

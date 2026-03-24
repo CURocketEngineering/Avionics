@@ -103,7 +103,7 @@ Collaboration diagram for CommandLine:</div>
 <div class="dyncontent">
 <div class="center"><img src="classCommandLine__coll__graph.png" border="0" usemap="#aCommandLine_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aCommandLine_coll__map" id="aCommandLine_coll__map">
-<area shape="rect" title="Lightweight UART command&#45;line interface with history and parsing." alt="" coords="5,5,163,211"/>
+<area shape="rect" title="Lightweight UART command&#45;line interface with history and parsing." alt="" coords="5,5,236,311"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -115,6 +115,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ababd5a8df61121f8aebf80ac626671ed" id="r_ababd5a8df61121f8aebf80ac626671ed"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ababd5a8df61121f8aebf80ac626671ed">readInput</a> ()</td></tr>
 <tr class="memitem:af9e2d3c7e4bee5d704db5b5b8ae7616d" id="r_af9e2d3c7e4bee5d704db5b5b8ae7616d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af9e2d3c7e4bee5d704db5b5b8ae7616d">processCommand</a> (const std::string &amp;command)</td></tr>
 <tr class="memitem:a28c0fb753d186a32ebeab6fa94b4c71d" id="r_a28c0fb753d186a32ebeab6fa94b4c71d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a28c0fb753d186a32ebeab6fa94b4c71d">begin</a> ()</td></tr>
+<tr class="memitem:a941437d218746e16f825aa6fe8d00a8a" id="r_a941437d218746e16f825aa6fe8d00a8a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a941437d218746e16f825aa6fe8d00a8a">switchUART</a> (<a class="el" href="classStream.html">Stream</a> *newUART)</td></tr>
+<tr class="memitem:abf3e3cab8353a230ef26bc9d23eeca00" id="r_abf3e3cab8353a230ef26bc9d23eeca00"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#abf3e3cab8353a230ef26bc9d23eeca00">useDefaultUART</a> ()</td></tr>
+<tr class="memitem:a7d398f651c3c7a377ca6616db1a79d8a" id="r_a7d398f651c3c7a377ca6616db1a79d8a"><td class="memItemLeft"><a class="el" href="classStream.html">Stream</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a7d398f651c3c7a377ca6616db1a79d8a">getDefaultUART</a> () const</td></tr>
+<tr class="memitem:a89ee6948b0e8707ff82d7a232d0be5d4" id="r_a89ee6948b0e8707ff82d7a232d0be5d4"><td class="memItemLeft"><a class="el" href="classStream.html">Stream</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a89ee6948b0e8707ff82d7a232d0be5d4">getActiveUART</a> () const</td></tr>
+<tr class="memitem:ab2342071d911be46af16232febf9efdb" id="r_ab2342071d911be46af16232febf9efdb"><td class="memItemLeft">uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#ab2342071d911be46af16232febf9efdb">getLastInteractionTimestamp</a> () const</td></tr>
 <tr class="memitem:ad5f9d076cbb1f3b531d131eb5001b4ed" id="r_ad5f9d076cbb1f3b531d131eb5001b4ed"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad5f9d076cbb1f3b531d131eb5001b4ed">println</a> (const std::string &amp;message)</td></tr>
 <tr class="memitem:a3a29a3e1c9a772be9f597370a4f95ba0" id="r_a3a29a3e1c9a772be9f597370a4f95ba0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3a29a3e1c9a772be9f597370a4f95ba0">print</a> (const std::string &amp;message)</td></tr>
 </table>
@@ -168,7 +173,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00121">121</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00139">139</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -187,7 +192,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00011">11</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00022">22</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
 
 </div>
 </div>
@@ -210,7 +215,88 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00127">127</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00145">145</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a89ee6948b0e8707ff82d7a232d0be5d4" name="a89ee6948b0e8707ff82d7a232d0be5d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89ee6948b0e8707ff82d7a232d0be5d4">&#9670;&#160;</a></span>getActiveUART()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classStream.html">Stream</a> * CommandLine::getActiveUART </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00042">42</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
+
+</div>
+</div>
+<a id="a7d398f651c3c7a377ca6616db1a79d8a" name="a7d398f651c3c7a377ca6616db1a79d8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d398f651c3c7a377ca6616db1a79d8a">&#9670;&#160;</a></span>getDefaultUART()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classStream.html">Stream</a> * CommandLine::getDefaultUART </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00041">41</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
+
+</div>
+</div>
+<a id="ab2342071d911be46af16232febf9efdb" name="ab2342071d911be46af16232febf9efdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2342071d911be46af16232febf9efdb">&#9670;&#160;</a></span>getLastInteractionTimestamp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t CommandLine::getLastInteractionTimestamp </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00043">43</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -237,7 +323,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00044">44</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00049">49</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -264,7 +350,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00041">41</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00046">46</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
 
 </div>
 </div>
@@ -300,7 +386,45 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00053">53</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00064">64</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a941437d218746e16f825aa6fe8d00a8a" name="a941437d218746e16f825aa6fe8d00a8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a941437d218746e16f825aa6fe8d00a8a">&#9670;&#160;</a></span>switchUART()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommandLine::switchUART </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> *</td>          <td class="paramname"><span class="paramname"><em>newUART</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00011">11</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abf3e3cab8353a230ef26bc9d23eeca00" name="abf3e3cab8353a230ef26bc9d23eeca00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf3e3cab8353a230ef26bc9d23eeca00">&#9670;&#160;</a></span>useDefaultUART()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommandLine::useDefaultUART </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8cpp_source.html#l00018">18</a> of file <a class="el" href="UARTCommandHandler_8cpp_source.html">UARTCommandHandler.cpp</a>.</p>
 
 </div>
 </div>
