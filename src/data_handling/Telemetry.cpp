@@ -38,6 +38,12 @@ void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
                 enterCommandMode(currentTimeMs);
             }
         } else {
+            // Send a debug message to the stream
+            rfdSerialConnection.print("Received char '");
+            rfdSerialConnection.print(receivedChar);
+            rfdSerialConnection.print("' which does not match command entry char '");
+            rfdSerialConnection.print(TelemetryFmt::kCommandEntryChar);
+            rfdSerialConnection.println("'. Resetting command entry progress.");
             commandEntryProgress = 0;
         }
     }
@@ -73,6 +79,12 @@ bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) 
         if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp)) {
             commandModeLastInputTimestamp = lastInteractionTimestamp;
         }
+    }
+
+    // If currentTimeMs was sampled before command input was processed in this loop,
+    // avoid unsigned underflow in the inactivity subtraction.
+    if (isTimestampNewer(commandModeLastInputTimestamp, currentTimeMs)) {
+        return true;
     }
 
     if ((currentTimeMs - commandModeLastInputTimestamp) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
