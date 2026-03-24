@@ -238,6 +238,11 @@ public:
      */
     void unlockCommandModeTimeout();
 
+    /**
+     * @brief Immediately exit command mode if currently active.
+     */
+    void forceExitCommandMode();
+
 private:
     // Packet building helpers
     void preparePacket(std::uint32_t timestamp);

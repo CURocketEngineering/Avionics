@@ -97,6 +97,14 @@ void Telemetry::unlockCommandModeTimeout() {
     }
 }
 
+void Telemetry::forceExitCommandMode() {
+    if (!inCommandMode) {
+        return;
+    }
+
+    exitCommandMode();
+}
+
 bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) {
     if (!inCommandMode) {
         return false;
