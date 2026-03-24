@@ -122,6 +122,8 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
 	q1 *= recipNorm;
 	q2 *= recipNorm;
 	q3 *= recipNorm;
+
+	getEuler();
 }
 
 void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro, uint32_t currentTime){
@@ -209,21 +211,27 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 	q1 *= recipNorm;
 	q2 *= recipNorm;
 	q3 *= recipNorm;
+
+	getEuler();
 }
 
 void OrientationEstimator::getEuler()
 {
-     roll = atan2(2*(q0*q1 + q2*q3),
-                    1 - 2*(q1*q1 + q2*q2));
+    // Roll (x-axis rotation)
+    roll = atan2(
+        2.0f * (q0 * q1 + q2 * q3),
+        1.0f - 2.0f * (q1 * q1 + q2 * q2)
+    );
 
-     float t = 2*(q0*q2 - q3*q1);
-     t = std::max(-1.0f, std::min(1.0f, t));
-     pitch = asin(t);
+    // Pitch (y-axis rotation)
+    float t = 2.0f * (q0 * q2 - q3 * q1);
+    if (t > 1.0f) t = 1.0f;
+	if (t < -1.0f) t = -1.0f;
+    pitch = asin(t);
 
-     yaw = atan2(2*(q0*q3 + q1*q2),
-               1 - 2*(q2*q2 + q3*q3));
-
-     roll  *= 180.0f / M_PI;
-     pitch *= 180.0f / M_PI;
-     yaw   *= 180.0f / M_PI;
+    // Yaw (z-axis rotation)
+    yaw = atan2(
+        2.0f * (q0 * q3 + q1 * q2),
+        1.0f - 2.0f * (q2 * q2 + q3 * q3)
+    );
 }
