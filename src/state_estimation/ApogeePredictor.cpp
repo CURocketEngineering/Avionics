@@ -235,59 +235,57 @@ const float kMeasured = -(acceleration + gravity) /
 
 void ApogeePredictor::simulate_update()
 {
-    const float g = 9.80665F;
+    const float kGravity = 9.80665F;
 
-    float velocity = vve_.getEstimatedVelocity();
-    float altitude = vve_.getEstimatedAltitude();
-    float accel = vve_.getInertialVerticalAcceleration();
+    const float estimatedVelocity = vve_.getEstimatedVelocity();
+    const float estimatedAltitude = vve_.getEstimatedAltitude();
+    const float inertialAccel = vve_.getInertialVerticalAcceleration();
 
     const float kVelocityEpsilon = 0.001F;
     const float kMinVelocityForDrag = 15.0F;
+    const float kAlpha = 0.05F;           // slow filter constant
+    const float kMaxDragCoefficient = 0.05F;
+    const float kDt = 0.01F;              // simulation time step
+    const int kMaxSimSteps = 500;         // safety limit
 
     // Already descending
-    if (velocity <= 0.0F)
+    if (estimatedVelocity <= 0.0F)
     {
-        predApogeeAlt_ = altitude;
+        predApogeeAlt_ = estimatedAltitude;
         valid_ = true;
         return;
     }
 
     // Only update drag during ballistic phase
-    if (velocity > kMinVelocityForDrag)
+    if (estimatedVelocity > kMinVelocityForDrag)
     {
-        float kMeasured =
-            -(accel + g) / (velocity * velocity + kVelocityEpsilon);
+        const float measuredDrag =
+            -(inertialAccel + kGravity) / (estimatedVelocity * estimatedVelocity + kVelocityEpsilon);
 
-        if (kMeasured > 0.0F && kMeasured < 0.05F)
+        if (measuredDrag > 0.0F && measuredDrag < kMaxDragCoefficient)
         {
-            const float alpha = 0.05F; // slow filter
             currentDragCoefficient =
-                (1.0F - alpha) * currentDragCoefficient +
-                alpha * kMeasured;
+                (1.0F - kAlpha) * currentDragCoefficient +
+                kAlpha * measuredDrag;
         }
     }
 
     // -------- Forward simulate trajectory --------
+    float simAltitude = estimatedAltitude;
+    float simVelocity = estimatedVelocity;
 
-    float simAltitude = altitude;
-    
-    float simVelocity = velocity;
-
-    const float dt = 0.02F;   // 50 Hz integration
-    const int maxSteps = 500; // safety
-
-    for (int i = 0; i < maxSteps; i++)
+    for (int step = 0; step < kMaxSimSteps; step++)
     {
-        float dragAccel =
-            currentDragCoefficient * simVelocity * simVelocity;
+        const float dragAcceleration = currentDragCoefficient * simVelocity * simVelocity;
+        const float totalAcceleration = -kGravity - dragAcceleration;
 
-        float a = -g - dragAccel;
-
-        simVelocity += a * dt;
-        simAltitude += simVelocity * dt;
+        simVelocity += totalAcceleration * kDt;
+        simAltitude += simVelocity * kDt;
 
         if (simVelocity <= 0.0F)
+        {
             break;
+        }
     }
 
     predApogeeAlt_ = simAltitude;
