@@ -1,6 +1,7 @@
 #include "data_handling/Telemetry.h"
 #include "ArduinoHAL.h"
 #include <algorithm>
+#include <cstdint>
 
 // Helpers for checking if the packet has room for more data
 std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
@@ -17,6 +18,128 @@ std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
 
 bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd) {
     return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity;
+}
+
+bool isTimestampNewer(std::uint32_t lhs, std::uint32_t rhs) {
+    return static_cast<std::int32_t>(lhs - rhs) > 0;
+}
+
+bool isTimestampReachedOrPassed(std::uint32_t current, std::uint32_t target) {
+    return static_cast<std::int32_t>(current - target) >= 0;
+}
+
+void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
+    if (inCommandMode) {
+        return;
+    }
+
+    while (rfdSerialConnection.available() > 0) {
+        const char receivedChar = static_cast<char>(rfdSerialConnection.read());
+
+        if (receivedChar == TelemetryFmt::kCommandEntryChar) {
+            ++commandEntryProgress;
+            if (commandEntryProgress >= TelemetryFmt::kCommandEntrySequenceLength) {
+                enterCommandMode(currentTimeMs);
+            }
+        } else {
+            // Send a debug message to the stream
+            rfdSerialConnection.print("Received char '");
+            rfdSerialConnection.print(receivedChar);
+            rfdSerialConnection.print("' which does not match command entry char '");
+            rfdSerialConnection.print(TelemetryFmt::kCommandEntryChar);
+            rfdSerialConnection.println("'. Resetting command entry progress.");
+            commandEntryProgress = 0;
+        }
+    }
+}
+
+void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
+    inCommandMode = true;
+    commandModeEnteredTimestamp = currentTimeMs;
+    commandModeLastInputTimestamp = currentTimeMs;
+    commandEntryProgress = 0;
+    commandModeTimeoutLocked = false;
+    commandModeTimeoutLockDeadlineMs = 0;
+
+    if (commandLine != nullptr) {
+        commandLine->switchUART(&rfdSerialConnection);
+        commandLine->print(SHELL_PROMPT);
+    }
+}
+
+void Telemetry::exitCommandMode() {
+    inCommandMode = false;
+    commandModeTimeoutLocked = false;
+    commandModeTimeoutLockDeadlineMs = 0;
+
+    if (commandLine != nullptr) {
+        commandLine->useDefaultUART();
+    }
+}
+
+void Telemetry::lockCommandModeTimeout(std::uint32_t lockDurationMs) {
+    if (!inCommandMode || lockDurationMs == 0) {
+        return;
+    }
+
+    const std::uint32_t nowMs = millis();
+    commandModeTimeoutLocked = true;
+    commandModeTimeoutLockDeadlineMs = nowMs + lockDurationMs;
+    commandModeLastInputTimestamp = nowMs;
+}
+
+void Telemetry::unlockCommandModeTimeout() {
+    commandModeTimeoutLocked = false;
+    commandModeTimeoutLockDeadlineMs = 0;
+
+    if (inCommandMode) {
+        commandModeLastInputTimestamp = millis();
+    }
+}
+
+void Telemetry::forceExitCommandMode() {
+    if (!inCommandMode) {
+        return;
+    }
+
+    exitCommandMode();
+}
+
+bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) {
+    if (!inCommandMode) {
+        return false;
+    }
+
+    if (commandLine != nullptr) {
+        const std::uint32_t lastInteractionTimestamp = commandLine->getLastInteractionTimestamp();
+        if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp)) {
+            commandModeLastInputTimestamp = lastInteractionTimestamp;
+        }
+    }
+
+    // If currentTimeMs was sampled before command input was processed in this loop,
+    // avoid unsigned underflow in the inactivity subtraction.
+    if (isTimestampNewer(commandModeLastInputTimestamp, currentTimeMs)) {
+        return true;
+    }
+
+    if (commandModeTimeoutLocked) {
+        if (!isTimestampReachedOrPassed(currentTimeMs, commandModeTimeoutLockDeadlineMs)) {
+            return true;
+        }
+
+        commandModeTimeoutLocked = false;
+        commandModeTimeoutLockDeadlineMs = 0;
+        commandModeLastInputTimestamp = currentTimeMs;
+        return true;
+    }
+
+    if ((currentTimeMs - commandModeLastInputTimestamp) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
+        exitCommandMode();
+        return false;
+    }
+
+    return true;
 }
 
 void Telemetry::preparePacket(std::uint32_t timestamp) {
@@ -77,54 +200,64 @@ void Telemetry::addEndMarker() {
     nextEmptyPacketIndex += TelemetryFmt::kEndMarkerBytes;
 }
 
+bool Telemetry::canFitStreamWithEndMarker(const SendableSensorData* ssd) const {
+    const std::size_t payloadBytes = bytesNeededForSSD(ssd);
+    return hasRoom(nextEmptyPacketIndex, payloadBytes + TelemetryFmt::kEndMarkerBytes);
+}
+
+void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded) {
+    if (!stream->shouldBeSent(currentTimeMs)) {
+        return;
+    }
+
+    if (!canFitStreamWithEndMarker(stream)) {
+        return;
+    }
+
+    addSSDToPacket(stream);
+    stream->markWasSent(currentTimeMs);
+    payloadAdded = true;
+}
+
+bool Telemetry::finalizeAndSendPacket() {
+    if (nextEmptyPacketIndex <= TelemetryFmt::kHeaderBytes) {
+        return false;
+    }
+
+    if (!hasRoom(nextEmptyPacketIndex, TelemetryFmt::kEndMarkerBytes)) {
+        return false;
+    }
+
+    addEndMarker();
+    for (std::size_t i = 0; i < nextEmptyPacketIndex; i++) {
+        rfdSerialConnection.write(packet[i]);
+    }
+
+    packetCounter++;
+    return true;
+}
+
 bool Telemetry::tick(uint32_t currentTime) {
-    bool sendingPacketThisTick = false;
+    // Checks if we should put the telemetry into command mode
+    checkForRadioCommandSequence(currentTime);
+
+    if (shouldPauseTelemetryForCommandMode(currentTime)) {
+        return false;
+    }
+
+    setPacketToZero();
+    preparePacket(currentTime);
+
+    bool payloadAdded = false;
 
     for (std::size_t i = 0; i < streamCount; i++) {
         // i is safe because streamCount comes from the array passed in by the client
-        if (streams[i]->shouldBeSent(currentTime)) { // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-
-            if (!sendingPacketThisTick) {
-                setPacketToZero();
-                preparePacket(currentTime);
-                sendingPacketThisTick = true;
-            }
-
-            // Compute how many bytes we need for this stream's payload.
-            const std::size_t payloadBytes = bytesNeededForSSD(streams[i]);  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            const std::size_t totalBytesIfAdded = payloadBytes + TelemetryFmt::kEndMarkerBytes;
-
-            // Only add if it fits (payload + end marker).
-            if (hasRoom(nextEmptyPacketIndex, totalBytesIfAdded)) {
-                addSSDToPacket(streams[i]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-                streams[i]->markWasSent(currentTime); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            } else {
-                // Not enough room. Skip this stream for now.
-                // It will be sent on the next tick as long as the packet isn't filled before reaching it again.
-                // If we have too many high-frequency streams, the stream as the end of the list may be starved.
-            }
-        }
+        tryAppendStream(streams[i], currentTime, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
-    // Only send if we actually added any payload beyond the header.
-    if (sendingPacketThisTick && nextEmptyPacketIndex > TelemetryFmt::kHeaderBytes) {
-        // Ensure end marker itself fits
-        if (hasRoom(nextEmptyPacketIndex, TelemetryFmt::kEndMarkerBytes)) {
-            addEndMarker();
-
-            // Send used portion
-            for (std::size_t i = 0; i < nextEmptyPacketIndex; i++) {
-                rfdSerialConnection.write(packet[i]);
-            }
-
-            packetCounter++; //Increment after each successful send
-            
-            return true;
-        }
-
-        // If somehow we can't fit the end marker, drop the packet.
-        // (This shouldn't happen with the checks above.)
+    if (!payloadAdded) {
+        return false;
     }
 
-    return false;
+    return finalizeAndSendPacket();
 }

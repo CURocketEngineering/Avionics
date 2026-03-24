@@ -1,7 +1,43 @@
-#ifndef SERIAL_SIM_BMP3_H
-#define SERIAL_SIM_BMP3_H
+#ifndef SERIAL_SIM_BMP390_H
+#define SERIAL_SIM_BMP390_H
 
 #include "Serial_Sim.h"
+
+#ifndef BMP3_NO_OVERSAMPLING
+#define BMP3_NO_OVERSAMPLING        0x00
+#endif
+
+#ifndef BMP3_OVERSAMPLING_2X
+#define BMP3_OVERSAMPLING_2X        0x01
+#endif
+
+#ifndef BMP3_OVERSAMPLING_4X
+#define BMP3_OVERSAMPLING_4X        0x02
+#endif
+
+#ifndef BMP3_OVERSAMPLING_8X
+#define BMP3_OVERSAMPLING_8X        0x03
+#endif
+
+#ifndef BMP3_OVERSAMPLING_16X
+#define BMP3_OVERSAMPLING_16X       0x04
+#endif
+
+#ifndef BMP3_OVERSAMPLING_32X
+#define BMP3_OVERSAMPLING_32X       0x05
+#endif
+
+#ifndef BMP3_IIR_FILTER_COEFF_3
+#define BMP3_IIR_FILTER_COEFF_3     0x02
+#endif
+
+#ifndef BMP3_ODR_100_HZ
+#define BMP3_ODR_100_HZ             0x01
+#endif
+
+#ifndef BMP3_ODR_50_HZ
+#define BMP3_ODR_50_HZ              0x02
+#endif
 
 /**
  * @brief Mock BMP3XX sensor backed by SerialSim data.
@@ -16,10 +52,10 @@ public:
     bool begin_I2C(int addr) { return true; } // Mock successful initialization
     bool begin_I2C() { return true; } // Mock successful initialization
 
-    void setTemperatureOversampling(int oversampling) {}
-    void setPressureOversampling(int oversampling) {}
-    void setIIRFilterCoeff(int coeff) {}
-    void setOutputDataRate(int rate) {}
+    void setTemperatureOversampling(int oversampling) { temperatureOversampling = oversampling; }
+    void setPressureOversampling(int oversampling) { pressureOversampling = oversampling; }
+    void setIIRFilterCoeff(int coeff) { iirFilterCoeff = coeff; }
+    void setOutputDataRate(int rate) { outputDataRate = rate; }
     void setConversionDelay(int delay) {}
     void startConversion() {}
     bool updateConversion(){return true;}
@@ -70,6 +106,12 @@ public:
     }
 
 
+private:
+    int temperatureOversampling = BMP3_NO_OVERSAMPLING;
+    int pressureOversampling = BMP3_OVERSAMPLING_2X;
+    int iirFilterCoeff = BMP3_IIR_FILTER_COEFF_3;
+    int outputDataRate = BMP3_ODR_100_HZ;
+
 };
 
-#endif // SERIAL_SIM_BMP3_H
+#endif // SERIAL_SIM_BMP390_H

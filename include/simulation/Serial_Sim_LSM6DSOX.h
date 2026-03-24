@@ -3,6 +3,18 @@
 
 #include "Serial_Sim.h"
 
+#ifndef LSM6DS_ACCEL_RANGE_16_G
+#define LSM6DS_ACCEL_RANGE_16_G    0x03
+#endif
+
+#ifndef LSM6DS_GYRO_RANGE_2000_DPS
+#define LSM6DS_GYRO_RANGE_2000_DPS 0x03
+#endif
+
+#ifndef LSM6DS_RATE_104_HZ
+#define LSM6DS_RATE_104_HZ         0x04
+#endif
+
 /**
  * @brief Mock LSM6DSOX IMU backed by SerialSim accelerometer/gyro data.
  * @note When to use: firmware simulation or CI builds where the real IMU is
@@ -16,15 +28,15 @@ public:
     bool begin_I2C(int addr) { return true; } // Mock successful initialization
     bool begin_I2C() { return true; } // Mock successful initialization
 
-    void setAccelRange(int range) {}
-    void setGyroRange(int range) {}
-    void setAccelDataRate(int rate) {}
-    void setGyroDataRate(int rate) {}
+    void setAccelRange(int range) { accelRange = range; }
+    void setGyroRange(int range) { gyroRange = range; }
+    void setAccelDataRate(int rate) { accelDataRate = rate; }
+    void setGyroDataRate(int rate) { gyroDataRate = rate; }
 
-    int getAccelRange() { return 16; } // Mock as 16G
-    int getGyroRange() { return 2000; } // Mock as 2000 DPS
-    int getAccelDataRate() { return 104; } // Mock as 104 Hz
-    int getGyroDataRate() { return 104; } // Mock as 104 Hz
+    int getAccelRange() { return accelRange; }
+    int getGyroRange() { return gyroRange; }
+    int getAccelDataRate() { return accelDataRate; }
+    int getGyroDataRate() { return gyroDataRate; }
 
     void getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp) {
         SerialSim::getInstance().updateAcl(accel);
@@ -32,6 +44,11 @@ public:
 
     }
 
+private:
+    int accelRange = LSM6DS_ACCEL_RANGE_16_G;
+    int gyroRange = LSM6DS_GYRO_RANGE_2000_DPS;
+    int accelDataRate = LSM6DS_RATE_104_HZ;
+    int gyroDataRate = LSM6DS_RATE_104_HZ;
 
 };
 

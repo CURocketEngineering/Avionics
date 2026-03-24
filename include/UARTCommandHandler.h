@@ -36,6 +36,11 @@ public:
     void readInput();
     void processCommand(const std::string& command);
     void begin();
+    void switchUART(Stream* newUART);
+    void useDefaultUART();
+    Stream* getDefaultUART() const { return defaultUART; }
+    Stream* getActiveUART() const { return UART; }
+    uint32_t getLastInteractionTimestamp() const { return lastInteractionTimestamp_; }
 
     // Pass-through functions for the UART object
     void println(const std::string& message){
@@ -47,6 +52,7 @@ public:
 
 private:
     Stream * UART;  // Pointer to the UART object
+    Stream * defaultUART;  // Stream provided at construction; used by useDefaultUART()
     struct Command {
         std::string longName;             
         std::string shortName;           
@@ -66,6 +72,7 @@ private:
     void handleChar_(char receivedChar);
 
     bool lastWasCR_ = false;  // Track if the last character was a carriage return for proper newline handling
+    uint32_t lastInteractionTimestamp_ = 0;  // millis() when input bytes were last consumed
 };
 
 #endif

@@ -5,7 +5,18 @@
 constexpr int COMMAND_CHARS_ASCII_END = 31; // ASCII control characters end at 31, so we can ignore those in input
 
 
-CommandLine::CommandLine(Stream * UART) : UART(UART) {
+CommandLine::CommandLine(Stream * UART) : UART(UART), defaultUART(UART) {
+}
+
+void CommandLine::switchUART(Stream* newUART) {
+    if (newUART == nullptr) {
+        return;
+    }
+    UART = newUART;
+}
+
+void CommandLine::useDefaultUART() {
+    UART = defaultUART;
 }
 
 void CommandLine::begin() {
@@ -51,7 +62,10 @@ void tokenizeWhitespace(const std::string& line,
 } // namespace
 
 void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complexity)
+    bool consumedInputThisCall = false;
+
     while (UART->available() > 0) {
+        consumedInputThisCall = true;
         const char receivedChar = static_cast<char>(UART->read());
 
         if (isBackspace_(receivedChar)) {
@@ -68,6 +82,10 @@ void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complex
             lastWasCR_ = false;
             handleChar_(receivedChar);
         }
+    }
+
+    if (consumedInputThisCall) {
+        lastInteractionTimestamp_ = millis();
     }
 }
 

@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include "ArduinoHAL.h"
+#include "UARTCommandHandler.h"
 #include "data_handling/SensorDataHandler.h"
 
 /**
@@ -55,6 +56,9 @@ constexpr std::uint8_t kEndByteValue = 52;
 constexpr std::size_t kBytesIn32Bit = 4;
 constexpr unsigned kBitsPerByte = 8;
 constexpr std::uint8_t kAllOnesByte = 0xFF;
+constexpr std::uint32_t kCommandModeInactivityTimeoutMs = 10000;
+constexpr std::size_t kCommandEntrySequenceLength = 3;
+constexpr char kCommandEntryChar = 'c';
 
 /** Assumptions used by float packing. */
 static_assert(sizeof(std::uint32_t) == 4, "Expected 32-bit uint32_t");
@@ -198,10 +202,12 @@ public:
      */
     template <std::size_t N>
     Telemetry(const std::array<SendableSensorData*, N>& streams,
-              Stream& rfdSerialConnection)
+              Stream& rfdSerialConnection,
+              CommandLine* commandLine = nullptr)
         : streams(streams.data()),
           streamCount(N),
           rfdSerialConnection(rfdSerialConnection),
+          commandLine(commandLine),
           nextEmptyPacketIndex(0),
           packet{} {}
     /**
@@ -211,6 +217,32 @@ public:
      */
     bool tick(std::uint32_t currentTimeMs);
 
+    /**
+     * @brief True if telemetry is currently paused for radio command mode.
+     */
+    bool isInCommandMode() const { return inCommandMode; }
+
+    /**
+     * @brief Optional command line interface to drive while telemetry manages command mode.
+     */
+    void setCommandLine(CommandLine* newCommandLine) { commandLine = newCommandLine; }
+
+    /**
+     * @brief Temporarily disable command-mode inactivity timeout.
+     * @param lockDurationMs Duration before auto-unlock fallback.
+     */
+    void lockCommandModeTimeout(std::uint32_t lockDurationMs);
+
+    /**
+     * @brief Re-enable command-mode inactivity timeout immediately.
+     */
+    void unlockCommandModeTimeout();
+
+    /**
+     * @brief Immediately exit command mode if currently active.
+     */
+    void forceExitCommandMode();
+
 private:
     // Packet building helpers
     void preparePacket(std::uint32_t timestamp);
@@ -218,6 +250,13 @@ private:
     void addSSDToPacket(SendableSensorData* ssd);
     void setPacketToZero();
     void addEndMarker();
+    void checkForRadioCommandSequence(std::uint32_t currentTimeMs);
+    void enterCommandMode(std::uint32_t currentTimeMs);
+    void exitCommandMode();
+    bool shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs);
+    bool canFitStreamWithEndMarker(const SendableSensorData* ssd) const;
+    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded);
+    bool finalizeAndSendPacket();
 
     // Non-owning view of the stream list
     SendableSensorData* const* streams;
@@ -229,11 +268,20 @@ private:
 
     // Output
     Stream& rfdSerialConnection;
+    CommandLine* commandLine;
 
     // Packet state
     std::uint32_t packetCounter = 0;
     std::size_t nextEmptyPacketIndex;
     std::array<std::uint8_t, TelemetryFmt::kPacketCapacity> packet;
+
+    // Command mode handling
+    bool inCommandMode = false; 
+    std::uint32_t commandModeEnteredTimestamp = 0;
+    std::uint32_t commandModeLastInputTimestamp = 0;
+    std::size_t commandEntryProgress = 0;
+    bool commandModeTimeoutLocked = false;
+    std::uint32_t commandModeTimeoutLockDeadlineMs = 0;
 };
 
 #endif
