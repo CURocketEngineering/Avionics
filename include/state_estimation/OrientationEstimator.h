@@ -20,10 +20,11 @@ public:
     uint32_t lastUpdateTime;   // timestamp of the last update in milliseconds
 
     OrientationEstimator(float gain = 0.1f)
-        : q0(1), q1(0), q2(0), q3(0),
-          beta(gain), lastUpdateTime(0) {}
+        : q0(1.0f), q1(0.0f), q2(0.0f), q3(0.0f),
+          beta(gain), lastUpdateTime(0), roll(0.0f), pitch(0.0f), yaw(0.0f) {}
 
     void update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime);
+    void updateIMU(AccelerationTriplet accel, GyroTriplet gyro, uint32_t currentTime);
 
     void getEuler();
 
