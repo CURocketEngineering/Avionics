@@ -15,6 +15,17 @@ inline float lerp(float a, float b, float t) {
     return a + t * (b - a);
 }
 
+inline void printMissingPreprocessedDataMessage(const std::string& missingFile) {
+    std::cerr << "\n";
+    std::cerr << "==============================================================\n";
+    std::cerr << "MISSING PREPROCESSED TEST DATA\n";
+    std::cerr << "Could not open CSV file: " << missingFile << "\n";
+    std::cerr << "Add the pre-processed CSV files to the data/ folder.\n";
+    std::cerr << "See setup instructions in: data/README.md\n";
+    std::cerr << "==============================================================\n";
+    std::cerr << "\n";
+}
+
 // Structure to hold sensor data parsed from the CSV
 struct SensorData {
     long time;  // Time in milliseconds
@@ -105,7 +116,7 @@ public:
         timeStep_ms(sampleRate_hz > 0 ? static_cast<long>((1.0 / sampleRate_hz) * 1000.0) : 0) {
         file.open(filename);
         if (!file.is_open()) {
-            std::cerr << "Failed to open CSV file: " << filename << std::endl;
+            printMissingPreprocessedDataMessage(filename);
             exit(EXIT_FAILURE);
         }
         // Skip header line
