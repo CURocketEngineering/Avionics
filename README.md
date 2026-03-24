@@ -78,7 +78,6 @@ The following systems integrate Avionics as a submodule:
 - [MARTHA 1.3](https://github.com/CURocketEngineering/MARTHA-1.3)
 - [Active-Aero](https://github.com/CURocketEngineering/Active-Aero)
 - [MARTHA 1.1](https://github.com/CURocketEngineering/MARTHA-1.1)
-- [Native](https://github.com/CURocketEngineering/Native)
 
 ## Documentation
 
@@ -89,9 +88,14 @@ The following systems integrate Avionics as a submodule:
 
 ## Unit Testing
 
-Unit tests are managed by the [Native](https://github.com/CURocketEngineering/Native) repository, allowing for module testing without requiring embedded hardware.
+Unit tests are part of this repository under `test/`, and can run on a laptop/desktop without embedded hardware.
 
-Never in the Avionics repo should you `#include <Arduino.h>` or any other Arduino-specific headers. Instead, always include `ArduinoHAL.h` from the `hal` directory, which will either pull in the real Arduino core (when compiling for an Arduino target) or a mock implementation (when compiling for Native). This ensures that Avionics can be tested via the Native repo on a laptop without any Arduino dependencies.
+1. Install PlatformIO Core (`pip install -U platformio`) or the PlatformIO IDE extension.
+2. Place test CSV files in `data/` (or let CI download them).
+3. Run tests from the repo root:
+   - `pio test -e native`
+
+Never in the Avionics repo should you `#include <Arduino.h>` or any other Arduino-specific headers. Instead, always include `ArduinoHAL.h` from the `hal` directory, which will either pull in the real Arduino core (when compiling for an Arduino target) or a mock implementation (when compiling for host-native tests).
 
 ## License
 

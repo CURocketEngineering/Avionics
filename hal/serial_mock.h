@@ -59,8 +59,21 @@ public:
     size_t write(const uint8_t *buffer, size_t size) { return size; }
 };
 
-extern MockSerial Serial;
-extern MockSerial Serial1;
+inline MockSerial& serial_global_instance() {
+    static MockSerial serial;
+    return serial;
+}
+
+inline MockSerial& serial1_global_instance() {
+    static MockSerial serial1;
+    return serial1;
+}
+
+// Header-defined global references for host-native builds.
+// Each translation unit gets an internal reference bound to the same
+// function-local static instance.
+static MockSerial& Serial  = serial_global_instance();
+static MockSerial& Serial1 = serial1_global_instance();
 
 typedef MockSerial HardwareSerial;
 

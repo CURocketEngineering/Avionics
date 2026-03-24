@@ -1,4 +1,4 @@
-name: Test With Native
+name: Unit Tests
 
 on:
   #triggers the workflow on pull requests
@@ -14,57 +14,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #gets the current repo
       - name: Checkout Avionics repo
         uses: actions/checkout@v4
-        with:
-          path: Avionics
-      
-      #clones the native repo
-      - name: Clone Native repo
-        run: |
-          git clone https://github.com/CURocketEngineering/Native native
 
-      #replaces the linked Avionics repo with the current Avionics code
-      - name: Replace Native lib Avionics with checked-out Avionics code
-        run: |
-          rm -rf native/lib/Avionics
-          mkdir -p native/lib
-          mv Avionics native/lib/Avionics
-
-      #downlaods the rocket-test-data for the test
       - name: Download Rocket-test-data v1.0.0 release CSVs
         run: |
-          mkdir -p native/data
+          mkdir -p data
           curl -s \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/CURocketEngineering/Rocket-Test-Data/releases/tags/v1.0.0 \
           | jq -r '.assets[].browser_download_url' \
           | while read url; do
               echo "Downloading $url"
-              curl -L "$url" -o native/data/$(basename "$url")
+              curl -L "$url" -o data/$(basename "$url")
             done
 
-      #fixes the file name replacing the . with spaces      
+      # Fixes the file name replacing the dots with spaces
       - name: Fix file name
         run: |
-          mv native/data/AA.Data.Collection.-.Second.Launch.Trimmed.csv \
-             native/data/"AA Data Collection - Second Launch Trimmed.csv"
+          mv data/AA.Data.Collection.-.Second.Launch.Trimmed.csv \
+             data/"AA Data Collection - Second Launch Trimmed.csv"
 
-      #installed PlatformIO core
       - name: Install PlatformIO Core
         run: |
           pip install -U platformio
 
-      #shows the file tree structure for debugging
-      - name: Show native directory structure
-        run: |
-          echo "===== native directory tree ====="
-          ls -R native
-
-      #runs platformio test
       - name: Run PlatformIO Tests
-        working-directory: ./native
         run: pio test -e native
-
 
