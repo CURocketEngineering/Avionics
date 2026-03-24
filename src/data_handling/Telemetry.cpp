@@ -24,6 +24,10 @@ bool isTimestampNewer(std::uint32_t lhs, std::uint32_t rhs) {
     return static_cast<std::int32_t>(lhs - rhs) > 0;
 }
 
+bool isTimestampReachedOrPassed(std::uint32_t current, std::uint32_t target) {
+    return static_cast<std::int32_t>(current - target) >= 0;
+}
+
 void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
     if (inCommandMode) {
         return;
@@ -54,6 +58,8 @@ void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
     commandModeEnteredTimestamp = currentTimeMs;
     commandModeLastInputTimestamp = currentTimeMs;
     commandEntryProgress = 0;
+    commandModeTimeoutLocked = false;
+    commandModeTimeoutLockDeadlineMs = 0;
 
     if (commandLine != nullptr) {
         commandLine->switchUART(&rfdSerialConnection);
@@ -63,9 +69,31 @@ void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
 
 void Telemetry::exitCommandMode() {
     inCommandMode = false;
+    commandModeTimeoutLocked = false;
+    commandModeTimeoutLockDeadlineMs = 0;
 
     if (commandLine != nullptr) {
         commandLine->useDefaultUART();
+    }
+}
+
+void Telemetry::lockCommandModeTimeout(std::uint32_t lockDurationMs) {
+    if (!inCommandMode || lockDurationMs == 0) {
+        return;
+    }
+
+    const std::uint32_t nowMs = millis();
+    commandModeTimeoutLocked = true;
+    commandModeTimeoutLockDeadlineMs = nowMs + lockDurationMs;
+    commandModeLastInputTimestamp = nowMs;
+}
+
+void Telemetry::unlockCommandModeTimeout() {
+    commandModeTimeoutLocked = false;
+    commandModeTimeoutLockDeadlineMs = 0;
+
+    if (inCommandMode) {
+        commandModeLastInputTimestamp = millis();
     }
 }
 
@@ -84,6 +112,17 @@ bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) 
     // If currentTimeMs was sampled before command input was processed in this loop,
     // avoid unsigned underflow in the inactivity subtraction.
     if (isTimestampNewer(commandModeLastInputTimestamp, currentTimeMs)) {
+        return true;
+    }
+
+    if (commandModeTimeoutLocked) {
+        if (!isTimestampReachedOrPassed(currentTimeMs, commandModeTimeoutLockDeadlineMs)) {
+            return true;
+        }
+
+        commandModeTimeoutLocked = false;
+        commandModeTimeoutLockDeadlineMs = 0;
+        commandModeLastInputTimestamp = currentTimeMs;
         return true;
     }
 

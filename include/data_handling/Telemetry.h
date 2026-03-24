@@ -227,6 +227,17 @@ public:
      */
     void setCommandLine(CommandLine* newCommandLine) { commandLine = newCommandLine; }
 
+    /**
+     * @brief Temporarily disable command-mode inactivity timeout.
+     * @param lockDurationMs Duration before auto-unlock fallback.
+     */
+    void lockCommandModeTimeout(std::uint32_t lockDurationMs);
+
+    /**
+     * @brief Re-enable command-mode inactivity timeout immediately.
+     */
+    void unlockCommandModeTimeout();
+
 private:
     // Packet building helpers
     void preparePacket(std::uint32_t timestamp);
@@ -264,6 +275,8 @@ private:
     std::uint32_t commandModeEnteredTimestamp = 0;
     std::uint32_t commandModeLastInputTimestamp = 0;
     std::size_t commandEntryProgress = 0;
+    bool commandModeTimeoutLocked = false;
+    std::uint32_t commandModeTimeoutLockDeadlineMs = 0;
 };
 
 #endif
