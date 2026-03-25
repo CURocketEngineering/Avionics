@@ -10,5 +10,6 @@ var classApogeePredictor =
     [ "isPredictionValid", "classApogeePredictor.html#a45e13691295a8052a023bd032727566f", null ],
     [ "poly_update", "classApogeePredictor.html#a9fec95b121444cc3e10a4e8c1ea67955", null ],
     [ "quad_update", "classApogeePredictor.html#a79d1a6f257987a6c0d09de2f60aec0e7", null ],
+    [ "simulate_update", "classApogeePredictor.html#a2b5193f7d0b56254fd498bf0555dc9f5", null ],
     [ "update", "classApogeePredictor.html#aab5d0d262dd54de3bb61f976bc92013d", null ]
 ];

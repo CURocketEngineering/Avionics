@@ -21,11 +21,12 @@ var searchData=
   ['setrange_18',['setRange',['../classAdafruit__LIS3MDL.html#a94c445f0606c6caf30f5a9ab050e1b3d',1,'Adafruit_LIS3MDL']]],
   ['settemperatureoversampling_19',['setTemperatureOversampling',['../classAdafruit__BMP3XX.html#a1e7ef76c0e09d3222f7fe4e3fdc97f92',1,'Adafruit_BMP3XX']]],
   ['shouldbesent_20',['shouldBeSent',['../structSendableSensorData.html#a7908633b014625a2d0ff7b113e035a60',1,'SendableSensorData']]],
-  ['size_21',['size',['../classAdafruit__SPIFlash.html#a2c28ba587b333026b138fa214fea5acd',1,'Adafruit_SPIFlash']]],
-  ['spiclass_22',['SPIClass',['../classSPIClass.html#a445bee289720f7aec2ac26465f50b67c',1,'SPIClass::SPIClass(uint32_t &amp;mosi, uint32_t &amp;miso, uint32_t &amp;sclk, uint32_t &amp;ssel)'],['../classSPIClass.html#a50c3dcd98bab69db9d3d0ea1b5f463b2',1,'SPIClass::SPIClass()']]],
-  ['spisettings_23',['SPISettings',['../classSPISettings.html#a1873acec9734fc2702e02b63ae400ed4',1,'SPISettings']]],
-  ['startconversion_24',['startConversion',['../classAdafruit__BMP3XX.html#a1cd01680e97904d3a8c654b1ffbab804',1,'Adafruit_BMP3XX']]],
-  ['statemachine_25',['StateMachine',['../classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e',1,'StateMachine']]],
-  ['switchuart_26',['switchUART',['../classCommandLine.html#a941437d218746e16f825aa6fe8d00a8a',1,'CommandLine']]],
-  ['sync_27',['sync',['../structFile32.html#a0b52a4b2114c45808cdc400223031394',1,'File32']]]
+  ['simulate_5fupdate_21',['simulate_update',['../classApogeePredictor.html#a2b5193f7d0b56254fd498bf0555dc9f5',1,'ApogeePredictor']]],
+  ['size_22',['size',['../classAdafruit__SPIFlash.html#a2c28ba587b333026b138fa214fea5acd',1,'Adafruit_SPIFlash']]],
+  ['spiclass_23',['SPIClass',['../classSPIClass.html#a445bee289720f7aec2ac26465f50b67c',1,'SPIClass::SPIClass(uint32_t &amp;mosi, uint32_t &amp;miso, uint32_t &amp;sclk, uint32_t &amp;ssel)'],['../classSPIClass.html#a50c3dcd98bab69db9d3d0ea1b5f463b2',1,'SPIClass::SPIClass()']]],
+  ['spisettings_24',['SPISettings',['../classSPISettings.html#a1873acec9734fc2702e02b63ae400ed4',1,'SPISettings']]],
+  ['startconversion_25',['startConversion',['../classAdafruit__BMP3XX.html#a1cd01680e97904d3a8c654b1ffbab804',1,'Adafruit_BMP3XX']]],
+  ['statemachine_26',['StateMachine',['../classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e',1,'StateMachine']]],
+  ['switchuart_27',['switchUART',['../classCommandLine.html#a941437d218746e16f825aa6fe8d00a8a',1,'CommandLine']]],
+  ['sync_28',['sync',['../structFile32.html#a0b52a4b2114c45808cdc400223031394',1,'File32']]]
 ];

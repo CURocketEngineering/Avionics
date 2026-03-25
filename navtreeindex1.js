@@ -45,6 +45,7 @@ var NAVTREEINDEX1 =
 "classApogeeDetector.html#aee6b8ea0aa86529da2a808744cd1d72f":[5,0,6,3],
 "classApogeePredictor.html":[5,0,8],
 "classApogeePredictor.html#a01b8b22cc0b252900d98299484b0741d":[5,0,8,4],
+"classApogeePredictor.html#a2b5193f7d0b56254fd498bf0555dc9f5":[5,0,8,10],
 "classApogeePredictor.html#a3ab0badaced6a6d8313dca8abb815103":[5,0,8,5],
 "classApogeePredictor.html#a45238168e4c3d50aed1357e5d912254a":[5,0,8,1],
 "classApogeePredictor.html#a45e13691295a8052a023bd032727566f":[5,0,8,7],
@@ -52,7 +53,7 @@ var NAVTREEINDEX1 =
 "classApogeePredictor.html#a6ef3bfb35c02e8cc24d08835de317bea":[5,0,8,2],
 "classApogeePredictor.html#a79d1a6f257987a6c0d09de2f60aec0e7":[5,0,8,9],
 "classApogeePredictor.html#a9fec95b121444cc3e10a4e8c1ea67955":[5,0,8,8],
-"classApogeePredictor.html#aab5d0d262dd54de3bb61f976bc92013d":[5,0,8,10],
+"classApogeePredictor.html#aab5d0d262dd54de3bb61f976bc92013d":[5,0,8,11],
 "classApogeePredictor.html#ae7779f61c4dac1880a0cd764503e31d0":[5,0,8,3],
 "classApogeePredictor.html#aebff6192d796fdf58e37f395d321878e":[5,0,8,6],
 "classBaseStateMachine.html":[5,0,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1":[5,0,42,3],
 "classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90":[5,0,42,5],
 "classVerticalVelocityEstimator.html#af568600ad36b0b146b7d675f1b562724":[5,0,42,7],
-"classes.html":[5,1],
-"classprintSaver.html":[5,0,29]
+"classes.html":[5,1]
 };
