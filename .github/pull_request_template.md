@@ -12,20 +12,10 @@
 
 Check all that apply:
 
-- [ ] I have added or modified tests to cover these changes.
+- [ ] I have added or modified unit tests to cover these changes.
 - [ ] I have manually tested the changes on the target device(s) or environment(s).
 - [ ] Existing tests were reviewed to ensure they still work as expected.
 - [ ] If tests were not added or modified, explain why:
-  > (Provide reasoning here)
-
----
-
-## Building
-
-- [ ] This change successfully builds in **at least one** of the following environments:
-  - [ ] Native repo
-  - [ ] Target device(s) (e.g., MARTHA)
-- [ ] If the build fails in any environment, explain why:
   > (Provide reasoning here)
 
 ---
