@@ -190,7 +190,6 @@ void ApogeePredictor::analytic_update()
     const float kApogeeFactor = 0.5F;
     const float kBallisticDenominator = 2.0F;
 
-
     //if the velocity is less than or equal to zero, the rocket has already reach apogee and the apogee is the current altitude
     if (velocity <= 0.0F)
     {
@@ -230,6 +229,66 @@ const float kMeasured = -(acceleration + gravity) /
     }
 
     predApogeeAlt_ = apogee;
+    valid_ = true;
+}
+
+
+void ApogeePredictor::simulate_update()
+{
+    const float kGravity = 9.80665F;
+
+    const float estimatedVelocity = vve_.getEstimatedVelocity();
+    const float estimatedAltitude = vve_.getEstimatedAltitude();
+    const float inertialAccel = vve_.getInertialVerticalAcceleration();
+
+    const float kVelocityEpsilon = 0.001F;
+    const float kMinVelocityForDrag = 15.0F;
+    const float kAlpha = 0.05F;           // slow filter constant
+    const float kMaxDragCoefficient = 0.05F;
+    const float kDt = 0.01F;              // simulation time step
+    const int kMaxSimSteps = 500;         // safety limit
+
+    // Already descending
+    if (estimatedVelocity <= 0.0F)
+    {
+        predApogeeAlt_ = estimatedAltitude;
+        valid_ = true;
+        return;
+    }
+
+    // Only update drag during cost phase
+    if (estimatedVelocity > kMinVelocityForDrag)
+    {
+        const float measuredDrag =
+            -(inertialAccel + kGravity) / (estimatedVelocity * estimatedVelocity + kVelocityEpsilon);
+
+        if (measuredDrag > 0.0F && measuredDrag < kMaxDragCoefficient)
+        {
+            currentDragCoefficient =
+                (1.0F - kAlpha) * currentDragCoefficient +
+                kAlpha * measuredDrag;
+        }
+    }
+
+    // -------- Forward simulate trajectory --------
+    float simAltitude = estimatedAltitude;
+    float simVelocity = estimatedVelocity;
+
+    for (int step = 0; step < kMaxSimSteps; step++)
+    {
+        const float dragAcceleration = currentDragCoefficient * simVelocity * simVelocity;
+        const float totalAcceleration = -kGravity - dragAcceleration;
+
+        simVelocity += totalAcceleration * kDt;
+        simAltitude += simVelocity * kDt;
+
+        if (simVelocity <= 0.0F)
+        {
+            break;
+        }
+    }
+
+    predApogeeAlt_ = simAltitude;
     valid_ = true;
 }
 

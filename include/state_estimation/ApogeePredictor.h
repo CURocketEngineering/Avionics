@@ -45,6 +45,8 @@ public:
 
     void analytic_update();
 
+    void simulate_update();
+
     // ----- Accessors -----
     [[nodiscard]] bool     isPredictionValid()            const;
     [[nodiscard]] float    getTimeToApogee_s()            const;
@@ -66,7 +68,12 @@ private:
     float    tToApogee_;    ///< Time until apogee (seconds)
     uint32_t predApogeeTs_; ///< Timestamp of predicted apogee (ms)
     float    predApogeeAlt_;///< Predicted altitude at apogee (m)
-    float currentDragCoefficient = 0.0025F;     ///< Drag coefficient
+    float currentDragCoefficient = 0.0005F;     ///< Drag coefficient
+    
+    //variables for simulation apogee prediction
+    float beta_ = 400.0f;
+    float filteredApogee_ = 0.0f;
+    bool apogeeInitialized_ = false;
 
     // Bookkeeping
     uint32_t lastTs_;       ///< Last timestamp received
