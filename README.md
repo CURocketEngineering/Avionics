@@ -71,10 +71,14 @@ See a comprehensive list of all flights using this software at ***🚀[Flight Te
 - **Serial Command Handler:**  
   The [UARTCommandHandler](include/UARTCommandHandler.h) offers a fully configurable command interface for runtime configuration, debugging, and data retrieval, using function pointers for flexibility.
 
+- **Telemetry Streaming:**
+  The [Telemetry Handler](include/data_handling/Telemetry.h) constructs a stream of telemetry data which can be sent over a serial interface and then decoded by our ground station. It also can pause the stream when command mode is activated, so the stream can be used exclusively by the UARTCommandHandler. 
+
 ## Dependent Systems
 
 The following systems integrate Avionics as a submodule:
 
+- [MARTHA 1.4](https://github.com/CURocketEngineering/MARTHA-1.4)
 - [MARTHA 1.3](https://github.com/CURocketEngineering/MARTHA-1.3)
 - [Active-Aero](https://github.com/CURocketEngineering/Active-Aero)
 - [MARTHA 1.1](https://github.com/CURocketEngineering/MARTHA-1.1)
@@ -94,6 +98,8 @@ Unit tests are part of this repository under `test/`, and can run on a laptop/de
 2. Place test CSV files in `data/` (or let CI download them).
 3. Run tests from the repo root:
    - `pio test -e native`
+
+## Hardware Abstraction Note:
 
 Never in the Avionics repo should you `#include <Arduino.h>` or any other Arduino-specific headers. Instead, always include `ArduinoHAL.h` from the `hal` directory, which will either pull in the real Arduino core (when compiling for an Arduino target) or a mock implementation (when compiling for host-native tests).
 
