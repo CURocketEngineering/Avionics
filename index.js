@@ -13,5 +13,6 @@ var index =
     [ "Dependent Systems", "index.html#autotoc_md54", null ],
     [ "Documentation", "index.html#autotoc_md55", null ],
     [ "Unit Testing", "index.html#autotoc_md56", null ],
-    [ "License", "index.html#autotoc_md57", null ]
+    [ "Hardware Abstraction Note:", "index.html#autotoc_md57", null ],
+    [ "License", "index.html#autotoc_md58", null ]
 ];

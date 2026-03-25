@@ -213,9 +213,9 @@ $(function(){initNavTree('Serial__Sim_8h_source.html','',''); });
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// Called once a full line of data is received</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">void</span> handleIncomingLine(String &amp;line) {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <a class="code hl_variable" href="serial__mock_8h.html#a20ff0bc99522ec4c094aa2bebd8ce796">Serial</a>.<a class="code hl_function" href="classMockSerial.html#ac03cbb07a27bb17a66e057e2e5e78180">println</a>(<span class="stringliteral">&quot;Handling line: &quot;</span> + line);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        Serial.println(<span class="stringliteral">&quot;Handling line: &quot;</span> + line);</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">if</span> (line.length() &lt; 5) {</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <a class="code hl_variable" href="serial__mock_8h.html#a20ff0bc99522ec4c094aa2bebd8ce796">Serial</a>.<a class="code hl_function" href="classMockSerial.html#ac03cbb07a27bb17a66e057e2e5e78180">println</a>(<span class="stringliteral">&quot;Line too short&quot;</span>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            Serial.println(<span class="stringliteral">&quot;Line too short&quot;</span>);</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keywordflow">return</span>; <span class="comment">// not enough data to parse anything meaningful</span></div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        }</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
@@ -235,7 +235,7 @@ $(function(){initNavTree('Serial__Sim_8h_source.html','',''); });
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="comment">// _pres        = parseNextFloat(line);</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="comment">// _temp        = line.toFloat(); // The remaining chunk is the last float</span></div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <a class="code hl_variable" href="serial__mock_8h.html#a20ff0bc99522ec4c094aa2bebd8ce796">Serial</a>.<a class="code hl_function" href="classMockSerial.html#ac03cbb07a27bb17a66e057e2e5e78180">println</a>(<span class="stringliteral">&quot;Parsed Data!&quot;</span>);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        Serial.println(<span class="stringliteral">&quot;Parsed Data!&quot;</span>);</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="comment">// After parsing the line, send an ACK</span></div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        ack();</div>
@@ -287,7 +287,6 @@ $(function(){initNavTree('Serial__Sim_8h_source.html','',''); });
 <div class="ttc" id="aBurnoutStateMachine_8h_html"><div class="ttname"><a href="BurnoutStateMachine_8h.html">BurnoutStateMachine.h</a></div></div>
 <div class="ttc" id="aStateMachine_8h_html"><div class="ttname"><a href="StateMachine_8h.html">StateMachine.h</a></div></div>
 <div class="ttc" id="aclassBaseStateMachine_html"><div class="ttname"><a href="classBaseStateMachine.html">BaseStateMachine</a></div><div class="ttdoc">Abstract interface for flight state machines driven by IMU/altimeter data.</div><div class="ttdef"><b>Definition</b> <a href="BaseStateMachine_8h_source.html#l00013">BaseStateMachine.h:13</a></div></div>
-<div class="ttc" id="aclassMockSerial_html_ac03cbb07a27bb17a66e057e2e5e78180"><div class="ttname"><a href="classMockSerial.html#ac03cbb07a27bb17a66e057e2e5e78180">MockSerial::println</a></div><div class="ttdeci">void println(const T &amp;message)</div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00032">serial_mock.h:32</a></div></div>
 <div class="ttc" id="aclassSerialSim_html"><div class="ttname"><a href="classSerialSim.html">SerialSim</a></div><div class="ttdoc">Serial-based sensor/flight simulation singleton for hardware-in-the-loop.</div><div class="ttdef"><b>Definition</b> <a href="#l00014">Serial_Sim.h:14</a></div></div>
 <div class="ttc" id="aclassSerialSim_html_a2762b3499cfede6f1ecf03db3944518d"><div class="ttname"><a href="classSerialSim.html#a2762b3499cfede6f1ecf03db3944518d">SerialSim::updateTemp</a></div><div class="ttdeci">void updateTemp(sensors_event_t &amp;temp)</div><div class="ttdef"><b>Definition</b> <a href="#l00092">Serial_Sim.h:92</a></div></div>
 <div class="ttc" id="aclassSerialSim_html_a412e6960f202b7e4b4a427824a19cd64"><div class="ttname"><a href="classSerialSim.html#a412e6960f202b7e4b4a427824a19cd64">SerialSim::updateMag</a></div><div class="ttdeci">void updateMag(sensors_event_t *mag)</div><div class="ttdef"><b>Definition</b> <a href="#l00078">Serial_Sim.h:78</a></div></div>
@@ -300,8 +299,7 @@ $(function(){initNavTree('Serial__Sim_8h_source.html','',''); });
 <div class="ttc" id="aclassSerialSim_html_ac408038678650962c8cfaefe9da2b361"><div class="ttname"><a href="classSerialSim.html#ac408038678650962c8cfaefe9da2b361">SerialSim::updateGyro</a></div><div class="ttdeci">void updateGyro(sensors_event_t *gyro)</div><div class="ttdef"><b>Definition</b> <a href="#l00072">Serial_Sim.h:72</a></div></div>
 <div class="ttc" id="aclassSerialSim_html_ae9e3099a2d388511ba261f9b8b992a18"><div class="ttname"><a href="classSerialSim.html#ae9e3099a2d388511ba261f9b8b992a18">SerialSim::updateAcl</a></div><div class="ttdeci">void updateAcl(sensors_event_t *accel)</div><div class="ttdef"><b>Definition</b> <a href="#l00066">Serial_Sim.h:66</a></div></div>
 <div class="ttc" id="aclassSerialSim_html_af0fb670ee8b19f22c6144ce856dab7a4"><div class="ttname"><a href="classSerialSim.html#af0fb670ee8b19f22c6144ce856dab7a4">SerialSim::getInstance</a></div><div class="ttdeci">static SerialSim &amp; getInstance()</div><div class="ttdef"><b>Definition</b> <a href="#l00016">Serial_Sim.h:16</a></div></div>
-<div class="ttc" id="aclassStream_html"><div class="ttname"><a href="classStream.html">Stream</a></div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00069">serial_mock.h:69</a></div></div>
-<div class="ttc" id="aserial__mock_8h_html_a20ff0bc99522ec4c094aa2bebd8ce796"><div class="ttname"><a href="serial__mock_8h.html#a20ff0bc99522ec4c094aa2bebd8ce796">Serial</a></div><div class="ttdeci">MockSerial Serial</div></div>
+<div class="ttc" id="aclassStream_html"><div class="ttname"><a href="classStream.html">Stream</a></div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00082">serial_mock.h:82</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

@@ -10,7 +10,7 @@ var searchData=
   ['launchdetector_2eh_7',['LaunchDetector.h',['../LaunchDetector_8h.html',1,'']]],
   ['launchdetectorstatus_8',['LaunchDetectorStatus',['../LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080',1,'LaunchDetector.h']]],
   ['layout_9',['&lt;b&gt;Metadata Layout&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md20',1,'']]],
-  ['license_10',['License',['../index.html#autotoc_md57',1,'']]],
+  ['license_10',['License',['../index.html#autotoc_md58',1,'']]],
   ['lifecycle_11',['Lifecycle',['../md_docs_2Telemetry.html#autotoc_md39',1,'']]],
   ['lis2mdl_5frate_5f100_5fhz_12',['LIS2MDL_RATE_100_HZ',['../Serial__Sim__LIS2MDL_8h.html#a71ebe59eb085389213cce273f4f0e3fc',1,'Serial_Sim_LIS2MDL.h']]],
   ['lis3mdl_5fcontinuousmode_13',['LIS3MDL_CONTINUOUSMODE',['../Serial__Sim__LIS3MDL_8h.html#ae763f82fd817483153c5268475554415',1,'Serial_Sim_LIS3MDL.h']]],
