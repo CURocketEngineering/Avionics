@@ -75,10 +75,22 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
         verticalAxisDetermined = true;
     }
 
-    // Compute time step in seconds (dt). Use a small default if timestamps are identical.
-    const float dt = (currentTimestamp_ms > lastTimestamp_ms)
-               ? (static_cast<float>(currentTimestamp_ms - lastTimestamp_ms)) * MILLISECONDS_TO_SECONDS
-               : MINIMUM_DELTA_T_S;
+
+
+
+
+    // Ensures the data is newer than the previous data and that is not the same as the last data
+    if (currentTimestamp_ms <= lastTimestamp_ms)
+    {
+        return;
+    }
+    if(accel.x.timestamp_ms <= lastTimestamp_ms)
+    {
+        return;
+    }
+    
+    // Compute time step in seconds (dt).
+    const float dt = (static_cast<float>(currentTimestamp_ms - lastTimestamp_ms)) * MILLISECONDS_TO_SECONDS;
 
     // Subtract gravity from the measured acceleration on the identified vertical axis.
     inertialVerticalAcceleration = (rawAcl[verticalAxis] * static_cast<float>(verticalDirection)) - g;
