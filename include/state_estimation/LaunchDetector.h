@@ -11,8 +11,8 @@
 #include "data_handling/DataPoint.h"
 #include "state_estimation/StateEstimationTypes.h"
 
-constexpr float ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL = 0.5F;
-constexpr std::size_t CIRCULAR_ARRAY_ALLOCATED_SLOTS = 100; // 100 slots allocated for the circular array (100 * sizeof(DataPoint)) = 800 bytes allocated)
+constexpr float kAcceptablePercentDifferenceWindowInterval = 0.5F;
+constexpr std::size_t kCircularArrayAllocatedSlots = 100; // 100 slots allocated for the circular array (100 * sizeof(DataPoint)) = 800 bytes allocated)
 
 // Potential returns from the update function
 // Positive values are errors
@@ -71,14 +71,14 @@ public:
     int update(AccelerationTriplet accel);
     bool isLaunched() {return launched;}
     uint32_t getLaunchedTime() {return launchedTime_ms;}
-    float getMedianAccelerationSquared() {return median_acceleration_squared;}
+    float getMedianAccelerationSquared() {return medianAccelerationSquared;}
     void reset();
 
     // --------------
     // Testing Methods
     // --------------
     // Gives a pointer to the window
-    CircularArray<DataPoint, CIRCULAR_ARRAY_ALLOCATED_SLOTS>* getWindowPtr() {return &AclMagSqWindow_ms2;}
+    CircularArray<DataPoint, kCircularArrayAllocatedSlots>* getWindowPtr() {return &accelMagnitudeSquaredWindow;}
     // Gives the threshold in ms^2 squared
     float getThreshold() {return accelerationThresholdSq_ms2;}
     // Gives the window interval in ms
@@ -92,16 +92,16 @@ private:
     uint16_t windowInterval_ms;
 
     // Min and max window sizes calculated as +- 10% of the window size
-    uint16_t min_window_size_ms = 0; // If the calculated time range is less than this, don't try to detect launch
-    uint16_t max_window_size_ms = 0; // If the calculated time range is greater than this, don't try to detect launch
+    uint16_t minWindowSize_ms = 0; // If the calculated time range is less than this, don't try to detect launch
+    uint16_t maxWindowSize_ms = 0; // If the calculated time range is greater than this, don't try to detect launch
 
     uint16_t acceptableTimeDifference_ms;
     // The window holding the acceleration magnitude squared b/c sqrt is expensive
-    CircularArray<DataPoint, CIRCULAR_ARRAY_ALLOCATED_SLOTS> AclMagSqWindow_ms2;
+    CircularArray<DataPoint, kCircularArrayAllocatedSlots> accelMagnitudeSquaredWindow;
     bool launched;
     uint32_t launchedTime_ms;
 
-    float median_acceleration_squared;
+    float medianAccelerationSquared;
 };
 
 #endif

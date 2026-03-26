@@ -29,22 +29,22 @@
 namespace TelemetryFmt {
 
 /** Maximum packet size (bytes). Must match your radio/modem configuration. */
-constexpr std::size_t kPacketCapacity = 120;
+constexpr std::size_t kPacketCapacity_bytes = 120;
 
 /** Header markers: 3 sync zeros followed by a start byte. */
-constexpr std::size_t kSyncZeros = 3;
+constexpr std::size_t kSyncZeroCount_bytes = 3;
 
 /** Number of bytes in a packed 32-bit value. */
-constexpr std::size_t kU32Bytes = 4;
+constexpr std::size_t kU32Size_bytes = 4;
 
 /** Header layout: [0..2]=0, [3]=START, [4..7]=timestamp (big-endian). */
-constexpr std::size_t kStartByteIndex = kSyncZeros;          // 3
+constexpr std::size_t kStartByteIndex = kSyncZeroCount_bytes;          // 3
 constexpr std::size_t kTimestampIndex = kStartByteIndex + 1; // 4
-constexpr std::size_t kPacketCounterIndex = kTimestampIndex + kU32Bytes; // 8
-constexpr std::size_t kHeaderBytes = kSyncZeros + 1 + kU32Bytes + kU32Bytes; // 12 (CHANGED from 8 to 12)
+constexpr std::size_t kPacketCounterIndex = kTimestampIndex + kU32Size_bytes; // 8
+constexpr std::size_t kHeaderSize_bytes = kSyncZeroCount_bytes + 1 + kU32Size_bytes + kU32Size_bytes; // 12 (CHANGED from 8 to 12)
 
 /** End marker layout: 3 zeros followed by an end byte. */
-constexpr std::size_t kEndMarkerBytes = kSyncZeros + 1;
+constexpr std::size_t kEndMarkerSize_bytes = kSyncZeroCount_bytes + 1;
 
 /** Start-of-packet marker byte value. */
 constexpr std::uint8_t kStartByteValue = 51;
@@ -53,9 +53,8 @@ constexpr std::uint8_t kStartByteValue = 51;
 constexpr std::uint8_t kEndByteValue = 52;
 
 /** 32-bit helper constants */
-constexpr std::size_t kBytesIn32Bit = 4;
-constexpr unsigned kBitsPerByte = 8;
-constexpr std::uint8_t kAllOnesByte = 0xFF;
+constexpr std::size_t kBytesInU32_bytes = 4;
+constexpr unsigned kBitsPerByte_bits = 8;
 constexpr std::uint32_t kCommandModeInactivityTimeoutMs = 10000;
 constexpr std::size_t kCommandEntrySequenceLength = 3;
 constexpr char kCommandEntryChar = 'c';
@@ -67,10 +66,10 @@ static_assert(sizeof(float) == 4, "Expected 32-bit float");
 /**
  * @brief Write a 32-bit value in big-endian order to dst[0..3].
  */
-inline void write_u32_be(std::uint8_t* dst, std::uint32_t v) {
+inline void writeU32Be(std::uint8_t* dst, std::uint32_t v) {
 
-    for (std::size_t i = 0; i < kBytesIn32Bit; ++i) {
-        const unsigned shift = static_cast<unsigned>((kBytesIn32Bit - 1 - i) * kBitsPerByte);
+    for (std::size_t i = 0; i < kBytesInU32_bytes; ++i) {
+        const unsigned shift = static_cast<unsigned>((kBytesInU32_bytes - 1 - i) * kBitsPerByte_bits);
         dst[i] = static_cast<std::uint8_t>(v >> shift);
     }
 }
@@ -81,16 +80,12 @@ inline void write_u32_be(std::uint8_t* dst, std::uint32_t v) {
  *
  * Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback.
  */
-inline std::uint16_t hz_to_period_ms(std::uint16_t hz) {
+inline std::uint16_t hzToPeriodMs(std::uint16_t hz) {
     return (hz == 0) ? 1000u
                      : static_cast<std::uint16_t>((1000u + hz - 1u) / hz);
 }
 
 } // namespace TelemetryFmt
-
-// Backwards-compatible names if existing code uses START_BYTE / END_BYTE.
-static const std::uint8_t START_BYTE = TelemetryFmt::kStartByteValue;
-static const std::uint8_t END_BYTE   = TelemetryFmt::kEndByteValue;
 
 /**
  * @brief Declares one telemetry "stream" to include in packets.
@@ -141,7 +136,7 @@ struct SendableSensorData {
           multiSDH(0),
           multiSDHLength(0),
           multiSDHDataLabel(0),
-          periodMs(TelemetryFmt::hz_to_period_ms(sendFrequencyHz)),
+          periodMs(TelemetryFmt::hzToPeriodMs(sendFrequencyHz)),
           lastSentTimestamp(0) {}
 
     /**
@@ -158,7 +153,7 @@ struct SendableSensorData {
           multiSDH(sdhList.data()),
           multiSDHLength(M),
           multiSDHDataLabel(label),
-          periodMs(TelemetryFmt::hz_to_period_ms(sendFrequencyHz)),
+          periodMs(TelemetryFmt::hzToPeriodMs(sendFrequencyHz)),
           lastSentTimestamp(0) {}
 
     /**
@@ -273,7 +268,7 @@ private:
     // Packet state
     std::uint32_t packetCounter = 0;
     std::size_t nextEmptyPacketIndex;
-    std::array<std::uint8_t, TelemetryFmt::kPacketCapacity> packet;
+    std::array<std::uint8_t, TelemetryFmt::kPacketCapacity_bytes> packet;
 
     // Command mode handling
     bool inCommandMode = false; 

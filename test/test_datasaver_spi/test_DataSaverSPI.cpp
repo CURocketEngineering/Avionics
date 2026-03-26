@@ -36,21 +36,21 @@ void test_flush_buffer(void) {
     TEST_ASSERT_EQUAL(0, dss->getBufferIndex());
     DataPoint dp(500, 1.0);
     dss->saveDataPoint(dp, 1); // Saves a timestamp and data point (10 bytes)
-    int expectedBytesBuffer = 10;
-    TEST_ASSERT_EQUAL(expectedBytesBuffer, dss->getBufferIndex());
+    int expectedBufferSize_bytes = 10;
+    TEST_ASSERT_EQUAL(expectedBufferSize_bytes, dss->getBufferIndex());
     TEST_ASSERT_EQUAL(0, dss->getBufferFlushes());
 
     
 
-    int hits_to_flush = (dss->BUFFER_SIZE - 10) / 5 + 1; // + 1 to trigger flush
+    int hits_to_flush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
     for (int i = 0; i < hits_to_flush; i++) {
         DataPoint dp(500, 1.0);
         dss->saveDataPoint(dp, 1);
-        expectedBytesBuffer += 5;
-        if (expectedBytesBuffer >= dss->BUFFER_SIZE) {
-            expectedBytesBuffer = 5;
+        expectedBufferSize_bytes += 5;
+        if (expectedBufferSize_bytes >= DataSaverSPI::kBufferSize_bytes) {
+            expectedBufferSize_bytes = 5;
         }
-        TEST_ASSERT_EQUAL(expectedBytesBuffer, dss->getBufferIndex());
+        TEST_ASSERT_EQUAL(expectedBufferSize_bytes, dss->getBufferIndex());
     }
 
     TEST_ASSERT_EQUAL(1, dss->getBufferFlushes());
@@ -72,7 +72,7 @@ void test_clearplm_next_write(void){
 
 void test_erase_all_data(void) {
     dss->eraseAllData();
-    TEST_ASSERT_EQUAL_UINT32(DATA_START_ADDRESS, dss->getNextWriteAddress());
+    TEST_ASSERT_EQUAL_UINT32(kDataStartAddress, dss->getNextWriteAddress());
     TEST_ASSERT_EQUAL_UINT32(0, dss->getLastTimestamp());
     TEST_ASSERT_EQUAL_UINT32(0, dss->getLastDataPoint().timestamp_ms);
     TEST_ASSERT_EQUAL_FLOAT(0.0, dss->getLastDataPoint().data);

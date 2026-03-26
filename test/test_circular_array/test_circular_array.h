@@ -48,7 +48,7 @@ void test_fill(void) {
 }
 
 void test_max_size(void) {
-    CircularArray<int, MAX_CIRCULAR_ARRAY_CAPACITY> circularArray(MAX_CIRCULAR_ARRAY_CAPACITY);
+    CircularArray<int, kMaxCircularArrayCapacity> circularArray(kMaxCircularArrayCapacity);
     TEST_ASSERT_EQUAL(255, circularArray.getMaxSize());
     TEST_ASSERT_FALSE(circularArray.isFull());
     for (int i = 0; i < 1000; i++) {
@@ -143,4 +143,3 @@ void test_assert_fail_when_capacity_less_than_maxSize(void) {
     
     // CircularArray<int, 5> circularArray(10); // This should trigger an assertion failure
 }
-

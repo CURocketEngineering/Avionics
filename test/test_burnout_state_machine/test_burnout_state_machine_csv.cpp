@@ -81,10 +81,10 @@ void test_burnout_state_machine_with_real_data(void)
       
         if (sm.getState() == STATE_COAST_ASCENT){
             apogeePredictor.update();    
-            quadApogeePredictor.quad_update();  
-            polyApogeePredictor.poly_update();
-            simulateapogeePredictor.simulate_update();
-            analyticapogeePredictor.analytic_update();
+            quadApogeePredictor.quadUpdate();
+            polyApogeePredictor.polyUpdate();
+            simulateapogeePredictor.simulateUpdate();
+            analyticapogeePredictor.analyticUpdate();
         }
         float predApogee       = apogeePredictor.getPredictedApogeeAltitude_m();
         float quadPredApogee  = quadApogeePredictor.getPredictedApogeeAltitude_m();

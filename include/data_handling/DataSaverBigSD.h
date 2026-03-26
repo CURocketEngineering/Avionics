@@ -8,10 +8,10 @@
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
 
-constexpr size_t PRE_ALLOCATE_SIZE_MB = 4; // Define the size in MB
-constexpr size_t BYTES_PER_MB = 1024 * 1024; // Define the number of bytes in 1 MB
-constexpr uint32_t SYNC_INTERVAL_MS = 1000;
-constexpr size_t FILE_PATH_BUFFER_SIZE = 32; // Buffer size for file path
+constexpr size_t kPreAllocateSize_MiB = 4; // Define the size in MiB
+constexpr size_t kBytesPerMiB_bytes = 1024 * 1024; // Define the number of bytes in 1 MiB
+constexpr uint32_t kSyncInterval_ms = 1000;
+constexpr size_t kFilePathBufferSize = 32; // Buffer size for file path
 
 enum BigSDDataSaverError {
     DS_SUCCESS = 0,            // Operation successful
@@ -53,25 +53,25 @@ public:
 private:
     static std::string nextFreeFilePath();                    // /stream‑<n>.csv
 
-    uint8_t  _csPin;
-    bool     _ready {false};
+    uint8_t _csPin;
+    bool _ready {false};
 
     /* single shared SdFat instance */
     static SdFat sd;
     using SdFile_t = File32;
 
-    SdFile_t    _file;
+    SdFile_t _file;
     std::string _filePath;
 
     /* buffering parameters */
-    static constexpr uint16_t kBufBytes   = 512;   // one SD sector
+    static constexpr uint16_t kBufSize_bytes = 512;   // one SD sector
     static constexpr uint16_t kFlushLines = 64;    // flush after N lines
     static constexpr uint32_t kFlushMs    = 200;   // or after 200 ms
 
     /* buffering state */
-    char      _buf[kBufBytes] = {};
-    uint16_t  _bufLen       = 0;
-    uint16_t  _linesPending = 0;
-    uint32_t  _lastFlushMs  = 0;
-    uint32_t  _lastSyncMs   = 0;
+    char _buf[kBufSize_bytes] = {};
+    uint16_t _bufLen = 0;
+    uint16_t _linesPending = 0;
+    uint32_t _lastFlushMs = 0;
+    uint32_t _lastSyncMs = 0;
 };

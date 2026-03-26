@@ -39,13 +39,13 @@ public:
     void update();
 
     /** Optional: Update using a quadratic-drag model (more accurate under drag) */
-    void quad_update();
+    void quadUpdate();
 
-    void poly_update();
+    void polyUpdate();
 
-    void analytic_update();
+    void analyticUpdate();
 
-    void simulate_update();
+    void simulateUpdate();
 
     // ----- Accessors -----
     [[nodiscard]] bool     isPredictionValid()            const;
@@ -53,7 +53,7 @@ public:
     [[nodiscard]] uint32_t getPredictedApogeeTimestamp_ms() const;
     [[nodiscard]] float    getPredictedApogeeAltitude_m() const;
     [[nodiscard]] float    getFilteredDeceleration()      const;
-    [[nodiscard]] float    getdragCoefficient()      const;
+    [[nodiscard]] float    getDragCoefficient()      const;
 
 
 private:

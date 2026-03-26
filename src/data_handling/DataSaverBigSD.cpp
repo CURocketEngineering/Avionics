@@ -23,15 +23,15 @@ bool DataSaverBigSD::begin() {
     }
 
     // Pre‑allocate 4 MB so writes stay contiguous (faster & less wear)
-    _file.preAllocate(PRE_ALLOCATE_SIZE_MB * BYTES_PER_MB);
+    _file.preAllocate(kPreAllocateSize_MiB * kBytesPerMiB_bytes);
 
     Serial.print(F("Logging to ")); Serial.println(_filePath.c_str());
 
-    _bufLen       = 0;
+    _bufLen = 0;
     _linesPending = 0;
-    _lastFlushMs  = millis();
-    _lastSyncMs   = _lastFlushMs;
-    _ready        = true;
+    _lastFlushMs = millis();
+    _lastSyncMs = _lastFlushMs;
+    _ready = true;
     return true;
 }
 
@@ -70,7 +70,7 @@ int DataSaverBigSD::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
     ++_linesPending;
 
     uint32_t const now = millis();
-    bool const bufFull = (_bufLen >= kBufBytes);
+    bool const bufFull = (_bufLen >= kBufSize_bytes);
     bool const manyLines = (_linesPending >= kFlushLines);
     bool const timeUp = (now - _lastFlushMs >= kFlushMs);
 
@@ -78,11 +78,11 @@ int DataSaverBigSD::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
         if (_file.write(_buf, _bufLen) != _bufLen) {
           return DS_FLUSH_FAILED;
         }
-        _bufLen       = 0;
+        _bufLen = 0;
         _linesPending = 0;
-        _lastFlushMs  = now;
+        _lastFlushMs = now;
 
-        if (now - _lastSyncMs >= SYNC_INTERVAL_MS) {
+        if (now - _lastSyncMs >= kSyncInterval_ms) {
             _file.sync();
             _lastSyncMs = now;
         }
@@ -108,7 +108,7 @@ void DataSaverBigSD::end() {
 
 /* -------------------  nextFreeFilePath()  -------------------------------- */
 std::string DataSaverBigSD::nextFreeFilePath() {
-    std::array<char, FILE_PATH_BUFFER_SIZE> path;
+    std::array<char, kFilePathBufferSize> path;
     for (uint16_t flightNumber = 0;; ++flightNumber) {
         snprintf(path.data(), sizeof(path), "/stream-%u.csv", flightNumber);
         if (!sd.exists(path.data())) {

@@ -7,17 +7,17 @@
 std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
     // Each SSD writes 1 label byte (name/label) plus 4 bytes per float value.
     if (ssd->isSingle()) {
-        return 1U + TelemetryFmt::kBytesIn32Bit;
+        return 1U + TelemetryFmt::kBytesInU32_bytes;
     }
     if (ssd->isMulti()) {
         // label + N floats
-        return 1U + (static_cast<std::size_t>(ssd->multiSDHLength) * TelemetryFmt::kBytesIn32Bit);
+        return 1U + (static_cast<std::size_t>(ssd->multiSDHLength) * TelemetryFmt::kBytesInU32_bytes);
     }
     return 0U;
 }
 
 bool hasRoom(std::size_t nextIndex, std::size_t bytesToAdd) {
-    return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity;
+    return nextIndex + bytesToAdd <= TelemetryFmt::kPacketCapacity_bytes;
 }
 
 bool isTimestampNewer(std::uint32_t lhs, std::uint32_t rhs) {
@@ -63,7 +63,7 @@ void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
 
     if (commandLine != nullptr) {
         commandLine->switchUART(&rfdSerialConnection);
-        commandLine->print(SHELL_PROMPT);
+        commandLine->print(kShellPrompt);
     }
 }
 
@@ -147,26 +147,26 @@ void Telemetry::preparePacket(std::uint32_t timestamp) {
     // Only clear what we own in the header (whole-packet clearing happens in setPacketToZero()).
 
     // Fill sync bytes with 0
-    std::fill_n(&this->packet[0], TelemetryFmt::kSyncZeros, static_cast<std::uint8_t>(0));
+    std::fill_n(&this->packet[0], TelemetryFmt::kSyncZeroCount_bytes, static_cast<std::uint8_t>(0));
 
     // Set the start byte after the sync bytes
     this->packet[TelemetryFmt::kStartByteIndex] = TelemetryFmt::kStartByteValue;
 
     // Write the timestamp in big-endian format
-    TelemetryFmt::write_u32_be(&this->packet[TelemetryFmt::kTimestampIndex], timestamp);
+    TelemetryFmt::writeU32Be(&this->packet[TelemetryFmt::kTimestampIndex], timestamp);
 
     // Packet counter (4 bytes, big-endian)
-    TelemetryFmt::write_u32_be(&this->packet[TelemetryFmt::kPacketCounterIndex], packetCounter);
+    TelemetryFmt::writeU32Be(&this->packet[TelemetryFmt::kPacketCounterIndex], packetCounter);
 
-    nextEmptyPacketIndex = TelemetryFmt::kHeaderBytes;
+    nextEmptyPacketIndex = TelemetryFmt::kHeaderSize_bytes;
 }
 
 void Telemetry::addSingleSDHToPacket(SensorDataHandler* sdh) {
     float floatData = sdh->getLastDataPointSaved().data; 
     uint32_t data = 0;
     memcpy(&data, &floatData, sizeof(data)); // Move float data into an uint32_t for bytewise access
-    TelemetryFmt::write_u32_be(&this->packet[nextEmptyPacketIndex], data);
-    nextEmptyPacketIndex += TelemetryFmt::kBytesIn32Bit;
+    TelemetryFmt::writeU32Be(&this->packet[nextEmptyPacketIndex], data);
+    nextEmptyPacketIndex += TelemetryFmt::kBytesInU32_bytes;
 }
 
 void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
@@ -187,7 +187,7 @@ void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
 }
 
 void Telemetry::setPacketToZero() {
-    for (int i = 0; i < TelemetryFmt::kPacketCapacity; i++) { //Completely clear packet
+    for (int i = 0; i < TelemetryFmt::kPacketCapacity_bytes; i++) { //Completely clear packet
         this->packet[i] = 0;
     }
 }
@@ -195,14 +195,14 @@ void Telemetry::setPacketToZero() {
 void Telemetry::addEndMarker() {
     // Adds the following 4 bytes to the end of the packet: 0x00 0x00 0x00 (kEndByteValue)
 
-    std::fill_n(&this->packet[nextEmptyPacketIndex], TelemetryFmt::kSyncZeros, static_cast<std::uint8_t>(0));
-    this->packet[nextEmptyPacketIndex+TelemetryFmt::kSyncZeros] = TelemetryFmt::kEndByteValue;
-    nextEmptyPacketIndex += TelemetryFmt::kEndMarkerBytes;
+    std::fill_n(&this->packet[nextEmptyPacketIndex], TelemetryFmt::kSyncZeroCount_bytes, static_cast<std::uint8_t>(0));
+    this->packet[nextEmptyPacketIndex+TelemetryFmt::kSyncZeroCount_bytes] = TelemetryFmt::kEndByteValue;
+    nextEmptyPacketIndex += TelemetryFmt::kEndMarkerSize_bytes;
 }
 
 bool Telemetry::canFitStreamWithEndMarker(const SendableSensorData* ssd) const {
-    const std::size_t payloadBytes = bytesNeededForSSD(ssd);
-    return hasRoom(nextEmptyPacketIndex, payloadBytes + TelemetryFmt::kEndMarkerBytes);
+    const std::size_t payloadSize_bytes = bytesNeededForSSD(ssd);
+    return hasRoom(nextEmptyPacketIndex, payloadSize_bytes + TelemetryFmt::kEndMarkerSize_bytes);
 }
 
 void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded) {
@@ -220,11 +220,11 @@ void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t curren
 }
 
 bool Telemetry::finalizeAndSendPacket() {
-    if (nextEmptyPacketIndex <= TelemetryFmt::kHeaderBytes) {
+    if (nextEmptyPacketIndex <= TelemetryFmt::kHeaderSize_bytes) {
         return false;
     }
 
-    if (!hasRoom(nextEmptyPacketIndex, TelemetryFmt::kEndMarkerBytes)) {
+    if (!hasRoom(nextEmptyPacketIndex, TelemetryFmt::kEndMarkerSize_bytes)) {
         return false;
     }
 

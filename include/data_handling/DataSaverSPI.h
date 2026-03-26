@@ -8,15 +8,15 @@
 #include <cstdlib>
 
 
-#define METADATA_START_ADDRESS 0x000000  // Start writing metadata at the beginning of the flash
-#define DATA_START_ADDRESS 0x001000  // Start writing data after 1 sector (4kB) of metadata
-#define POST_LAUNCH_FLAG_ADDRESS 0x000000  // Address of the post-launch flag
-#define LAUNCH_START_ADDRESS_ADDRESS 0x000001  // Address of the launch start address (32 bits)
+constexpr uint32_t kMetadataStartAddress = 0x000000;  // Start writing metadata at the beginning of the flash
+constexpr uint32_t kDataStartAddress = 0x001000;  // Start writing data after 1 sector (4kB) of metadata
+constexpr uint32_t kPostLaunchFlagAddress = 0x000000;  // Address of the post-launch flag
+constexpr uint32_t kLaunchStartAddressAddress = 0x000001;  // Address of the launch start address (32 bits)
 
-#define POST_LAUNCH_FLAG_TRUE 0x00 // Flag to indicate post-launch mode is active
-#define POST_LAUNCH_FLAG_FALSE 0x01 // Flag to indicate post-launch mode is not active
+constexpr uint8_t kPostLaunchFlagTrue = 0x00; // Flag to indicate post-launch mode is active
+constexpr uint8_t kPostLaunchFlagFalse = 0x01; // Flag to indicate post-launch mode is not active
 
-constexpr uint8_t EMPTY_PAGE = 0xFF;
+constexpr uint8_t kEmptyPageValue = 0xFF;
 
 
 #pragma pack(push, 1)  // Pack the struct to avoid padding between the name and datas
@@ -39,7 +39,7 @@ typedef struct { // NOLINT(altera-struct-pack-align)
 class DataSaverSPI : public IDataSaver {
 public:
 
-    static constexpr size_t BUFFER_SIZE = 256; 
+    static constexpr size_t kBufferSize_bytes = 256;
 
     /**
      * @brief Construct a new DataSaverSPI object
@@ -229,7 +229,7 @@ private:
     bool readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length);
 
     // Write buffer to improve write performance
-    uint8_t buffer[BUFFER_SIZE] = {};
+    uint8_t buffer[kBufferSize_bytes] = {};
     size_t bufferIndex = 0;
     uint32_t bufferFlushes = 0; // Keep track of how many times the buffer has been flushed
 

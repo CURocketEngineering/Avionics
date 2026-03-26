@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guidance for AI coding agents working in this repository.
+Guidance for human and AI coding agents working in this repository.
 
 ## Scope
 
@@ -18,7 +18,7 @@ These instructions apply to the entire repo unless a deeper `AGENTS.md` override
 
 ## Project Overview
 
-Avionics is a modular C++ (Arduino-core compatible) library used for rocket flight computers. Core areas:
+Avionics is our modular C++ (Arduino-core compatible) library used for all of our flight computers. Core areas:
 
 - `include/state_estimation` + `src/state_estimation`: launch/burnout/apogee/state logic.
 - `include/data_handling` + `src/data_handling`: logging, telemetry, sensor data handling.
@@ -33,6 +33,19 @@ Avionics is a modular C++ (Arduino-core compatible) library used for rocket flig
 3. Keep host-native tests buildable; avoid adding dependencies that only exist on embedded targets.
 4. Maintain `include/` and `src/` parity for non-header-only modules.
 5. Keep changes compatible with the repo's C++ standard (`-std=c++11` in `platformio.ini`).
+
+## Variable Naming
+- Use `camelCase` for variables and functions.
+- Use `PascalCase` for class and struct names.
+- Add units to the end via an underscore suffix when a name represents a measured value, physical quantity, size, or rate (for example, `timestamp_ms`, `altitude_m`, `velocity_mps`).
+- For digital storage and communication units, use unambiguous suffixes:
+  - Prefer exact units like `_bytes` and `_bits`
+  - Use `_KiB` and `_MiB` for binary storage sizes
+  - Use `_kbps` and `_Mbps` for data rates
+  - If needed, use `_megabytes` and `_megabits` instead of ambiguous shorthand
+- Avoid abbreviations unless they are widely understood in the context (for example, `imu`, `gps`, `crc`, `uart`)
+- For constants, use `kConstantName` format
+- For private member variables, use a leading underscore (for example, `_privateVar`)
 
 ## Build, Test, and Checks
 

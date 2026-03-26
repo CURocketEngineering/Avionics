@@ -9,8 +9,8 @@
 
 
 
-constexpr float MINIMUM_DELTA_T_S = 0.01f; // Minimum delta time for updates (10ms)
-constexpr float MILLISECONDS_TO_SECONDS = 0.001f; // Conversion factor from milliseconds to seconds
+constexpr float kMinimumDeltaTime_s = 0.01f; // Minimum delta time for updates (10ms)
+constexpr float kMillisecondsToSeconds = 0.001f; // Conversion factor from milliseconds to seconds
 
 struct alignas(8) NoiseVariances {
     float accelNoiseVar;
@@ -105,8 +105,8 @@ private:
 
 private:
     // Kalman filter state: altitude (m), vertical velocity (m/s).
-    float state_alt;
-    float state_vel;
+    float stateAltitude_m;
+    float stateVelocity_mps;
 
     // Covariance matrix (2x2).
     float P[2][2] = {{}, {}};

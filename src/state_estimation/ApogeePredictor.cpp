@@ -15,11 +15,11 @@ constexpr const T& clamp(const T& value, const T& lower, const T& upper) {
 }
 
 // Constants
-constexpr float MIN_VALID_DECEL = 0.000001F;
-constexpr float MS_TO_S_FACTOR = 1000.0F;
-constexpr float MAGIC_HALF = 0.5F;
-constexpr float GRAVITY_MS2 = 9.80665F;
-constexpr uint32_t MAX_WARMUPS = 1000;
+constexpr float kMinValidDecel = 0.000001F;
+constexpr float kMillisecondsPerSecond = 1000.0F;
+constexpr float kOneHalf = 0.5F;
+constexpr float kGravity_ms2 = 9.80665F;
+constexpr uint32_t kMaxWarmups = 1000;
 
 float dragRatioFiltered_ = 0.0F;   // k
 bool dragLocked_ = false;
@@ -53,18 +53,18 @@ void ApogeePredictor::update() {
         const auto deltaTime = static_cast<float>(currentTimestamp - lastTs_);
         const float deltaVelocity = velocity - lastVel_;
         float estimatedDecel = (deltaTime > 0.0F) ? std::max(0.0F, -deltaVelocity / deltaTime) : 0.0F;
-        decelSample = MAGIC_HALF * (decelSample + estimatedDecel);
+        decelSample = kOneHalf * (decelSample + estimatedDecel);
     }
 
     filteredDecel_ = alpha_ * decelSample + (1.0F - alpha_) * filteredDecel_;
 
-    if (velocity > minClimbVel_ && filteredDecel_ > MIN_VALID_DECEL) {
+    if (velocity > minClimbVel_ && filteredDecel_ > kMinValidDecel) {
         tToApogee_ = velocity / filteredDecel_;
-        predApogeeTs_ = currentTimestamp + static_cast<uint32_t>(tToApogee_ * MS_TO_S_FACTOR);
+        predApogeeTs_ = currentTimestamp + static_cast<uint32_t>(tToApogee_ * kMillisecondsPerSecond);
 
         const float altitude = vve_.getEstimatedAltitude();
         predApogeeAlt_ = altitude + velocity * tToApogee_ -
-                         MAGIC_HALF * filteredDecel_ * tToApogee_ * tToApogee_;
+                         kOneHalf * filteredDecel_ * tToApogee_ * tToApogee_;
 
         valid_ = true;
     } else {
@@ -73,30 +73,30 @@ void ApogeePredictor::update() {
 
     lastTs_ = currentTimestamp;
     lastVel_ = velocity;
-    numWarmups_ = std::min(numWarmups_ + 1, MAX_WARMUPS);
+    numWarmups_ = std::min(numWarmups_ + 1, kMaxWarmups);
 }
 
-void ApogeePredictor::quad_update() {
+void ApogeePredictor::quadUpdate() {
     const uint32_t currentTimestamp = vve_.getTimestamp();
     const float velocity = vve_.getEstimatedVelocity();
     const float acceleration = vve_.getInertialVerticalAcceleration();
 
     float kEstimate = 0.0F;
     if (std::fabs(velocity) > 1.0F) {
-        kEstimate = std::max(0.0F, -(acceleration + GRAVITY_MS2)) / (velocity * velocity);
+        kEstimate = std::max(0.0F, -(acceleration + kGravity_ms2)) / (velocity * velocity);
     }
 
     filteredDecel_ = alpha_ * kEstimate + (1.0F - alpha_) * filteredDecel_;
     const float dragToMassRatio = filteredDecel_;
 
-    if (velocity > minClimbVel_ && dragToMassRatio > MIN_VALID_DECEL) {
-        const float terminalVelocity = std::sqrt(GRAVITY_MS2 / dragToMassRatio);
-        tToApogee_ = (terminalVelocity / GRAVITY_MS2) * std::atan(velocity / terminalVelocity);
-        const float deltaAltitude = (terminalVelocity * terminalVelocity / (2.0F * GRAVITY_MS2)) *
+    if (velocity > minClimbVel_ && dragToMassRatio > kMinValidDecel) {
+        const float terminalVelocity = std::sqrt(kGravity_ms2 / dragToMassRatio);
+        tToApogee_ = (terminalVelocity / kGravity_ms2) * std::atan(velocity / terminalVelocity);
+        const float deltaAltitude = (terminalVelocity * terminalVelocity / (2.0F * kGravity_ms2)) *
                                     std::log1p((velocity * velocity) /
                                                (terminalVelocity * terminalVelocity));
 
-        predApogeeTs_ = currentTimestamp + static_cast<uint32_t>(tToApogee_ * MS_TO_S_FACTOR);
+        predApogeeTs_ = currentTimestamp + static_cast<uint32_t>(tToApogee_ * kMillisecondsPerSecond);
         predApogeeAlt_ = vve_.getEstimatedAltitude() + deltaAltitude;
         valid_ = true;
     } else {
@@ -106,16 +106,16 @@ void ApogeePredictor::quad_update() {
     lastTs_ = currentTimestamp;
     lastVel_ = velocity;
 }
-void ApogeePredictor::poly_update() {
+void ApogeePredictor::polyUpdate() {
     const uint32_t currentTimestamp_ms = vve_.getTimestamp();
     const float altitude_m = vve_.getEstimatedAltitude();
     const float velocity_ms = vve_.getEstimatedVelocity();
     const float acceleration_ms2 = vve_.getInertialVerticalAcceleration();
 
-    constexpr size_t FEATURE_COUNT = 10; // NOLINT(cppcoreguidelines-init-variables)
+    constexpr size_t kFeatureCount = 10; // NOLINT(cppcoreguidelines-init-variables)
 
     // Polynomial Regression Coefficients for C++
-    const std::array<float, FEATURE_COUNT> coeffs = {
+    const std::array<float, kFeatureCount> coeffs = {
         /* 1 */ 0.00000000,
         /* vertical_velocity */ 5.06108448,
         /* vertical_acceleration */ 63.94744144,
@@ -132,11 +132,11 @@ void ApogeePredictor::poly_update() {
     // ───────────────────────────────────────────────────────
     // Compute delta_h_simple = v^2 / (2 * decel), with decel > 0
     const float decel = std::fabs(acceleration_ms2);
-    const float delta_h_simple = MAGIC_HALF * (velocity_ms * velocity_ms) / decel;
+    const float delta_h_simple = kOneHalf * (velocity_ms * velocity_ms) / decel;
 
     // ───────────────────────────────────────────────────────
     // Evaluate the regression model
-    const std::array<float, FEATURE_COUNT> inputs = {
+    const std::array<float, kFeatureCount> inputs = {
         1.0F,
         velocity_ms,                // vertical_velocity
         acceleration_ms2,           // vertical_acceleration
@@ -150,7 +150,7 @@ void ApogeePredictor::poly_update() {
     };
 
     float apogeeRemaining_m = intercept;
-    for (size_t i = 0; i < FEATURE_COUNT; ++i) { // NOLINT(cppcoreguidelines-init-variables)
+    for (size_t i = 0; i < kFeatureCount; ++i) { // NOLINT(cppcoreguidelines-init-variables)
         apogeeRemaining_m += coeffs[i] * inputs[i];
     }
 
@@ -160,20 +160,20 @@ void ApogeePredictor::poly_update() {
 
     // Estimate time to apogee using kinematic model
     tToApogee_ = velocity_ms / decel;
-    predApogeeTs_ = currentTimestamp_ms + static_cast<uint32_t>(tToApogee_ * MS_TO_S_FACTOR);
+    predApogeeTs_ = currentTimestamp_ms + static_cast<uint32_t>(tToApogee_ * kMillisecondsPerSecond);
 
     valid_ = true;
 
     lastTs_ = currentTimestamp_ms;
     lastVel_ = velocity_ms;
-    numWarmups_ = std::min(numWarmups_ + 1, MAX_WARMUPS);
+    numWarmups_ = std::min(numWarmups_ + 1, kMaxWarmups);
 
     // printf("Current Timestamp: %u, Altitude: %.2f, Velocity: %.2f, Acceleration: %.2f, Predicted Apogee Remaining: %.2f, Delta H: %.2f\n",
     //        currentTimestamp_ms, altitude_m, velocity_ms, acceleration_ms2, apogeeRemaining_m, delta_h_simple);
 }
 
 
-void ApogeePredictor::analytic_update()
+void ApogeePredictor::analyticUpdate()
 {
     //gets the gravity constant and the current velocity and altitude of the rocket
     const float gravity = 9.80665F;
@@ -233,7 +233,7 @@ const float kMeasured = -(acceleration + gravity) /
 }
 
 
-void ApogeePredictor::simulate_update()
+void ApogeePredictor::simulateUpdate()
 {
     const float kGravity = 9.80665F;
 
@@ -311,6 +311,6 @@ float ApogeePredictor::getFilteredDeceleration() const {
     return filteredDecel_;
 }
 
-float ApogeePredictor::getdragCoefficient() const {
+float ApogeePredictor::getDragCoefficient() const {
     return currentDragCoefficient;
 }

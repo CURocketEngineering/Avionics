@@ -2,26 +2,26 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 
-constexpr int COMMAND_CHARS_ASCII_END = 31; // ASCII control characters end at 31, so we can ignore those in input
+constexpr int kCommandCharsAsciiEnd = 31; // ASCII control characters end at 31, so we can ignore those in input
 
 
-CommandLine::CommandLine(Stream * UART) : UART(UART), defaultUART(UART) {
+CommandLine::CommandLine(Stream* uartStream) : uart(uartStream), defaultUart(uartStream) {
 }
 
-void CommandLine::switchUART(Stream* newUART) {
-    if (newUART == nullptr) {
+void CommandLine::switchUART(Stream* newUart) {
+    if (newUart == nullptr) {
         return;
     }
-    UART = newUART;
+    uart = newUart;
 }
 
 void CommandLine::useDefaultUART() {
-    UART = defaultUART;
+    uart = defaultUart;
 }
 
 void CommandLine::begin() {
     help();
-    UART->print(SHELL_PROMPT); 
+    uart->print(kShellPrompt);
 }
 
 static bool isBackspace_(char receivedChar) {
@@ -64,9 +64,9 @@ void tokenizeWhitespace(const std::string& line,
 void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complexity)
     bool consumedInputThisCall = false;
 
-    while (UART->available() > 0) {
+    while (uart->available() > 0) {
         consumedInputThisCall = true;
-        const char receivedChar = static_cast<char>(UART->read());
+        const char receivedChar = static_cast<char>(uart->read());
 
         if (isBackspace_(receivedChar)) {
             lastWasCR_ = false;
@@ -92,18 +92,18 @@ void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complex
 void CommandLine::handleBackspace_() {
     if (fullLine.empty()) {return;}
     fullLine.pop_back();
-    UART->print("\b \b"); // erase last char on terminal
+    uart->print("\b \b"); // erase last char on terminal
 }
 
 void CommandLine::handleNewline_() {
-    UART->println();
+    uart->println();
 
     std::string line = fullLine;
     fullLine.clear();
 
     trimSpaces(line);
     if (line.empty()) {
-        UART->print(SHELL_PROMPT);
+        uart->print(kShellPrompt);
         return;
     }
 
@@ -115,23 +115,23 @@ void CommandLine::handleNewline_() {
         executeCommand(cmd, args);
     }
 
-    UART->print(SHELL_PROMPT);
+    uart->print(kShellPrompt);
 }
 
 void CommandLine::handleChar_(char receivedChar) {
     // Optional: ignore other control chars (keep tab if you want)
-    if (static_cast<unsigned char>(receivedChar) <= COMMAND_CHARS_ASCII_END && receivedChar != '\t') {return;}
+    if (static_cast<unsigned char>(receivedChar) <= kCommandCharsAsciiEnd && receivedChar != '\t') {return;}
 
-    if (fullLine.length() >= UART_BUFFER_SIZE - 1) {
-        UART->println();
-        UART->println("Buffer overflow, input ignored.");
+    if (fullLine.length() >= kUartBufferSize - 1) {
+        uart->println();
+        uart->println("Buffer overflow, input ignored.");
         fullLine.clear();
-        UART->print(SHELL_PROMPT);
+        uart->print(kShellPrompt);
         return;
     }
 
     fullLine += receivedChar;
-    UART->print(receivedChar);
+    uart->print(receivedChar);
 }
 
 
@@ -159,22 +159,22 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
     }
 
     // Print the name of the command that was not found, and suggest using "help" to see available commands
-    UART->println("Command not found: " + String(command.c_str()));
-    UART->println("Type 'help' or '?' to see available commands.");
+    uart->println("Command not found: " + String(command.c_str()));
+    uart->println("Type 'help' or '?' to see available commands.");
 }
 
 // Help function to list all commands with their long and short names
 void CommandLine::help(){
     if (commands.empty()) {
-        UART->println("No commands available.");  
-        UART->println("help<?>"); 
+        uart->println("No commands available.");  
+        uart->println("help<?>");
         return;
     }
  
     for (const auto& cmd : commands) {
-        UART->println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
+        uart->println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
     }
-    UART->println("help<?>"); 
+    uart->println("help<?>");
 
 }
 

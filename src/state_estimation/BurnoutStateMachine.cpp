@@ -5,12 +5,6 @@
 #include "state_estimation/BurnoutStateMachine.h"
 #include "state_estimation/StateEstimationTypes.h"
 
-
-constexpr float GRAVITY = 9.8;
-
-uint32_t tempTimeStamp =0;
-int count = 0;
-
 BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
                                          LaunchDetector* launchDetector,
                                          ApogeeDetector* apogeeDetector,
@@ -27,11 +21,6 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
     // Update the state
     int lpStatus = LP_DEFAULT_FAIL; 
 
-    if(count == 0)
-    {
-        tempTimeStamp = accel.x.timestamp_ms;
-        count++;
-    }
     switch (state) {
         case STATE_ARMED:
             // Serial.println("lp update");

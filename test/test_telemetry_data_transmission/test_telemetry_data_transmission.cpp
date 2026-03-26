@@ -215,7 +215,7 @@ void test_second_packet_counter_is_one(void) {
     telemetry.tick((uint32_t)500);
     telemetry.tick((uint32_t)1000);
 
-    // First packet: kHeaderBytes(12) + label(1) + 3 floats(12) + end marker(4) = 29 bytes
+    // First packet: kHeaderSize_bytes(12) + label(1) + 3 floats(12) + end marker(4) = 29 bytes
     // Second packet counter starts at byte 29 + kPacketCounterIndex
     const int secondPacketStart = 29;
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex));
