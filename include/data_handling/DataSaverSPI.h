@@ -120,10 +120,6 @@ public:
     void launchDetected(uint32_t launchTimestamp_ms_);
 
     /**
-     * @brief Dumps all data from flash_ to Serial
-     * 
-     */
-    /**
      * @brief Stream all recorded data to a serial connection.
      * @param serial            Output stream.
      * @param ignoreEmptyPages  Skip pages that appear unwritten.
@@ -133,10 +129,6 @@ public:
     void dumpData(Stream &serial, bool ignoreEmptyPages);
 
     /**
-     * @brief Resets all internal state values (buffer, lastDataPoint_, nextWriteAddress_, lastTimestamp_ms_)
-     * Does not erase the flash_ chip
-     */
-    /**
      * @brief Reset in-memory pointers without erasing flash_ contents.
      * @note When to use: restart logging logic while preserving prior data on
      *       the chip.
@@ -144,12 +136,11 @@ public:
     void clearInternalState();
 
     /**
-     * @brief Clears/erases the entire flash_ chip to start fresh
-     */
-    /**
      * @brief Erase the entire flash_ chip to start fresh.
-     * @note When to use: before a new campaign when previous flights are fully
-     *       offloaded.
+     * @note When to use: Never needs to be used in normal operation. After
+     *       about 1 hour of runtime, the entire chip is overwritten anyways. 
+     *       Can be used in testing to reset the chip to a known state and then 
+     *       test which bytes are written
      */
     void eraseAllData();
 
