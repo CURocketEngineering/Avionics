@@ -28,15 +28,15 @@ public:
     bool begin_I2C(int addr) { return true; } // Mock successful initialization
     bool begin_I2C() { return true; } // Mock successful initialization
 
-    void setAccelRange(int range) { accelRange = range; }
-    void setGyroRange(int range) { gyroRange = range; }
-    void setAccelDataRate(int rate) { accelDataRate = rate; }
-    void setGyroDataRate(int rate) { gyroDataRate = rate; }
+    void setAccelRange(int range) { accelRange_ = range; }
+    void setGyroRange(int range) { gyroRange_ = range; }
+    void setAccelDataRate(int rate) { accelDataRate_ = rate; }
+    void setGyroDataRate(int rate) { gyroDataRate_ = rate; }
 
-    int getAccelRange() { return accelRange; }
-    int getGyroRange() { return gyroRange; }
-    int getAccelDataRate() { return accelDataRate; }
-    int getGyroDataRate() { return gyroDataRate; }
+    int getAccelRange() { return accelRange_; }
+    int getGyroRange() { return gyroRange_; }
+    int getAccelDataRate() { return accelDataRate_; }
+    int getGyroDataRate() { return gyroDataRate_; }
 
     void getEvent(sensors_event_t *accel, sensors_event_t *gyro, sensors_event_t *temp) {
         SerialSim::getInstance().updateAcl(accel);
@@ -45,10 +45,10 @@ public:
     }
 
 private:
-    int accelRange = LSM6DS_ACCEL_RANGE_16_G;
-    int gyroRange = LSM6DS_GYRO_RANGE_2000_DPS;
-    int accelDataRate = LSM6DS_RATE_104_HZ;
-    int gyroDataRate = LSM6DS_RATE_104_HZ;
+    int accelRange_ = LSM6DS_ACCEL_RANGE_16_G;
+    int gyroRange_ = LSM6DS_GYRO_RANGE_2000_DPS;
+    int accelDataRate_ = LSM6DS_RATE_104_HZ;
+    int gyroDataRate_ = LSM6DS_RATE_104_HZ;
 
 };
 

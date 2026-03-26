@@ -32,21 +32,21 @@ public:
     bool begin_I2C(int addr) { return true; } // Mock successful initialization
     bool begin_I2C() { return true; } // Mock successful initialization
 
-    void setDataRate(int rate) { dataRate = rate; }
-    void setRange(int range) { this->range = range; }
-    void setOperationMode(int mode) { operationMode = mode; }
-    void setPerformanceMode(int mode) { performanceMode = mode; }
-    void setIntThreshold(int threshold) { intThreshold = static_cast<uint16_t>(threshold); }
+    void setDataRate(int rate) { dataRate_ = rate; }
+    void setRange(int range_) { this->range_ = range_; }
+    void setOperationMode(int mode) { operationMode_ = mode; }
+    void setPerformanceMode(int mode) { performanceMode_ = mode; }
+    void setIntThreshold(int threshold) { intThreshold_ = static_cast<uint16_t>(threshold); }
     void configInterrupt(bool a, bool b, bool c) {}
     void configInterrupt(bool a, bool b, bool c, bool d, bool e, bool f) {}
-    int getPerformanceMode() { return performanceMode; }
-    int getOperationMode() { return operationMode; }
-    int getRange() { return range; }
-    uint16_t getIntThreshold() { return intThreshold; }
+    int getPerformanceMode() { return performanceMode_; }
+    int getOperationMode() { return operationMode_; }
+    int getRange() { return range_; }
+    uint16_t getIntThreshold() { return intThreshold_; }
 
 
 
-    int getDataRate() { return dataRate; }
+    int getDataRate() { return dataRate_; }
 
     void getEvent(sensors_event_t *mag) {
         SerialSim::getInstance().updateMag(mag);
@@ -54,11 +54,11 @@ public:
     }
 
 private:
-    int dataRate = LIS3MDL_DATARATE_155_HZ;
-    int range = LIS3MDL_RANGE_4_GAUSS;
-    int operationMode = LIS3MDL_CONTINUOUSMODE;
-    int performanceMode = LIS3MDL_MEDIUMMODE;
-    uint16_t intThreshold = 0;
+    int dataRate_ = LIS3MDL_DATARATE_155_HZ;
+    int range_ = LIS3MDL_RANGE_4_GAUSS;
+    int operationMode_ = LIS3MDL_CONTINUOUSMODE;
+    int performanceMode_ = LIS3MDL_MEDIUMMODE;
+    uint16_t intThreshold_ = 0;
 
 };
 

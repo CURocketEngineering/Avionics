@@ -9,19 +9,19 @@
 LaunchDetector::LaunchDetector(float accelerationThreshold_ms2, //NOLINT(bugprone-easily-swappable-parameters)
                                uint16_t windowSize_ms,
                                uint16_t windowInterval_ms)
-    : accelMagnitudeSquaredWindow(windowSize_ms / windowInterval_ms),
-      accelerationThresholdSq_ms2(accelerationThreshold_ms2 * accelerationThreshold_ms2),
-      windowInterval_ms(windowInterval_ms),
-      launched(false),
-      launchedTime_ms(0),
-      acceptableTimeDifference_ms(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
-      medianAccelerationSquared(0)
+    : accelMagnitudeSquaredWindow_(windowSize_ms / windowInterval_ms),
+      accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
+      windowInterval_ms_(windowInterval_ms),
+      launched_(false),
+      launchedTime_ms_(0),
+      acceptableTimeDifference_ms_(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
+      medianAccelerationSquared_(0)
 {
-    // These must remain here because they rely on accelMagnitudeSquaredWindow being constructed
-    minWindowSize_ms = (windowInterval_ms - acceptableTimeDifference_ms) *
-                         (accelMagnitudeSquaredWindow.getMaxSize() - 1);
-    maxWindowSize_ms = (windowInterval_ms + acceptableTimeDifference_ms) *
-                         (accelMagnitudeSquaredWindow.getMaxSize() - 1);
+    // These must remain here because they rely on accelMagnitudeSquaredWindow_ being constructed
+    minWindowSize_ms_ = (windowInterval_ms_ - acceptableTimeDifference_ms_) *
+                         (accelMagnitudeSquaredWindow_.getMaxSize() - 1);
+    maxWindowSize_ms_ = (windowInterval_ms_ + acceptableTimeDifference_ms_) *
+                         (accelMagnitudeSquaredWindow_.getMaxSize() - 1);
 }
 
 
@@ -36,7 +36,7 @@ int LaunchDetector::update(AccelerationTriplet accel)
 
 
     // If launched, don't update
-    if (launched)
+    if (launched_)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: Data point ignored because already launched");
@@ -51,54 +51,54 @@ int LaunchDetector::update(AccelerationTriplet accel)
     const uint32_t time_ms = (accel.x.timestamp_ms + accel.y.timestamp_ms + accel.z.timestamp_ms) / 3;
 
     // Making sure the new time is greater than the last time
-    if (time_ms < accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms)
+    if (time_ms < accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: Data point ignored because of time is earlier than head");
-        Serial.printf("Incoming time: %d\n", time_ms);
-        Serial.printf("Head time: %d\n", accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms);
+        Serial.printf("Incoming time: %lu\n", static_cast<unsigned long>(time_ms));
+        Serial.printf("Head time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));
         #endif
         return LP_YOUNGER_TIMESTAMP;
     }
 
     // If the window isn't full yet, just push the data point
-    if (!accelMagnitudeSquaredWindow.isFull())
+    if (!accelMagnitudeSquaredWindow_.isFull())
     {
         #ifdef DEBUG
         // Serial.println("LaunchDetector: Populating initial window");
         #endif
-        accelMagnitudeSquaredWindow.push(DataPoint(time_ms, aclMagSq));
+        accelMagnitudeSquaredWindow_.push(DataPoint(time_ms, aclMagSq));
         
         return LP_INITIAL_POPULATION;
     }
 
     // Make sure we are near the window interval +- 10%
-    uint32_t timeDiff_ms = time_ms - accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
+    uint32_t timeDiff_ms = time_ms - accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
 
     // Check that the data didn't come in too fast
-    if (timeDiff_ms < windowInterval_ms - acceptableTimeDifference_ms){
+    if (timeDiff_ms < windowInterval_ms_ - acceptableTimeDifference_ms_){
         #ifdef DEBUG
         Serial.println("LaunchDetector: DATA TOO EARLY");
-        Serial.printf("Time diff: %d\n", timeDiff_ms);
-        Serial.printf("Window interval: %d\n", windowInterval_ms);
-        Serial.printf("Incoming time: %d\n", time_ms);
-        Serial.printf("Head time: %d\n", accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms);
+        Serial.printf("Time diff: %lu\n", static_cast<unsigned long>(timeDiff_ms));
+        Serial.printf("Window interval: %u\n", static_cast<unsigned int>(windowInterval_ms_));
+        Serial.printf("Incoming time: %lu\n", static_cast<unsigned long>(time_ms));
+        Serial.printf("Head time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));
         #endif
         return LP_DATA_TOO_FAST;
     }
 
-    if (timeDiff_ms > windowInterval_ms + acceptableTimeDifference_ms)
+    if (timeDiff_ms > windowInterval_ms_ + acceptableTimeDifference_ms_)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: DATA TOO LATE");
-        Serial.printf("Time diff: %d\n", timeDiff_ms);
-        Serial.printf("Window interval: %d\n", windowInterval_ms);
-        Serial.printf("Incoming time: %d\n", time_ms);
-        Serial.printf("Head time: %d\n", accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms);
+        Serial.printf("Time diff: %lu\n", static_cast<unsigned long>(timeDiff_ms));
+        Serial.printf("Window interval: %u\n", static_cast<unsigned int>(windowInterval_ms_));
+        Serial.printf("Incoming time: %lu\n", static_cast<unsigned long>(time_ms));
+        Serial.printf("Head time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));
         Serial.println("LaunchDetector: Clearing window");
         #endif
         
-        accelMagnitudeSquaredWindow.clear();
+        accelMagnitudeSquaredWindow_.clear();
         return LP_WINDOW_DATA_STALE;
     }
 
@@ -108,55 +108,55 @@ int LaunchDetector::update(AccelerationTriplet accel)
     Serial.println(time_ms);
     #endif
 
-    accelMagnitudeSquaredWindow.push(DataPoint(time_ms, aclMagSq));
+    accelMagnitudeSquaredWindow_.push(DataPoint(time_ms, aclMagSq));
 
-    const uint32_t headTimestamp_ms = accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
-    const uint32_t tailTimestamp_ms = accelMagnitudeSquaredWindow.getFromHead(accelMagnitudeSquaredWindow.getMaxSize() - 1).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
+    const uint32_t headTimestamp_ms = accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
+    const uint32_t tailTimestamp_ms = accelMagnitudeSquaredWindow_.getFromHead(accelMagnitudeSquaredWindow_.getMaxSize() - 1).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
     const uint32_t timeRange_ms = headTimestamp_ms - tailTimestamp_ms;
     
     // Ensure the time_range isn't too small
-    if (timeRange_ms < minWindowSize_ms)
+    if (timeRange_ms < minWindowSize_ms_)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: Time range too small, waiting...");
-        Serial.printf("Time range: %d\n", timeRange_ms);
-        Serial.printf("Min Time Range: %d\n", minWindowSize_ms);
-        Serial.printf("Incoming time: %d\n", time_ms);
-        Serial.printf("Head time: %d\n", accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms);
-        Serial.printf("Tail time: %d\n", accelMagnitudeSquaredWindow.getFromHead(accelMagnitudeSquaredWindow.getMaxSize() - 1).timestamp_ms);
+        Serial.printf("Time range: %lu\n", static_cast<unsigned long>(timeRange_ms));
+        Serial.printf("Min Time Range: %u\n", static_cast<unsigned int>(minWindowSize_ms_));
+        Serial.printf("Incoming time: %lu\n", static_cast<unsigned long>(time_ms));
+        Serial.printf("Head time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));
+        Serial.printf("Tail time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(accelMagnitudeSquaredWindow_.getMaxSize() - 1).timestamp_ms));
         #endif
 
         return LP_WINDOW_TIME_RANGE_TOO_SMALL;
     }
 
     // Ensure the time_range isn't too large
-    if (timeRange_ms > maxWindowSize_ms)
+    if (timeRange_ms > maxWindowSize_ms_)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: Time range too large, waiting...");
-        Serial.printf("Time range: %d\n", timeRange_ms);
-        Serial.printf("Max Time Range: %d\n", maxWindowSize_ms);
-        Serial.printf("Incoming time: %d\n", time_ms);
-        Serial.printf("Head time: %d\n", accelMagnitudeSquaredWindow.getFromHead(0).timestamp_ms);
-        Serial.printf("Tail time: %d\n", accelMagnitudeSquaredWindow.getFromHead(accelMagnitudeSquaredWindow.getMaxSize() - 1).timestamp_ms);
+        Serial.printf("Time range: %lu\n", static_cast<unsigned long>(timeRange_ms));
+        Serial.printf("Max Time Range: %u\n", static_cast<unsigned int>(maxWindowSize_ms_));
+        Serial.printf("Incoming time: %lu\n", static_cast<unsigned long>(time_ms));
+        Serial.printf("Head time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));
+        Serial.printf("Tail time: %lu\n", static_cast<unsigned long>(accelMagnitudeSquaredWindow_.getFromHead(accelMagnitudeSquaredWindow_.getMaxSize() - 1).timestamp_ms));
         #endif
 
         return LP_WINDOW_TIME_RANGE_TOO_LARGE;
     }
 
     // Check that the window is full
-    if (!accelMagnitudeSquaredWindow.isFull())
+    if (!accelMagnitudeSquaredWindow_.isFull())
     {
         return LP_WINDOW_NOT_FULL;
     }
 
-    this->medianAccelerationSquared = accelMagnitudeSquaredWindow.getMedian().data;
+    medianAccelerationSquared_ = accelMagnitudeSquaredWindow_.getMedian().data;
 
     // Check if the median is above the threshold
-    if (medianAccelerationSquared > accelerationThresholdSq_ms2)
+    if (medianAccelerationSquared_ > accelerationThresholdSq_ms2_)
     {
-        launched = true;
-        launchedTime_ms = time_ms;
+        launched_ = true;
+        launchedTime_ms_ = time_ms;
         return LP_LAUNCH_DETECTED;
     }
 
@@ -164,18 +164,18 @@ int LaunchDetector::update(AccelerationTriplet accel)
     Serial.println("LaunchDetector: Median below threshold");
     // Print the median without being able to use %f because of the Arduino
     Serial.print("Median: ");
-    Serial.println(medianAccelerationSquared);
+    Serial.println(medianAccelerationSquared_);
     Serial.print("Threshold: ");
-    Serial.println(accelerationThresholdSq_ms2);
+    Serial.println(accelerationThresholdSq_ms2_);
     #endif
     return LP_ACL_TOO_LOW;
 }
 
 void LaunchDetector::reset()
 {
-    launched = false;
-    launchedTime_ms = 0;
+    launched_ = false;
+    launchedTime_ms_ = 0;
 
     // Clear the window
-    accelMagnitudeSquaredWindow.clear();
+    accelMagnitudeSquaredWindow_.clear();
 }

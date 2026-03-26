@@ -53,15 +53,15 @@ public:
 private:
     static std::string nextFreeFilePath();                    // /stream‑<n>.csv
 
-    uint8_t _csPin;
-    bool _ready {false};
+    uint8_t csPin_;
+    bool ready_ {false};
 
     /* single shared SdFat instance */
-    static SdFat sd;
+    static SdFat sd_;
     using SdFile_t = File32;
 
-    SdFile_t _file;
-    std::string _filePath;
+    SdFile_t file_;
+    std::string filePath_;
 
     /* buffering parameters */
     static constexpr uint16_t kBufSize_bytes = 512;   // one SD sector
@@ -69,9 +69,9 @@ private:
     static constexpr uint32_t kFlushMs    = 200;   // or after 200 ms
 
     /* buffering state */
-    char _buf[kBufSize_bytes] = {};
-    uint16_t _bufLen = 0;
-    uint16_t _linesPending = 0;
-    uint32_t _lastFlushMs = 0;
-    uint32_t _lastSyncMs = 0;
+    char buf_[kBufSize_bytes] = {};
+    uint16_t bufLen_ = 0;
+    uint16_t linesPending_ = 0;
+    uint32_t lastFlushMs_ = 0;
+    uint32_t lastSyncMs_ = 0;
 };

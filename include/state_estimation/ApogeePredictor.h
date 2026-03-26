@@ -68,7 +68,7 @@ private:
     float    tToApogee_;    ///< Time until apogee (seconds)
     uint32_t predApogeeTs_; ///< Timestamp of predicted apogee (ms)
     float    predApogeeAlt_;///< Predicted altitude at apogee (m)
-    float currentDragCoefficient = 0.0005F;     ///< Drag coefficient
+    float currentDragCoefficient_ = 0.0005F;     ///< Drag coefficient
     
     //variables for simulation apogee prediction
     float beta_ = 400.0f;

@@ -6,10 +6,10 @@
 #endif
 
 FastLaunchDetector::FastLaunchDetector(float accelerationThreshold_ms2, uint32_t confirmationWindow_ms) //NOLINT(bugprone-easily-swappable-parameters)
-    : accelerationThresholdSq_ms2(accelerationThreshold_ms2 * accelerationThreshold_ms2),
-      launched(false),
-      launchedTime_ms(0),
-      confirmationWindow_ms(confirmationWindow_ms)
+    : accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
+      launched_(false),
+      launchedTime_ms_(0),
+      confirmationWindow_ms_(confirmationWindow_ms)
 {}
 
 int FastLaunchDetector::update(AccelerationTriplet accel){
@@ -22,7 +22,7 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
     const uint32_t time_ms = (accel.x.timestamp_ms + accel.y.timestamp_ms + accel.z.timestamp_ms) / 3;
 
     //if launch already detected, ignore further data
-    if (launched){
+    if (launched_){
         #ifdef DEBUG
         Serial.println("FastLaunchDetector: Data point ignored because already launched");
         #endif
@@ -30,14 +30,14 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
     }
 
     //if accel higher than threshold, launch detected
-    if (aclMagSq > accelerationThresholdSq_ms2){
-        launched = true;
-        launchedTime_ms = time_ms;
+    if (aclMagSq > accelerationThresholdSq_ms2_){
+        launched_ = true;
+        launchedTime_ms_ = time_ms;
         return FLD_LAUNCH_DETECTED;
     }
 
     //if accel lower than threshold, acl too low
-    if (aclMagSq < accelerationThresholdSq_ms2) {
+    if (aclMagSq < accelerationThresholdSq_ms2_) {
         #ifdef DEBUG
         Serial.println("FastLaunchDetector: Acceloration below threshold");
         #endif
@@ -48,6 +48,6 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
 }
 
 void FastLaunchDetector::reset(){
-    launched = false;
-    launchedTime_ms = 0;
+    launched_ = false;
+    launchedTime_ms_ = 0;
 }

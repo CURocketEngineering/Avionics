@@ -109,8 +109,8 @@ void ApogeePredictor::quadUpdate() {
 void ApogeePredictor::polyUpdate() {
     const uint32_t currentTimestamp_ms = vve_.getTimestamp();
     const float altitude_m = vve_.getEstimatedAltitude();
-    const float velocity_ms = vve_.getEstimatedVelocity();
-    const float acceleration_ms2 = vve_.getInertialVerticalAcceleration();
+    const float velocity_mps = vve_.getEstimatedVelocity();
+    const float acceleration_mps2 = vve_.getInertialVerticalAcceleration();
 
     constexpr size_t kFeatureCount = 10; // NOLINT(cppcoreguidelines-init-variables)
 
@@ -131,21 +131,21 @@ void ApogeePredictor::polyUpdate() {
 
     // ───────────────────────────────────────────────────────
     // Compute delta_h_simple = v^2 / (2 * decel), with decel > 0
-    const float decel = std::fabs(acceleration_ms2);
-    const float delta_h_simple = kOneHalf * (velocity_ms * velocity_ms) / decel;
+    const float decel = std::fabs(acceleration_mps2);
+    const float delta_h_simple = kOneHalf * (velocity_mps * velocity_mps) / decel;
 
     // ───────────────────────────────────────────────────────
     // Evaluate the regression model
     const std::array<float, kFeatureCount> inputs = {
         1.0F,
-        velocity_ms,                // vertical_velocity
-        acceleration_ms2,           // vertical_acceleration
+        velocity_mps,               // vertical_velocity
+        acceleration_mps2,          // vertical_acceleration
         delta_h_simple,
-        velocity_ms * velocity_ms,  // vertical_velocity^2
-        velocity_ms * acceleration_ms2, // vertical_velocity vertical_acceleration
-        velocity_ms * delta_h_simple, // vertical_velocity delta_h_simple
-        acceleration_ms2 * acceleration_ms2, // vertical_acceleration^2
-        acceleration_ms2 * delta_h_simple, // vertical_acceleration delta_h_simple
+        velocity_mps * velocity_mps,  // vertical_velocity^2
+        velocity_mps * acceleration_mps2, // vertical_velocity vertical_acceleration
+        velocity_mps * delta_h_simple, // vertical_velocity delta_h_simple
+        acceleration_mps2 * acceleration_mps2, // vertical_acceleration^2
+        acceleration_mps2 * delta_h_simple, // vertical_acceleration delta_h_simple
         delta_h_simple * delta_h_simple, // delta_h_simple^2
     };
 
@@ -159,17 +159,17 @@ void ApogeePredictor::polyUpdate() {
     predApogeeAlt_ = altitude_m + apogeeRemaining_m;
 
     // Estimate time to apogee using kinematic model
-    tToApogee_ = velocity_ms / decel;
+    tToApogee_ = velocity_mps / decel;
     predApogeeTs_ = currentTimestamp_ms + static_cast<uint32_t>(tToApogee_ * kMillisecondsPerSecond);
 
     valid_ = true;
 
     lastTs_ = currentTimestamp_ms;
-    lastVel_ = velocity_ms;
+    lastVel_ = velocity_mps;
     numWarmups_ = std::min(numWarmups_ + 1, kMaxWarmups);
 
     // printf("Current Timestamp: %u, Altitude: %.2f, Velocity: %.2f, Acceleration: %.2f, Predicted Apogee Remaining: %.2f, Delta H: %.2f\n",
-    //        currentTimestamp_ms, altitude_m, velocity_ms, acceleration_ms2, apogeeRemaining_m, delta_h_simple);
+    //        currentTimestamp_ms, altitude_m, velocity_mps, acceleration_mps2, apogeeRemaining_m, delta_h_simple);
 }
 
 
@@ -210,16 +210,16 @@ const float kMeasured = -(acceleration + gravity) /
         float alpha = clamp(std::fabs(velocity) / kVelocityScaleForAlpha,
                     kAlphaMin,
                     kAlphaMax);
-        currentDragCoefficient = (1.0F - alpha) * currentDragCoefficient + alpha * kMeasured;
+        currentDragCoefficient_ = (1.0F - alpha) * currentDragCoefficient_ + alpha * kMeasured;
     }
 
     // Analytic apogee calculation
     float apogee = 0.0F;
 
-    if (currentDragCoefficient > kMinDragCoefficient)
+    if (currentDragCoefficient_ > kMinDragCoefficient)
     {
-        apogee = height + (kApogeeFactor / currentDragCoefficient) *
-        logf((gravity + currentDragCoefficient * velocity * velocity) / gravity);
+        apogee = height + (kApogeeFactor / currentDragCoefficient_) *
+        logf((gravity + currentDragCoefficient_ * velocity * velocity) / gravity);
     }
     else
     {
@@ -264,8 +264,8 @@ void ApogeePredictor::simulateUpdate()
 
         if (measuredDrag > 0.0F && measuredDrag < kMaxDragCoefficient)
         {
-            currentDragCoefficient =
-                (1.0F - kAlpha) * currentDragCoefficient +
+            currentDragCoefficient_ =
+                (1.0F - kAlpha) * currentDragCoefficient_ +
                 kAlpha * measuredDrag;
         }
     }
@@ -276,7 +276,7 @@ void ApogeePredictor::simulateUpdate()
 
     for (int step = 0; step < kMaxSimSteps; step++)
     {
-        const float dragAcceleration = currentDragCoefficient * simVelocity * simVelocity;
+        const float dragAcceleration = currentDragCoefficient_ * simVelocity * simVelocity;
         const float totalAcceleration = -kGravity - dragAcceleration;
 
         simVelocity += totalAcceleration * kDt;
@@ -312,5 +312,5 @@ float ApogeePredictor::getFilteredDeceleration() const {
 }
 
 float ApogeePredictor::getDragCoefficient() const {
-    return currentDragCoefficient;
+    return currentDragCoefficient_;
 }

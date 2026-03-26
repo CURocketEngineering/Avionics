@@ -24,7 +24,7 @@ constexpr int kMaxRowLength = 40;
 
 /**
  * @brief Lightweight UART command-line interface with history and parsing.
- * @note When to use: add interactive commands for debugging or configuration
+ * @note When to use: add interactive commands_ for debugging or configuration
  *       over a serial terminal without bringing in a full shell.
  */
 class CommandLine {
@@ -38,30 +38,30 @@ public:
     void begin();
     void switchUART(Stream* newUart);
     void useDefaultUART();
-    Stream* getDefaultUART() const { return defaultUart; }
-    Stream* getActiveUART() const { return uart; }
+    Stream* getDefaultUART() const { return defaultUart_; }
+    Stream* getActiveUART() const { return uart_; }
     uint32_t getLastInteractionTimestamp() const { return lastInteractionTimestamp_; }
 
     // Pass-through functions for the UART object
     void println(const std::string& message){
-        uart->println(message.c_str());
+        uart_->println(message.c_str());
     }
     void print(const std::string& message){
-        uart->print(message.c_str());
+        uart_->print(message.c_str());
     }
 
 private:
-    Stream* uart;  // Pointer to the UART object
-    Stream* defaultUart;  // Stream provided at construction; used by useDefaultUART()
+    Stream* uart_;  // Pointer to the UART object
+    Stream* defaultUart_;  // Stream provided at construction; used by useDefaultUART()
     struct Command {
         std::string longName;             
         std::string shortName;           
         std::function<void(std::queue<std::string>, std::string&)> funcPtr; // Function pointer to the command handler
     };
-    std::vector<Command> commands{};  // Vector to store the list of commands
+    std::vector<Command> commands_{};  // Vector to store the list of commands_
 
     // Class member variables for buffering and history
-    std::string fullLine = {""}; 
+    std::string fullLine_ = {""}; 
 
 
     void help();
