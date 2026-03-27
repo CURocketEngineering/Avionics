@@ -10,12 +10,12 @@ StateMachine::StateMachine(IDataSaver* dataSaver,
                            ApogeeDetector* apogeeDetector,
                            VerticalVelocityEstimator* verticalVelocityEstimator,
                            FastLaunchDetector* fastLaunchDetector)
-    : dataSaver_(dataSaver),
+    : state_(STATE_ARMED),
+      dataSaver_(dataSaver),
       launchDetector_(launchDetector),
       apogeeDetector_(apogeeDetector),
       verticalVelocityEstimator_(verticalVelocityEstimator),
-      fastLaunchDetector_(fastLaunchDetector),
-      state_(STATE_ARMED)
+      fastLaunchDetector_(fastLaunchDetector)
 {
 }
 
