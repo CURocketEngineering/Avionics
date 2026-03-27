@@ -54,7 +54,7 @@ constexpr std::uint8_t kEndByteValue = 52;
 
 /** 32-bit helper constants */
 constexpr unsigned kBitsPerByte_bits = 8;
-constexpr std::uint32_t kCommandModeInactivityTimeoutMs = 10000;
+constexpr std::uint32_t kCommandModeInactivityTimeout_ms = 10000;
 constexpr std::size_t kCommandEntrySequenceLength = 3;
 constexpr char kCommandEntryChar = 'c';
 
@@ -271,11 +271,11 @@ private:
 
     // Command mode handling
     bool inCommandMode_ = false; 
-    std::uint32_t commandModeEnteredTimestamp_ = 0;
-    std::uint32_t commandModeLastInputTimestamp_ = 0;
+    std::uint32_t commandModeEnteredTimestamp_ms_ = 0;
+    std::uint32_t commandModeLastInputTimestamp_ms_ = 0;
     std::size_t commandEntryProgress_ = 0;
     bool commandModeTimeoutLocked_ = false;
-    std::uint32_t commandModeTimeoutLockDeadlineMs_ = 0;
+    std::uint32_t commandModeTimeoutLockDeadline_ms_ = 0;
 };
 
 #endif

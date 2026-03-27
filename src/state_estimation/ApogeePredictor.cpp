@@ -21,16 +21,13 @@ constexpr float kOneHalf = 0.5F;
 constexpr float kGravity_mps2 = 9.80665F;
 constexpr uint32_t kMaxWarmups = 1000;
 
-float dragRatioFiltered_ = 0.0F;   // k
-bool dragLocked_ = false;
-
 }  // namespace
 
 ApogeePredictor::ApogeePredictor(const VerticalVelocityEstimator& velocityEstimator, 
                                  float accelFilterAlpha,  // caution: two floats here are swappable //NOLINT(bugprone-easily-swappable-parameters)
                                  float minimumClimbVelocity_ms) //NOLINT(bugprone-easily-swappable-parameters)
     : vve_(velocityEstimator),
-      filteredDecel_(0.0F),
+      filteredDecel_mps2_(0.0F),
       alpha_(clamp(accelFilterAlpha, 0.0F, 1.0F)),
       minClimbVel_(minimumClimbVelocity_ms),
       valid_(false),
@@ -50,21 +47,21 @@ void ApogeePredictor::update() {
     float decelSample = std::max(0.0F, -acceleration);
 
     if (currentTimestamp > lastTs_) {
-        const auto deltaTime = static_cast<float>(currentTimestamp - lastTs_);
-        const float deltaVelocity = velocity - lastVel_;
-        float estimatedDecel = (deltaTime > 0.0F) ? std::max(0.0F, -deltaVelocity / deltaTime) : 0.0F;
-        decelSample = kOneHalf * (decelSample + estimatedDecel);
+        const auto deltaTime_s = static_cast<float>(currentTimestamp - lastTs_) * kMillisecondsToSeconds;
+        const float deltaVelocity_mps = velocity - lastVel_;
+        float estimatedDecel_mps2 = (deltaTime_s > 0.0F) ? std::max(0.0F, -deltaVelocity_mps / deltaTime_s) : 0.0F;
+        decelSample = kOneHalf * (decelSample + estimatedDecel_mps2);
     }
 
-    filteredDecel_ = alpha_ * decelSample + (1.0F - alpha_) * filteredDecel_;
+    filteredDecel_mps2_ = alpha_ * decelSample + (1.0F - alpha_) * filteredDecel_mps2_;
 
-    if (velocity > minClimbVel_ && filteredDecel_ > kMinValidDecel) {
-        tToApogee_ = velocity / filteredDecel_;
+    if (velocity > minClimbVel_ && filteredDecel_mps2_ > kMinValidDecel) {
+        tToApogee_ = velocity / filteredDecel_mps2_;
         predApogeeTs_ = currentTimestamp + static_cast<uint32_t>(tToApogee_ * kMillisecondsPerSecond);
 
         const float altitude = vve_.getEstimatedAltitude();
         predApogeeAlt_ = altitude + velocity * tToApogee_ -
-                         kOneHalf * filteredDecel_ * tToApogee_ * tToApogee_;
+                         kOneHalf * filteredDecel_mps2_ * tToApogee_ * tToApogee_;
 
         valid_ = true;
     } else {
@@ -86,8 +83,8 @@ void ApogeePredictor::quadUpdate() {
         kEstimate = std::max(0.0F, -(acceleration + kGravity_mps2)) / (velocity * velocity);
     }
 
-    filteredDecel_ = alpha_ * kEstimate + (1.0F - alpha_) * filteredDecel_;
-    const float dragToMassRatio = filteredDecel_;
+    filteredDecel_mps2_ = alpha_ * kEstimate + (1.0F - alpha_) * filteredDecel_mps2_;
+    const float dragToMassRatio = filteredDecel_mps2_;
 
     if (velocity > minClimbVel_ && dragToMassRatio > kMinValidDecel) {
         const float terminalVelocity = std::sqrt(kGravity_mps2 / dragToMassRatio);
@@ -308,7 +305,7 @@ float ApogeePredictor::getPredictedApogeeAltitude_m() const {
 }
 
 float ApogeePredictor::getFilteredDeceleration() const {
-    return filteredDecel_;
+    return filteredDecel_mps2_;
 }
 
 float ApogeePredictor::getDragCoefficient() const {

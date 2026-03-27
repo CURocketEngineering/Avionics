@@ -55,11 +55,11 @@ void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
 
 void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
     inCommandMode_ = true;
-    commandModeEnteredTimestamp_ = currentTimeMs;
-    commandModeLastInputTimestamp_ = currentTimeMs;
+    commandModeEnteredTimestamp_ms_ = currentTimeMs;
+    commandModeLastInputTimestamp_ms_ = currentTimeMs;
     commandEntryProgress_ = 0;
     commandModeTimeoutLocked_ = false;
-    commandModeTimeoutLockDeadlineMs_ = 0;
+    commandModeTimeoutLockDeadline_ms_ = 0;
 
     if (commandLine_ != nullptr) {
         commandLine_->switchUART(&rfdSerialConnection_);
@@ -70,7 +70,7 @@ void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
 void Telemetry::exitCommandMode() {
     inCommandMode_ = false;
     commandModeTimeoutLocked_ = false;
-    commandModeTimeoutLockDeadlineMs_ = 0;
+    commandModeTimeoutLockDeadline_ms_ = 0;
 
     if (commandLine_ != nullptr) {
         commandLine_->useDefaultUART();
@@ -84,16 +84,16 @@ void Telemetry::lockCommandModeTimeout(std::uint32_t lockDurationMs) {
 
     const std::uint32_t nowMs = millis();
     commandModeTimeoutLocked_ = true;
-    commandModeTimeoutLockDeadlineMs_ = nowMs + lockDurationMs;
-    commandModeLastInputTimestamp_ = nowMs;
+    commandModeTimeoutLockDeadline_ms_ = nowMs + lockDurationMs;
+    commandModeLastInputTimestamp_ms_ = nowMs;
 }
 
 void Telemetry::unlockCommandModeTimeout() {
     commandModeTimeoutLocked_ = false;
-    commandModeTimeoutLockDeadlineMs_ = 0;
+    commandModeTimeoutLockDeadline_ms_ = 0;
 
     if (inCommandMode_) {
-        commandModeLastInputTimestamp_ = millis();
+        commandModeLastInputTimestamp_ms_ = millis();
     }
 }
 
@@ -112,29 +112,29 @@ bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) 
 
     if (commandLine_ != nullptr) {
         const std::uint32_t lastInteractionTimestamp = commandLine_->getLastInteractionTimestamp();
-        if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp_)) {
-            commandModeLastInputTimestamp_ = lastInteractionTimestamp;
+        if (isTimestampNewer(lastInteractionTimestamp, commandModeLastInputTimestamp_ms_)) {
+            commandModeLastInputTimestamp_ms_ = lastInteractionTimestamp;
         }
     }
 
     // If currentTimeMs was sampled before command input was processed in this loop,
     // avoid unsigned underflow in the inactivity subtraction.
-    if (isTimestampNewer(commandModeLastInputTimestamp_, currentTimeMs)) {
+    if (isTimestampNewer(commandModeLastInputTimestamp_ms_, currentTimeMs)) {
         return true;
     }
 
     if (commandModeTimeoutLocked_) {
-        if (!isTimestampReachedOrPassed(currentTimeMs, commandModeTimeoutLockDeadlineMs_)) {
+        if (!isTimestampReachedOrPassed(currentTimeMs, commandModeTimeoutLockDeadline_ms_)) {
             return true;
         }
 
         commandModeTimeoutLocked_ = false;
-        commandModeTimeoutLockDeadlineMs_ = 0;
-        commandModeLastInputTimestamp_ = currentTimeMs;
+        commandModeTimeoutLockDeadline_ms_ = 0;
+        commandModeLastInputTimestamp_ms_ = currentTimeMs;
         return true;
     }
 
-    if ((currentTimeMs - commandModeLastInputTimestamp_) >= TelemetryFmt::kCommandModeInactivityTimeoutMs) {
+    if ((currentTimeMs - commandModeLastInputTimestamp_ms_) >= TelemetryFmt::kCommandModeInactivityTimeout_ms) {
         exitCommandMode();
         return false;
     }

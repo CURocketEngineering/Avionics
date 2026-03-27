@@ -59,7 +59,7 @@ public:
 private:
     const VerticalVelocityEstimator& vve_;
 
-    float filteredDecel_;   ///< Smoothed deceleration (m/s², positive)
+    float filteredDecel_mps2_;   ///< Smoothed deceleration (m/s², positive)
     float alpha_;           ///< EMA smoothing weight
     float minClimbVel_;     ///< Minimum climb speed (m/s) to consider a prediction
 
