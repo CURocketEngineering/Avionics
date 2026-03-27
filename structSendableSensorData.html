@@ -103,7 +103,7 @@ Collaboration diagram for SendableSensorData:</div>
 <div class="dyncontent">
 <div class="center"><img src="structSendableSensorData__coll__graph.png" border="0" usemap="#aSendableSensorData_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aSendableSensorData_coll__map" id="aSendableSensorData_coll__map">
-<area shape="rect" title="Declares one telemetry &quot;stream&quot; to include in packets." alt="" coords="14,457,187,683"/>
+<area shape="rect" title="Declares one telemetry &quot;stream&quot; to include in packets." alt="" coords="9,457,192,683"/>
 <area shape="rect" href="classSensorDataHandler.html" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate." alt="" coords="5,221,196,367"/>
 <area shape="poly" title=" " alt="" coords="103,367,103,441,98,441,98,367"/>
 <area shape="rect" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="10,5,191,151"/>
@@ -113,15 +113,15 @@ Collaboration diagram for SendableSensorData:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aee5daa4aecdeef121330bf85a537511d" id="r_aee5daa4aecdeef121330bf85a537511d"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aee5daa4aecdeef121330bf85a537511d">SendableSensorData</a> (<a class="el" href="classSensorDataHandler.html">SensorDataHandler</a> *sdh, std::uint16_t sendFrequencyHz)</td></tr>
-<tr class="memdesc:aee5daa4aecdeef121330bf85a537511d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a single SDH stream.  <br /></td></tr>
-<tr class="memitem:ad2a2e45049598fb9be6436915f4cf127" id="r_ad2a2e45049598fb9be6436915f4cf127"><td class="memTemplParams" colspan="2">template&lt;std::size_t M&gt; </td></tr>
-<tr class="memitem:ad2a2e45049598fb9be6436915f4cf127 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ad2a2e45049598fb9be6436915f4cf127">SendableSensorData</a> (const std::array&lt; <a class="el" href="classSensorDataHandler.html">SensorDataHandler</a> *, M &gt; &amp;sdhList, std::uint8_t label, std::uint16_t sendFrequencyHz)</td></tr>
-<tr class="memdesc:ad2a2e45049598fb9be6436915f4cf127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a multi SDH stream from a std::array.  <br /></td></tr>
-<tr class="memitem:a7908633b014625a2d0ff7b113e035a60" id="r_a7908633b014625a2d0ff7b113e035a60"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a7908633b014625a2d0ff7b113e035a60">shouldBeSent</a> (std::uint32_t now) const</td></tr>
-<tr class="memdesc:a7908633b014625a2d0ff7b113e035a60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if enough time has elapsed such that this stream wants to be sent again.  <br /></td></tr>
-<tr class="memitem:a1f232175d3ec2f4d0f5d642e5c898aa0" id="r_a1f232175d3ec2f4d0f5d642e5c898aa0"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a1f232175d3ec2f4d0f5d642e5c898aa0">markWasSent</a> (std::uint32_t now)</td></tr>
-<tr class="memdesc:a1f232175d3ec2f4d0f5d642e5c898aa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update internal state after sending.  <br /></td></tr>
+<tr class="memitem:a518a4804cef85025f024491c6839d659" id="r_a518a4804cef85025f024491c6839d659"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a518a4804cef85025f024491c6839d659">SendableSensorData</a> (<a class="el" href="classSensorDataHandler.html">SensorDataHandler</a> *sdh, std::uint16_t sendFrequency_hz)</td></tr>
+<tr class="memdesc:a518a4804cef85025f024491c6839d659"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a single SDH stream.  <br /></td></tr>
+<tr class="memitem:a6cecb59ba87b0251c362ccece0f93efe" id="r_a6cecb59ba87b0251c362ccece0f93efe"><td class="memTemplParams" colspan="2">template&lt;std::size_t M&gt; </td></tr>
+<tr class="memitem:a6cecb59ba87b0251c362ccece0f93efe template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a6cecb59ba87b0251c362ccece0f93efe">SendableSensorData</a> (const std::array&lt; <a class="el" href="classSensorDataHandler.html">SensorDataHandler</a> *, M &gt; &amp;sdhList, std::uint8_t label, std::uint16_t sendFrequency_hz)</td></tr>
+<tr class="memdesc:a6cecb59ba87b0251c362ccece0f93efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a multi SDH stream from a std::array.  <br /></td></tr>
+<tr class="memitem:ae39df31817df750872da52d10f19c4bf" id="r_ae39df31817df750872da52d10f19c4bf"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ae39df31817df750872da52d10f19c4bf">shouldBeSent</a> (std::uint32_t now_ms) const</td></tr>
+<tr class="memdesc:ae39df31817df750872da52d10f19c4bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if enough time has elapsed such that this stream wants to be sent again.  <br /></td></tr>
+<tr class="memitem:a946c201005f8798e6f143226cf5662cb" id="r_a946c201005f8798e6f143226cf5662cb"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a946c201005f8798e6f143226cf5662cb">markWasSent</a> (std::uint32_t now_ms)</td></tr>
+<tr class="memdesc:a946c201005f8798e6f143226cf5662cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update internal state after sending.  <br /></td></tr>
 <tr class="memitem:a4880c92f8cded3ee485c50940f61fdcc" id="r_a4880c92f8cded3ee485c50940f61fdcc"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a4880c92f8cded3ee485c50940f61fdcc">isSingle</a> () const</td></tr>
 <tr class="memdesc:a4880c92f8cded3ee485c50940f61fdcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience: true if configured as a single SDH stream.  <br /></td></tr>
 <tr class="memitem:a4462bf94153fb3ca5e3c05c2e9ff6cc1" id="r_a4462bf94153fb3ca5e3c05c2e9ff6cc1"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a4462bf94153fb3ca5e3c05c2e9ff6cc1">isMulti</a> () const</td></tr>
@@ -133,8 +133,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ae72555f9158634f9aa7df58df6da8e86" id="r_ae72555f9158634f9aa7df58df6da8e86"><td class="memItemLeft"><a class="el" href="classSensorDataHandler.html">SensorDataHandler</a> *const  *&#160;</td><td class="memItemRight"><a class="el" href="#ae72555f9158634f9aa7df58df6da8e86">multiSDH</a></td></tr>
 <tr class="memitem:a2aeeedfbcd6203fb31a9549a34c7cf09" id="r_a2aeeedfbcd6203fb31a9549a34c7cf09"><td class="memItemLeft">const std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a2aeeedfbcd6203fb31a9549a34c7cf09">multiSDHLength</a></td></tr>
 <tr class="memitem:a9871063b5ed50407ef3a00b3de773533" id="r_a9871063b5ed50407ef3a00b3de773533"><td class="memItemLeft">std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a9871063b5ed50407ef3a00b3de773533">multiSDHDataLabel</a></td></tr>
-<tr class="memitem:a8e3813650ade6606e3973c0bea975005" id="r_a8e3813650ade6606e3973c0bea975005"><td class="memItemLeft">std::uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a8e3813650ade6606e3973c0bea975005">periodMs</a></td></tr>
-<tr class="memitem:a05108f65559a32530572a376cc025314" id="r_a05108f65559a32530572a376cc025314"><td class="memItemLeft">std::uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#a05108f65559a32530572a376cc025314">lastSentTimestamp</a></td></tr>
+<tr class="memitem:a5104404a8a1cfcc78c98755ac8f998eb" id="r_a5104404a8a1cfcc78c98755ac8f998eb"><td class="memItemLeft">std::uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a5104404a8a1cfcc78c98755ac8f998eb">period_ms</a></td></tr>
+<tr class="memitem:aca1fd36dfe6c7910354da427afd15eb2" id="r_aca1fd36dfe6c7910354da427afd15eb2"><td class="memItemLeft">std::uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#aca1fd36dfe6c7910354da427afd15eb2">lastSentTimestamp_ms</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Declares one telemetry "stream" to include in packets. </p>
@@ -148,10 +148,10 @@ Public Attributes</h2></td></tr>
 <li>std::array (preferred when size is fixed at compile time) </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00109">109</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00103">103</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aee5daa4aecdeef121330bf85a537511d" name="aee5daa4aecdeef121330bf85a537511d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee5daa4aecdeef121330bf85a537511d">&#9670;&#160;</a></span>SendableSensorData() <span class="overload">[1/2]</span></h2>
+<a id="a518a4804cef85025f024491c6839d659" name="a518a4804cef85025f024491c6839d659"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a518a4804cef85025f024491c6839d659">&#9670;&#160;</a></span>SendableSensorData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,7 +167,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::uint16_t</td>          <td class="paramname"><span class="paramname"><em>sendFrequencyHz</em></span>&#160;)</td>
+          <td class="paramtype">std::uint16_t</td>          <td class="paramname"><span class="paramname"><em>sendFrequency_hz</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -181,17 +181,17 @@ Public Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sdh</td><td><a class="el" href="classSensorDataHandler.html" title="Buffers sensor samples and forwards them to an IDataSaver at a controlled rate.">SensorDataHandler</a> to send (non-owning). </td></tr>
-    <tr><td class="paramname">sendFrequencyHz</td><td>Desired send rate in Hz. </td></tr>
+    <tr><td class="paramname">sendFrequency_hz</td><td>Desired send rate in Hz. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00139">139</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00133">133</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
-<a id="ad2a2e45049598fb9be6436915f4cf127" name="ad2a2e45049598fb9be6436915f4cf127"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2a2e45049598fb9be6436915f4cf127">&#9670;&#160;</a></span>SendableSensorData() <span class="overload">[2/2]</span></h2>
+<a id="a6cecb59ba87b0251c362ccece0f93efe" name="a6cecb59ba87b0251c362ccece0f93efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cecb59ba87b0251c362ccece0f93efe">&#9670;&#160;</a></span>SendableSensorData() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +214,7 @@ template&lt;std::size_t M&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::uint16_t</td>          <td class="paramname"><span class="paramname"><em>sendFrequencyHz</em></span>&#160;)</td>
+          <td class="paramtype">std::uint16_t</td>          <td class="paramname"><span class="paramname"><em>sendFrequency_hz</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -227,7 +227,7 @@ template&lt;std::size_t M&gt; </div>
 <p>Create a multi SDH stream from a std::array. </p>
 <p>This is convenient when the group size is fixed at compile time. The std::array passed in must outlive this <a class="el" href="structSendableSensorData.html" title="Declares one telemetry &quot;stream&quot; to include in packets.">SendableSensorData</a> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00154">154</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00148">148</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -257,7 +257,7 @@ template&lt;std::size_t M&gt; </div>
 
 <p>Convenience: true if configured as a multi SDH stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00182">182</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00176">176</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -286,12 +286,12 @@ template&lt;std::size_t M&gt; </div>
 
 <p>Convenience: true if configured as a single SDH stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00179">179</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00173">173</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
-<a id="a1f232175d3ec2f4d0f5d642e5c898aa0" name="a1f232175d3ec2f4d0f5d642e5c898aa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f232175d3ec2f4d0f5d642e5c898aa0">&#9670;&#160;</a></span>markWasSent()</h2>
+<a id="a946c201005f8798e6f143226cf5662cb" name="a946c201005f8798e6f143226cf5662cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a946c201005f8798e6f143226cf5662cb">&#9670;&#160;</a></span>markWasSent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -302,7 +302,7 @@ template&lt;std::size_t M&gt; </div>
         <tr>
           <td class="memname">void SendableSensorData::markWasSent </td>
           <td>(</td>
-          <td class="paramtype">std::uint32_t</td>          <td class="paramname"><span class="paramname"><em>now</em></span></td><td>)</td>
+          <td class="paramtype">std::uint32_t</td>          <td class="paramname"><span class="paramname"><em>now_ms</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -315,12 +315,12 @@ template&lt;std::size_t M&gt; </div>
 
 <p>Update internal state after sending. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00174">174</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00168">168</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
-<a id="a7908633b014625a2d0ff7b113e035a60" name="a7908633b014625a2d0ff7b113e035a60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7908633b014625a2d0ff7b113e035a60">&#9670;&#160;</a></span>shouldBeSent()</h2>
+<a id="ae39df31817df750872da52d10f19c4bf" name="ae39df31817df750872da52d10f19c4bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae39df31817df750872da52d10f19c4bf">&#9670;&#160;</a></span>shouldBeSent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -331,7 +331,7 @@ template&lt;std::size_t M&gt; </div>
         <tr>
           <td class="memname">bool SendableSensorData::shouldBeSent </td>
           <td>(</td>
-          <td class="paramtype">std::uint32_t</td>          <td class="paramname"><span class="paramname"><em>now</em></span></td><td>)</td>
+          <td class="paramtype">std::uint32_t</td>          <td class="paramname"><span class="paramname"><em>now_ms</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -344,25 +344,25 @@ template&lt;std::size_t M&gt; </div>
 
 <p>Return true if enough time has elapsed such that this stream wants to be sent again. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00167">167</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00161">161</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
-<a id="a05108f65559a32530572a376cc025314" name="a05108f65559a32530572a376cc025314"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05108f65559a32530572a376cc025314">&#9670;&#160;</a></span>lastSentTimestamp</h2>
+<a id="aca1fd36dfe6c7910354da427afd15eb2" name="aca1fd36dfe6c7910354da427afd15eb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca1fd36dfe6c7910354da427afd15eb2">&#9670;&#160;</a></span>lastSentTimestamp_ms</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::uint32_t SendableSensorData::lastSentTimestamp</td>
+          <td class="memname">std::uint32_t SendableSensorData::lastSentTimestamp_ms</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Last send time in ms (same time base as tick()). </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00132">132</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00126">126</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -379,7 +379,7 @@ template&lt;std::size_t M&gt; </div>
 </div><div class="memdoc">
 <p>Multi-value group. Pointer to an external array of SDHs. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00116">116</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00110">110</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -396,7 +396,7 @@ template&lt;std::size_t M&gt; </div>
 </div><div class="memdoc">
 <p>Label written once before the multi SDH values. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00124">124</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00118">118</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -413,24 +413,24 @@ template&lt;std::size_t M&gt; </div>
 </div><div class="memdoc">
 <p>Length of multiSDH array. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00121">121</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00115">115</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
-<a id="a8e3813650ade6606e3973c0bea975005" name="a8e3813650ade6606e3973c0bea975005"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e3813650ade6606e3973c0bea975005">&#9670;&#160;</a></span>periodMs</h2>
+<a id="a5104404a8a1cfcc78c98755ac8f998eb" name="a5104404a8a1cfcc78c98755ac8f998eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5104404a8a1cfcc78c98755ac8f998eb">&#9670;&#160;</a></span>period_ms</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::uint16_t SendableSensorData::periodMs</td>
+          <td class="memname">std::uint16_t SendableSensorData::period_ms</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Minimum time between sends for this stream. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00129">129</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00123">123</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -447,7 +447,7 @@ template&lt;std::size_t M&gt; </div>
 </div><div class="memdoc">
 <p>Single-value stream. If non-null, this stream will send this SDH. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00113">113</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00107">107</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>

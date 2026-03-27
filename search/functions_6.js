@@ -11,7 +11,7 @@ var searchData=
   ['getconfirmationwindow_8',['getConfirmationWindow',['../classFastLaunchDetector.html#af2389e1fffdaadc62baca8a4e88bf84e',1,'FastLaunchDetector']]],
   ['getdatarate_9',['getDataRate',['../classAdafruit__LIS2MDL.html#a190484a091eecd50dc317c31784385b1',1,'Adafruit_LIS2MDL::getDataRate()'],['../classAdafruit__LIS3MDL.html#a847f1d181aee1508fe090b9fb321cd7e',1,'Adafruit_LIS3MDL::getDataRate()']]],
   ['getdefaultuart_10',['getDefaultUART',['../classCommandLine.html#a7d398f651c3c7a377ca6616db1a79d8a',1,'CommandLine']]],
-  ['getdragcoefficient_11',['getdragCoefficient',['../classApogeePredictor.html#a6ef3bfb35c02e8cc24d08835de317bea',1,'ApogeePredictor']]],
+  ['getdragcoefficient_11',['getDragCoefficient',['../classApogeePredictor.html#a5830186c49c1784f2b827fd5fb3818c9',1,'ApogeePredictor']]],
   ['getegl_12',['getEGL',['../classGroundLevelEstimator.html#a7b289083cfec89b5af524ae7e6db3c17',1,'GroundLevelEstimator']]],
   ['getestimatedaltitude_13',['getEstimatedAltitude',['../classApogeeDetector.html#aee6b8ea0aa86529da2a808744cd1d72f',1,'ApogeeDetector::getEstimatedAltitude()'],['../classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54',1,'VerticalVelocityEstimator::getEstimatedAltitude()']]],
   ['getestimatedvelocity_14',['getEstimatedVelocity',['../classApogeeDetector.html#a54c7c703f168891179b109117d55b768',1,'ApogeeDetector::getEstimatedVelocity()'],['../classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb',1,'VerticalVelocityEstimator::getEstimatedVelocity()']]],
@@ -51,6 +51,6 @@ var searchData=
   ['getverticalaxis_48',['getVerticalAxis',['../classApogeeDetector.html#ab8e3bd73dc3b36ed4696f5e833b43fec',1,'ApogeeDetector::getVerticalAxis()'],['../classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90',1,'VerticalVelocityEstimator::getVerticalAxis()']]],
   ['getverticaldirection_49',['getVerticalDirection',['../classApogeeDetector.html#a88e4571939bca604ce15077fba5916a5',1,'ApogeeDetector::getVerticalDirection()'],['../classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e',1,'VerticalVelocityEstimator::getVerticalDirection()']]],
   ['getwindowinterval_50',['getWindowInterval',['../classLaunchDetector.html#a847360fa6e3b8d61f2989ec2c329f2d0',1,'LaunchDetector']]],
-  ['getwindowptr_51',['getWindowPtr',['../classLaunchDetector.html#ac06864bc7b0b8b8e262faaf6d02abc36',1,'LaunchDetector']]],
+  ['getwindowptr_51',['getWindowPtr',['../classLaunchDetector.html#ac3fa15657c0711da6747b021d0f7f83d',1,'LaunchDetector']]],
   ['groundlevelestimator_52',['GroundLevelEstimator',['../classGroundLevelEstimator.html#a179f187ff2015292b18f9cf3776fd60e',1,'GroundLevelEstimator']]]
 ];

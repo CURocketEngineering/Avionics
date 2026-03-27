@@ -152,119 +152,19 @@ Classes</h2></td></tr>
 <tr class="memitem:DataSaverSPI" id="r_DataSaverSPI"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classDataSaverSPI.html">DataSaverSPI</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI flash implementation of <a class="el" href="classIDataSaver.html" title="Abstract interface for persisting timestamped data points.">IDataSaver</a> with timestamp compression.  <a href="classDataSaverSPI.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ae1ef78adf262f9715284600484a6897b" id="r_ae1ef78adf262f9715284600484a6897b"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ae1ef78adf262f9715284600484a6897b">METADATA_START_ADDRESS</a>&#160;&#160;&#160;0x000000</td></tr>
-<tr class="memitem:a63bd9e0033206752a45cdfd5256e62be" id="r_a63bd9e0033206752a45cdfd5256e62be"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a63bd9e0033206752a45cdfd5256e62be">DATA_START_ADDRESS</a>&#160;&#160;&#160;0x001000</td></tr>
-<tr class="memitem:af94d40141158e5d9eb56f2772d9e496f" id="r_af94d40141158e5d9eb56f2772d9e496f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#af94d40141158e5d9eb56f2772d9e496f">POST_LAUNCH_FLAG_ADDRESS</a>&#160;&#160;&#160;0x000000</td></tr>
-<tr class="memitem:ac7f367c5e920ef5f2e942f5f8018e14c" id="r_ac7f367c5e920ef5f2e942f5f8018e14c"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac7f367c5e920ef5f2e942f5f8018e14c">LAUNCH_START_ADDRESS_ADDRESS</a>&#160;&#160;&#160;0x000001</td></tr>
-<tr class="memitem:a3ac8c13f179083d96ffa35c6e84273e6" id="r_a3ac8c13f179083d96ffa35c6e84273e6"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a3ac8c13f179083d96ffa35c6e84273e6">POST_LAUNCH_FLAG_TRUE</a>&#160;&#160;&#160;0x00</td></tr>
-<tr class="memitem:adcf593f09269d466ad5595d0ee289c61" id="r_adcf593f09269d466ad5595d0ee289c61"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#adcf593f09269d466ad5595d0ee289c61">POST_LAUNCH_FLAG_FALSE</a>&#160;&#160;&#160;0x01</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ab15b11f7e2b58fc570c3ad88043e79ea" id="r_ab15b11f7e2b58fc570c3ad88043e79ea"><td class="memItemLeft">constexpr uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#ab15b11f7e2b58fc570c3ad88043e79ea">EMPTY_PAGE</a> = 0xFF</td></tr>
+<tr class="memitem:a754f797f72583041a1c452203beb2ff8" id="r_a754f797f72583041a1c452203beb2ff8"><td class="memItemLeft">constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#a754f797f72583041a1c452203beb2ff8">kMetadataStartAddress</a> = 0x000000</td></tr>
+<tr class="memitem:a22a70aee808e6a6ebb0eae14e2caa2f5" id="r_a22a70aee808e6a6ebb0eae14e2caa2f5"><td class="memItemLeft">constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#a22a70aee808e6a6ebb0eae14e2caa2f5">kDataStartAddress</a> = 0x001000</td></tr>
+<tr class="memitem:aa0e6028b21a6d003cb042ceaabc1276d" id="r_aa0e6028b21a6d003cb042ceaabc1276d"><td class="memItemLeft">constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#aa0e6028b21a6d003cb042ceaabc1276d">kPostLaunchFlagAddress</a> = 0x000000</td></tr>
+<tr class="memitem:ad035535105359b94943086f6de896faa" id="r_ad035535105359b94943086f6de896faa"><td class="memItemLeft">constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#ad035535105359b94943086f6de896faa">kLaunchStartAddressAddress</a> = 0x000001</td></tr>
+<tr class="memitem:a8d545ba7b02e7c88c00902242607d2b6" id="r_a8d545ba7b02e7c88c00902242607d2b6"><td class="memItemLeft">constexpr uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a8d545ba7b02e7c88c00902242607d2b6">kPostLaunchFlagTrue</a> = 0x00</td></tr>
+<tr class="memitem:aad5dc7d800564c9919b2ce9f2a426378" id="r_aad5dc7d800564c9919b2ce9f2a426378"><td class="memItemLeft">constexpr uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#aad5dc7d800564c9919b2ce9f2a426378">kPostLaunchFlagFalse</a> = 0x01</td></tr>
+<tr class="memitem:aebadb2c8cec7acc62a538a474d7b423b" id="r_aebadb2c8cec7acc62a538a474d7b423b"><td class="memItemLeft">constexpr uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#aebadb2c8cec7acc62a538a474d7b423b">kEmptyPageValue</a> = 0xFF</td></tr>
 </table>
-<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="a63bd9e0033206752a45cdfd5256e62be" name="a63bd9e0033206752a45cdfd5256e62be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63bd9e0033206752a45cdfd5256e62be">&#9670;&#160;</a></span>DATA_START_ADDRESS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DATA_START_ADDRESS&#160;&#160;&#160;0x001000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00012">12</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
-
-</div>
-</div>
-<a id="ac7f367c5e920ef5f2e942f5f8018e14c" name="ac7f367c5e920ef5f2e942f5f8018e14c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7f367c5e920ef5f2e942f5f8018e14c">&#9670;&#160;</a></span>LAUNCH_START_ADDRESS_ADDRESS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define LAUNCH_START_ADDRESS_ADDRESS&#160;&#160;&#160;0x000001</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00014">14</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
-
-</div>
-</div>
-<a id="ae1ef78adf262f9715284600484a6897b" name="ae1ef78adf262f9715284600484a6897b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1ef78adf262f9715284600484a6897b">&#9670;&#160;</a></span>METADATA_START_ADDRESS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define METADATA_START_ADDRESS&#160;&#160;&#160;0x000000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00011">11</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
-
-</div>
-</div>
-<a id="af94d40141158e5d9eb56f2772d9e496f" name="af94d40141158e5d9eb56f2772d9e496f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af94d40141158e5d9eb56f2772d9e496f">&#9670;&#160;</a></span>POST_LAUNCH_FLAG_ADDRESS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define POST_LAUNCH_FLAG_ADDRESS&#160;&#160;&#160;0x000000</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00013">13</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
-
-</div>
-</div>
-<a id="adcf593f09269d466ad5595d0ee289c61" name="adcf593f09269d466ad5595d0ee289c61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcf593f09269d466ad5595d0ee289c61">&#9670;&#160;</a></span>POST_LAUNCH_FLAG_FALSE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define POST_LAUNCH_FLAG_FALSE&#160;&#160;&#160;0x01</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00017">17</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
-
-</div>
-</div>
-<a id="a3ac8c13f179083d96ffa35c6e84273e6" name="a3ac8c13f179083d96ffa35c6e84273e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ac8c13f179083d96ffa35c6e84273e6">&#9670;&#160;</a></span>POST_LAUNCH_FLAG_TRUE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define POST_LAUNCH_FLAG_TRUE&#160;&#160;&#160;0x00</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00016">16</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
-
-</div>
-</div>
 <a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="ab15b11f7e2b58fc570c3ad88043e79ea" name="ab15b11f7e2b58fc570c3ad88043e79ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab15b11f7e2b58fc570c3ad88043e79ea">&#9670;&#160;</a></span>EMPTY_PAGE</h2>
+<a id="a22a70aee808e6a6ebb0eae14e2caa2f5" name="a22a70aee808e6a6ebb0eae14e2caa2f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22a70aee808e6a6ebb0eae14e2caa2f5">&#9670;&#160;</a></span>kDataStartAddress</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +173,31 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t EMPTY_PAGE = 0xFF</td>
+          <td class="memname">uint32_t kDataStartAddress = 0x001000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00012">12</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="aebadb2c8cec7acc62a538a474d7b423b" name="aebadb2c8cec7acc62a538a474d7b423b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebadb2c8cec7acc62a538a474d7b423b">&#9670;&#160;</a></span>kEmptyPageValue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t kEmptyPageValue = 0xFF</td>
         </tr>
       </table>
   </td>
@@ -284,6 +208,126 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00019">19</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="ad035535105359b94943086f6de896faa" name="ad035535105359b94943086f6de896faa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad035535105359b94943086f6de896faa">&#9670;&#160;</a></span>kLaunchStartAddressAddress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t kLaunchStartAddressAddress = 0x000001</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00014">14</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="a754f797f72583041a1c452203beb2ff8" name="a754f797f72583041a1c452203beb2ff8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a754f797f72583041a1c452203beb2ff8">&#9670;&#160;</a></span>kMetadataStartAddress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t kMetadataStartAddress = 0x000000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00011">11</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="aa0e6028b21a6d003cb042ceaabc1276d" name="aa0e6028b21a6d003cb042ceaabc1276d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0e6028b21a6d003cb042ceaabc1276d">&#9670;&#160;</a></span>kPostLaunchFlagAddress</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t kPostLaunchFlagAddress = 0x000000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00013">13</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="aad5dc7d800564c9919b2ce9f2a426378" name="aad5dc7d800564c9919b2ce9f2a426378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad5dc7d800564c9919b2ce9f2a426378">&#9670;&#160;</a></span>kPostLaunchFlagFalse</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t kPostLaunchFlagFalse = 0x01</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00017">17</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
+
+</div>
+</div>
+<a id="a8d545ba7b02e7c88c00902242607d2b6" name="a8d545ba7b02e7c88c00902242607d2b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d545ba7b02e7c88c00902242607d2b6">&#9670;&#160;</a></span>kPostLaunchFlagTrue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t kPostLaunchFlagTrue = 0x00</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="DataSaverSPI_8h_source.html#l00016">16</a> of file <a class="el" href="DataSaverSPI_8h_source.html">DataSaverSPI.h</a>.</p>
 
 </div>
 </div>

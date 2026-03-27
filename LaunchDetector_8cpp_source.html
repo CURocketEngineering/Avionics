@@ -105,19 +105,19 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classLaunchDetector.html#a10e33e12876e820753cde55b85c6f6dc">    9</a></span><a class="code hl_function" href="classLaunchDetector.html#a10e33e12876e820753cde55b85c6f6dc">LaunchDetector::LaunchDetector</a>(<span class="keywordtype">float</span> accelerationThreshold_ms2, <span class="comment">//NOLINT(bugprone-easily-swappable-parameters)</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                               uint16_t windowSize_ms,</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                               uint16_t windowInterval_ms)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    : AclMagSqWindow_ms2(windowSize_ms / windowInterval_ms),</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      accelerationThresholdSq_ms2(accelerationThreshold_ms2 * accelerationThreshold_ms2),</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      windowInterval_ms(windowInterval_ms),</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      launched(false),</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      launchedTime_ms(0),</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      acceptableTimeDifference_ms(static_cast&lt;uint16_t&gt;(static_cast&lt;float&gt;(windowInterval_ms) * <a class="code hl_variable" href="LaunchDetector_8h.html#ac8041eaad58801cf73271596584de2ba">ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL</a>)),</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      median_acceleration_squared(0)</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    : accelMagnitudeSquaredWindow_(windowSize_ms / windowInterval_ms),</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      windowInterval_ms_(windowInterval_ms),</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>      launched_(false),</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      launchedTime_ms_(0),</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      acceptableTimeDifference_ms_(static_cast&lt;uint16_t&gt;(static_cast&lt;float&gt;(windowInterval_ms) * <a class="code hl_variable" href="LaunchDetector_8h.html#a8ec144d05e4ad0c01f117e87e3bf6f34">kAcceptablePercentDifferenceWindowInterval</a>)),</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      medianAccelerationSquared_(0)</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="comment">// These must remain here because they rely on AclMagSqWindow_ms2 being constructed</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    min_window_size_ms = (windowInterval_ms - acceptableTimeDifference_ms) *</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                         (AclMagSqWindow_ms2.getMaxSize() - 1);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    max_window_size_ms = (windowInterval_ms + acceptableTimeDifference_ms) *</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                         (AclMagSqWindow_ms2.getMaxSize() - 1);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="comment">// These must remain here because they rely on accelMagnitudeSquaredWindow_ being constructed</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    minWindowSize_ms_ = (windowInterval_ms_ - acceptableTimeDifference_ms_) *</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                         (accelMagnitudeSquaredWindow_.getMaxSize() - 1);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    maxWindowSize_ms_ = (windowInterval_ms_ + acceptableTimeDifference_ms_) *</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                         (accelMagnitudeSquaredWindow_.getMaxSize() - 1);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
 </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
@@ -134,7 +134,7 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="comment">// If launched, don&#39;t update</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">if</span> (launched)</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordflow">if</span> (launched_)</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: Data point ignored because already launched&quot;</span>);</div>
@@ -149,54 +149,54 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">const</span> uint32_t time_ms = (accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a> + accel.<a class="code hl_variable" href="structAccelerationTriplet.html#a7d0c0be6aeb1067835d9a15652b49257">y</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a> + accel.<a class="code hl_variable" href="structAccelerationTriplet.html#a7babcf4dd3730f051f7152ffefa1606b">z</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>) / 3;</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">// Making sure the new time is greater than the last time</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> (time_ms &lt; AclMagSqWindow_ms2.getFromHead(0).timestamp_ms)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">if</span> (time_ms &lt; accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms)</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    {</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: Data point ignored because of time is earlier than head&quot;</span>);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %d\n&quot;</span>, time_ms);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(time_ms));</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080aa063df1281826f139a90af3499487911">LP_YOUNGER_TIMESTAMP</a>;</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    }</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">// If the window isn&#39;t full yet, just push the data point</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">if</span> (!AclMagSqWindow_ms2.isFull())</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">if</span> (!accelMagnitudeSquaredWindow_.isFull())</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    {</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="comment">// Serial.println(&quot;LaunchDetector: Populating initial window&quot;);</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">        #endif</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        AclMagSqWindow_ms2.push(<a class="code hl_class" href="classDataPoint.html">DataPoint</a>(time_ms, aclMagSq));</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        accelMagnitudeSquaredWindow_.push(<a class="code hl_class" href="classDataPoint.html">DataPoint</a>(time_ms, aclMagSq));</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a6b1e984da9587377f161469ab0303445">LP_INITIAL_POPULATION</a>;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="comment">// Make sure we are near the window interval +- 10%</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    uint32_t time_diff = time_ms - AclMagSqWindow_ms2.getFromHead(0).timestamp_ms; <span class="comment">//NOLINT(cppcoreguidelines-init-variables)</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="comment">// Make sure we are near the window interval +- kAcceptablePercentDifferenceWindowInterval</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    uint32_t timeDiff_ms = time_ms - accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; <span class="comment">//NOLINT(cppcoreguidelines-init-variables)</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// Check that the data didn&#39;t come in too fast</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (time_diff &lt; windowInterval_ms - acceptableTimeDifference_ms){</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">if</span> (timeDiff_ms &lt; windowInterval_ms_ - acceptableTimeDifference_ms_){</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: DATA TOO EARLY&quot;</span>);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        Serial.printf(<span class="stringliteral">&quot;Time diff: %d\n&quot;</span>, time_diff);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        Serial.printf(<span class="stringliteral">&quot;Window interval: %d\n&quot;</span>, windowInterval_ms);</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %d\n&quot;</span>, time_ms);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        Serial.printf(<span class="stringliteral">&quot;Time diff: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(timeDiff_ms));</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        Serial.printf(<span class="stringliteral">&quot;Window interval: %u\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(windowInterval_ms_));</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(time_ms));</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a80bc20b88138de9371639ea71bf56585">LP_DATA_TOO_FAST</a>;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">if</span> (time_diff &gt; windowInterval_ms + acceptableTimeDifference_ms)</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">if</span> (timeDiff_ms &gt; windowInterval_ms_ + acceptableTimeDifference_ms_)</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    {</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: DATA TOO LATE&quot;</span>);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        Serial.printf(<span class="stringliteral">&quot;Time diff: %d\n&quot;</span>, time_diff);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        Serial.printf(<span class="stringliteral">&quot;Window interval: %d\n&quot;</span>, windowInterval_ms);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %d\n&quot;</span>, time_ms);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        Serial.printf(<span class="stringliteral">&quot;Time diff: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(timeDiff_ms));</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        Serial.printf(<span class="stringliteral">&quot;Window interval: %u\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(windowInterval_ms_));</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(time_ms));</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: Clearing window&quot;</span>);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        AclMagSqWindow_ms2.clear();</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        accelMagnitudeSquaredWindow_.clear();</div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080ac42669799e8c4b31090280073785da2d">LP_WINDOW_DATA_STALE</a>;</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
@@ -206,55 +206,55 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    Serial.println(time_ms);</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    AclMagSqWindow_ms2.push(<a class="code hl_class" href="classDataPoint.html">DataPoint</a>(time_ms, aclMagSq));</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    accelMagnitudeSquaredWindow_.push(<a class="code hl_class" href="classDataPoint.html">DataPoint</a>(time_ms, aclMagSq));</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">const</span> uint32_t head_timeStamp_ms = AclMagSqWindow_ms2.getFromHead(0).timestamp_ms; <span class="comment">//NOLINT(cppcoreguidelines-init-variables)</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">const</span> uint32_t tail_timeStamp_ms = AclMagSqWindow_ms2.getFromHead(AclMagSqWindow_ms2.getMaxSize() - 1).timestamp_ms; <span class="comment">//NOLINT(cppcoreguidelines-init-variables)</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">const</span> uint32_t time_range = head_timeStamp_ms - tail_timeStamp_ms;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">const</span> uint32_t headTimestamp_ms = accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; <span class="comment">//NOLINT(cppcoreguidelines-init-variables)</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">const</span> uint32_t tailTimestamp_ms = accelMagnitudeSquaredWindow_.getFromHead(accelMagnitudeSquaredWindow_.getMaxSize() - 1).timestamp_ms; <span class="comment">//NOLINT(cppcoreguidelines-init-variables)</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">const</span> uint32_t timeRange_ms = headTimestamp_ms - tailTimestamp_ms;</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="comment">// Ensure the time_range isn&#39;t too small</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">if</span> (time_range &lt; min_window_size_ms)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">if</span> (timeRange_ms &lt; minWindowSize_ms_)</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    {</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: Time range too small, waiting...&quot;</span>);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        Serial.printf(<span class="stringliteral">&quot;Time range: %d\n&quot;</span>, time_range);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        Serial.printf(<span class="stringliteral">&quot;Min Time Range: %d\n&quot;</span>, min_window_size_ms);</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %d\n&quot;</span>, time_ms);</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        Serial.printf(<span class="stringliteral">&quot;Tail time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(AclMagSqWindow_ms2.getMaxSize() - 1).timestamp_ms);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        Serial.printf(<span class="stringliteral">&quot;Time range: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(timeRange_ms));</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        Serial.printf(<span class="stringliteral">&quot;Min Time Range: %u\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(minWindowSize_ms_));</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(time_ms));</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        Serial.printf(<span class="stringliteral">&quot;Tail time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(accelMagnitudeSquaredWindow_.getMaxSize() - 1).timestamp_ms));</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080ad19671ce85a8d5c2b6c745ca1fa255b1">LP_WINDOW_TIME_RANGE_TOO_SMALL</a>;</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">// Ensure the time_range isn&#39;t too large</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">if</span> (time_range &gt; max_window_size_ms)</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordflow">if</span> (timeRange_ms &gt; maxWindowSize_ms_)</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    {</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">        #ifdef DEBUG</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        Serial.println(<span class="stringliteral">&quot;LaunchDetector: Time range too large, waiting...&quot;</span>);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        Serial.printf(<span class="stringliteral">&quot;Time range: %d\n&quot;</span>, time_range);</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        Serial.printf(<span class="stringliteral">&quot;Max Time Range: %d\n&quot;</span>, max_window_size_ms);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %d\n&quot;</span>, time_ms);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(0).timestamp_ms);</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        Serial.printf(<span class="stringliteral">&quot;Tail time: %d\n&quot;</span>, AclMagSqWindow_ms2.getFromHead(AclMagSqWindow_ms2.getMaxSize() - 1).timestamp_ms);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        Serial.printf(<span class="stringliteral">&quot;Time range: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(timeRange_ms));</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        Serial.printf(<span class="stringliteral">&quot;Max Time Range: %u\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(maxWindowSize_ms_));</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        Serial.printf(<span class="stringliteral">&quot;Incoming time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(time_ms));</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        Serial.printf(<span class="stringliteral">&quot;Head time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms));</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        Serial.printf(<span class="stringliteral">&quot;Tail time: %lu\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">long</span><span class="keyword">&gt;</span>(accelMagnitudeSquaredWindow_.getFromHead(accelMagnitudeSquaredWindow_.getMaxSize() - 1).timestamp_ms));</div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">        #endif</span></div>
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a91ab0d6da25f183f5bd31488cb9befbd">LP_WINDOW_TIME_RANGE_TOO_LARGE</a>;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// Check that the window is full</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordflow">if</span> (!AclMagSqWindow_ms2.isFull())</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keywordflow">if</span> (!accelMagnitudeSquaredWindow_.isFull())</div>
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    {</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a622591f5c3e7f82e33db4f25e744f02a">LP_WINDOW_NOT_FULL</a>;</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    }</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    this-&gt;median_acceleration_squared = AclMagSqWindow_ms2.getMedian().data;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    medianAccelerationSquared_ = accelMagnitudeSquaredWindow_.getMedian().data;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="comment">// Check if the median is above the threshold</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> (median_acceleration_squared &gt; accelerationThresholdSq_ms2)</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="keywordflow">if</span> (medianAccelerationSquared_ &gt; accelerationThresholdSq_ms2_)</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    {</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        launched = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        launchedTime_ms = time_ms;</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        launched_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        launchedTime_ms_ = time_ms;</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a4361e11eb8765b4c163edbfa0d4a6dff">LP_LAUNCH_DETECTED</a>;</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
@@ -262,9 +262,9 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    Serial.println(<span class="stringliteral">&quot;LaunchDetector: Median below threshold&quot;</span>);</div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="comment">// Print the median without being able to use %f because of the Arduino</span></div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    Serial.print(<span class="stringliteral">&quot;Median: &quot;</span>);</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    Serial.println(median_acceleration_squared);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    Serial.println(medianAccelerationSquared_);</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    Serial.print(<span class="stringliteral">&quot;Threshold: &quot;</span>);</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    Serial.println(accelerationThresholdSq_ms2);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    Serial.println(accelerationThresholdSq_ms2_);</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">    #endif</span></div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080a686daad6b191529dbdc7f02bf27f6572">LP_ACL_TOO_LOW</a>;</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
@@ -273,11 +273,11 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classLaunchDetector.html#a95dcd28cad213d76923dad7f3fac46d7">  174</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classLaunchDetector.html#a95dcd28cad213d76923dad7f3fac46d7">LaunchDetector::reset</a>()</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>{</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    launched = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    launchedTime_ms = 0;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    launched_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    launchedTime_ms_ = 0;</div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="comment">// Clear the window</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    AclMagSqWindow_ms2.clear();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    accelMagnitudeSquaredWindow_.clear();</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>}</div>
 </div>
 <div class="ttc" id="aArduinoHAL_8h_html"><div class="ttname"><a href="ArduinoHAL_8h.html">ArduinoHAL.h</a></div></div>
@@ -292,7 +292,7 @@ $(function(){initNavTree('LaunchDetector_8cpp_source.html','',''); });
 <div class="ttc" id="aLaunchDetector_8h_html_a25d95163b8059ecb03e5f9f95f1f2080ac42669799e8c4b31090280073785da2d"><div class="ttname"><a href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080ac42669799e8c4b31090280073785da2d">LP_WINDOW_DATA_STALE</a></div><div class="ttdeci">@ LP_WINDOW_DATA_STALE</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00026">LaunchDetector.h:26</a></div></div>
 <div class="ttc" id="aLaunchDetector_8h_html_a25d95163b8059ecb03e5f9f95f1f2080ad19671ce85a8d5c2b6c745ca1fa255b1"><div class="ttname"><a href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080ad19671ce85a8d5c2b6c745ca1fa255b1">LP_WINDOW_TIME_RANGE_TOO_SMALL</a></div><div class="ttdeci">@ LP_WINDOW_TIME_RANGE_TOO_SMALL</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00027">LaunchDetector.h:27</a></div></div>
 <div class="ttc" id="aLaunchDetector_8h_html_a25d95163b8059ecb03e5f9f95f1f2080afbe67ada0f1b0a4edd304168f437a3ef"><div class="ttname"><a href="LaunchDetector_8h.html#a25d95163b8059ecb03e5f9f95f1f2080afbe67ada0f1b0a4edd304168f437a3ef">LP_ALREADY_LAUNCHED</a></div><div class="ttdeci">@ LP_ALREADY_LAUNCHED</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00022">LaunchDetector.h:22</a></div></div>
-<div class="ttc" id="aLaunchDetector_8h_html_ac8041eaad58801cf73271596584de2ba"><div class="ttname"><a href="LaunchDetector_8h.html#ac8041eaad58801cf73271596584de2ba">ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL</a></div><div class="ttdeci">constexpr float ACCEPTABLE_PERCENT_DIFFERENCE_WINDOW_INTERVAL</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00014">LaunchDetector.h:14</a></div></div>
+<div class="ttc" id="aLaunchDetector_8h_html_a8ec144d05e4ad0c01f117e87e3bf6f34"><div class="ttname"><a href="LaunchDetector_8h.html#a8ec144d05e4ad0c01f117e87e3bf6f34">kAcceptablePercentDifferenceWindowInterval</a></div><div class="ttdeci">constexpr float kAcceptablePercentDifferenceWindowInterval</div><div class="ttdef"><b>Definition</b> <a href="LaunchDetector_8h_source.html#l00014">LaunchDetector.h:14</a></div></div>
 <div class="ttc" id="aclassDataPoint_html"><div class="ttname"><a href="classDataPoint.html">DataPoint</a></div><div class="ttdoc">Timestamped float measurement container.</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00011">DataPoint.h:11</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a22a179660ba6fd06f4a7149d2f80e86e"><div class="ttname"><a href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">DataPoint::data</a></div><div class="ttdeci">float data</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00014">DataPoint.h:14</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a314cf9ac0f59ae12e9a576b4906ae9a2"><div class="ttname"><a href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">DataPoint::timestamp_ms</a></div><div class="ttdeci">uint32_t timestamp_ms</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00013">DataPoint.h:13</a></div></div>

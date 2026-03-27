@@ -109,13 +109,13 @@ Collaboration diagram for CommandLine:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a933f00e1c5e15b4a7fa285a62bc3d2d5" id="r_a933f00e1c5e15b4a7fa285a62bc3d2d5"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a933f00e1c5e15b4a7fa285a62bc3d2d5">CommandLine</a> (<a class="el" href="classStream.html">Stream</a> *UART)</td></tr>
+<tr class="memitem:a33b82d2d3f9fd6a388b39f718a5a317f" id="r_a33b82d2d3f9fd6a388b39f718a5a317f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a33b82d2d3f9fd6a388b39f718a5a317f">CommandLine</a> (<a class="el" href="classStream.html">Stream</a> *uartStream)</td></tr>
 <tr class="memitem:a73c1b4e14f70f7e145f2c8c7971f57c2" id="r_a73c1b4e14f70f7e145f2c8c7971f57c2"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a73c1b4e14f70f7e145f2c8c7971f57c2">addCommand</a> (const std::string &amp;longName, const std::string &amp;shortName, std::function&lt; void(std::queue&lt; std::string &gt; argumentQueue, std::string &amp;)&gt; funcPtr)</td></tr>
-<tr class="memitem:a50d102959ae54834b877839fdf7200e1" id="r_a50d102959ae54834b877839fdf7200e1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a50d102959ae54834b877839fdf7200e1">executeCommand</a> (const std::string &amp;command, std::queue&lt; std::string &gt; arugments)</td></tr>
+<tr class="memitem:a69895fbcd05573a63aca0001b125ac88" id="r_a69895fbcd05573a63aca0001b125ac88"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a69895fbcd05573a63aca0001b125ac88">executeCommand</a> (const std::string &amp;command, std::queue&lt; std::string &gt; arguments)</td></tr>
 <tr class="memitem:ababd5a8df61121f8aebf80ac626671ed" id="r_ababd5a8df61121f8aebf80ac626671ed"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ababd5a8df61121f8aebf80ac626671ed">readInput</a> ()</td></tr>
 <tr class="memitem:af9e2d3c7e4bee5d704db5b5b8ae7616d" id="r_af9e2d3c7e4bee5d704db5b5b8ae7616d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af9e2d3c7e4bee5d704db5b5b8ae7616d">processCommand</a> (const std::string &amp;command)</td></tr>
 <tr class="memitem:a28c0fb753d186a32ebeab6fa94b4c71d" id="r_a28c0fb753d186a32ebeab6fa94b4c71d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a28c0fb753d186a32ebeab6fa94b4c71d">begin</a> ()</td></tr>
-<tr class="memitem:a941437d218746e16f825aa6fe8d00a8a" id="r_a941437d218746e16f825aa6fe8d00a8a"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a941437d218746e16f825aa6fe8d00a8a">switchUART</a> (<a class="el" href="classStream.html">Stream</a> *newUART)</td></tr>
+<tr class="memitem:a3fc937384256bcebb056d21bd1b5c234" id="r_a3fc937384256bcebb056d21bd1b5c234"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a3fc937384256bcebb056d21bd1b5c234">switchUART</a> (<a class="el" href="classStream.html">Stream</a> *newUart)</td></tr>
 <tr class="memitem:abf3e3cab8353a230ef26bc9d23eeca00" id="r_abf3e3cab8353a230ef26bc9d23eeca00"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#abf3e3cab8353a230ef26bc9d23eeca00">useDefaultUART</a> ()</td></tr>
 <tr class="memitem:a7d398f651c3c7a377ca6616db1a79d8a" id="r_a7d398f651c3c7a377ca6616db1a79d8a"><td class="memItemLeft"><a class="el" href="classStream.html">Stream</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a7d398f651c3c7a377ca6616db1a79d8a">getDefaultUART</a> () const</td></tr>
 <tr class="memitem:a89ee6948b0e8707ff82d7a232d0be5d4" id="r_a89ee6948b0e8707ff82d7a232d0be5d4"><td class="memItemLeft"><a class="el" href="classStream.html">Stream</a> *&#160;</td><td class="memItemRight"><a class="el" href="#a89ee6948b0e8707ff82d7a232d0be5d4">getActiveUART</a> () const</td></tr>
@@ -129,8 +129,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00030">30</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a933f00e1c5e15b4a7fa285a62bc3d2d5" name="a933f00e1c5e15b4a7fa285a62bc3d2d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a933f00e1c5e15b4a7fa285a62bc3d2d5">&#9670;&#160;</a></span>CommandLine()</h2>
+<a id="a33b82d2d3f9fd6a388b39f718a5a317f" name="a33b82d2d3f9fd6a388b39f718a5a317f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33b82d2d3f9fd6a388b39f718a5a317f">&#9670;&#160;</a></span>CommandLine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,7 +138,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">CommandLine::CommandLine </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> *</td>          <td class="paramname"><span class="paramname"><em>UART</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> *</td>          <td class="paramname"><span class="paramname"><em>uartStream</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -196,8 +196,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a50d102959ae54834b877839fdf7200e1" name="a50d102959ae54834b877839fdf7200e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50d102959ae54834b877839fdf7200e1">&#9670;&#160;</a></span>executeCommand()</h2>
+<a id="a69895fbcd05573a63aca0001b125ac88" name="a69895fbcd05573a63aca0001b125ac88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69895fbcd05573a63aca0001b125ac88">&#9670;&#160;</a></span>executeCommand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +210,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::queue&lt; std::string &gt;</td>          <td class="paramname"><span class="paramname"><em>arugments</em></span>&#160;)</td>
+          <td class="paramtype">std::queue&lt; std::string &gt;</td>          <td class="paramname"><span class="paramname"><em>arguments</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -390,8 +390,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a941437d218746e16f825aa6fe8d00a8a" name="a941437d218746e16f825aa6fe8d00a8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a941437d218746e16f825aa6fe8d00a8a">&#9670;&#160;</a></span>switchUART()</h2>
+<a id="a3fc937384256bcebb056d21bd1b5c234" name="a3fc937384256bcebb056d21bd1b5c234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fc937384256bcebb056d21bd1b5c234">&#9670;&#160;</a></span>switchUART()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -399,7 +399,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CommandLine::switchUART </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> *</td>          <td class="paramname"><span class="paramname"><em>newUART</em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classStream.html">Stream</a> *</td>          <td class="paramname"><span class="paramname"><em>newUart</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>

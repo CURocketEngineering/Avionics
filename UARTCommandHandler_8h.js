@@ -1,7 +1,6 @@
 var UARTCommandHandler_8h =
 [
     [ "CommandLine", "classCommandLine.html", "classCommandLine" ],
-    [ "SHELL_PROMPT", "UARTCommandHandler_8h.html#aaa60ca995565b799bb958c806e933665", null ],
     [ "AsciiKey", "UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5", [
       [ "Escape", "UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5a013ec032d3460d4be4431c6ab1f8f224", null ],
       [ "UpArrow", "UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5a0b513090f0a012194da83d5515882b13", null ],
@@ -9,7 +8,8 @@ var UARTCommandHandler_8h =
       [ "Backspace", "UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5acd7d13ceea728b08555f7c818cfb13ef", null ],
       [ "Delete", "UARTCommandHandler_8h.html#a2539683afb56f10f48dbbf6f94b72cb5af2a6c498fb90ee345d997f888fce3b18", null ]
     ] ],
-    [ "MAX_ARGUMENTS", "UARTCommandHandler_8h.html#a49d782a80a129ad0d7aba4a67d0bf5eb", null ],
-    [ "MAX_ROW_LENGTH", "UARTCommandHandler_8h.html#a6d3903d7d4d39968ca27f7cb7a616515", null ],
-    [ "UART_BUFFER_SIZE", "UARTCommandHandler_8h.html#a5c0116fd118efda35653d5e704105995", null ]
+    [ "kMaxArguments", "UARTCommandHandler_8h.html#ac2774c7d95a67d992c98370f97b9b298", null ],
+    [ "kMaxRowLength", "UARTCommandHandler_8h.html#a2be19c55952bec5a4c85608523d7478b", null ],
+    [ "kShellPrompt", "UARTCommandHandler_8h.html#af4176eaa8d8c3d41ba4c2ea0cc1ac6b0", null ],
+    [ "kUartBufferSize", "UARTCommandHandler_8h.html#ab7720a764f0dd2ca07dfac1ed31489eb", null ]
 ];

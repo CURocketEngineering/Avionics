@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['circular_5farray_5fallocated_5fslots_0',['CIRCULAR_ARRAY_ALLOCATED_SLOTS',['../LaunchDetector_8h.html#a010dffbeb29ec5827f49b8857058687b',1,'LaunchDetector.h']]],
-  ['command_5fchars_5fascii_5fend_1',['COMMAND_CHARS_ASCII_END',['../UARTCommandHandler_8cpp.html#a25ed3e669fb1ebf9579eded59afb0515',1,'UARTCommandHandler.cpp']]],
-  ['count_2',['count',['../BurnoutStateMachine_8cpp.html#ad43c3812e6d13e0518d9f8b8f463ffcf',1,'BurnoutStateMachine.cpp']]],
-  ['currentsize_3',['currentSize',['../classCircularArray.html#a7569f23e20f4c788a6ba575df300fff2',1,'CircularArray']]]
+  ['data_0',['data',['../classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e',1,'DataPoint::data'],['../structRecord__t.html#ae9ca91adf4aca3bc8cf0ad2013256b66',1,'Record_t::data'],['../structSerialData.html#a1781e5a619fbd1512b30929f54fdaeb5',1,'SerialData::data']]],
+  ['datasaver_1',['dataSaver',['../classSensorDataHandler.html#aa99a1739e1aff7315c2801398b918f4b',1,'SensorDataHandler']]],
+  ['dlim_2',['dlim',['../structSerialData.html#aaf179e7edc75de8a1c1225b02f3b96f4',1,'SerialData']]]
 ];

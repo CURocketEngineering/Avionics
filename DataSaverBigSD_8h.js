@@ -8,8 +8,8 @@ var DataSaverBigSD_8h =
       [ "DS_LINE_TOO_LONG", "DataSaverBigSD_8h.html#a95dc9f557ef312daf795c9b11da408fba3b9eb2458959d12755e61da3f97fc7f7", null ],
       [ "DS_FLUSH_FAILED", "DataSaverBigSD_8h.html#a95dc9f557ef312daf795c9b11da408fba842ced636355dfde0b93d675220363cf", null ]
     ] ],
-    [ "BYTES_PER_MB", "DataSaverBigSD_8h.html#acc553e9a226eb57b490ffa32ace48445", null ],
-    [ "FILE_PATH_BUFFER_SIZE", "DataSaverBigSD_8h.html#ad1cc1d7271d68a3d9b7d08b4a184dd38", null ],
-    [ "PRE_ALLOCATE_SIZE_MB", "DataSaverBigSD_8h.html#aa0782c24532a06164c59b4232359995c", null ],
-    [ "SYNC_INTERVAL_MS", "DataSaverBigSD_8h.html#a33c1404b53d47b5172edcd066474eb05", null ]
+    [ "kBytesPerMiB_bytes", "DataSaverBigSD_8h.html#a9557c990f4dfe8d731e811ad6bdc6639", null ],
+    [ "kFilePathBufferSize", "DataSaverBigSD_8h.html#a7690a766d335ef1d2c8f32e93626c123", null ],
+    [ "kPreAllocateSize_MiB", "DataSaverBigSD_8h.html#a57ac9cfd5a962d5f8756ff5600bd3c3b", null ],
+    [ "kSyncInterval_ms", "DataSaverBigSD_8h.html#ad118c1177fc283a5703db7b2bf4e1ab0", null ]
 ];

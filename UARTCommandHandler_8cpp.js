@@ -1,4 +1,4 @@
 var UARTCommandHandler_8cpp =
 [
-    [ "COMMAND_CHARS_ASCII_END", "UARTCommandHandler_8cpp.html#a25ed3e669fb1ebf9579eded59afb0515", null ]
+    [ "kCommandCharsAsciiEnd", "UARTCommandHandler_8cpp.html#a5887e3872c988e7bfd4c310bdce410f4", null ]
 ];

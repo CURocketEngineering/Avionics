@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['fakememory_0',['fakeMemory',['../classAdafruit__SPIFlash.html#af500e28a7fd5d4bb97973ce69f0f64ea',1,'Adafruit_SPIFlash']]],
-  ['file_5fpath_5fbuffer_5fsize_1',['FILE_PATH_BUFFER_SIZE',['../DataSaverBigSD_8h.html#ad1cc1d7271d68a3d9b7d08b4a184dd38',1,'DataSaverBigSD.h']]]
+  ['initialaltitude_0',['initialAltitude',['../structApogeeDetectorInitialState.html#a400bbb53182ec77fd80a040dcf56626d',1,'ApogeeDetectorInitialState::initialAltitude'],['../structInitialState.html#abeb67e98f5ef0e3146947d10e70f0315',1,'InitialState::initialAltitude']]],
+  ['initialtimestamp_1',['initialTimestamp',['../structApogeeDetectorInitialState.html#abeaae06d00983b299a2a3c6acef95a56',1,'ApogeeDetectorInitialState::initialTimestamp'],['../structInitialState.html#a5487581538d10a3786e795a4eb1a14ec',1,'InitialState::initialTimestamp']]]
 ];

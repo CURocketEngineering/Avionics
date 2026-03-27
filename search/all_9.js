@@ -11,5 +11,5 @@ var searchData=
   ['history_8',['Flight Test History',['../md_docs_2FlightTests.html',1,'']]],
   ['history_20most_20recent_20first_9',['Flight Test History (most recent first)',['../md_docs_2FlightTests.html#autotoc_md37',1,'']]],
   ['how_20it_20works_10',['How it works',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md14',1,'']]],
-  ['hz_5fto_5fperiod_5fms_11',['hz_to_period_ms',['../namespaceTelemetryFmt.html#a03b547a62df77b72a58e93b32250efac',1,'TelemetryFmt']]]
+  ['hztoperiod_5fms_11',['hzToPeriod_ms',['../namespaceTelemetryFmt.html#a30fffbf17324b298eb566e84546d1356',1,'TelemetryFmt']]]
 ];

@@ -96,33 +96,31 @@ $(function(){initNavTree('namespaceTelemetryFmt.html','',''); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9c2aeed16361e4a956cb7cbcabd0da64" id="r_a9c2aeed16361e4a956cb7cbcabd0da64"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9c2aeed16361e4a956cb7cbcabd0da64">write_u32_be</a> (std::uint8_t *dst, std::uint32_t v)</td></tr>
-<tr class="memdesc:a9c2aeed16361e4a956cb7cbcabd0da64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit value in big-endian order to dst[0..3].  <br /></td></tr>
-<tr class="memitem:a03b547a62df77b72a58e93b32250efac" id="r_a03b547a62df77b72a58e93b32250efac"><td class="memItemLeft">std::uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a03b547a62df77b72a58e93b32250efac">hz_to_period_ms</a> (std::uint16_t hz)</td></tr>
-<tr class="memdesc:a03b547a62df77b72a58e93b32250efac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert frequency (Hz) to period (ms), using integer math.  <br /></td></tr>
+<tr class="memitem:a072987eec6c3cce4e97544c73ea157e4" id="r_a072987eec6c3cce4e97544c73ea157e4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a072987eec6c3cce4e97544c73ea157e4">writeU32Be</a> (std::uint8_t *dst, std::uint32_t v)</td></tr>
+<tr class="memdesc:a072987eec6c3cce4e97544c73ea157e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a 32-bit value in big-endian order to dst[0..3].  <br /></td></tr>
+<tr class="memitem:a30fffbf17324b298eb566e84546d1356" id="r_a30fffbf17324b298eb566e84546d1356"><td class="memItemLeft">std::uint16_t&#160;</td><td class="memItemRight"><a class="el" href="#a30fffbf17324b298eb566e84546d1356">hzToPeriod_ms</a> (std::uint16_t frequency_hz)</td></tr>
+<tr class="memdesc:a30fffbf17324b298eb566e84546d1356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert frequency (Hz) to period (ms), using integer math.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a52852cfa20b53926ef83ba0cb61865da" id="r_a52852cfa20b53926ef83ba0cb61865da"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a52852cfa20b53926ef83ba0cb61865da">kPacketCapacity</a> = 120</td></tr>
-<tr class="memitem:abb7e7b425129ae70337299d22161a4c2" id="r_abb7e7b425129ae70337299d22161a4c2"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> = 3</td></tr>
-<tr class="memitem:af5cd7e40f102d8e27b60bf5e4d3c9b7d" id="r_af5cd7e40f102d8e27b60bf5e4d3c9b7d"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a> = 4</td></tr>
-<tr class="memitem:a22d3f55e65825d8c235819f7bf0616f1" id="r_a22d3f55e65825d8c235819f7bf0616f1"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a22d3f55e65825d8c235819f7bf0616f1">kStartByteIndex</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a></td></tr>
+<tr class="memitem:a14b9d8f548fbfe6fcdf0d16ac792cc55" id="r_a14b9d8f548fbfe6fcdf0d16ac792cc55"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a14b9d8f548fbfe6fcdf0d16ac792cc55">kPacketCapacity_bytes</a> = 120</td></tr>
+<tr class="memitem:adc9fd3ec358c7c83d96e752ec328d7a1" id="r_adc9fd3ec358c7c83d96e752ec328d7a1"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a> = 3</td></tr>
+<tr class="memitem:a4aff9071c18f20a007e7b139a598bf6b" id="r_a4aff9071c18f20a007e7b139a598bf6b"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a> = 4</td></tr>
+<tr class="memitem:a22d3f55e65825d8c235819f7bf0616f1" id="r_a22d3f55e65825d8c235819f7bf0616f1"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a22d3f55e65825d8c235819f7bf0616f1">kStartByteIndex</a> = <a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a></td></tr>
 <tr class="memitem:af398e9a4c4763876f2c2b3ec3b4e2431" id="r_af398e9a4c4763876f2c2b3ec3b4e2431"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> = <a class="el" href="#a22d3f55e65825d8c235819f7bf0616f1">kStartByteIndex</a> + 1</td></tr>
-<tr class="memitem:a94d12dc13ea46594438c858089d8443b" id="r_a94d12dc13ea46594438c858089d8443b"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a94d12dc13ea46594438c858089d8443b">kPacketCounterIndex</a> = <a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td></tr>
-<tr class="memitem:ae02bbf7c006f331122adaa61570916dd" id="r_ae02bbf7c006f331122adaa61570916dd"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ae02bbf7c006f331122adaa61570916dd">kHeaderBytes</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1 + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td></tr>
-<tr class="memitem:ac237c2ad3d1e9be17c0ecd47271a2107" id="r_ac237c2ad3d1e9be17c0ecd47271a2107"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ac237c2ad3d1e9be17c0ecd47271a2107">kEndMarkerBytes</a> = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1</td></tr>
+<tr class="memitem:a94d12dc13ea46594438c858089d8443b" id="r_a94d12dc13ea46594438c858089d8443b"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a94d12dc13ea46594438c858089d8443b">kPacketCounterIndex</a> = <a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> + <a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a></td></tr>
+<tr class="memitem:a3ed8def061307c8ff6f5de5a28196520" id="r_a3ed8def061307c8ff6f5de5a28196520"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a3ed8def061307c8ff6f5de5a28196520">kHeaderSize_bytes</a> = <a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a> + 1 + <a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a> + <a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a></td></tr>
+<tr class="memitem:ac54f59b2dd4add98a69d0b96d2b26c06" id="r_ac54f59b2dd4add98a69d0b96d2b26c06"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ac54f59b2dd4add98a69d0b96d2b26c06">kEndMarkerSize_bytes</a> = <a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a> + 1</td></tr>
 <tr class="memitem:a8ad6ca337b45c48d02775817f474a191" id="r_a8ad6ca337b45c48d02775817f474a191"><td class="memItemLeft">constexpr std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a8ad6ca337b45c48d02775817f474a191">kStartByteValue</a> = 51</td></tr>
 <tr class="memitem:ae4a351f87c120c47f0eefc8244014dcd" id="r_ae4a351f87c120c47f0eefc8244014dcd"><td class="memItemLeft">constexpr std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#ae4a351f87c120c47f0eefc8244014dcd">kEndByteValue</a> = 52</td></tr>
-<tr class="memitem:ade0be7291d2d3e9509211964c19ed2a6" id="r_ade0be7291d2d3e9509211964c19ed2a6"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#ade0be7291d2d3e9509211964c19ed2a6">kBytesIn32Bit</a> = 4</td></tr>
-<tr class="memitem:a3eaa9726b2097f7bf2f15ea5e065feb9" id="r_a3eaa9726b2097f7bf2f15ea5e065feb9"><td class="memItemLeft">constexpr unsigned&#160;</td><td class="memItemRight"><a class="el" href="#a3eaa9726b2097f7bf2f15ea5e065feb9">kBitsPerByte</a> = 8</td></tr>
-<tr class="memitem:a9714d318a7adf89fece7a9c32e31f4b6" id="r_a9714d318a7adf89fece7a9c32e31f4b6"><td class="memItemLeft">constexpr std::uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a9714d318a7adf89fece7a9c32e31f4b6">kAllOnesByte</a> = 0xFF</td></tr>
-<tr class="memitem:adb74c85b8d882ccafc44b7e829a9f37f" id="r_adb74c85b8d882ccafc44b7e829a9f37f"><td class="memItemLeft">constexpr std::uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#adb74c85b8d882ccafc44b7e829a9f37f">kCommandModeInactivityTimeoutMs</a> = 10000</td></tr>
+<tr class="memitem:afc8c993883e3d3cd35c8d087658890b0" id="r_afc8c993883e3d3cd35c8d087658890b0"><td class="memItemLeft">constexpr unsigned&#160;</td><td class="memItemRight"><a class="el" href="#afc8c993883e3d3cd35c8d087658890b0">kBitsPerByte_bits</a> = 8</td></tr>
+<tr class="memitem:acf7278046fad7d4d8c9565c642840df2" id="r_acf7278046fad7d4d8c9565c642840df2"><td class="memItemLeft">constexpr std::uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#acf7278046fad7d4d8c9565c642840df2">kCommandModeInactivityTimeout_ms</a> = 10000</td></tr>
 <tr class="memitem:a6ebbb5bcae1386708b523c828a91857a" id="r_a6ebbb5bcae1386708b523c828a91857a"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a6ebbb5bcae1386708b523c828a91857a">kCommandEntrySequenceLength</a> = 3</td></tr>
 <tr class="memitem:a39689e2f967cdb74f24b2e3e0136c35c" id="r_a39689e2f967cdb74f24b2e3e0136c35c"><td class="memItemLeft">constexpr char&#160;</td><td class="memItemRight"><a class="el" href="#a39689e2f967cdb74f24b2e3e0136c35c">kCommandEntryChar</a> = 'c'</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a03b547a62df77b72a58e93b32250efac" name="a03b547a62df77b72a58e93b32250efac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a03b547a62df77b72a58e93b32250efac">&#9670;&#160;</a></span>hz_to_period_ms()</h2>
+<a id="a30fffbf17324b298eb566e84546d1356" name="a30fffbf17324b298eb566e84546d1356"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30fffbf17324b298eb566e84546d1356">&#9670;&#160;</a></span>hzToPeriod_ms()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,9 +129,9 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::uint16_t TelemetryFmt::hz_to_period_ms </td>
+          <td class="memname">std::uint16_t TelemetryFmt::hzToPeriod_ms </td>
           <td>(</td>
-          <td class="paramtype">std::uint16_t</td>          <td class="paramname"><span class="paramname"><em>hz</em></span></td><td>)</td>
+          <td class="paramtype">std::uint16_t</td>          <td class="paramname"><span class="paramname"><em>frequency_hz</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -147,12 +145,12 @@ Variables</h2></td></tr>
 <p>Convert frequency (Hz) to period (ms), using integer math. </p>
 <p>Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00084">84</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00082">82</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
-<a id="a9c2aeed16361e4a956cb7cbcabd0da64" name="a9c2aeed16361e4a956cb7cbcabd0da64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c2aeed16361e4a956cb7cbcabd0da64">&#9670;&#160;</a></span>write_u32_be()</h2>
+<a id="a072987eec6c3cce4e97544c73ea157e4" name="a072987eec6c3cce4e97544c73ea157e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a072987eec6c3cce4e97544c73ea157e4">&#9670;&#160;</a></span>writeU32Be()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +159,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void TelemetryFmt::write_u32_be </td>
+          <td class="memname">void TelemetryFmt::writeU32Be </td>
           <td>(</td>
           <td class="paramtype">std::uint8_t *</td>          <td class="paramname"><span class="paramname"><em>dst</em></span>, </td>
         </tr>
@@ -181,13 +179,13 @@ Variables</h2></td></tr>
 <p>Write a 32-bit value in big-endian order to dst[0..3]. </p>
 <p>Assumptions used by float packing. </p>
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00070">70</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00068">68</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="a9714d318a7adf89fece7a9c32e31f4b6" name="a9714d318a7adf89fece7a9c32e31f4b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9714d318a7adf89fece7a9c32e31f4b6">&#9670;&#160;</a></span>kAllOnesByte</h2>
+<a id="afc8c993883e3d3cd35c8d087658890b0" name="afc8c993883e3d3cd35c8d087658890b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc8c993883e3d3cd35c8d087658890b0">&#9670;&#160;</a></span>kBitsPerByte_bits</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,55 +194,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::uint8_t TelemetryFmt::kAllOnesByte = 0xFF</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00058">58</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
-
-</div>
-</div>
-<a id="a3eaa9726b2097f7bf2f15ea5e065feb9" name="a3eaa9726b2097f7bf2f15ea5e065feb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3eaa9726b2097f7bf2f15ea5e065feb9">&#9670;&#160;</a></span>kBitsPerByte</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned TelemetryFmt::kBitsPerByte = 8</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00057">57</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
-
-</div>
-</div>
-<a id="ade0be7291d2d3e9509211964c19ed2a6" name="ade0be7291d2d3e9509211964c19ed2a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade0be7291d2d3e9509211964c19ed2a6">&#9670;&#160;</a></span>kBytesIn32Bit</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t TelemetryFmt::kBytesIn32Bit = 4</td>
+          <td class="memname">unsigned TelemetryFmt::kBitsPerByte_bits = 8</td>
         </tr>
       </table>
   </td>
@@ -256,6 +206,31 @@ Variables</h2></td></tr>
 <p>32-bit helper constants </p>
 
 <p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00056">56</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+
+</div>
+</div>
+<a id="a4aff9071c18f20a007e7b139a598bf6b" name="a4aff9071c18f20a007e7b139a598bf6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aff9071c18f20a007e7b139a598bf6b">&#9670;&#160;</a></span>kBytesInU32_bytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t TelemetryFmt::kBytesInU32_bytes = 4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Number of bytes in a packed 32-bit value. </p>
+
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00038">38</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +254,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00061">61</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00059">59</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -303,12 +278,12 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00060">60</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00058">58</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
-<a id="adb74c85b8d882ccafc44b7e829a9f37f" name="adb74c85b8d882ccafc44b7e829a9f37f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb74c85b8d882ccafc44b7e829a9f37f">&#9670;&#160;</a></span>kCommandModeInactivityTimeoutMs</h2>
+<a id="acf7278046fad7d4d8c9565c642840df2" name="acf7278046fad7d4d8c9565c642840df2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf7278046fad7d4d8c9565c642840df2">&#9670;&#160;</a></span>kCommandModeInactivityTimeout_ms</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -317,7 +292,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::uint32_t TelemetryFmt::kCommandModeInactivityTimeoutMs = 10000</td>
+          <td class="memname">std::uint32_t TelemetryFmt::kCommandModeInactivityTimeout_ms = 10000</td>
         </tr>
       </table>
   </td>
@@ -327,7 +302,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00059">59</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00057">57</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>
@@ -356,8 +331,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ac237c2ad3d1e9be17c0ecd47271a2107" name="ac237c2ad3d1e9be17c0ecd47271a2107"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac237c2ad3d1e9be17c0ecd47271a2107">&#9670;&#160;</a></span>kEndMarkerBytes</h2>
+<a id="ac54f59b2dd4add98a69d0b96d2b26c06" name="ac54f59b2dd4add98a69d0b96d2b26c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac54f59b2dd4add98a69d0b96d2b26c06">&#9670;&#160;</a></span>kEndMarkerSize_bytes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +341,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kEndMarkerBytes = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1</td>
+          <td class="memname">std::size_t TelemetryFmt::kEndMarkerSize_bytes = <a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a> + 1</td>
         </tr>
       </table>
   </td>
@@ -381,8 +356,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ae02bbf7c006f331122adaa61570916dd" name="ae02bbf7c006f331122adaa61570916dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae02bbf7c006f331122adaa61570916dd">&#9670;&#160;</a></span>kHeaderBytes</h2>
+<a id="a3ed8def061307c8ff6f5de5a28196520" name="a3ed8def061307c8ff6f5de5a28196520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ed8def061307c8ff6f5de5a28196520">&#9670;&#160;</a></span>kHeaderSize_bytes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +366,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kHeaderBytes = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a> + 1 + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td>
+          <td class="memname">std::size_t TelemetryFmt::kHeaderSize_bytes = <a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a> + 1 + <a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a> + <a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a></td>
         </tr>
       </table>
   </td>
@@ -405,8 +380,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a52852cfa20b53926ef83ba0cb61865da" name="a52852cfa20b53926ef83ba0cb61865da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52852cfa20b53926ef83ba0cb61865da">&#9670;&#160;</a></span>kPacketCapacity</h2>
+<a id="a14b9d8f548fbfe6fcdf0d16ac792cc55" name="a14b9d8f548fbfe6fcdf0d16ac792cc55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14b9d8f548fbfe6fcdf0d16ac792cc55">&#9670;&#160;</a></span>kPacketCapacity_bytes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -415,7 +390,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kPacketCapacity = 120</td>
+          <td class="memname">std::size_t TelemetryFmt::kPacketCapacity_bytes = 120</td>
         </tr>
       </table>
   </td>
@@ -440,7 +415,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kPacketCounterIndex = <a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> + <a class="el" href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">kU32Bytes</a></td>
+          <td class="memname">std::size_t TelemetryFmt::kPacketCounterIndex = <a class="el" href="#af398e9a4c4763876f2c2b3ec3b4e2431">kTimestampIndex</a> + <a class="el" href="#a4aff9071c18f20a007e7b139a598bf6b">kBytesInU32_bytes</a></td>
         </tr>
       </table>
   </td>
@@ -464,7 +439,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kStartByteIndex = <a class="el" href="#abb7e7b425129ae70337299d22161a4c2">kSyncZeros</a></td>
+          <td class="memname">std::size_t TelemetryFmt::kStartByteIndex = <a class="el" href="#adc9fd3ec358c7c83d96e752ec328d7a1">kSyncZeroCount_bytes</a></td>
         </tr>
       </table>
   </td>
@@ -504,8 +479,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="abb7e7b425129ae70337299d22161a4c2" name="abb7e7b425129ae70337299d22161a4c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb7e7b425129ae70337299d22161a4c2">&#9670;&#160;</a></span>kSyncZeros</h2>
+<a id="adc9fd3ec358c7c83d96e752ec328d7a1" name="adc9fd3ec358c7c83d96e752ec328d7a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc9fd3ec358c7c83d96e752ec328d7a1">&#9670;&#160;</a></span>kSyncZeroCount_bytes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -514,7 +489,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t TelemetryFmt::kSyncZeros = 3</td>
+          <td class="memname">std::size_t TelemetryFmt::kSyncZeroCount_bytes = 3</td>
         </tr>
       </table>
   </td>
@@ -550,31 +525,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00042">42</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
-
-</div>
-</div>
-<a id="af5cd7e40f102d8e27b60bf5e4d3c9b7d" name="af5cd7e40f102d8e27b60bf5e4d3c9b7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5cd7e40f102d8e27b60bf5e4d3c9b7d">&#9670;&#160;</a></span>kU32Bytes</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t TelemetryFmt::kU32Bytes = 4</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Number of bytes in a packed 32-bit value. </p>
-
-<p class="definition">Definition at line <a class="el" href="Telemetry_8h_source.html#l00038">38</a> of file <a class="el" href="Telemetry_8h_source.html">Telemetry.h</a>.</p>
 
 </div>
 </div>

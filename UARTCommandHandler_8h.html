@@ -134,7 +134,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="UARTCommandHandler_8h__dep__incl.png" border="0" usemap="#aUARTCommandHandler_8hdep" loading="lazy" alt=""/></div>
 <map name="aUARTCommandHandler_8hdep" id="aUARTCommandHandler_8hdep">
 <area shape="rect" title=" " alt="" coords="55,5,241,31"/>
-<area shape="rect" href="Telemetry_8h.html" title="Packs SensorDataHandler values into a fixed&#45;size byte packet and streams over a Stream (UART)." alt="" coords="13,79,110,104"/>
+<area shape="rect" href="Telemetry_8h.html" title="Packs SensorDataHandler values into a fixed&#45;size byte packet and streams them over a Stream (UART)." alt="" coords="13,79,110,104"/>
 <area shape="poly" title=" " alt="" coords="125,41,77,81,74,76,122,37"/>
 <area shape="rect" href="UARTCommandHandler_8cpp.html" title=" " alt="" coords="135,79,335,104"/>
 <area shape="poly" title=" " alt="" coords="174,37,222,76,219,81,171,41"/>
@@ -150,10 +150,6 @@ Classes</h2></td></tr>
 <tr class="memitem:CommandLine" id="r_CommandLine"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classCommandLine.html">CommandLine</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lightweight UART command-line interface with history and parsing.  <a href="classCommandLine.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:aaa60ca995565b799bb958c806e933665" id="r_aaa60ca995565b799bb958c806e933665"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aaa60ca995565b799bb958c806e933665">SHELL_PROMPT</a>&#160;&#160;&#160;&quot;AS&gt; &quot;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a2539683afb56f10f48dbbf6f94b72cb5" id="r_a2539683afb56f10f48dbbf6f94b72cb5"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#a2539683afb56f10f48dbbf6f94b72cb5">AsciiKey</a> : uint8_t { <br />
@@ -168,27 +164,11 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a5c0116fd118efda35653d5e704105995" id="r_a5c0116fd118efda35653d5e704105995"><td class="memItemLeft">constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#a5c0116fd118efda35653d5e704105995">UART_BUFFER_SIZE</a> = 128</td></tr>
-<tr class="memitem:a49d782a80a129ad0d7aba4a67d0bf5eb" id="r_a49d782a80a129ad0d7aba4a67d0bf5eb"><td class="memItemLeft">constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#a49d782a80a129ad0d7aba4a67d0bf5eb">MAX_ARGUMENTS</a> = 5</td></tr>
-<tr class="memitem:a6d3903d7d4d39968ca27f7cb7a616515" id="r_a6d3903d7d4d39968ca27f7cb7a616515"><td class="memItemLeft">constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#a6d3903d7d4d39968ca27f7cb7a616515">MAX_ROW_LENGTH</a> = 40</td></tr>
+<tr class="memitem:af4176eaa8d8c3d41ba4c2ea0cc1ac6b0" id="r_af4176eaa8d8c3d41ba4c2ea0cc1ac6b0"><td class="memItemLeft">constexpr const char *&#160;</td><td class="memItemRight"><a class="el" href="#af4176eaa8d8c3d41ba4c2ea0cc1ac6b0">kShellPrompt</a> = &quot;AS&gt; &quot;</td></tr>
+<tr class="memitem:ab7720a764f0dd2ca07dfac1ed31489eb" id="r_ab7720a764f0dd2ca07dfac1ed31489eb"><td class="memItemLeft">constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#ab7720a764f0dd2ca07dfac1ed31489eb">kUartBufferSize</a> = 128</td></tr>
+<tr class="memitem:ac2774c7d95a67d992c98370f97b9b298" id="r_ac2774c7d95a67d992c98370f97b9b298"><td class="memItemLeft">constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#ac2774c7d95a67d992c98370f97b9b298">kMaxArguments</a> = 5</td></tr>
+<tr class="memitem:a2be19c55952bec5a4c85608523d7478b" id="r_a2be19c55952bec5a4c85608523d7478b"><td class="memItemLeft">constexpr int&#160;</td><td class="memItemRight"><a class="el" href="#a2be19c55952bec5a4c85608523d7478b">kMaxRowLength</a> = 40</td></tr>
 </table>
-<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="aaa60ca995565b799bb958c806e933665" name="aaa60ca995565b799bb958c806e933665"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa60ca995565b799bb958c806e933665">&#9670;&#160;</a></span>SHELL_PROMPT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SHELL_PROMPT&#160;&#160;&#160;&quot;AS&gt; &quot;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00011">11</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
-
-</div>
-</div>
 <a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
 <a id="a2539683afb56f10f48dbbf6f94b72cb5" name="a2539683afb56f10f48dbbf6f94b72cb5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2539683afb56f10f48dbbf6f94b72cb5">&#9670;&#160;</a></span>AsciiKey</h2>
@@ -222,8 +202,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="a49d782a80a129ad0d7aba4a67d0bf5eb" name="a49d782a80a129ad0d7aba4a67d0bf5eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49d782a80a129ad0d7aba4a67d0bf5eb">&#9670;&#160;</a></span>MAX_ARGUMENTS</h2>
+<a id="ac2774c7d95a67d992c98370f97b9b298" name="ac2774c7d95a67d992c98370f97b9b298"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2774c7d95a67d992c98370f97b9b298">&#9670;&#160;</a></span>kMaxArguments</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,7 +212,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int MAX_ARGUMENTS = 5</td>
+          <td class="memname">int kMaxArguments = 5</td>
         </tr>
       </table>
   </td>
@@ -246,8 +226,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a6d3903d7d4d39968ca27f7cb7a616515" name="a6d3903d7d4d39968ca27f7cb7a616515"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d3903d7d4d39968ca27f7cb7a616515">&#9670;&#160;</a></span>MAX_ROW_LENGTH</h2>
+<a id="a2be19c55952bec5a4c85608523d7478b" name="a2be19c55952bec5a4c85608523d7478b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2be19c55952bec5a4c85608523d7478b">&#9670;&#160;</a></span>kMaxRowLength</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -256,7 +236,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int MAX_ROW_LENGTH = 40</td>
+          <td class="memname">int kMaxRowLength = 40</td>
         </tr>
       </table>
   </td>
@@ -270,8 +250,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a5c0116fd118efda35653d5e704105995" name="a5c0116fd118efda35653d5e704105995"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c0116fd118efda35653d5e704105995">&#9670;&#160;</a></span>UART_BUFFER_SIZE</h2>
+<a id="af4176eaa8d8c3d41ba4c2ea0cc1ac6b0" name="af4176eaa8d8c3d41ba4c2ea0cc1ac6b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4176eaa8d8c3d41ba4c2ea0cc1ac6b0">&#9670;&#160;</a></span>kShellPrompt</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,7 +260,31 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int UART_BUFFER_SIZE = 128</td>
+          <td class="memname">const char* kShellPrompt = &quot;AS&gt; &quot;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="UARTCommandHandler_8h_source.html#l00011">11</a> of file <a class="el" href="UARTCommandHandler_8h_source.html">UARTCommandHandler.h</a>.</p>
+
+</div>
+</div>
+<a id="ab7720a764f0dd2ca07dfac1ed31489eb" name="ab7720a764f0dd2ca07dfac1ed31489eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7720a764f0dd2ca07dfac1ed31489eb">&#9670;&#160;</a></span>kUartBufferSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kUartBufferSize = 128</td>
         </tr>
       </table>
   </td>

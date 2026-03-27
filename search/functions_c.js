@@ -3,7 +3,7 @@ var searchData=
   ['partition_0',['partition',['../CircularArray_8h.html#adce4396e29b6a3e076185063b646e518',1,'CircularArray.h']]],
   ['peek_1',['peek',['../classStream.html#a4129934be4bb6371a87e4a5bacc682f3',1,'Stream']]],
   ['performreading_2',['performReading',['../classAdafruit__BMP3XX.html#aa15c83247e0e9c8093fa836eec2752c3',1,'Adafruit_BMP3XX']]],
-  ['poly_5fupdate_3',['poly_update',['../classApogeePredictor.html#a9fec95b121444cc3e10a4e8c1ea67955',1,'ApogeePredictor']]],
+  ['polyupdate_3',['polyUpdate',['../classApogeePredictor.html#a4758b372b1bdfbed791f0c69bc086b41',1,'ApogeePredictor']]],
   ['pop_4',['pop',['../classCircularArray.html#a210f905fdd5e0a5cba9cee0ce0dc750a',1,'CircularArray']]],
   ['preallocate_5',['preAllocate',['../structFile32.html#ac61e148c56f01253f0485826d61d7c5d',1,'File32']]],
   ['print_6',['print',['../classCommandLine.html#a3a29a3e1c9a772be9f597370a4f95ba0',1,'CommandLine::print()'],['../classMockSerial.html#af2523e2ee0b704fc18ecfe5285266376',1,'MockSerial::print()'],['../classStream.html#aebe3f1f35e64ca20935183e0f8746ad7',1,'Stream::print()'],['../classMockSerialClass.html#a13c8571c226420cf6820719f30b23aa7',1,'MockSerialClass::print()'],['../structFile32.html#acde95a9df489729310984b8926cd4601',1,'File32::print()']]],

@@ -1,23 +1,21 @@
 var namespaces_dup =
 [
     [ "TelemetryFmt", "namespaceTelemetryFmt.html", [
-      [ "hz_to_period_ms", "namespaceTelemetryFmt.html#a03b547a62df77b72a58e93b32250efac", null ],
-      [ "write_u32_be", "namespaceTelemetryFmt.html#a9c2aeed16361e4a956cb7cbcabd0da64", null ],
-      [ "kAllOnesByte", "namespaceTelemetryFmt.html#a9714d318a7adf89fece7a9c32e31f4b6", null ],
-      [ "kBitsPerByte", "namespaceTelemetryFmt.html#a3eaa9726b2097f7bf2f15ea5e065feb9", null ],
-      [ "kBytesIn32Bit", "namespaceTelemetryFmt.html#ade0be7291d2d3e9509211964c19ed2a6", null ],
+      [ "hzToPeriod_ms", "namespaceTelemetryFmt.html#a30fffbf17324b298eb566e84546d1356", null ],
+      [ "writeU32Be", "namespaceTelemetryFmt.html#a072987eec6c3cce4e97544c73ea157e4", null ],
+      [ "kBitsPerByte_bits", "namespaceTelemetryFmt.html#afc8c993883e3d3cd35c8d087658890b0", null ],
+      [ "kBytesInU32_bytes", "namespaceTelemetryFmt.html#a4aff9071c18f20a007e7b139a598bf6b", null ],
       [ "kCommandEntryChar", "namespaceTelemetryFmt.html#a39689e2f967cdb74f24b2e3e0136c35c", null ],
       [ "kCommandEntrySequenceLength", "namespaceTelemetryFmt.html#a6ebbb5bcae1386708b523c828a91857a", null ],
-      [ "kCommandModeInactivityTimeoutMs", "namespaceTelemetryFmt.html#adb74c85b8d882ccafc44b7e829a9f37f", null ],
+      [ "kCommandModeInactivityTimeout_ms", "namespaceTelemetryFmt.html#acf7278046fad7d4d8c9565c642840df2", null ],
       [ "kEndByteValue", "namespaceTelemetryFmt.html#ae4a351f87c120c47f0eefc8244014dcd", null ],
-      [ "kEndMarkerBytes", "namespaceTelemetryFmt.html#ac237c2ad3d1e9be17c0ecd47271a2107", null ],
-      [ "kHeaderBytes", "namespaceTelemetryFmt.html#ae02bbf7c006f331122adaa61570916dd", null ],
-      [ "kPacketCapacity", "namespaceTelemetryFmt.html#a52852cfa20b53926ef83ba0cb61865da", null ],
+      [ "kEndMarkerSize_bytes", "namespaceTelemetryFmt.html#ac54f59b2dd4add98a69d0b96d2b26c06", null ],
+      [ "kHeaderSize_bytes", "namespaceTelemetryFmt.html#a3ed8def061307c8ff6f5de5a28196520", null ],
+      [ "kPacketCapacity_bytes", "namespaceTelemetryFmt.html#a14b9d8f548fbfe6fcdf0d16ac792cc55", null ],
       [ "kPacketCounterIndex", "namespaceTelemetryFmt.html#a94d12dc13ea46594438c858089d8443b", null ],
       [ "kStartByteIndex", "namespaceTelemetryFmt.html#a22d3f55e65825d8c235819f7bf0616f1", null ],
       [ "kStartByteValue", "namespaceTelemetryFmt.html#a8ad6ca337b45c48d02775817f474a191", null ],
-      [ "kSyncZeros", "namespaceTelemetryFmt.html#abb7e7b425129ae70337299d22161a4c2", null ],
-      [ "kTimestampIndex", "namespaceTelemetryFmt.html#af398e9a4c4763876f2c2b3ec3b4e2431", null ],
-      [ "kU32Bytes", "namespaceTelemetryFmt.html#af5cd7e40f102d8e27b60bf5e4d3c9b7d", null ]
+      [ "kSyncZeroCount_bytes", "namespaceTelemetryFmt.html#adc9fd3ec358c7c83d96e752ec328d7a1", null ],
+      [ "kTimestampIndex", "namespaceTelemetryFmt.html#af398e9a4c4763876f2c2b3ec3b4e2431", null ]
     ] ]
 ];

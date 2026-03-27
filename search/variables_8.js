@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['initialaltitude_0',['initialAltitude',['../structApogeeDetectorInitialState.html#a400bbb53182ec77fd80a040dcf56626d',1,'ApogeeDetectorInitialState::initialAltitude'],['../structInitialState.html#abeb67e98f5ef0e3146947d10e70f0315',1,'InitialState::initialAltitude']]],
-  ['initialtimestamp_1',['initialTimestamp',['../structApogeeDetectorInitialState.html#abeaae06d00983b299a2a3c6acef95a56',1,'ApogeeDetectorInitialState::initialTimestamp'],['../structInitialState.html#a5487581538d10a3786e795a4eb1a14ec',1,'InitialState::initialTimestamp']]]
+  ['maxsize_0',['maxSize',['../classCircularArray.html#a42d9a832b09f3976ca3562f930de766b',1,'CircularArray']]],
+  ['multisdh_1',['multiSDH',['../structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86',1,'SendableSensorData']]],
+  ['multisdhdatalabel_2',['multiSDHDataLabel',['../structSendableSensorData.html#a9871063b5ed50407ef3a00b3de773533',1,'SendableSensorData']]],
+  ['multisdhlength_3',['multiSDHLength',['../structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09',1,'SendableSensorData']]]
 ];

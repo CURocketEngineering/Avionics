@@ -103,15 +103,15 @@ $(function(){initNavTree('DataSaverSPI_8h_source.html','',''); });
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#ae1ef78adf262f9715284600484a6897b">   11</a></span><span class="preprocessor">#define METADATA_START_ADDRESS 0x000000  </span><span class="comment">// Start writing metadata at the beginning of the flash</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#a63bd9e0033206752a45cdfd5256e62be">   12</a></span><span class="preprocessor">#define DATA_START_ADDRESS 0x001000  </span><span class="comment">// Start writing data after 1 sector (4kB) of metadata</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#af94d40141158e5d9eb56f2772d9e496f">   13</a></span><span class="preprocessor">#define POST_LAUNCH_FLAG_ADDRESS 0x000000  </span><span class="comment">// Address of the post-launch flag</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#ac7f367c5e920ef5f2e942f5f8018e14c">   14</a></span><span class="preprocessor">#define LAUNCH_START_ADDRESS_ADDRESS 0x000001  </span><span class="comment">// Address of the launch start address (32 bits)</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#a754f797f72583041a1c452203beb2ff8">   11</a></span><span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="DataSaverSPI_8h.html#a754f797f72583041a1c452203beb2ff8">kMetadataStartAddress</a> = 0x000000;  <span class="comment">// Start writing metadata at the beginning of flash</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#a22a70aee808e6a6ebb0eae14e2caa2f5">   12</a></span><span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="DataSaverSPI_8h.html#a22a70aee808e6a6ebb0eae14e2caa2f5">kDataStartAddress</a> = 0x001000;  <span class="comment">// Start writing data after 1 sector (4kB) of metadata</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#aa0e6028b21a6d003cb042ceaabc1276d">   13</a></span><span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="DataSaverSPI_8h.html#aa0e6028b21a6d003cb042ceaabc1276d">kPostLaunchFlagAddress</a> = 0x000000;  <span class="comment">// Address of the post-launch flag</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#ad035535105359b94943086f6de896faa">   14</a></span><span class="keyword">constexpr</span> uint32_t <a class="code hl_variable" href="DataSaverSPI_8h.html#ad035535105359b94943086f6de896faa">kLaunchStartAddressAddress</a> = 0x000001;  <span class="comment">// Address of the launch start address (32 bits)</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#a3ac8c13f179083d96ffa35c6e84273e6">   16</a></span><span class="preprocessor">#define POST_LAUNCH_FLAG_TRUE 0x00 </span><span class="comment">// Flag to indicate post-launch mode is active</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#adcf593f09269d466ad5595d0ee289c61">   17</a></span><span class="preprocessor">#define POST_LAUNCH_FLAG_FALSE 0x01 </span><span class="comment">// Flag to indicate post-launch mode is not active</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#a8d545ba7b02e7c88c00902242607d2b6">   16</a></span><span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="DataSaverSPI_8h.html#a8d545ba7b02e7c88c00902242607d2b6">kPostLaunchFlagTrue</a> = 0x00; <span class="comment">// Flag to indicate post-launch mode is active</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#aad5dc7d800564c9919b2ce9f2a426378">   17</a></span><span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="DataSaverSPI_8h.html#aad5dc7d800564c9919b2ce9f2a426378">kPostLaunchFlagFalse</a> = 0x01; <span class="comment">// Flag to indicate post-launch mode is not active</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#ab15b11f7e2b58fc570c3ad88043e79ea">   19</a></span><span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="DataSaverSPI_8h.html#ab15b11f7e2b58fc570c3ad88043e79ea">EMPTY_PAGE</a> = 0xFF;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="DataSaverSPI_8h.html#aebadb2c8cec7acc62a538a474d7b423b">   19</a></span><span class="keyword">constexpr</span> uint8_t <a class="code hl_variable" href="DataSaverSPI_8h.html#aebadb2c8cec7acc62a538a474d7b423b">kEmptyPageValue</a> = 0xFF;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#pragma pack(push, 1)  </span><span class="comment">// Pack the struct to avoid padding between the name and datas</span></div>
@@ -134,7 +134,7 @@ $(function(){initNavTree('DataSaverSPI_8h_source.html','',''); });
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html">   39</a></span><span class="keyword">class </span><a class="code hl_function" href="classDataSaverSPI.html#a008cfc0430ecaa8504c5084395c3cd9f">DataSaverSPI</a> : <span class="keyword">public</span> <a class="code hl_class" href="classIDataSaver.html">IDataSaver</a> {</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a0ff0d30cea41a38c8380f565bce420a8">   42</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classDataSaverSPI.html#a0ff0d30cea41a38c8380f565bce420a8">BUFFER_SIZE</a> = 256; </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a3e6be6e5b5a5df54c9bac4798e3c2ff1">   42</a></span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classDataSaverSPI.html#a3e6be6e5b5a5df54c9bac4798e3c2ff1">kBufferSize_bytes</a> = 256;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_function" href="classDataSaverSPI.html#a008cfc0430ecaa8504c5084395c3cd9f">DataSaverSPI</a>(uint16_t timestampInterval_ms, <a class="code hl_class" href="classAdafruit__SPIFlash.html">Adafruit_SPIFlash</a> *flash);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span></div>
@@ -150,160 +150,166 @@ $(function(){initNavTree('DataSaverSPI_8h_source.html','',''); });
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#aec6ba457bb1daac36ec1769001097631">launchDetected</a>(uint32_t launchTimestamp_ms);</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#ad3593408751c25ae39385899351a14d9">dumpData</a>(<a class="code hl_class" href="classStream.html">Stream</a> &amp;serial, <span class="keywordtype">bool</span> ignoreEmptyPages);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#a8c25bb7cb8f22f91726c85b27017033e">clearInternalState</a>();</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#ab0d2e1d7bde6560dd374b767a1da6279">eraseAllData</a>();</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span></div>
-<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a9626b96fc54d0b2b5931f2caca2aa5c1">  159</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#a9626b96fc54d0b2b5931f2caca2aa5c1">getLastTimestamp</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keywordflow">return</span> lastTimestamp_ms;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#ad3593408751c25ae39385899351a14d9">dumpData</a>(<a class="code hl_class" href="classStream.html">Stream</a> &amp;serial, <span class="keywordtype">bool</span> ignoreEmptyPages);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#a8c25bb7cb8f22f91726c85b27017033e">clearInternalState</a>();</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#ab0d2e1d7bde6560dd374b767a1da6279">eraseAllData</a>();</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span></div>
+<div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a9626b96fc54d0b2b5931f2caca2aa5c1">  150</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#a9626b96fc54d0b2b5931f2caca2aa5c1">getLastTimestamp</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">return</span> lastTimestamp_ms_;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    }</div>
 </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span></div>
-<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">  167</a></span>    <a class="code hl_class" href="classDataPoint.html">DataPoint</a> <a class="code hl_function" href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">getLastDataPoint</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> lastDataPoint;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span></div>
+<div class="foldopen" id="foldopen00158" data-start="{" data-end="}">
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">  158</a></span>    <a class="code hl_class" href="classDataPoint.html">DataPoint</a> <a class="code hl_function" href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">getLastDataPoint</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        <span class="keywordflow">return</span> lastDataPoint_;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    }</div>
 </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">  171</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">getLaunchWriteAddress</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">return</span> launchWriteAddress;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
+<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">  162</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">getLaunchWriteAddress</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        <span class="keywordflow">return</span> launchWriteAddress_;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    }</div>
 </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="foldopen" id="foldopen00175" data-start="{" data-end="}">
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a8745152228aa4d429badc58025813a59">  175</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#a8745152228aa4d429badc58025813a59">getNextWriteAddress</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <span class="keywordflow">return</span> nextWriteAddress;</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="foldopen" id="foldopen00166" data-start="{" data-end="}">
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a8745152228aa4d429badc58025813a59">  166</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#a8745152228aa4d429badc58025813a59">getNextWriteAddress</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="keywordflow">return</span> nextWriteAddress_;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
 </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span></div>
-<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf">  183</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf">resetTimestamp</a>() {</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        lastTimestamp_ms = 0;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span></div>
+<div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf">  174</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf">resetTimestamp</a>() {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        lastTimestamp_ms_ = 0;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
 </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span></div>
-<div class="foldopen" id="foldopen00191" data-start="{" data-end="}">
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a838e02e4e1e444cc3d73677009159b58">  191</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDataSaverSPI.html#a838e02e4e1e444cc3d73677009159b58">quickGetPostLaunchMode</a>() {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">return</span> this-&gt;postLaunchMode;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span></div>
+<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a838e02e4e1e444cc3d73677009159b58">  182</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDataSaverSPI.html#a838e02e4e1e444cc3d73677009159b58">quickGetPostLaunchMode</a>() {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">return</span> this-&gt;postLaunchMode_;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
 </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="comment">// Interval at which to store the timestamp in flash</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    uint16_t timestampInterval_ms;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="comment">// Interval at which to store the timestamp in flash.</span></div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    uint16_t timestampInterval_ms_;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="comment">// The last timestamp we actually wrote to flash.</span></div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    uint32_t lastTimestamp_ms_;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="comment">// The timestamp this module was given for launch</span></div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    uint32_t launchTimestamp_ms_; </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="comment">// The last data point written</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <a class="code hl_class" href="classDataPoint.html">DataPoint</a> lastDataPoint_;</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="comment">// The last timestamp we actually wrote to flash</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    uint32_t lastTimestamp_ms;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="comment">// Flash driver</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <a class="code hl_class" href="classAdafruit__SPIFlash.html">Adafruit_SPIFlash</a> *flash_;</div>
 <div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// The timestamp this module was given for launch</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    uint32_t launchTimestamp_ms; </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// Next address in flash at which to write.</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    uint32_t nextWriteAddress_;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment">// The last data point written</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <a class="code hl_class" href="classDataPoint.html">DataPoint</a> lastDataPoint;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment">// Address at which launch was detected</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    uint32_t launchWriteAddress_;</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="comment">// Flash driver</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <a class="code hl_class" href="classAdafruit__SPIFlash.html">Adafruit_SPIFlash</a> *flash;</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="comment">// Next address in flash at which to write</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    uint32_t nextWriteAddress;</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="comment">// Address at which launch was detected</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    uint32_t launchWriteAddress;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordtype">bool</span> postLaunchMode;</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordtype">bool</span> writeToFlash(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> length);</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordtype">bool</span> readFromFlash(uint32_t&amp; readAddress, uint8_t* buffer, <span class="keywordtype">size_t</span> length);</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    <span class="comment">// Write buffer to improve write performance</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    uint8_t buffer[<a class="code hl_variable" href="classDataSaverSPI.html#a0ff0d30cea41a38c8380f565bce420a8">BUFFER_SIZE</a>] = {};</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordtype">size_t</span> bufferIndex = 0;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    uint32_t bufferFlushes = 0; <span class="comment">// Keep track of how many times the buffer has been flushed</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00241" data-start="{" data-end="}">
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a2a3df82ce03a7cc177f5e74e6eec55be">  241</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_function" href="classDataSaverSPI.html#a2a3df82ce03a7cc177f5e74e6eec55be">getBufferIndex</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <span class="keywordflow">return</span> bufferIndex;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordtype">bool</span> postLaunchMode_;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keywordtype">bool</span> writeToFlash(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keywordtype">bool</span> readFromFlash(uint32_t&amp; readAddress, uint8_t* buffer, <span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="comment">// Write buffer to improve write performance</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    uint8_t buffer_[<a class="code hl_variable" href="classDataSaverSPI.html#a3e6be6e5b5a5df54c9bac4798e3c2ff1">kBufferSize_bytes</a>] = {};</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordtype">size_t</span> bufferIndex_ = 0;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    uint32_t bufferFlushes_ = 0; <span class="comment">// Keep track of how many times the buffer has been flushed</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00232" data-start="{" data-end="}">
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a2a3df82ce03a7cc177f5e74e6eec55be">  232</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_function" href="classDataSaverSPI.html#a2a3df82ce03a7cc177f5e74e6eec55be">getBufferIndex</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        <span class="keywordflow">return</span> bufferIndex_;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    }</div>
 </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span></div>
-<div class="foldopen" id="foldopen00249" data-start="{" data-end="}">
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#ac22b740e4dcecf897efbc90e246e7993">  249</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#ac22b740e4dcecf897efbc90e246e7993">getBufferFlushes</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        <span class="keywordflow">return</span> bufferFlushes;</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    }</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span></div>
+<div class="foldopen" id="foldopen00240" data-start="{" data-end="}">
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#ac22b740e4dcecf897efbc90e246e7993">  240</a></span>    uint32_t <a class="code hl_function" href="classDataSaverSPI.html#ac22b740e4dcecf897efbc90e246e7993">getBufferFlushes</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        <span class="keywordflow">return</span> bufferFlushes_;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    }</div>
 </div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="foldopen" id="foldopen00253" data-start="{" data-end="}">
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a6b19fd691ba2ca46de93508a429923c1">  253</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDataSaverSPI.html#a6b19fd691ba2ca46de93508a429923c1">getIsChipFullDueToPostLaunchProtection</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordflow">return</span> isChipFullDueToPostLaunchProtection;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    }</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="foldopen" id="foldopen00244" data-start="{" data-end="}">
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#a6b19fd691ba2ca46de93508a429923c1">  244</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDataSaverSPI.html#a6b19fd691ba2ca46de93508a429923c1">getIsChipFullDueToPostLaunchProtection</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keywordflow">return</span> isChipFullDueToPostLaunchProtection_;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
 </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="foldopen" id="foldopen00257" data-start="{" data-end="}">
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#acc647fd9cd04c0c3af275bcc9989d5c2">  257</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDataSaverSPI.html#acc647fd9cd04c0c3af275bcc9989d5c2">getRebootedInPostLaunchMode</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        <span class="keywordflow">return</span> rebootedInPostLaunchMode;</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="foldopen" id="foldopen00248" data-start="{" data-end="}">
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="classDataSaverSPI.html#acc647fd9cd04c0c3af275bcc9989d5c2">  248</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDataSaverSPI.html#acc647fd9cd04c0c3af275bcc9989d5c2">getRebootedInPostLaunchMode</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        <span class="keywordflow">return</span> rebootedInPostLaunchMode_;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    }</div>
 </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordtype">int</span> flushBuffer();</div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordtype">int</span> flushBuffer();</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keywordtype">int</span> addDataToBuffer(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> length);</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="comment">// Overloaded functions to add data to the buffer from a Record_t or TimestampRecord_t</span></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="comment">// More efficient than callling addDataToBuffer with each part of the record</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="keywordtype">int</span> addRecordToBuffer(<a class="code hl_struct" href="structRecord__t.html">Record_t</a> * record) {</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        <span class="keywordflow">return</span> addDataToBuffer(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(record), 5);</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    }</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="keywordtype">int</span> addRecordToBuffer(TimestampRecord_t * record) {</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>        <span class="keywordflow">return</span> addDataToBuffer(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(record), 5);</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    }</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <span class="comment">// The chip will keep overwriting data forever unless post launch data is being protected.</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="comment">// Once it wraps back around to the launchWriteAddress, it will stop writing data.</span></div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>    <span class="keywordtype">bool</span> isChipFullDueToPostLaunchProtection;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="comment">// If the fc boots and is already in post launch mode, then do not write to flash</span></div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="comment">// calling clearPostLaunchMode() will allow writing to flash again after a reboot</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordtype">bool</span> rebootedInPostLaunchMode = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>};</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keywordtype">int</span> addDataToBuffer(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> length);</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="comment">// Overloaded functions to add data to the buffer from a Record_t or TimestampRecord_t</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="comment">// More efficient than callling addDataToBuffer with each part of the record</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordtype">int</span> addRecordToBuffer(<a class="code hl_struct" href="structRecord__t.html">Record_t</a> * record) {</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="keywordflow">return</span> addDataToBuffer(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(record), 5);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    }</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keywordtype">int</span> addRecordToBuffer(TimestampRecord_t * record) {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        <span class="keywordflow">return</span> addDataToBuffer(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t*<span class="keyword">&gt;</span>(record), 5);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="comment">// The chip will keep overwriting data forever unless post launch data is being protected.</span></div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    <span class="comment">// Once it wraps back around to the launch write address, it will stop writing data.</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordtype">bool</span> isChipFullDueToPostLaunchProtection_;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="comment">// If the flight computer boots and is already in post launch mode, do not write to flash.</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="comment">// Calling clearPostLaunchMode() will allow writing to flash again after a reboot.</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="keywordtype">bool</span> rebootedInPostLaunchMode_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>};</div>
 </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="preprocessor">#endif </span><span class="comment">// DATA_SAVER_SPI_H</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="preprocessor">#endif </span><span class="comment">// DATA_SAVER_SPI_H</span></div>
 <div class="ttc" id="aArduinoHAL_8h_html"><div class="ttname"><a href="ArduinoHAL_8h.html">ArduinoHAL.h</a></div></div>
 <div class="ttc" id="aDataPoint_8h_html"><div class="ttname"><a href="DataPoint_8h.html">DataPoint.h</a></div></div>
-<div class="ttc" id="aDataSaverSPI_8h_html_ab15b11f7e2b58fc570c3ad88043e79ea"><div class="ttname"><a href="DataSaverSPI_8h.html#ab15b11f7e2b58fc570c3ad88043e79ea">EMPTY_PAGE</a></div><div class="ttdeci">constexpr uint8_t EMPTY_PAGE</div><div class="ttdef"><b>Definition</b> <a href="#l00019">DataSaverSPI.h:19</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_a22a70aee808e6a6ebb0eae14e2caa2f5"><div class="ttname"><a href="DataSaverSPI_8h.html#a22a70aee808e6a6ebb0eae14e2caa2f5">kDataStartAddress</a></div><div class="ttdeci">constexpr uint32_t kDataStartAddress</div><div class="ttdef"><b>Definition</b> <a href="#l00012">DataSaverSPI.h:12</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_a754f797f72583041a1c452203beb2ff8"><div class="ttname"><a href="DataSaverSPI_8h.html#a754f797f72583041a1c452203beb2ff8">kMetadataStartAddress</a></div><div class="ttdeci">constexpr uint32_t kMetadataStartAddress</div><div class="ttdef"><b>Definition</b> <a href="#l00011">DataSaverSPI.h:11</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_a8d545ba7b02e7c88c00902242607d2b6"><div class="ttname"><a href="DataSaverSPI_8h.html#a8d545ba7b02e7c88c00902242607d2b6">kPostLaunchFlagTrue</a></div><div class="ttdeci">constexpr uint8_t kPostLaunchFlagTrue</div><div class="ttdef"><b>Definition</b> <a href="#l00016">DataSaverSPI.h:16</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_aa0e6028b21a6d003cb042ceaabc1276d"><div class="ttname"><a href="DataSaverSPI_8h.html#aa0e6028b21a6d003cb042ceaabc1276d">kPostLaunchFlagAddress</a></div><div class="ttdeci">constexpr uint32_t kPostLaunchFlagAddress</div><div class="ttdef"><b>Definition</b> <a href="#l00013">DataSaverSPI.h:13</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_aad5dc7d800564c9919b2ce9f2a426378"><div class="ttname"><a href="DataSaverSPI_8h.html#aad5dc7d800564c9919b2ce9f2a426378">kPostLaunchFlagFalse</a></div><div class="ttdeci">constexpr uint8_t kPostLaunchFlagFalse</div><div class="ttdef"><b>Definition</b> <a href="#l00017">DataSaverSPI.h:17</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_ad035535105359b94943086f6de896faa"><div class="ttname"><a href="DataSaverSPI_8h.html#ad035535105359b94943086f6de896faa">kLaunchStartAddressAddress</a></div><div class="ttdeci">constexpr uint32_t kLaunchStartAddressAddress</div><div class="ttdef"><b>Definition</b> <a href="#l00014">DataSaverSPI.h:14</a></div></div>
+<div class="ttc" id="aDataSaverSPI_8h_html_aebadb2c8cec7acc62a538a474d7b423b"><div class="ttname"><a href="DataSaverSPI_8h.html#aebadb2c8cec7acc62a538a474d7b423b">kEmptyPageValue</a></div><div class="ttdeci">constexpr uint8_t kEmptyPageValue</div><div class="ttdef"><b>Definition</b> <a href="#l00019">DataSaverSPI.h:19</a></div></div>
 <div class="ttc" id="aDataSaver_8h_html"><div class="ttname"><a href="DataSaver_8h.html">DataSaver.h</a></div></div>
 <div class="ttc" id="aclassAdafruit__SPIFlash_html"><div class="ttname"><a href="classAdafruit__SPIFlash.html">Adafruit_SPIFlash</a></div><div class="ttdef"><b>Definition</b> <a href="Adafruit__SPIFlash__mock_8h_source.html#l00012">Adafruit_SPIFlash_mock.h:12</a></div></div>
 <div class="ttc" id="aclassDataPoint_html"><div class="ttname"><a href="classDataPoint.html">DataPoint</a></div><div class="ttdoc">Timestamped float measurement container.</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00011">DataPoint.h:11</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_a008cfc0430ecaa8504c5084395c3cd9f"><div class="ttname"><a href="classDataSaverSPI.html#a008cfc0430ecaa8504c5084395c3cd9f">DataSaverSPI::DataSaverSPI</a></div><div class="ttdeci">DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash)</div><div class="ttdoc">Construct a new DataSaverSPI object.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00006">DataSaverSPI.cpp:6</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a0a66ee142c623f8c1e2260020a03d9bf"><div class="ttname"><a href="classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf">DataSaverSPI::resetTimestamp</a></div><div class="ttdeci">void resetTimestamp()</div><div class="ttdoc">Resets the timestamp to 0. Can be used to start a new flight during runtime. Useful for testing.</div><div class="ttdef"><b>Definition</b> <a href="#l00183">DataSaverSPI.h:183</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a0ff0d30cea41a38c8380f565bce420a8"><div class="ttname"><a href="classDataSaverSPI.html#a0ff0d30cea41a38c8380f565bce420a8">DataSaverSPI::BUFFER_SIZE</a></div><div class="ttdeci">static constexpr size_t BUFFER_SIZE</div><div class="ttdef"><b>Definition</b> <a href="#l00042">DataSaverSPI.h:42</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a2a3df82ce03a7cc177f5e74e6eec55be"><div class="ttname"><a href="classDataSaverSPI.html#a2a3df82ce03a7cc177f5e74e6eec55be">DataSaverSPI::getBufferIndex</a></div><div class="ttdeci">size_t getBufferIndex() const</div><div class="ttdoc">Returns the current buffer index Useful for testing.</div><div class="ttdef"><b>Definition</b> <a href="#l00241">DataSaverSPI.h:241</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a447513f7986f3bf63a962fab8f8216de"><div class="ttname"><a href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">DataSaverSPI::getLaunchWriteAddress</a></div><div class="ttdeci">uint32_t getLaunchWriteAddress() const</div><div class="ttdef"><b>Definition</b> <a href="#l00171">DataSaverSPI.h:171</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a6b19fd691ba2ca46de93508a429923c1"><div class="ttname"><a href="classDataSaverSPI.html#a6b19fd691ba2ca46de93508a429923c1">DataSaverSPI::getIsChipFullDueToPostLaunchProtection</a></div><div class="ttdeci">bool getIsChipFullDueToPostLaunchProtection() const</div><div class="ttdef"><b>Definition</b> <a href="#l00253">DataSaverSPI.h:253</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a838e02e4e1e444cc3d73677009159b58"><div class="ttname"><a href="classDataSaverSPI.html#a838e02e4e1e444cc3d73677009159b58">DataSaverSPI::quickGetPostLaunchMode</a></div><div class="ttdeci">bool quickGetPostLaunchMode()</div><div class="ttdoc">Returns whether the flash chip is in post-launch mode without updating the postLaunchMode flag or rea...</div><div class="ttdef"><b>Definition</b> <a href="#l00191">DataSaverSPI.h:191</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a8745152228aa4d429badc58025813a59"><div class="ttname"><a href="classDataSaverSPI.html#a8745152228aa4d429badc58025813a59">DataSaverSPI::getNextWriteAddress</a></div><div class="ttdeci">uint32_t getNextWriteAddress() const</div><div class="ttdef"><b>Definition</b> <a href="#l00175">DataSaverSPI.h:175</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a0a66ee142c623f8c1e2260020a03d9bf"><div class="ttname"><a href="classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf">DataSaverSPI::resetTimestamp</a></div><div class="ttdeci">void resetTimestamp()</div><div class="ttdoc">Resets the timestamp to 0. Can be used to start a new flight during runtime. Useful for testing.</div><div class="ttdef"><b>Definition</b> <a href="#l00174">DataSaverSPI.h:174</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a2a3df82ce03a7cc177f5e74e6eec55be"><div class="ttname"><a href="classDataSaverSPI.html#a2a3df82ce03a7cc177f5e74e6eec55be">DataSaverSPI::getBufferIndex</a></div><div class="ttdeci">size_t getBufferIndex() const</div><div class="ttdoc">Returns the current buffer index Useful for testing.</div><div class="ttdef"><b>Definition</b> <a href="#l00232">DataSaverSPI.h:232</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a3e6be6e5b5a5df54c9bac4798e3c2ff1"><div class="ttname"><a href="classDataSaverSPI.html#a3e6be6e5b5a5df54c9bac4798e3c2ff1">DataSaverSPI::kBufferSize_bytes</a></div><div class="ttdeci">static constexpr size_t kBufferSize_bytes</div><div class="ttdef"><b>Definition</b> <a href="#l00042">DataSaverSPI.h:42</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a447513f7986f3bf63a962fab8f8216de"><div class="ttname"><a href="classDataSaverSPI.html#a447513f7986f3bf63a962fab8f8216de">DataSaverSPI::getLaunchWriteAddress</a></div><div class="ttdeci">uint32_t getLaunchWriteAddress() const</div><div class="ttdef"><b>Definition</b> <a href="#l00162">DataSaverSPI.h:162</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a6b19fd691ba2ca46de93508a429923c1"><div class="ttname"><a href="classDataSaverSPI.html#a6b19fd691ba2ca46de93508a429923c1">DataSaverSPI::getIsChipFullDueToPostLaunchProtection</a></div><div class="ttdeci">bool getIsChipFullDueToPostLaunchProtection() const</div><div class="ttdef"><b>Definition</b> <a href="#l00244">DataSaverSPI.h:244</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a838e02e4e1e444cc3d73677009159b58"><div class="ttname"><a href="classDataSaverSPI.html#a838e02e4e1e444cc3d73677009159b58">DataSaverSPI::quickGetPostLaunchMode</a></div><div class="ttdeci">bool quickGetPostLaunchMode()</div><div class="ttdoc">Returns whether the flash chip is in post-launch mode without updating the post-launch mode flag or r...</div><div class="ttdef"><b>Definition</b> <a href="#l00182">DataSaverSPI.h:182</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a8745152228aa4d429badc58025813a59"><div class="ttname"><a href="classDataSaverSPI.html#a8745152228aa4d429badc58025813a59">DataSaverSPI::getNextWriteAddress</a></div><div class="ttdeci">uint32_t getNextWriteAddress() const</div><div class="ttdef"><b>Definition</b> <a href="#l00166">DataSaverSPI.h:166</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_a8995d23226f88059a50efe390d5d0208"><div class="ttname"><a href="classDataSaverSPI.html#a8995d23226f88059a50efe390d5d0208">DataSaverSPI::saveDataPoint</a></div><div class="ttdeci">int saveDataPoint(const DataPoint &amp;dataPoint, uint8_t name) override</div><div class="ttdoc">Saves a DataPoint to SPI flash.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00020">DataSaverSPI.cpp:20</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a8c25bb7cb8f22f91726c85b27017033e"><div class="ttname"><a href="classDataSaverSPI.html#a8c25bb7cb8f22f91726c85b27017033e">DataSaverSPI::clearInternalState</a></div><div class="ttdeci">void clearInternalState()</div><div class="ttdoc">Resets all internal state values (buffer, lastDataPoint, nextWriteAddress, lastTimestamp_ms) Does not...</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00228">DataSaverSPI.cpp:228</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_a9626b96fc54d0b2b5931f2caca2aa5c1"><div class="ttname"><a href="classDataSaverSPI.html#a9626b96fc54d0b2b5931f2caca2aa5c1">DataSaverSPI::getLastTimestamp</a></div><div class="ttdeci">uint32_t getLastTimestamp() const</div><div class="ttdoc">Returns the last timestamp that was actually written to flash.</div><div class="ttdef"><b>Definition</b> <a href="#l00159">DataSaverSPI.h:159</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a8c25bb7cb8f22f91726c85b27017033e"><div class="ttname"><a href="classDataSaverSPI.html#a8c25bb7cb8f22f91726c85b27017033e">DataSaverSPI::clearInternalState</a></div><div class="ttdeci">void clearInternalState()</div><div class="ttdoc">Reset in-memory pointers without erasing flash contents.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00228">DataSaverSPI.cpp:228</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_a9626b96fc54d0b2b5931f2caca2aa5c1"><div class="ttname"><a href="classDataSaverSPI.html#a9626b96fc54d0b2b5931f2caca2aa5c1">DataSaverSPI::getLastTimestamp</a></div><div class="ttdeci">uint32_t getLastTimestamp() const</div><div class="ttdoc">Returns the last timestamp that was actually written to flash.</div><div class="ttdef"><b>Definition</b> <a href="#l00150">DataSaverSPI.h:150</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_a9a40d5ff112d1b8c6736ae26b709c4a4"><div class="ttname"><a href="classDataSaverSPI.html#a9a40d5ff112d1b8c6736ae26b709c4a4">DataSaverSPI::isPostLaunchMode</a></div><div class="ttdeci">bool isPostLaunchMode()</div><div class="ttdoc">Returns whether the metadata from the flash chip indicates that it contains post-launch data that has...</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00124">DataSaverSPI.cpp:124</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_aa101952b8bef79ffdd0264c754fe5134"><div class="ttname"><a href="classDataSaverSPI.html#aa101952b8bef79ffdd0264c754fe5134">DataSaverSPI::clearPostLaunchMode</a></div><div class="ttdeci">void clearPostLaunchMode()</div><div class="ttdoc">Clears the post-launch mode flag on the flash chip **WARNING: This will allow the data to be overwrit...</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00131">DataSaverSPI.cpp:131</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_ab08c7211bf05222797820dd89fc4ebe8"><div class="ttname"><a href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">DataSaverSPI::getLastDataPoint</a></div><div class="ttdeci">DataPoint getLastDataPoint() const</div><div class="ttdoc">Returns the last DataPoint that was written (not necessarily including timestamp, just the data chunk...</div><div class="ttdef"><b>Definition</b> <a href="#l00167">DataSaverSPI.h:167</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_ab0d2e1d7bde6560dd374b767a1da6279"><div class="ttname"><a href="classDataSaverSPI.html#ab0d2e1d7bde6560dd374b767a1da6279">DataSaverSPI::eraseAllData</a></div><div class="ttdeci">void eraseAllData()</div><div class="ttdoc">Clears/erases the entire flash chip to start fresh.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00240">DataSaverSPI.cpp:240</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_ab08c7211bf05222797820dd89fc4ebe8"><div class="ttname"><a href="classDataSaverSPI.html#ab08c7211bf05222797820dd89fc4ebe8">DataSaverSPI::getLastDataPoint</a></div><div class="ttdeci">DataPoint getLastDataPoint() const</div><div class="ttdoc">Returns the last DataPoint that was written (not necessarily including timestamp, just the data chunk...</div><div class="ttdef"><b>Definition</b> <a href="#l00158">DataSaverSPI.h:158</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_ab0d2e1d7bde6560dd374b767a1da6279"><div class="ttname"><a href="classDataSaverSPI.html#ab0d2e1d7bde6560dd374b767a1da6279">DataSaverSPI::eraseAllData</a></div><div class="ttdeci">void eraseAllData()</div><div class="ttdoc">Erase the entire flash chip to start fresh.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00240">DataSaverSPI.cpp:240</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_ac1959f8a8ee920466914316bed479f7d"><div class="ttname"><a href="classDataSaverSPI.html#ac1959f8a8ee920466914316bed479f7d">DataSaverSPI::saveTimestamp</a></div><div class="ttdeci">int saveTimestamp(uint32_t timestamp_ms)</div><div class="ttdoc">Persist a bare timestamp entry to flash.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00042">DataSaverSPI.cpp:42</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_ac22b740e4dcecf897efbc90e246e7993"><div class="ttname"><a href="classDataSaverSPI.html#ac22b740e4dcecf897efbc90e246e7993">DataSaverSPI::getBufferFlushes</a></div><div class="ttdeci">uint32_t getBufferFlushes() const</div><div class="ttdoc">Returns the current buffer flush count Useful for testing.</div><div class="ttdef"><b>Definition</b> <a href="#l00249">DataSaverSPI.h:249</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_acc647fd9cd04c0c3af275bcc9989d5c2"><div class="ttname"><a href="classDataSaverSPI.html#acc647fd9cd04c0c3af275bcc9989d5c2">DataSaverSPI::getRebootedInPostLaunchMode</a></div><div class="ttdeci">bool getRebootedInPostLaunchMode() const</div><div class="ttdef"><b>Definition</b> <a href="#l00257">DataSaverSPI.h:257</a></div></div>
-<div class="ttc" id="aclassDataSaverSPI_html_ad3593408751c25ae39385899351a14d9"><div class="ttname"><a href="classDataSaverSPI.html#ad3593408751c25ae39385899351a14d9">DataSaverSPI::dumpData</a></div><div class="ttdeci">void dumpData(Stream &amp;serial, bool ignoreEmptyPages)</div><div class="ttdoc">Dumps all data from flash to Serial.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00140">DataSaverSPI.cpp:140</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_ac22b740e4dcecf897efbc90e246e7993"><div class="ttname"><a href="classDataSaverSPI.html#ac22b740e4dcecf897efbc90e246e7993">DataSaverSPI::getBufferFlushes</a></div><div class="ttdeci">uint32_t getBufferFlushes() const</div><div class="ttdoc">Returns the current buffer flush count Useful for testing.</div><div class="ttdef"><b>Definition</b> <a href="#l00240">DataSaverSPI.h:240</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_acc647fd9cd04c0c3af275bcc9989d5c2"><div class="ttname"><a href="classDataSaverSPI.html#acc647fd9cd04c0c3af275bcc9989d5c2">DataSaverSPI::getRebootedInPostLaunchMode</a></div><div class="ttdeci">bool getRebootedInPostLaunchMode() const</div><div class="ttdef"><b>Definition</b> <a href="#l00248">DataSaverSPI.h:248</a></div></div>
+<div class="ttc" id="aclassDataSaverSPI_html_ad3593408751c25ae39385899351a14d9"><div class="ttname"><a href="classDataSaverSPI.html#ad3593408751c25ae39385899351a14d9">DataSaverSPI::dumpData</a></div><div class="ttdeci">void dumpData(Stream &amp;serial, bool ignoreEmptyPages)</div><div class="ttdoc">Stream all recorded data to a serial connection.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00140">DataSaverSPI.cpp:140</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_ad64a6e5f2d02352e0dfa4a5ab0553951"><div class="ttname"><a href="classDataSaverSPI.html#ad64a6e5f2d02352e0dfa4a5ab0553951">DataSaverSPI::begin</a></div><div class="ttdeci">virtual bool begin() override</div><div class="ttdoc">Initialize the flash chip and metadata.</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00106">DataSaverSPI.cpp:106</a></div></div>
 <div class="ttc" id="aclassDataSaverSPI_html_aec6ba457bb1daac36ec1769001097631"><div class="ttname"><a href="classDataSaverSPI.html#aec6ba457bb1daac36ec1769001097631">DataSaverSPI::launchDetected</a></div><div class="ttdeci">void launchDetected(uint32_t launchTimestamp_ms)</div><div class="ttdoc">Call this when launch is detected to set the post-launch flag and prevent any data from being overwri...</div><div class="ttdef"><b>Definition</b> <a href="DataSaverSPI_8cpp_source.html#l00251">DataSaverSPI.cpp:251</a></div></div>
 <div class="ttc" id="aclassIDataSaver_html"><div class="ttname"><a href="classIDataSaver.html">IDataSaver</a></div><div class="ttdoc">Abstract interface for persisting timestamped data points.</div><div class="ttdef"><b>Definition</b> <a href="DataSaver_8h_source.html#l00013">DataSaver.h:13</a></div></div>
