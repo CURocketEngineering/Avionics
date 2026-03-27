@@ -6,13 +6,13 @@
 DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
                            Adafruit_SPIFlash* flash)
     : timestampInterval_ms_(timestampInterval_ms),
-      flash_(flash),
-      nextWriteAddress_(kDataStartAddress),
-      bufferIndex_(0),
       lastTimestamp_ms_(0),
       launchTimestamp_ms_(0),
-      postLaunchMode_(false),
+      flash_(flash),
+      nextWriteAddress_(kDataStartAddress),
       launchWriteAddress_(0),
+      postLaunchMode_(false),
+      bufferIndex_(0),
       isChipFullDueToPostLaunchProtection_(false) {
   clearInternalState();
 }
