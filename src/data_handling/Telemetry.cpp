@@ -178,7 +178,7 @@ void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
     if (ssd->isMulti()) {
         this->packet_[nextEmptyPacketIndex_] = ssd->multiSDHDataLabel;
         nextEmptyPacketIndex_ += 1;
-        for (size_t i = 0; i < ssd->multiSDHLength; i++) { 
+        for (size_t i = 0; i < ssd->multiSDHLength; i++) {
             // multiSDHLength comes directly from the array passed in by the client
             // So, we can ignore this raw pointer indexing warning
             this->addSingleSDHToPacket(ssd->multiSDH[i]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)

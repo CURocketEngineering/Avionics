@@ -57,6 +57,8 @@ Run from repo root:
 # Install toolchain (if needed)
 pip install -U platformio
 
+# It may already be installed at `~/.platformio/penv/bin/pio` use the full path if `pio` is not in your PATH.
+
 # Run unit tests (same environment as CI)
 pio test -e native
 
