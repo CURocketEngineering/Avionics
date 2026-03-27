@@ -291,7 +291,7 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
     const size_t maxUsable_bytes = (flashSize_bytes > static_cast<size_t>(kDataStartAddress))
         ? (flashSize_bytes - static_cast<size_t>(kDataStartAddress))
         : 0U;
-    const uint64_t maxUsable = static_cast<uint64_t>(maxUsable_bytes);
+    const auto maxUsable = static_cast<uint64_t>(maxUsable_bytes);
     if (rollbackSize_bytes > maxUsable) {
         // If we can't keep an entire minute, just keep as much as we can
         rollbackSize_bytes = maxUsable;
@@ -308,7 +308,7 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
     //
     //    Then we ensure it’s never 0 because 0 is used for metadata.
 
-    const uint32_t sizeOfFlash = static_cast<uint32_t>(flashSize_bytes);
+    const auto sizeOfFlash = static_cast<uint32_t>(flashSize_bytes);
 
     // Make sure we aren't in the metadata region
     if (nextWriteAddress_ < kDataStartAddress) {

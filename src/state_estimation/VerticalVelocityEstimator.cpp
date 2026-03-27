@@ -48,15 +48,18 @@ void VerticalVelocityEstimator::determineVerticalAxis(const std::array<float, 3>
     const std::size_t yAxis = 1U;
     const std::size_t zAxis = 2U;
     verticalAxis_ = 0; // Start with X
-    if (mag[yAxis] > mag[static_cast<std::size_t>(verticalAxis_)]) {
+    auto verticalAxisIndex = static_cast<std::size_t>(static_cast<uint8_t>(verticalAxis_));
+    if (mag[yAxis] > mag[verticalAxisIndex]) {
         verticalAxis_ = 1; // Y
+        verticalAxisIndex = yAxis;
     }
-    if (mag[zAxis] > mag[static_cast<std::size_t>(verticalAxis_)]) {
+    if (mag[zAxis] > mag[verticalAxisIndex]) {
         verticalAxis_ = 2; // Z
+        verticalAxisIndex = zAxis;
     }
 
     // Determine if it's positive or negative relative to 'up'.
-    verticalDirection_ = (rawAcl[static_cast<std::size_t>(verticalAxis_)] > 0.0F) ? 1 : -1;
+    verticalDirection_ = (rawAcl[verticalAxisIndex] > 0.0F) ? 1 : -1;
 }
 
 // NOLINTBEGIN(readability-identifier-length)
@@ -97,8 +100,9 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
     const float dt = (static_cast<float>(currentTimestamp_ms - lastTimestamp_ms_)) * kMillisecondsToSeconds;
 
     // Subtract gravity from the measured acceleration on the identified vertical axis.
+    const auto verticalAxisIndex = static_cast<std::size_t>(static_cast<uint8_t>(verticalAxis_));
     inertialVerticalAcceleration_ =
-        (rawAcl[static_cast<std::size_t>(verticalAxis_)] * static_cast<float>(verticalDirection_)) - kGravity_mps2;
+        (rawAcl[verticalAxisIndex] * static_cast<float>(verticalDirection_)) - kGravity_mps2;
 
     // --- Prediction Step ---
     // State prediction:

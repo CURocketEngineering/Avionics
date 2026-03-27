@@ -66,11 +66,11 @@ int DataSaverBigSD::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
         }
     }
 
-    const uint16_t numCharsWritten_u16 = static_cast<uint16_t>(numCharsWritten);
+    const auto numCharsWritten_u16 = static_cast<uint16_t>(numCharsWritten);
     bufLen_ = static_cast<uint16_t>(bufLen_ + numCharsWritten_u16);
     ++linesPending_;
 
-    uint32_t const now = static_cast<uint32_t>(millis());
+    const auto now = static_cast<uint32_t>(millis());
     bool const bufFull = (bufLen_ >= kBufSize_bytes);
     bool const manyLines = (linesPending_ >= kFlushLines);
     bool const timeUp = (now - lastFlushMs_ >= kFlushMs);
