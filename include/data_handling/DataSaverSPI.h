@@ -117,7 +117,7 @@ public:
      * The rocket may not be recovered for several hours, this prevents the cool launch data
      * from being overwitten with boring laying-on-the-ground data.
      */
-    void launchDetected(uint32_t launchTimestamp_ms_);
+    void launchDetected(uint32_t launchTimestamp_ms);
 
     /**
      * @brief Stream all recorded data to a serial connection.

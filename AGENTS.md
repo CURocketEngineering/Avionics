@@ -40,7 +40,7 @@ Avionics is our modular C++ (Arduino-core compatible) library used for all of ou
 - Use `kConstantName` for constants.
 - Use a trailing underscore for private member variables (for example, `privateVar_` and `privateTimestamp_ms_`).
 
-- Add unit suffixes with an underscore when a name represents a physical quantity, time value, size, rate, or other semantically meaningful measured quantity (for example, `timestamp_ms`, `altitude_m`, `velocity_mps`, `packetSize_bytes`).
+- Add unit suffixes with an underscore when a name represents a physical quantity, time value, size, rate, or other semantically meaningful measured quantity (for example, `timestamp_ms`, `altitude_m`, `velocity_mps`, `gravity_mps2`, `packetSize_bytes`).
 - Prefer exact units like `_bytes` and `_bits` when the exact count matters.
 - Use unambiguous binary storage suffixes like `_KiB` and `_MiB` when a quantity is naturally expressed that way.
 - Use unambiguous data-rate suffixes like `_kbps` and `_Mbps`.

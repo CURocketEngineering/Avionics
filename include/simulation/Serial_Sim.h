@@ -18,9 +18,9 @@ public:
         return instance;
     }
 
-    void begin(Stream *inStream, BaseStateMachine *stateMachine_) {
+    void begin(Stream *inStream, BaseStateMachine *stateMachine) {
         serial_ = inStream;
-        this->stateMachine_ = stateMachine_;
+        this->stateMachine_ = stateMachine;
 
         // Handshake: send "START\n" until we get ACK (0x06)
         uint8_t ack = 0;
@@ -37,8 +37,6 @@ public:
     // 1) Read as many characters as available
     // 2) If we detect a newline, parse that line
     void update() {
-        int availableBytes = serial_->available();
-
         while (serial_->available() > 0) {
             char c = static_cast<char>(serial_->read());
 

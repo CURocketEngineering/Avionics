@@ -39,7 +39,7 @@ int FastLaunchDetector::update(AccelerationTriplet accel){
     //if accel lower than threshold, acl too low
     if (aclMagSq < accelerationThresholdSq_ms2_) {
         #ifdef DEBUG
-        Serial.println("FastLaunchDetector: Acceloration below threshold");
+        Serial.println("FastLaunchDetector: Acceleration below threshold");
         #endif
         return FLD_ACL_TOO_LOW;
     }

@@ -33,7 +33,7 @@ public:
     bool begin_I2C() { return true; } // Mock successful initialization
 
     void setDataRate(int rate) { dataRate_ = rate; }
-    void setRange(int range_) { this->range_ = range_; }
+    void setRange(int range) { this->range_ = range; }
     void setOperationMode(int mode) { operationMode_ = mode; }
     void setPerformanceMode(int mode) { performanceMode_ = mode; }
     void setIntThreshold(int threshold) { intThreshold_ = static_cast<uint16_t>(threshold); }

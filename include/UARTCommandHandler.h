@@ -32,7 +32,7 @@ class CommandLine {
 public:
     CommandLine(Stream* uartStream);  // Constructor
     void addCommand(const std::string& longName, const std::string& shortName, std::function<void(std::queue<std::string> argumentQueue ,std::string&)> funcPtr);
-    void executeCommand(const std::string& command, std::queue<std::string> arugments);
+    void executeCommand(const std::string& command, std::queue<std::string> arguments);
     void readInput();
     void processCommand(const std::string& command);
     void begin();

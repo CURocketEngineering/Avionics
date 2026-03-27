@@ -18,7 +18,7 @@ constexpr const T& clamp(const T& value, const T& lower, const T& upper) {
 constexpr float kMinValidDecel = 0.000001F;
 constexpr float kMillisecondsPerSecond = 1000.0F;
 constexpr float kOneHalf = 0.5F;
-constexpr float kGravity_ms2 = 9.80665F;
+constexpr float kGravity_mps2 = 9.80665F;
 constexpr uint32_t kMaxWarmups = 1000;
 
 float dragRatioFiltered_ = 0.0F;   // k
@@ -83,16 +83,16 @@ void ApogeePredictor::quadUpdate() {
 
     float kEstimate = 0.0F;
     if (std::fabs(velocity) > 1.0F) {
-        kEstimate = std::max(0.0F, -(acceleration + kGravity_ms2)) / (velocity * velocity);
+        kEstimate = std::max(0.0F, -(acceleration + kGravity_mps2)) / (velocity * velocity);
     }
 
     filteredDecel_ = alpha_ * kEstimate + (1.0F - alpha_) * filteredDecel_;
     const float dragToMassRatio = filteredDecel_;
 
     if (velocity > minClimbVel_ && dragToMassRatio > kMinValidDecel) {
-        const float terminalVelocity = std::sqrt(kGravity_ms2 / dragToMassRatio);
-        tToApogee_ = (terminalVelocity / kGravity_ms2) * std::atan(velocity / terminalVelocity);
-        const float deltaAltitude = (terminalVelocity * terminalVelocity / (2.0F * kGravity_ms2)) *
+        const float terminalVelocity = std::sqrt(kGravity_mps2 / dragToMassRatio);
+        tToApogee_ = (terminalVelocity / kGravity_mps2) * std::atan(velocity / terminalVelocity);
+        const float deltaAltitude = (terminalVelocity * terminalVelocity / (2.0F * kGravity_mps2)) *
                                     std::log1p((velocity * velocity) /
                                                (terminalVelocity * terminalVelocity));
 

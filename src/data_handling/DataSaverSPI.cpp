@@ -248,15 +248,15 @@ void DataSaverSPI::eraseAllData() {
 
 }
 
-void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms_) {
-    this->launchTimestamp_ms_ = launchTimestamp_ms_;
+void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
+    this->launchTimestamp_ms_ = launchTimestamp_ms;
 
     // 0) Stop if we are already in post-launch mode
     if (postLaunchMode_) {
         return;
     }
 
-    // 0.5) Clear the metadata sector to avoid 0 --> 1 inabilites
+    // 0.5) Clear the metadata sector to avoid 0 --> 1 inabilities
     flash_->eraseSector(kMetadataStartAddress / SFLASH_SECTOR_SIZE);
 
     // 1) Set the post-launch flag in metadata so we don't overwrite post-launch data.
