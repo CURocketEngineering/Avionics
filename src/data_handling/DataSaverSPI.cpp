@@ -2,6 +2,7 @@
 #include "data_handling/DataNames.h"
 
 #include <cstring>
+#include <limits>
 
 DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
                            Adafruit_SPIFlash* flash)
@@ -193,9 +194,9 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) { //NOLINT(re
         }
 
         // Wait for a 'n' character to be received before continuing (10 second timeout)
-        uint32_t const timeout = millis() + 10000;
+        const uint32_t timeout = static_cast<uint32_t>(millis()) + 10000U;
         while (serial.read() != 'n') {
-            if (millis() > timeout) {
+            if (static_cast<uint32_t>(millis()) > timeout) {
                 timedOut = true;
                 return;
             }
@@ -279,14 +280,18 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
     //
     //    If you only occasionally store the timestamp, you might want a more nuanced approach.
     // 
-    size_t recordSize = sizeof(uint32_t) + sizeof(uint8_t) + sizeof(DataPoint); //NOLINT(cppcoreguidelines-init-variables)
+    const size_t recordSize_bytes = sizeof(uint32_t) + sizeof(uint8_t) + sizeof(DataPoint);
     uint32_t const oneMinuteInMs = 60000;
     uint32_t const dataPointsPerMinute = oneMinuteInMs / timestampInterval_ms_;
-    uint32_t rollbackSize_bytes = dataPointsPerMinute * recordSize;
+    uint64_t rollbackSize_bytes = static_cast<uint64_t>(dataPointsPerMinute) * static_cast<uint64_t>(recordSize_bytes);
 
     // 3) Clamp rollbackSize_bytes to something reasonable. We must not exceed
     //    the usable flash region (from address=1 to address=flash size - 1).
-    uint32_t const maxUsable = flash_->size() - kDataStartAddress;
+    const size_t flashSize_bytes = flash_->size();
+    const size_t maxUsable_bytes = (flashSize_bytes > static_cast<size_t>(kDataStartAddress))
+        ? (flashSize_bytes - static_cast<size_t>(kDataStartAddress))
+        : 0U;
+    const uint64_t maxUsable = static_cast<uint64_t>(maxUsable_bytes);
     if (rollbackSize_bytes > maxUsable) {
         // If we can't keep an entire minute, just keep as much as we can
         rollbackSize_bytes = maxUsable;
@@ -303,7 +308,7 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms) {
     //
     //    Then we ensure it’s never 0 because 0 is used for metadata.
 
-    uint32_t const sizeOfFlash = flash_->size();
+    const uint32_t sizeOfFlash = static_cast<uint32_t>(flashSize_bytes);
 
     // Make sure we aren't in the metadata region
     if (nextWriteAddress_ < kDataStartAddress) {
@@ -336,7 +341,7 @@ bool DataSaverSPI::writeToFlash(const uint8_t* data, size_t length) {
     if (!flash_->writeBuffer(nextWriteAddress_, data, length)) {
         return false;
     }
-    nextWriteAddress_ += length;
+    nextWriteAddress_ = static_cast<uint32_t>(nextWriteAddress_ + static_cast<uint32_t>(length));
     return true;
 }
 
@@ -344,6 +349,6 @@ bool DataSaverSPI::readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t 
     if (!flash_->readBuffer(readAddress, buffer, length)) {
         return false;
     }
-    readAddress += length;
+    readAddress = static_cast<uint32_t>(readAddress + static_cast<uint32_t>(length));
     return true;
 }

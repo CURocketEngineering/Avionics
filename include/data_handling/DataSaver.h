@@ -53,6 +53,7 @@ class IDataSaver {
          */
         virtual void launchDetected(uint32_t launchTimestamp_ms){
             // Default implementation does nothing
+            (void)launchTimestamp_ms;
         }
 
         // default method that does nothing, can be overridden

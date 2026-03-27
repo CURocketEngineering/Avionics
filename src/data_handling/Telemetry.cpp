@@ -82,7 +82,7 @@ void Telemetry::lockCommandModeTimeout(std::uint32_t lockDuration_ms) {
         return;
     }
 
-    const std::uint32_t now_ms = millis();
+    const std::uint32_t now_ms = static_cast<std::uint32_t>(millis());
     commandModeTimeoutLocked_ = true;
     commandModeTimeoutLockDeadline_ms_ = now_ms + lockDuration_ms;
     commandModeLastInputTimestamp_ms_ = now_ms;
@@ -93,7 +93,7 @@ void Telemetry::unlockCommandModeTimeout() {
     commandModeTimeoutLockDeadline_ms_ = 0;
 
     if (inCommandMode_) {
-        commandModeLastInputTimestamp_ms_ = millis();
+        commandModeLastInputTimestamp_ms_ = static_cast<std::uint32_t>(millis());
     }
 }
 

@@ -48,6 +48,7 @@ Avionics is our modular C++ (Arduino-core compatible) library used for all of ou
 
 - Avoid abbreviations unless they are widely understood in the project context or domain (for example, `imu`, `gps`, `crc`, `uart`).
 - Prefer descriptive names over shortened ones when there is any chance of confusion.
+- Use a `_in` suffix for function parameters that would otherwise match member variables to avoid shadowing. For example, `DataPoint(uint32_t timestamp_ms_in, float data_in) : timestamp_ms(timestamp_ms_in), data(data_in) {}`.
 
 ## Build, Test, and Checks
 
@@ -64,6 +65,9 @@ pio test -e native
 
 # Run static analysis (same tool as CI)
 pio check -e native --fail-on-defect=low --fail-on-defect=medium --fail-on-defect=high
+
+# Clear the build, so a fresh one can be done (good to ensure all build warnings reappear)
+pio run -t clean
 ```
 
 Target a specific test directory when iterating:

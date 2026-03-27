@@ -56,7 +56,7 @@ public:
 
     // write
     size_t write(uint8_t) { return 0; }
-    size_t write(const uint8_t *buffer, size_t size) { return size; }
+    size_t write(const uint8_t* /*buffer*/, size_t size) { return size; }
 };
 
 inline MockSerial& serial_global_instance() {
@@ -91,9 +91,9 @@ public:
         this->writeCalls.push_back(byte);
         return 0;
     }
-    virtual size_t write(const char *str) { return 0; }   
-    virtual size_t write(const char* buffer, size_t size) { return size; } // for string literals
-    virtual size_t write(const uint8_t *buffer, size_t size) { return size; }
+    virtual size_t write(const char* /*str*/) { return 0; }
+    virtual size_t write(const char* /*buffer*/, size_t size) { return size; } // for string literals
+    virtual size_t write(const uint8_t* /*buffer*/, size_t size) { return size; }
     void clearWriteCalls() {
         writeCalls.clear();
     }
@@ -101,9 +101,11 @@ public:
     // Read a string until a newline character
     std::string readStringUntil(char terminator) {
         std::string result;
-        char c;
-        while ((c = read()) != terminator && c != -1) {
-            result += c;
+        const int terminatorInt = static_cast<int>(static_cast<unsigned char>(terminator));
+        int c = read(); // NOLINT(cppcoreguidelines-init-variables)
+        while (c != -1 && c != terminatorInt) {
+            result += static_cast<char>(c);
+            c = read();
         }
         return result;
     }
@@ -125,9 +127,10 @@ public:
     // Read a string
     std::string readString() {
         std::string result;
-        char c;
-        while ((c = read()) != -1) {
-            result += c;
+        int c = read(); // NOLINT(cppcoreguidelines-init-variables)
+        while (c != -1) {
+            result += static_cast<char>(c);
+            c = read();
         }
         return result;
     }

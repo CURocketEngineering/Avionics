@@ -109,11 +109,11 @@ private:
     }
 
 public:
-    CSVDataProvider(const std::string& filename, float sampleRate_hz = 0) : 
+    CSVDataProvider(const std::string& filename, float sampleRate_hz_in = 0.0f) :
         dataLoaded(false),
-        sampleRate_hz(sampleRate_hz),
+        sampleRate_hz(sampleRate_hz_in),
         currentTime_ms(0),
-        timeStep_ms(sampleRate_hz > 0 ? static_cast<long>((1.0 / sampleRate_hz) * 1000.0) : 0) {
+        timeStep_ms(sampleRate_hz_in > 0.0f ? static_cast<long>((1.0f / sampleRate_hz_in) * 1000.0f) : 0) {
         file.open(filename);
         if (!file.is_open()) {
             printMissingPreprocessedDataMessage(filename);
@@ -255,7 +255,7 @@ public:
     // Set or update the sample rate
     void setSampleRate(float hz) {
         sampleRate_hz = hz;
-        timeStep_ms = hz > 0 ? static_cast<long>((1.0 / hz) * 1000.0) : 0;
+        timeStep_ms = hz > 0.0f ? static_cast<long>((1.0f / hz) * 1000.0f) : 0;
         // Reset current time to start fresh with new rate
         currentTime_ms = 0;
     }

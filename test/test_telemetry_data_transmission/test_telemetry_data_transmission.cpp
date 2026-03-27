@@ -1,5 +1,6 @@
 #include "unity.h"
 #include <array>
+#include <cstdio>
 #include "data_handling/Telemetry.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
@@ -129,9 +130,9 @@ void test_a_full_second_of_ticks(void) {
     }
     printf("\n");
     // Test all bytes sent correctly for first second
-    for (int i = 0; i < 51; i++) {
+    for (std::size_t i = 0; i < 51U; ++i) {
         char message[50];
-        sprintf(message, "Byte %d mismatch", i);
+        std::snprintf(message, sizeof(message), "Byte %zu mismatch", i);
         TEST_ASSERT_EQUAL_MESSAGE(expectedSentBytes[i], mockRfdSerial.writeCalls.at(i), message);
     }
 
@@ -151,18 +152,18 @@ void test_a_full_second_of_ticks(void) {
     }
     printf("\n");
     // Test all bytes sent correctly for second second
-    for (int i = 0; i < 51; i++) {
+    for (std::size_t i = 0; i < 51U; ++i) {
         // Skip timestamp bytes
-        if (i >= 4 && i <= 11) {
+        if (i >= 4U && i <= 11U) {
             continue;
         }
-        if (i >= 33 && i <= 40) {
+        if (i >= 33U && i <= 40U) {
             continue;
         }
 
 
         char message[50];
-        sprintf(message, "Byte %d mismatch", i);
+        std::snprintf(message, sizeof(message), "Byte %zu mismatch", i);
         TEST_ASSERT_EQUAL_MESSAGE(expectedSentBytes[i], mockRfdSerial.writeCalls.at(i),
                                     message);
     }
@@ -216,7 +217,7 @@ void test_second_packet_counter_is_one(void) {
 
     // First packet: kHeaderSize_bytes(12) + label(1) + 3 floats(12) + end marker(4) = 29 bytes
     // Second packet counter starts at byte 29 + kPacketCounterIndex
-    const int secondPacketStart = 29;
+    const std::size_t secondPacketStart = 29U;
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex));
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex + 1));
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex + 2));

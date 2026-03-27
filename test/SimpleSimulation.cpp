@@ -16,7 +16,7 @@ SimpleSimulator::SimpleSimulator(uint32_t launchTime_ms, float motorAcceleration
 
 void SimpleSimulator::tick() {
     // Convert tick duration from milliseconds to seconds.
-    float dt = tick_ms_ / 1000.0f;
+    const float dt = static_cast<float>(tick_ms_) / 1000.0f;
 
     // Determine net acceleration for integration based on the simulation time.
     if (currentTime_ms_ < launchTime_ms_) {

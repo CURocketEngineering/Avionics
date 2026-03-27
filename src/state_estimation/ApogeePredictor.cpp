@@ -113,18 +113,18 @@ void ApogeePredictor::polyUpdate() {
 
     // Polynomial Regression Coefficients for C++
     const std::array<float, kFeatureCount> coeffs = {
-        /* 1 */ 0.00000000,
-        /* vertical_velocity */ 5.06108448,
-        /* vertical_acceleration */ 63.94744144,
-        /* delta_h_simple */ 0.52115350,
-        /* vertical_velocity^2 */ 0.01494354,
-        /* vertical_velocity vertical_acceleration */ 0.46012269,
-        /* vertical_velocity delta_h_simple */ 0.01274390,
-        /* vertical_acceleration^2 */ 3.27864634,
-        /* vertical_acceleration delta_h_simple */ -0.00747177,
-        /* delta_h_simple^2 */ -0.00208120,
+        /* 1 */ 0.00000000F,
+        /* vertical_velocity */ 5.06108448F,
+        /* vertical_acceleration */ 63.94744144F,
+        /* delta_h_simple */ 0.52115350F,
+        /* vertical_velocity^2 */ 0.01494354F,
+        /* vertical_velocity vertical_acceleration */ 0.46012269F,
+        /* vertical_velocity delta_h_simple */ 0.01274390F,
+        /* vertical_acceleration^2 */ 3.27864634F,
+        /* vertical_acceleration delta_h_simple */ -0.00747177F,
+        /* delta_h_simple^2 */ -0.00208120F,
     };
-    const float intercept = 308.64734694;
+    const float intercept = 308.64734694F;
 
     // ───────────────────────────────────────────────────────
     // Compute delta_h_simple = v^2 / (2 * decel), with decel > 0

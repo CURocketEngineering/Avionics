@@ -29,7 +29,7 @@ bool DataSaverBigSD::begin() {
 
     bufLen_ = 0;
     linesPending_ = 0;
-    lastFlushMs_ = millis();
+    lastFlushMs_ = static_cast<uint32_t>(millis());
     lastSyncMs_ = lastFlushMs_;
     ready_ = true;
     return true;
@@ -46,7 +46,7 @@ int DataSaverBigSD::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
 
     // Format the new line
     int numCharsWritten = snprintf(buf_ + bufLen_, remaining, "%lu,%u,%.6f\n", // NOLINT(cppcoreguidelines-init-variables)
-                     static_cast<long unsigned int>(dataPoint.timestamp_ms), name, dataPoint.data);
+                     static_cast<long unsigned int>(dataPoint.timestamp_ms), name, static_cast<double>(dataPoint.data));
 
     // Check snprintf result
     if (numCharsWritten <= 0 || (size_t)numCharsWritten >= remaining) {
@@ -60,16 +60,17 @@ int DataSaverBigSD::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
 
         // Try again (safe now)
         remaining = sizeof(buf_);
-        numCharsWritten = snprintf(buf_, remaining, "%lu,%u,%.6f\n", static_cast<long unsigned int>(dataPoint.timestamp_ms), name, dataPoint.data);
+        numCharsWritten = snprintf(buf_, remaining, "%lu,%u,%.6f\n", static_cast<long unsigned int>(dataPoint.timestamp_ms), name, static_cast<double>(dataPoint.data));
         if (numCharsWritten <= 0 || (size_t)numCharsWritten >= remaining) {
           return DS_LINE_TOO_LONG;  // can't encode this line even in an empty buffer
         }
     }
 
-    bufLen_ += numCharsWritten;
+    const uint16_t numCharsWritten_u16 = static_cast<uint16_t>(numCharsWritten);
+    bufLen_ = static_cast<uint16_t>(bufLen_ + numCharsWritten_u16);
     ++linesPending_;
 
-    uint32_t const now = millis();
+    uint32_t const now = static_cast<uint32_t>(millis());
     bool const bufFull = (bufLen_ >= kBufSize_bytes);
     bool const manyLines = (linesPending_ >= kFlushLines);
     bool const timeUp = (now - lastFlushMs_ >= kFlushMs);

@@ -70,7 +70,7 @@ static void test_vve_with_file(const std::string& file, float sampleRate_hz)
     while (provider.hasNextDataPoint())
     {
         SensorData d = provider.getNextDataPoint();
-        const uint32_t t = d.time;
+        const uint32_t t = static_cast<uint32_t>(d.time);
 
         AccelerationTriplet accel = makeAccel(t, d.accelx, d.accely, d.accelz);
         DataPoint alt(t, d.altitude);
@@ -78,7 +78,7 @@ static void test_vve_with_file(const std::string& file, float sampleRate_hz)
 
         if (!first)
         {
-            const float dt = (t - prevT) * kMillisecondsToSeconds;
+            const float dt = static_cast<float>(t - prevT) * kMillisecondsToSeconds;
             fdiffVel = (d.altitude - prevAlt) / dt;
 
             // Apply IIR low-pass filter to smooth finite-difference velocity
@@ -118,9 +118,9 @@ static void test_vve_with_file(const std::string& file, float sampleRate_hz)
     const float MAX_ALT_ERR  = 100.0f;     // m  – altimeter may drift but estimator should stay close
 
     char msg[128];
-    std::snprintf(msg, sizeof(msg), "Velocity RMSE %.2f > %.2f", rmseVel, RMSE_VEL_MAX);
+    std::snprintf(msg, sizeof(msg), "Velocity RMSE %.2f > %.2f", static_cast<double>(rmseVel), static_cast<double>(RMSE_VEL_MAX));
     TEST_ASSERT_TRUE_MESSAGE(rmseVel <= RMSE_VEL_MAX, msg);
 
-    std::snprintf(msg, sizeof(msg), "Altitude max abs err %.2f > %.2f", maxAltErr, MAX_ALT_ERR);
+    std::snprintf(msg, sizeof(msg), "Altitude max abs err %.2f > %.2f", static_cast<double>(maxAltErr), static_cast<double>(MAX_ALT_ERR));
     TEST_ASSERT_TRUE_MESSAGE(maxAltErr <= MAX_ALT_ERR, msg);
 }
