@@ -25,11 +25,11 @@ constexpr uint32_t kMaxWarmups = 1000;
 
 ApogeePredictor::ApogeePredictor(const VerticalVelocityEstimator& velocityEstimator, 
                                  float accelFilterAlpha,  // caution: two floats here are swappable //NOLINT(bugprone-easily-swappable-parameters)
-                                 float minimumClimbVelocity_ms) //NOLINT(bugprone-easily-swappable-parameters)
+                                 float minimumClimbVelocity_mps) //NOLINT(bugprone-easily-swappable-parameters)
     : vve_(velocityEstimator),
       filteredDecel_mps2_(0.0F),
       alpha_(clamp(accelFilterAlpha, 0.0F, 1.0F)),
-      minClimbVel_(minimumClimbVelocity_ms),
+      minimumClimbVelocity_mps_(minimumClimbVelocity_mps),
       valid_(false),
       tToApogee_(0.0F),
       predApogeeTs_(0),
@@ -55,7 +55,7 @@ void ApogeePredictor::update() {
 
     filteredDecel_mps2_ = alpha_ * decelSample + (1.0F - alpha_) * filteredDecel_mps2_;
 
-    if (velocity > minClimbVel_ && filteredDecel_mps2_ > kMinValidDecel) {
+    if (velocity > minimumClimbVelocity_mps_ && filteredDecel_mps2_ > kMinValidDecel) {
         tToApogee_ = velocity / filteredDecel_mps2_;
         predApogeeTs_ = currentTimestamp + static_cast<uint32_t>(tToApogee_ * kMillisecondsPerSecond);
 
@@ -86,7 +86,7 @@ void ApogeePredictor::quadUpdate() {
     filteredDecel_mps2_ = alpha_ * kEstimate + (1.0F - alpha_) * filteredDecel_mps2_;
     const float dragToMassRatio = filteredDecel_mps2_;
 
-    if (velocity > minClimbVel_ && dragToMassRatio > kMinValidDecel) {
+    if (velocity > minimumClimbVelocity_mps_ && dragToMassRatio > kMinValidDecel) {
         const float terminalVelocity = std::sqrt(kGravity_mps2 / dragToMassRatio);
         tToApogee_ = (terminalVelocity / kGravity_mps2) * std::atan(velocity / terminalVelocity);
         const float deltaAltitude = (terminalVelocity * terminalVelocity / (2.0F * kGravity_mps2)) *
@@ -172,8 +172,7 @@ void ApogeePredictor::polyUpdate() {
 
 void ApogeePredictor::analyticUpdate()
 {
-    //gets the gravity constant and the current velocity and altitude of the rocket
-    const float gravity = 9.80665F;
+    //gets the current velocity and altitude of the rocket
     const float velocity = vve_.getEstimatedVelocity();
     const float height = vve_.getEstimatedAltitude();
 
@@ -199,8 +198,8 @@ void ApogeePredictor::analyticUpdate()
     const float acceleration = vve_.getInertialVerticalAcceleration();
 
     //calculates the measured drag coefficient
-const float kMeasured = -(acceleration + gravity) /
-    (velocity * velocity + kVelocityEpsilon);
+    const float kMeasured = -(acceleration + kGravity_mps2) /
+        (velocity * velocity + kVelocityEpsilon);
 
     if (kMeasured > 0.0F && kMeasured < 1.0F)
     {
@@ -216,13 +215,13 @@ const float kMeasured = -(acceleration + gravity) /
     if (currentDragCoefficient_ > kMinDragCoefficient)
     {
         apogee = height + (kApogeeFactor / currentDragCoefficient_) *
-        logf((gravity + currentDragCoefficient_ * velocity * velocity) / gravity);
+        logf((kGravity_mps2 + currentDragCoefficient_ * velocity * velocity) / kGravity_mps2);
     }
     else
     {
         // fallback if drag unknown
         apogee = height + (velocity * velocity) /
-        (kBallisticDenominator * gravity);
+        (kBallisticDenominator * kGravity_mps2);
     }
 
     predApogeeAlt_ = apogee;
@@ -232,8 +231,6 @@ const float kMeasured = -(acceleration + gravity) /
 
 void ApogeePredictor::simulateUpdate()
 {
-    const float kGravity = 9.80665F;
-
     const float estimatedVelocity = vve_.getEstimatedVelocity();
     const float estimatedAltitude = vve_.getEstimatedAltitude();
     const float inertialAccel = vve_.getInertialVerticalAcceleration();
@@ -257,7 +254,7 @@ void ApogeePredictor::simulateUpdate()
     if (estimatedVelocity > kMinVelocityForDrag)
     {
         const float measuredDrag =
-            -(inertialAccel + kGravity) / (estimatedVelocity * estimatedVelocity + kVelocityEpsilon);
+            -(inertialAccel + kGravity_mps2) / (estimatedVelocity * estimatedVelocity + kVelocityEpsilon);
 
         if (measuredDrag > 0.0F && measuredDrag < kMaxDragCoefficient)
         {
@@ -274,7 +271,7 @@ void ApogeePredictor::simulateUpdate()
     for (int step = 0; step < kMaxSimSteps; step++)
     {
         const float dragAcceleration = currentDragCoefficient_ * simVelocity * simVelocity;
-        const float totalAcceleration = -kGravity - dragAcceleration;
+        const float totalAcceleration = -kGravity_mps2 - dragAcceleration;
 
         simVelocity += totalAcceleration * kDt;
         simAltitude += simVelocity * kDt;

@@ -118,10 +118,10 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
     // Predicted covariance: P' = F P F^T + Q
     // F = [ [1, dt], [0, 1] ]
     // so:
-    // P'[0][0] = P_[0][0] + 2*dt*P_[0][1] + dt^2*P_[1][1] + Q00
-    // P'[0][1] = P_[0][1] + dt*P_[1][1] + Q01
-    // P'[1][0] = P_[1][0] + dt*P_[1][1] + Q10  (should be symmetric to P'[0][1])
-    // P'[1][1] = P_[1][1] + Q11
+    // P'[0][0] = P_[0][0] + 2*dt*P_[0][1] + dt^2*P_[1][1] + q00
+    // P'[0][1] = P_[0][1] + dt*P_[1][1] + q01
+    // P'[1][0] = P_[1][0] + dt*P_[1][1] + q10  (should be symmetric to P'[0][1])
+    // P'[1][1] = P_[1][1] + q11
 
     // 2.0F comes from the derivative of the position state equation
     const float predictedCov00 = P_[0][0] + 2.0F * dt * P_[0][1] + dt2 * P_[1][1] + q00; //NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

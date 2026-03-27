@@ -29,11 +29,11 @@ public:
     /**
      * @param velocityEstimator       Reference to the velocity estimator
      * @param accelFilterAlpha             EMA weight for smoothing deceleration [0–1]
-     * @param minimumClimbVelocity_ms   Minimum upward velocity (m/s) for a valid prediction
+     * @param minimumClimbVelocity_mps  Minimum upward velocity (m/s) for a valid prediction
      */
     explicit ApogeePredictor(const VerticalVelocityEstimator& velocityEstimator,
                              float accelFilterAlpha = 0.2F,
-                             float minimumClimbVelocity_ms = 1.0F);
+                             float minimumClimbVelocity_mps = 1.0F);
 
     /** Call after every estimator refresh to update prediction */
     void update();
@@ -61,7 +61,7 @@ private:
 
     float filteredDecel_mps2_;   ///< Smoothed deceleration (m/s², positive)
     float alpha_;           ///< EMA smoothing weight
-    float minClimbVel_;     ///< Minimum climb speed (m/s) to consider a prediction
+    float minimumClimbVelocity_mps_; ///< Minimum climb speed (m/s) to consider a prediction
 
     // Latest prediction results
     bool     valid_;        ///< Whether the current prediction is valid

@@ -17,7 +17,7 @@ You are reviewing pull requests for this repository.
 - Keep host-native compatibility (`pio test -e native` must remain viable).
 - Keep C++11 compatibility.
 - Preserve include/src parity for non-header-only modules.
-- Enforce naming conventions:
+- Enforce naming conventions
 
 ## Expected Review Output
 - List findings by severity.
