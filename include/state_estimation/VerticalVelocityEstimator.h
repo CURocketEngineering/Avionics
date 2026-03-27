@@ -7,9 +7,6 @@
 #include "data_handling/DataPoint.h"
 #include "state_estimation/StateEstimationTypes.h"
 
-
-
-constexpr float kMinimumDeltaTime_s = 0.01f; // Minimum delta time for updates (10ms)
 constexpr float kMillisecondsToSeconds = 0.001f; // Conversion factor from milliseconds to seconds
 
 struct alignas(8) NoiseVariances {
