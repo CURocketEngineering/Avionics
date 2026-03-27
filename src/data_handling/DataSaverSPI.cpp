@@ -204,7 +204,7 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) { //NOLINT(re
     }
 
     #pragma unroll
-    for (int i = 0; i < kBufferSize_bytes; i++){
+    for (size_t i = 0; i < kBufferSize_bytes; i++){
         std::array<uint8_t, 3> doneLine = {'E', 'O', 'F'};
         serial.write(doneLine.data(), doneLine.size());
         if (done){
