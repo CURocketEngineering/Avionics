@@ -42,8 +42,8 @@ void test_flush_buffer(void) {
 
     
 
-    int hits_to_flush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
-    for (int i = 0; i < hits_to_flush; i++) {
+    int hitsToFlush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
+    for (int i = 0; i < hitsToFlush; i++) {
         DataPoint dp(500, 1.0);
         dss->saveDataPoint(dp, 1);
         expectedBufferSize_bytes += 5;
