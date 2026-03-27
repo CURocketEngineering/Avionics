@@ -1,6 +1,7 @@
 #include "unity.h"
 #include "data_handling/DataSaverSPI.h"
 #include "data_handling/DataPoint.h"
+#include <cstddef>
 
 DataSaverSPI* dss;
 Adafruit_SPIFlash* flash;
@@ -36,14 +37,14 @@ void test_flush_buffer(void) {
     TEST_ASSERT_EQUAL(0, dss->getBufferIndex());
     DataPoint dp(500, 1.0);
     dss->saveDataPoint(dp, 1); // Saves a timestamp and data point (10 bytes)
-    int expectedBufferSize_bytes = 10;
+    size_t expectedBufferSize_bytes = 10;
     TEST_ASSERT_EQUAL(expectedBufferSize_bytes, dss->getBufferIndex());
     TEST_ASSERT_EQUAL(0, dss->getBufferFlushes());
 
     
 
-    int hitsToFlush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
-    for (int i = 0; i < hitsToFlush; i++) {
+    size_t hitsToFlush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
+    for (size_t i = 0; i < hitsToFlush; i++) {
         DataPoint dp(500, 1.0);
         dss->saveDataPoint(dp, 1);
         expectedBufferSize_bytes += 5;

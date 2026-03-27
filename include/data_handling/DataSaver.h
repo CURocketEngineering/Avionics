@@ -12,6 +12,8 @@
  */
 class IDataSaver {
     public:
+        virtual ~IDataSaver() = default;
+
         /**
          * @brief Persist a data point with a source identifier.
          * @param dp   Data point to store.

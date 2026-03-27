@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <cmath>
+#include <cstdint>
 
 #include "AirResistanceSimulation.h"
 #include "state_estimation/VerticalVelocityEstimator.h"
@@ -73,12 +74,16 @@ inline void writeCsvRow(std::ofstream &csv, uint32_t ts, float alt, float vertic
 
 bool parseCsvRow(const std::vector<std::string>& tokens, int idx_ts, int idx_ax, int idx_ay, int idx_az, int idx_alt, uint32_t &ts, float &ax, float &ay, float &az, float &alt) 
 {
-    if (tokens.size() <= std::max({idx_ts, idx_ax, idx_ay, idx_az, idx_alt})) return false;
-    ts  = safe_stoul(tokens[idx_ts]);
-    ax  = safe_stof(tokens[idx_ax]);
-    ay  = safe_stof(tokens[idx_ay]);
-    az  = safe_stof(tokens[idx_az]);
-    alt = safe_stof(tokens[idx_alt]);
+    const int maxIndex = std::max({idx_ts, idx_ax, idx_ay, idx_az, idx_alt});
+    if (maxIndex < 0 || tokens.size() <= static_cast<std::vector<std::string>::size_type>(maxIndex)) {
+        return false;
+    }
+
+    ts  = safe_stoul(tokens[static_cast<std::vector<std::string>::size_type>(idx_ts)]);
+    ax  = safe_stof(tokens[static_cast<std::vector<std::string>::size_type>(idx_ax)]);
+    ay  = safe_stof(tokens[static_cast<std::vector<std::string>::size_type>(idx_ay)]);
+    az  = safe_stof(tokens[static_cast<std::vector<std::string>::size_type>(idx_az)]);
+    alt = safe_stof(tokens[static_cast<std::vector<std::string>::size_type>(idx_alt)]);
     return true;
 }
 
@@ -299,15 +304,13 @@ void test_apogee_predictor_with_irec_csv_15s_early(void (ApogeePredictor::*predi
     csv.close();
 
     const float tolerance_m = true_apogee * 0.01f;
-    const uint32_t required_early_ms = 15000;
+    const int64_t required_early_ms = 15000;
     bool passed = false;
-    int32_t early_ms = 0;
     for (const auto& dp : predicted_apogees) {
         float error = fabs(dp.second - true_apogee);
-        int32_t time_before_apogee = (int32_t)(apogee_ts - dp.first);
+        int64_t time_before_apogee = static_cast<int64_t>(apogee_ts) - static_cast<int64_t>(dp.first);
         if (error <= tolerance_m && time_before_apogee >= required_early_ms) {
             passed = true;
-            early_ms = time_before_apogee;
             break;
         }
     }
