@@ -38,12 +38,11 @@ public:
 };
 
 void test_initialization(void) {
-    MockDataSaver mockXAcl, mockYAcl, mockZAcl, altitude, packetCounter;
+    MockDataSaver mockXAcl, mockYAcl, mockZAcl, altitude;
     uint8_t xAclName = 1;
     uint8_t yAclName = 2;
     uint8_t zAclName = 3;
     uint8_t altName = 4;
-    uint8_t packetCounterName = 5;
     SensorDataHandler xAclData(xAclName, &mockXAcl);
     SensorDataHandler yAclData(yAclName, &mockYAcl);
     SensorDataHandler zAclData(zAclName, &mockZAcl);
