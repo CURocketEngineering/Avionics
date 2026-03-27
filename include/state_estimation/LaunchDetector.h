@@ -91,7 +91,7 @@ private:
     float accelerationThresholdSq_ms2_;
     uint16_t windowInterval_ms_;
 
-    // Min and max window sizes calculated as +- 10% of the window size
+    // Min and max window sizes calculated based on the window interval and the acceptable time difference
     uint16_t minWindowSize_ms_ = 0; // If the calculated time range is less than this, don't try to detect launch
     uint16_t maxWindowSize_ms_ = 0; // If the calculated time range is greater than this, don't try to detect launch
 
