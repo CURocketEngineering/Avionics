@@ -18,13 +18,10 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
 }
 
 int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
-    // Update the state.
-    int lpStatus = LP_DEFAULT_FAIL; 
-
     switch (state_) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            lpStatus = launchDetector_->update(accel);
+            launchDetector_->update(accel);
             // Serial.println(lpStatus);
             if (launchDetector_->isLaunched()) {
                 // Change state to ascent.
