@@ -74,9 +74,11 @@ int LaunchDetector::update(AccelerationTriplet accel)
 
     // Make sure we are near the window interval +- kAcceptablePercentDifferenceWindowInterval
     uint32_t timeDiff_ms = time_ms - accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
+    const uint32_t minAllowedDiff_ms = static_cast<uint32_t>(windowInterval_ms_) - static_cast<uint32_t>(acceptableTimeDifference_ms_);
+    const uint32_t maxAllowedDiff_ms = static_cast<uint32_t>(windowInterval_ms_) + static_cast<uint32_t>(acceptableTimeDifference_ms_);
 
     // Check that the data didn't come in too fast
-    if (timeDiff_ms < windowInterval_ms_ - acceptableTimeDifference_ms_){
+    if (timeDiff_ms < minAllowedDiff_ms){
         #ifdef DEBUG
         Serial.println("LaunchDetector: DATA TOO EARLY");
         Serial.printf("Time diff: %lu\n", static_cast<unsigned long>(timeDiff_ms));
@@ -87,7 +89,7 @@ int LaunchDetector::update(AccelerationTriplet accel)
         return LP_DATA_TOO_FAST;
     }
 
-    if (timeDiff_ms > windowInterval_ms_ + acceptableTimeDifference_ms_)
+    if (timeDiff_ms > maxAllowedDiff_ms)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: DATA TOO LATE");
