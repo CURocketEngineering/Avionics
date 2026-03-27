@@ -71,7 +71,8 @@ void test_wrapping_and_data_integrity(void) {
     // Verify initial full state
     TEST_ASSERT_TRUE(circularArray.isFull());
     for (int i = 0; i < 10; i++) {
-        TEST_ASSERT_EQUAL(9 - i, circularArray.getFromHead(i)); // Check order is correct
+        const uint8_t index = static_cast<uint8_t>(i);
+        TEST_ASSERT_EQUAL(9 - i, circularArray.getFromHead(index)); // Check order is correct
     }
     // Push more elements to force wrapping
     for (int i = 10; i < 20; i++) {
@@ -79,7 +80,8 @@ void test_wrapping_and_data_integrity(void) {
     }
     // Verify elements after wrapping
     for (int i = 0; i < 10; i++) {
-        TEST_ASSERT_EQUAL(19 - i, circularArray.getFromHead(i)); // New order after wrapping
+        const uint8_t index = static_cast<uint8_t>(i);
+        TEST_ASSERT_EQUAL(19 - i, circularArray.getFromHead(index)); // New order after wrapping
     }
     TEST_ASSERT_TRUE(circularArray.isFull()); // Still full
 }

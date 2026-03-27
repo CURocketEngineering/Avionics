@@ -221,15 +221,18 @@ void test_window_time_range_too_small(void) {
     LaunchDetector lp(10.0, 100, 5);
     // Use a delta that is exactly at the lower bound allowed.
     uint32_t start = 1000;
+    const uint16_t minAcceptedDelta_ms = static_cast<uint16_t>(
+        lp.getWindowInterval() - lp.getAcceptableTimeDifference());
+
     // This is the smallest delta that is still acceptable.
-    fillWindowWithInterval(lp, start, lp.getWindowInterval() - lp.getAcceptableTimeDifference(), 10.0, 10.0, 10.0);
+    fillWindowWithInterval(lp, start, minAcceptedDelta_ms, 10.0f, 10.0f, 10.0f);
     
     // Pushing a final point at this delta which should trigger a launch and not a time range error.
     uint32_t headTime = lp.getWindowPtr()->getFromHead(0).timestamp_ms;
-    uint32_t validTime = headTime + lp.getWindowInterval() - lp.getAcceptableTimeDifference();
-    DataPoint dp_x(validTime, 10.0);
-    DataPoint dp_y(validTime, 10.0);
-    DataPoint dp_z(validTime, 10.0);
+    uint32_t validTime = headTime + minAcceptedDelta_ms;
+    DataPoint dp_x(validTime, 10.0f);
+    DataPoint dp_y(validTime, 10.0f);
+    DataPoint dp_z(validTime, 10.0f);
     AccelerationTriplet accel = { dp_x, dp_y, dp_z };
     int ret = lp.update(accel);
     TEST_ASSERT_EQUAL_INT(LP_LAUNCH_DETECTED, ret);
@@ -245,27 +248,27 @@ void test_window_time_range_too_small(void) {
     // Now fill the window with even a smaller delta.
     // Because of the LP_DATA_TOO_FAST check, the window range still won't be too small
     // because some updates will be rejected.
-    fillWindowWithInterval(lp, lp.getWindowPtr()->getFromHead(0).timestamp_ms, 
-                           lp.getWindowInterval() - lp.getAcceptableTimeDifference() - 1,
-                           9.0, 0.0, 0.0);
+    const uint16_t tooSmallDelta_ms = static_cast<uint16_t>(minAcceptedDelta_ms - 1U);
+    fillWindowWithInterval(lp, lp.getWindowPtr()->getFromHead(0).timestamp_ms,
+                           tooSmallDelta_ms,
+                           9.0f, 0.0f, 0.0f);
 
     TEST_ASSERT_FALSE(lp.isLaunched());
 
-    uint32_t tooFastTime = lp.getWindowPtr()->getFromHead(0).timestamp_ms + 
-                           lp.getWindowInterval() - lp.getAcceptableTimeDifference() - 1;
-    DataPoint dp2_x(tooFastTime, 1.0);
-    DataPoint dp2_y(tooFastTime, 1.0);
-    DataPoint dp2_z(tooFastTime, 1.0);
+    uint32_t tooFastTime = lp.getWindowPtr()->getFromHead(0).timestamp_ms + tooSmallDelta_ms;
+    DataPoint dp2_x(tooFastTime, 1.0f);
+    DataPoint dp2_y(tooFastTime, 1.0f);
+    DataPoint dp2_z(tooFastTime, 1.0f);
     AccelerationTriplet accel2 = { dp2_x, dp2_y, dp2_z };
     ret = lp.update(accel2);
     TEST_ASSERT_EQUAL_INT(LP_DATA_TOO_FAST, ret);
 
     // Emulate getting a second point at the delay * 2
-    uint32_t nextTime = lp.getWindowPtr()->getFromHead(0).timestamp_ms + 
-                        (lp.getWindowInterval() - lp.getAcceptableTimeDifference()) * 2;
-    DataPoint dp3_x(nextTime, 10.0);
-    DataPoint dp3_y(nextTime, 10.0);
-    DataPoint dp3_z(nextTime, 10.0);
+    const uint32_t delayedStep_ms = static_cast<uint32_t>(minAcceptedDelta_ms) * 2U;
+    uint32_t nextTime = lp.getWindowPtr()->getFromHead(0).timestamp_ms + delayedStep_ms;
+    DataPoint dp3_x(nextTime, 10.0f);
+    DataPoint dp3_y(nextTime, 10.0f);
+    DataPoint dp3_z(nextTime, 10.0f);
     AccelerationTriplet accel3 = { dp3_x, dp3_y, dp3_z };
     ret = lp.update(accel3);
     TEST_ASSERT_EQUAL_INT(LP_ACL_TOO_LOW, ret);
@@ -273,10 +276,10 @@ void test_window_time_range_too_small(void) {
     // Add a few more high acceleration updates to trigger launch.
     for (int i = 0; i < lp.getWindowPtr()->getMaxSize(); i++) {
         uint32_t newTime = lp.getWindowPtr()->getFromHead(0).timestamp_ms + lp.getWindowInterval();
-        DataPoint dp_x(newTime, 100.0);
-        DataPoint dp_y(newTime, 100.0);
-        DataPoint dp_z(newTime, 100.0);
-        AccelerationTriplet accelN = { dp_x, dp_y, dp_z };
+        DataPoint dp_x_loop(newTime, 100.0f);
+        DataPoint dp_y_loop(newTime, 100.0f);
+        DataPoint dp_z_loop(newTime, 100.0f);
+        AccelerationTriplet accelN = { dp_x_loop, dp_y_loop, dp_z_loop };
         int result = lp.update(accelN);
         (void)result; // ignore intermediate result
     }
@@ -326,12 +329,12 @@ void test_median_acceleration_above_threshold(void) {
 void test_median_acceleration_edge_case(void) {
     LaunchDetector lp(10.0, 100, 5);
     // First fill with values just below threshold.
-    fillWindow(lp, 9.9, 0.0, 0.0); // Total MAG is only 9.9^2 = 98.01 which is less than 100
+    fillWindow(lp, 9.9f, 0.0f, 0.0f); // Total MAG is only 9.9^2 = 98.01 which is less than 100
     TEST_ASSERT_FALSE(lp.isLaunched());
     
     // Then fill with values just above threshold.
     // Note: This may require more than one update because the window median takes time to shift.
-    fillWindow(lp, 10.1, 0.0, 0.0); // Total MAG is 10.1^2 = 102.01 which is more than 100
+    fillWindow(lp, 10.1f, 0.0f, 0.0f); // Total MAG is 10.1^2 = 102.01 which is more than 100
     TEST_ASSERT_TRUE(lp.isLaunched());
 }
 

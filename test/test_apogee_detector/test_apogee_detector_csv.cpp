@@ -112,7 +112,8 @@ void test_apogee_detector_with_file(const std::string& file) {
                            "Detected apogee altitude differs significantly from maximum recorded altitude");
     
     // Verify apogee timing is reasonable (within 1 second of max altitude time)
-    uint32_t timeDifference = std::abs((int64_t)detectedApogee.timestamp_ms - (int64_t)maxAltitudeTime);
-    TEST_ASSERT_TRUE_MESSAGE(timeDifference <= 1000, 
+    const int64_t timeDifference_ms = std::llabs(
+        static_cast<int64_t>(detectedApogee.timestamp_ms) - static_cast<int64_t>(maxAltitudeTime));
+    TEST_ASSERT_TRUE_MESSAGE(timeDifference_ms <= 1000LL, 
                            "Detected apogee time differs significantly from maximum altitude time");
 }

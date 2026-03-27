@@ -1,6 +1,7 @@
 #include "unity.h"
 #include <array>
 #include <cstdio>
+#include <vector>
 #include "data_handling/Telemetry.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
@@ -54,10 +55,9 @@ void test_initialization(void) {
     accelerationTriplet[1] = &yAclData;
     accelerationTriplet[2] = &zAclData;
 
-    std::array<SendableSensorData*, 2> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-        new SendableSensorData(&altitudeData, 1),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    SendableSensorData altitudeSsd(&altitudeData, 1);
+    std::array<SendableSensorData*, 2> ssds{&accelerationSsd, &altitudeSsd};
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
 }
@@ -109,10 +109,9 @@ void test_a_full_second_of_ticks(void) {
     accelerationTriplet[1] = &yAclData;
     accelerationTriplet[2] = &zAclData;
 
-    std::array<SendableSensorData*, 2> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-        new SendableSensorData(&altitudeData, 1),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    SendableSensorData altitudeSsd(&altitudeData, 1);
+    std::array<SendableSensorData*, 2> ssds{&accelerationSsd, &altitudeSsd};
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
 
@@ -180,9 +179,8 @@ void test_first_packet_counter_is_zero(void) {
     zAclData.addData(DataPoint(1, 1.234567f));
 
     std::array<SensorDataHandler*, 3> accelerationTriplet{&xAclData, &yAclData, &zAclData};
-    std::array<SendableSensorData*, 1> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    std::array<SendableSensorData*, 1> ssds{&accelerationSsd};
 
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
@@ -206,9 +204,8 @@ void test_second_packet_counter_is_one(void) {
     zAclData.addData(DataPoint(1, 1.234567f));
 
     std::array<SensorDataHandler*, 3> accelerationTriplet{&xAclData, &yAclData, &zAclData};
-    std::array<SendableSensorData*, 1> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    std::array<SendableSensorData*, 1> ssds{&accelerationSsd};
 
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
