@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <cstdint>
 
-constexpr std::size_t MAX_CIRCULAR_ARRAY_CAPACITY = 255;
+constexpr std::size_t kMaxCircularArrayCapacity = 255;
 
 template<typename T, std::size_t N>
 int partition(std::array<T, N>& array, int left, int right, int pivotIndex) {
@@ -63,7 +63,7 @@ class CircularArray {
   public:
     CircularArray(uint8_t maxSize = Capacity) : maxSize(maxSize) {
         static_assert(Capacity > 0, "CircularArray capacity must be greater than 0");
-        static_assert(Capacity <= MAX_CIRCULAR_ARRAY_CAPACITY, "CircularArray capacity must be less than or equal to 255 b/c of head being uint8_t");
+        static_assert(Capacity <= kMaxCircularArrayCapacity, "CircularArray capacity must be less than or equal to 255 b/c of head being uint8_t");
         assert(maxSize > 0 && maxSize <= Capacity);
         this->head = 0;
         this->currentSize = 0; // How full is the circular buffer? 

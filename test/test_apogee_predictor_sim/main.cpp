@@ -15,10 +15,10 @@
 
 /* ---------- choose prediction method ---------- */
 static void (ApogeePredictor::*predictionMethod)(void) = 
-&ApogeePredictor::analytic_update
-//&ApogeePredictor::simulate_update
-//&ApogeePredictor::quad_update
-//&ApogeePredictor::poly_update
+&ApogeePredictor::analyticUpdate
+//&ApogeePredictor::simulateUpdate
+//&ApogeePredictor::quadUpdate
+//&ApogeePredictor::polyUpdate
 //&ApogeePredictor::update
 ;
 
@@ -65,7 +65,7 @@ inline void writeCsvRow(std::ofstream &csv, uint32_t ts, float alt, float vertic
         << vve.getEstimatedVelocity() << ','
         << aclZ << ','
         << vve.getInertialVerticalAcceleration() << ','
-        << apo.getdragCoefficient() << ',';
+        << apo.getDragCoefficient() << ',';
     if (apo.isPredictionValid()) csv << apo.getPredictedApogeeAltitude_m();
     else csv << 0.0f;
     csv << '\n';
@@ -444,10 +444,10 @@ void test_apogee_predictor_all_methods_timeseries(void)
         vve_default.update(accel, altDp);
 
         // ✅ Run each method
-        apo_analytic.analytic_update();
-        apo_simulate.simulate_update();
-        apo_quad.quad_update();
-        apo_poly.poly_update();
+        apo_analytic.analyticUpdate();
+        apo_simulate.simulateUpdate();
+        apo_quad.quadUpdate();
+        apo_poly.polyUpdate();
         apo_default.update();
 
         // ✅ Store predictions (FILTER BAD SPIKES)
@@ -480,7 +480,7 @@ void test_apogee_predictor_all_methods_timeseries(void)
             << vve_default.getEstimatedVelocity() << ','
             << az << ','
             << vve_default.getInertialVerticalAcceleration() << ','
-            << apo_default.getdragCoefficient() << ','
+            << apo_default.getDragCoefficient() << ','
             << getApogee(apo_analytic) << ','
             << getApogee(apo_simulate) << ','
             << getApogee(apo_quad) << ','

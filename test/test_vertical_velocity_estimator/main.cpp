@@ -135,7 +135,7 @@ void test_vertical_axis_negative_direction(void)
 }
 
 // -----------------------------------------------------------------------------
-// Test 6 – Graceful handling of an older timestamp (dt → MINIMUM_DELTA_T_S)
+// Test 6 – Graceful handling of an older timestamp
 // -----------------------------------------------------------------------------
 void test_update_with_old_timestamp(void)
 {

@@ -78,7 +78,7 @@ static void test_vve_with_file(const std::string& file, float sampleRate_hz)
 
         if (!first)
         {
-            const float dt = (t - prevT) * MILLISECONDS_TO_SECONDS;
+            const float dt = (t - prevT) * kMillisecondsToSeconds;
             fdiffVel = (d.altitude - prevAlt) / dt;
 
             // Apply IIR low-pass filter to smooth finite-difference velocity

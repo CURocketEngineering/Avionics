@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guidance for AI coding agents working in this repository.
+Guidance for human and AI coding agents working in this repository.
 
 ## Scope
 
@@ -18,7 +18,7 @@ These instructions apply to the entire repo unless a deeper `AGENTS.md` override
 
 ## Project Overview
 
-Avionics is a modular C++ (Arduino-core compatible) library used for rocket flight computers. Core areas:
+Avionics is our modular C++ (Arduino-core compatible) library used for all of our flight computers. Core areas:
 
 - `include/state_estimation` + `src/state_estimation`: launch/burnout/apogee/state logic.
 - `include/data_handling` + `src/data_handling`: logging, telemetry, sensor data handling.
@@ -33,6 +33,21 @@ Avionics is a modular C++ (Arduino-core compatible) library used for rocket flig
 3. Keep host-native tests buildable; avoid adding dependencies that only exist on embedded targets.
 4. Maintain `include/` and `src/` parity for non-header-only modules.
 5. Keep changes compatible with the repo's C++ standard (`-std=c++11` in `platformio.ini`).
+
+## Naming Conventions
+- Use `camelCase` for variables and functions.
+- Use `PascalCase` for class and struct names.
+- Use `kConstantName` for constants.
+- Use a trailing underscore for private member variables (for example, `privateVar_` and `privateTimestamp_ms_`).
+
+- Add unit suffixes with an underscore when a name represents a physical quantity, time value, size, rate, or other semantically meaningful measured quantity (for example, `timestamp_ms`, `altitude_m`, `velocity_mps`, `gravity_mps2`, `packetSize_bytes`).
+- Prefer exact units like `_bytes` and `_bits` when the exact count matters.
+- Use unambiguous binary storage suffixes like `_KiB` and `_MiB` when a quantity is naturally expressed that way.
+- Use unambiguous data-rate suffixes like `_kbps` and `_Mbps`.
+- Avoid ambiguous suffixes such as `_MB`, `_mB`, or `_Mb` unless the meaning is completely clear in context.
+
+- Avoid abbreviations unless they are widely understood in the project context or domain (for example, `imu`, `gps`, `crc`, `uart`).
+- Prefer descriptive names over shortened ones when there is any chance of confusion.
 
 ## Build, Test, and Checks
 

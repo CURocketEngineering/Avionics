@@ -8,7 +8,7 @@
 
 #include "ArduinoHAL.h"
 
-#define SHELL_PROMPT "AS> "  // AS = Avionics Shell
+constexpr const char* kShellPrompt = "AS> ";  // AS = Avionics Shell
 
 enum class AsciiKey : uint8_t {
     Escape      = 27,
@@ -18,9 +18,9 @@ enum class AsciiKey : uint8_t {
     Delete      = 127
 };
 
-constexpr int UART_BUFFER_SIZE = 128;
-constexpr int MAX_ARGUMENTS = 5;
-constexpr int MAX_ROW_LENGTH = 40;
+constexpr int kUartBufferSize = 128;
+constexpr int kMaxArguments = 5;
+constexpr int kMaxRowLength = 40;
 
 /**
  * @brief Lightweight UART command-line interface with history and parsing.
@@ -30,38 +30,38 @@ constexpr int MAX_ROW_LENGTH = 40;
 class CommandLine {
 
 public:
-    CommandLine(Stream * UART);  // Constructor
+    CommandLine(Stream* uartStream);  // Constructor
     void addCommand(const std::string& longName, const std::string& shortName, std::function<void(std::queue<std::string> argumentQueue ,std::string&)> funcPtr);
-    void executeCommand(const std::string& command, std::queue<std::string> arugments);
+    void executeCommand(const std::string& command, std::queue<std::string> arguments);
     void readInput();
     void processCommand(const std::string& command);
     void begin();
-    void switchUART(Stream* newUART);
+    void switchUART(Stream* newUart);
     void useDefaultUART();
-    Stream* getDefaultUART() const { return defaultUART; }
-    Stream* getActiveUART() const { return UART; }
+    Stream* getDefaultUART() const { return defaultUart_; }
+    Stream* getActiveUART() const { return uart_; }
     uint32_t getLastInteractionTimestamp() const { return lastInteractionTimestamp_; }
 
     // Pass-through functions for the UART object
     void println(const std::string& message){
-        UART->println(message.c_str());
+        uart_->println(message.c_str());
     }
     void print(const std::string& message){
-        UART->print(message.c_str());
+        uart_->print(message.c_str());
     }
 
 private:
-    Stream * UART;  // Pointer to the UART object
-    Stream * defaultUART;  // Stream provided at construction; used by useDefaultUART()
+    Stream* uart_;  // Pointer to the UART object
+    Stream* defaultUart_;  // Stream provided at construction; used by useDefaultUART()
     struct Command {
         std::string longName;             
         std::string shortName;           
         std::function<void(std::queue<std::string>, std::string&)> funcPtr; // Function pointer to the command handler
     };
-    std::vector<Command> commands{};  // Vector to store the list of commands
+    std::vector<Command> commands_{};  // Vector to store the list of commands
 
     // Class member variables for buffering and history
-    std::string fullLine = {""}; 
+    std::string fullLine_ = {""}; 
 
 
     void help();

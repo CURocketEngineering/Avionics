@@ -44,11 +44,11 @@ class BurnoutStateMachine : public BaseStateMachine {
     uint8_t getState() const override;
 
   private:
-    uint8_t state;
-    IDataSaver* dataSaver;
-    LaunchDetector* launchDetector;
-    ApogeeDetector* apogeeDetector;
-    VerticalVelocityEstimator* verticalVelocityEstimator;
+    uint8_t state_;
+    IDataSaver* dataSaver_;
+    LaunchDetector* launchDetector_;
+    ApogeeDetector* apogeeDetector_;
+    VerticalVelocityEstimator* verticalVelocityEstimator_;
 };
 
 
