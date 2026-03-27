@@ -21,15 +21,11 @@ StateMachine::StateMachine(IDataSaver* dataSaver,
 
 int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
     // Update the state.
-    int lpStatus = LP_DEFAULT_FAIL; 
-    int fldStatus = FLD_DEFAULT_FAIL;
-
     switch (state_) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            lpStatus = launchDetector_->update(accel);
-            fldStatus = fastLaunchDetector_->update(accel);
-            // Serial.println(lpStatus);
+            launchDetector_->update(accel);
+            fastLaunchDetector_->update(accel);
             if (fastLaunchDetector_->hasLaunched()) {
                 // Change state to soft ascent.
                 state_ = STATE_SOFT_ASCENT;
@@ -77,8 +73,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
         * and clear post-launch mode.
         */
             // Serial.println("lp update");
-            lpStatus = launchDetector_->update(accel);
-            // Serial.println(lpStatus);
+            launchDetector_->update(accel);
             if (launchDetector_->isLaunched()) {
                 // Change state to ascent.
                 state_ = STATE_ASCENT;
