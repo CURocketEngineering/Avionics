@@ -9,11 +9,12 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
                                          LaunchDetector* launchDetector,
                                          ApogeeDetector* apogeeDetector,
                                          VerticalVelocityEstimator* verticalVelocityEstimator)
-    : dataSaver_(dataSaver),
+    : state_(STATE_ARMED),
+      dataSaver_(dataSaver),
       launchDetector_(launchDetector),
       apogeeDetector_(apogeeDetector),
-      verticalVelocityEstimator_(verticalVelocityEstimator),
-      state_(STATE_ARMED)
+      verticalVelocityEstimator_(verticalVelocityEstimator)
+      
 {
 }
 
