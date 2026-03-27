@@ -9,12 +9,12 @@
 LaunchDetector::LaunchDetector(float accelerationThreshold_ms2, //NOLINT(bugprone-easily-swappable-parameters)
                                uint16_t windowSize_ms,
                                uint16_t windowInterval_ms)
-    : accelMagnitudeSquaredWindow_(windowSize_ms / windowInterval_ms),
-      accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
+    : accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
       windowInterval_ms_(windowInterval_ms),
+      acceptableTimeDifference_ms_(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
+      accelMagnitudeSquaredWindow_(windowSize_ms / windowInterval_ms),
       launched_(false),
       launchedTime_ms_(0),
-      acceptableTimeDifference_ms_(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
       medianAccelerationSquared_(0)
 {
     // These must remain here because they rely on accelMagnitudeSquaredWindow_ being constructed
