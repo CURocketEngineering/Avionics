@@ -23,13 +23,13 @@ public:
 
     /**
      * @brief Construct a populated data point.
-     * @param timestamp_ms Measurement time in milliseconds.
-     * @param data         Scalar value associated with the timestamp.
+     * @param timestamp_ms_in Measurement time in milliseconds.
+     * @param data_in         Scalar value associated with the timestamp.
      * @note When to use: wrap a raw reading for storage, transport, or
      *       comparison.
      */
-    DataPoint(uint32_t timestamp_ms, float data) 
-    : timestamp_ms(timestamp_ms), data(data) {};
+    DataPoint(uint32_t timestamp_ms_in, float data_in) 
+    : timestamp_ms(timestamp_ms_in), data(data_in) {};
 
     // Overload > operator
     friend bool operator>(const DataPoint& lhs, const DataPoint& rhs) {
