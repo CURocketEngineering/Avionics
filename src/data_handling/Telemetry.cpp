@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cstdint>
 
-// Helpers for checking if the packet_ has room for more data
+// Helpers for checking if the packet has room for more data.
 std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
     // Each SSD writes 1 label byte (name/label) plus 4 bytes per float value.
     if (ssd->isSingle()) {
@@ -143,8 +143,8 @@ bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) 
 }
 
 void Telemetry::preparePacket(std::uint32_t timestamp) {
-    // This write the header of the packet_ with sync bytes, start byte, and timestamp.
-    // Only clear what we own in the header (whole-packet_ clearing happens in setPacketToZero()).
+    // Write the packet header with sync bytes, start byte, and timestamp.
+    // Only clear what we own in the header (full-packet clearing happens in setPacketToZero()).
 
     // Fill sync bytes with 0
     std::fill_n(&this->packet_[0], TelemetryFmt::kSyncZeroCount_bytes, static_cast<std::uint8_t>(0));
@@ -187,13 +187,13 @@ void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
 }
 
 void Telemetry::setPacketToZero() {
-    for (int i = 0; i < TelemetryFmt::kPacketCapacity_bytes; i++) { //Completely clear packet_
+    for (int i = 0; i < TelemetryFmt::kPacketCapacity_bytes; i++) { // Completely clear packet
         this->packet_[i] = 0;
     }
 }
 
 void Telemetry::addEndMarker() {
-    // Adds the following 4 bytes to the end of the packet_: 0x00 0x00 0x00 (kEndByteValue)
+    // Add the following 4 bytes to the end of the packet: 0x00 0x00 0x00 (kEndByteValue).
 
     std::fill_n(&this->packet_[nextEmptyPacketIndex_], TelemetryFmt::kSyncZeroCount_bytes, static_cast<std::uint8_t>(0));
     this->packet_[nextEmptyPacketIndex_+TelemetryFmt::kSyncZeroCount_bytes] = TelemetryFmt::kEndByteValue;
@@ -251,7 +251,7 @@ bool Telemetry::tick(uint32_t currentTime) {
     bool payloadAdded = false;
 
     for (std::size_t i = 0; i < streamCount_; i++) {
-        // i is safe because streamCount_ comes from the array passed in by the client
+        // i is safe because the stream count comes from the array passed in by the client.
         tryAppendStream(streams_[i], currentTime, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 

@@ -158,15 +158,15 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
         }
     }
 
-    // Print the name of the command that was not found, and suggest using "help" to see available commands_
+    // Print the name of the command that was not found, and suggest using "help" to see available commands.
     uart_->println("Command not found: " + String(command.c_str()));
-    uart_->println("Type 'help' or '?' to see available commands_.");
+    uart_->println("Type 'help' or '?' to see available commands.");
 }
 
-// Help function to list all commands_ with their long and short names
+// Help function to list all commands with their long and short names
 void CommandLine::help(){
     if (commands_.empty()) {
-        uart_->println("No commands_ available.");  
+        uart_->println("No commands available.");
         uart_->println("help<?>");
         return;
     }

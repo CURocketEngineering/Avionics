@@ -25,12 +25,12 @@ class SensorDataHandler {
 public:
     /**
      * @brief Construct a handler for a specific sensor.
-     * @param name_      8-bit identifier for the sensor/channel.
+     * @param name       8-bit identifier for the sensor/channel.
      * @param dataSaver Destination used when saving samples.
      * @note When to use: create one per sensor source and share a saver across
      *       multiple handlers as needed.
      */
-    SensorDataHandler(uint8_t name_, IDataSaver* dataSaver);
+    SensorDataHandler(uint8_t name, IDataSaver* dataSaver);
     
     /**
      * @brief Ingest a data point and persist it if the save interval elapsed.

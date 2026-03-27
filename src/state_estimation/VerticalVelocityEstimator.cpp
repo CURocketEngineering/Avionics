@@ -4,6 +4,8 @@
 
 #include "state_estimation/VerticalVelocityEstimator.h"
 
+constexpr float VerticalVelocityEstimator::kGravity_mps2;
+
 
 VerticalVelocityEstimator::VerticalVelocityEstimator(NoiseVariances noise)
     : stateAltitude_m_(0.0F),
@@ -61,7 +63,7 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
     // Use the altimeter timestamp as the reference for this update.
     const uint32_t currentTimestamp_ms = altimeter.timestamp_ms;
 
-    // If not initialized_, do so with the altimeter reading.
+    // If not initialized, do so with the altimeter reading.
     if (!initialized_) {
         const InitialState initialState = { altimeter.data, currentTimestamp_ms };
         init(initialState);
@@ -93,7 +95,8 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
     const float dt = (static_cast<float>(currentTimestamp_ms - lastTimestamp_ms_)) * kMillisecondsToSeconds;
 
     // Subtract gravity from the measured acceleration on the identified vertical axis.
-    inertialVerticalAcceleration_ = (rawAcl[verticalAxis_] * static_cast<float>(verticalDirection_)) - g_;
+    inertialVerticalAcceleration_ =
+        (rawAcl[verticalAxis_] * static_cast<float>(verticalDirection_)) - kGravity_mps2;
 
     // --- Prediction Step ---
     // State prediction:
@@ -102,7 +105,7 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
     const float predictedAltitude_m = stateAltitude_m_ + stateVelocity_mps_ * dt + 0.5F * inertialVerticalAcceleration_ * dt * dt;
     const float predictedVelocity_mps = stateVelocity_mps_ + inertialVerticalAcceleration_ * dt;
 
-    // Process noise covariance Q (derived from accelNoiseVariance_).
+    // Process noise covariance Q (derived from acceleration noise variance).
     const float dt2 = dt * dt;
     const float dt3 = dt2 * dt;
     const float dt4 = dt3 * dt;
@@ -132,7 +135,7 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
     // Innovation (residual): y = z - predictedAltitude_m
     const float y = z - predictedAltitude_m;
     // Innovation covariance: S = H P' H^T + R
-    // H = [1, 0], so S = P'[0][0] + altimeterNoiseVariance_
+    // H = [1, 0], so S = P'[0][0] + altimeter noise variance.
     const float innovationCovariance = predictedCov00 + altimeterNoiseVariance_;
 
     // Kalman gain: K = P' H^T / S = [ P'[0][0], P'[1][0] ] / S

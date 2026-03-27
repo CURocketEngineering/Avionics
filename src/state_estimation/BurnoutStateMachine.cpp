@@ -5,20 +5,20 @@
 #include "state_estimation/BurnoutStateMachine.h"
 #include "state_estimation/StateEstimationTypes.h"
 
-BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver_,
-                                         LaunchDetector* launchDetector_,
-                                         ApogeeDetector* apogeeDetector_,
-                                         VerticalVelocityEstimator* verticalVelocityEstimator_)
-    : dataSaver_(dataSaver_),
-      launchDetector_(launchDetector_),
-      apogeeDetector_(apogeeDetector_),
-      verticalVelocityEstimator_(verticalVelocityEstimator_),
+BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
+                                         LaunchDetector* launchDetector,
+                                         ApogeeDetector* apogeeDetector,
+                                         VerticalVelocityEstimator* verticalVelocityEstimator)
+    : dataSaver_(dataSaver),
+      launchDetector_(launchDetector),
+      apogeeDetector_(apogeeDetector),
+      verticalVelocityEstimator_(verticalVelocityEstimator),
       state_(STATE_ARMED)
 {
 }
 
 int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
-    // Update the state_
+    // Update the state.
     int lpStatus = LP_DEFAULT_FAIL; 
 
     switch (state_) {
@@ -27,10 +27,10 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
             lpStatus = launchDetector_->update(accel);
             // Serial.println(lpStatus);
             if (launchDetector_->isLaunched()) {
-                // Change state_ to ascent
+                // Change state to ascent.
                 state_ = STATE_POWERED_ASCENT;
 
-                // Log the state_ change
+                // Log the state change.
                 Serial.println("To pa (launch detected)");
                 Serial.print("PA timestamp: ");
                 Serial.println(accel.x.timestamp_ms);
@@ -59,7 +59,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
             if (verticalVelocityEstimator_->getInertialVerticalAcceleration() <= 0) { // when acceleration returns to less than gravity after launch, we're coasting
                 state_ = STATE_COAST_ASCENT;
 
-                // Log the state_ change
+                // Log the state change.
                 Serial.println("To ca");
                 Serial.print("CA timestamp: ");
                 Serial.println(accel.y.timestamp_ms);
@@ -76,7 +76,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
             if (apogeeDetector_->isApogeeDetected()) {
                 state_ = STATE_DESCENT;
 
-                // Log the state_ change
+                // Log the state change.
                 Serial.println("To descent");
                 Serial.print("Descent timestamp: ");
                 Serial.println(accel.x.timestamp_ms);

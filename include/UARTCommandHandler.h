@@ -24,7 +24,7 @@ constexpr int kMaxRowLength = 40;
 
 /**
  * @brief Lightweight UART command-line interface with history and parsing.
- * @note When to use: add interactive commands_ for debugging or configuration
+ * @note When to use: add interactive commands for debugging or configuration
  *       over a serial terminal without bringing in a full shell.
  */
 class CommandLine {
@@ -58,7 +58,7 @@ private:
         std::string shortName;           
         std::function<void(std::queue<std::string>, std::string&)> funcPtr; // Function pointer to the command handler
     };
-    std::vector<Command> commands_{};  // Vector to store the list of commands_
+    std::vector<Command> commands_{};  // Vector to store the list of commands
 
     // Class member variables for buffering and history
     std::string fullLine_ = {""}; 

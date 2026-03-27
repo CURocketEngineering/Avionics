@@ -72,7 +72,7 @@ int LaunchDetector::update(AccelerationTriplet accel)
         return LP_INITIAL_POPULATION;
     }
 
-    // Make sure we are near the window interval +- 10%
+    // Make sure we are near the window interval +- kAcceptablePercentDifferenceWindowInterval
     uint32_t timeDiff_ms = time_ms - accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
 
     // Check that the data didn't come in too fast

@@ -3,8 +3,8 @@
 #include "data_handling/SensorDataHandler.h"
 #include "ArduinoHAL.h"
 
-SensorDataHandler::SensorDataHandler(uint8_t name_, IDataSaver* dataSaver)
-    : name_(name_),
+SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* dataSaver)
+    : name_(name),
       dataSaver(dataSaver),
       saveInterval_ms_(0),
       lastSaveTime_ms_(0),

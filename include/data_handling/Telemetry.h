@@ -12,11 +12,11 @@
 
 /**
  * @file Telemetry.h
- * @brief Packs SensorDataHandler values into a fixed-size byte packet_ and streams_ over a Stream (UART).
+ * @brief Packs SensorDataHandler values into a fixed-size byte packet and streams them over a Stream (UART).
  *
  * Design goals:
  * - Keep Telemetry as a normal class (non-templated) so implementation lives in Telemetry.cpp.
- * - Allow callers to provide the list of telemetry streams_ as either:
+ * - Allow callers to provide the list of telemetry streams as either:
  *   - pointer + count (most general)
  *   - std::array (compile-time sized, convenient)
  *   - C array (compile-time sized, convenient)
@@ -28,7 +28,7 @@
 
 namespace TelemetryFmt {
 
-/** Maximum packet_ size (bytes). Must match your radio/modem configuration. */
+/** Maximum packet size (bytes). Must match your radio/modem configuration. */
 constexpr std::size_t kPacketCapacity_bytes = 120;
 
 /** Header markers: 3 sync zeros followed by a start byte. */
@@ -46,10 +46,10 @@ constexpr std::size_t kHeaderSize_bytes = kSyncZeroCount_bytes + 1 + kBytesInU32
 /** End marker layout: 3 zeros followed by an end byte. */
 constexpr std::size_t kEndMarkerSize_bytes = kSyncZeroCount_bytes + 1;
 
-/** Start-of-packet_ marker byte value. */
+/** Start-of-packet marker byte value. */
 constexpr std::uint8_t kStartByteValue = 51;
 
-/** End-of-packet_ marker byte value. */
+/** End-of-packet marker byte value. */
 constexpr std::uint8_t kEndByteValue = 52;
 
 /** 32-bit helper constants */
@@ -177,14 +177,14 @@ struct SendableSensorData {
 };
 
 /**
- * @brief Packetizes telemetry streams_ and sends them out over a Stream.
+ * @brief Packetizes telemetry streams and sends them out over a Stream.
  *
  * Usage pattern:
  * - Construct Telemetry with a stable list of SendableSensorData pointers.
  * - Call tick(currentTimeMs) every loop.
  *
  * Lifetime rule:
- * - Telemetry stores a pointer to the provided list of streams_ (non-owning).
+ * - Telemetry stores a pointer to the provided list of streams (non-owning).
  *   The list must outlive Telemetry.
  */
 class Telemetry {
@@ -195,19 +195,19 @@ public:
      * The std::array must outlive the Telemetry instance.
      */
     template <std::size_t N>
-    Telemetry(const std::array<SendableSensorData*, N>& streams_,
-              Stream& rfdSerialConnection_,
-              CommandLine* commandLine_ = nullptr)
-        : streams_(streams_.data()),
+    Telemetry(const std::array<SendableSensorData*, N>& streams,
+              Stream& rfdSerialConnection,
+              CommandLine* commandLine = nullptr)
+        : streams_(streams.data()),
           streamCount_(N),
-          rfdSerialConnection_(rfdSerialConnection_),
-          commandLine_(commandLine_),
+          rfdSerialConnection_(rfdSerialConnection),
+          commandLine_(commandLine),
           nextEmptyPacketIndex_(0),
           packet_{} {}
     /**
-     * @brief Call every loop to send due telemetry streams_.
+     * @brief Call every loop to send due telemetry streams.
      * @param currentTimeMs Current time in milliseconds.
-     * @return true if a packet_ was sent on this tick.
+     * @return true if a packet was sent on this tick.
      */
     bool tick(std::uint32_t currentTimeMs);
 
@@ -255,9 +255,9 @@ private:
     // Non-owning view of the stream list
     SendableSensorData* const* streams_;
 
-    // Number of streams_ in the list
+    // Number of streams in the list
     // Shall not be changed after construction
-    // Used to iterate over streams_
+    // Used to iterate over streams
     const std::size_t streamCount_;
 
     // Output

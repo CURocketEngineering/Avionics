@@ -82,7 +82,7 @@ public:
     virtual uint32_t getTimestamp() const;
 
     /**
-     * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - g.
+     * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - gravity.
      */
     virtual float getInertialVerticalAcceleration() const;
 
@@ -122,7 +122,7 @@ private:
     float altimeterNoiseVariance_;  // Altimeter noise variance (measurement noise).
 
     // Gravity constant (m/s²).
-    const float g_ = 9.81f;
+    static constexpr float kGravity_mps2 = 9.81f;
 
     // Which axis is vertical, and in what direction?
     int8_t verticalAxis_;  

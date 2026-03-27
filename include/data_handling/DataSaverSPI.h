@@ -8,7 +8,7 @@
 #include <cstdlib>
 
 
-constexpr uint32_t kMetadataStartAddress = 0x000000;  // Start writing metadata at the beginning of the flash_
+constexpr uint32_t kMetadataStartAddress = 0x000000;  // Start writing metadata at the beginning of flash
 constexpr uint32_t kDataStartAddress = 0x001000;  // Start writing data after 1 sector (4kB) of metadata
 constexpr uint32_t kPostLaunchFlagAddress = 0x000000;  // Address of the post-launch flag
 constexpr uint32_t kLaunchStartAddressAddress = 0x000001;  // Address of the launch start address (32 bits)
@@ -32,7 +32,7 @@ typedef struct { // NOLINT(altera-struct-pack-align)
 #pragma pack(pop)  // Stop packing from here on out
 
 /**
- * @brief SPI flash_ implementation of IDataSaver with timestamp compression.
+ * @brief SPI flash implementation of IDataSaver with timestamp compression.
  * @note When to use: onboard non-volatile logging where SD cards are
  *       impractical and data may need to survive power loss or long recovery.
  */
@@ -44,19 +44,19 @@ public:
     /**
      * @brief Construct a new DataSaverSPI object
      * 
-     * @param timestampInterval_ms_  Interval in ms at which timestamps are stored
-     * @param flash_                 Pointer to an initialized Adafruit_SPIFlash object
+     * @param timestampInterval_ms   Interval in ms at which timestamps are stored
+     * @param flash                  Pointer to an initialized Adafruit_SPIFlash object
      *
-     * @note timestampInterval_ms_ must be < 65535 (about 1 minute)
+     * @note timestampInterval_ms must be < 65535 (about 1 minute)
      */
-    DataSaverSPI(uint16_t timestampInterval_ms_, Adafruit_SPIFlash *flash_);
+    DataSaverSPI(uint16_t timestampInterval_ms, Adafruit_SPIFlash *flash);
 
     /**
-     * @brief Saves a DataPoint to SPI flash_
+     * @brief Saves a DataPoint to SPI flash.
      * 
      * If the new data point’s timestamp differs from the last written
      * timestamp by more than timestampInterval_ms_, the new timestamp is also
-     * written to flash_. Otherwise, the timestamp is omitted (to save space).
+     * written to flash. Otherwise, the timestamp is omitted (to save space).
      * 
      * @param dataPoint The data point to save
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
@@ -65,7 +65,7 @@ public:
     int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
     /**
-     * @brief Persist a bare timestamp entry to flash_.
+     * @brief Persist a bare timestamp entry to flash.
      * @param timestamp_ms Timestamp in milliseconds to record.
      * @note When to use: emitted internally when gaps exceed
      *       timestampInterval_ms_, or explicitly in tests.
@@ -73,19 +73,19 @@ public:
     int saveTimestamp(uint32_t timestamp_ms);
 
     /**
-     * @brief Initialize the flash_ chip and metadata.
+     * @brief Initialize the flash chip and metadata.
      * @note When to use: call during setup before any saveDataPoint usage.
      */
     virtual bool begin() override;
 
     /**
-     * @brief Returns whether the metadata from the flash_ chip
+     * @brief Returns whether the metadata from the flash chip
      *        indicates that it contains post-launch data that hasn't been 
      *        dumped yet. Call `clearPostLaunchMode()` to clear this flag.
      *        once you are confident that you have the data you want dumped
      *        to a more permanent storage or another machine. 
      * 
-     * Will also update the postLaunchMode_ flag.
+     * Will also update the post-launch mode flag.
      * 
      * @return true if post-launch mode is active
      * @return false if post-launch mode is not active
@@ -93,7 +93,7 @@ public:
     bool isPostLaunchMode();
 
     /**
-     * @brief Clears the post-launch mode flag on the flash_ chip
+     * @brief Clears the post-launch mode flag on the flash chip
      *        **WARNING: This will allow the data to be overwritten
      *        Only call this after you have dumped the data to a more
      *        permanent storage or another machine.
@@ -106,7 +106,7 @@ public:
      *        All data written from this point on is "post-launch" data which is
      *        sacred and should not be overwritten until it has been dumped.
      * 
-     * Sets postLaunchMode_ flag to true on the flash_ chip.
+     * Sets the post-launch mode flag to true on the flash chip.
      * Records the address at which the launch was detected and ensures that it's
      * not overwritten
      * 
@@ -124,19 +124,19 @@ public:
      * @param serial            Output stream.
      * @param ignoreEmptyPages  Skip pages that appear unwritten.
      * @note When to use: post-flight data retrieval before erasing or
-     *       redeploying the flash_.
+     *       redeploying the flash chip.
      */
     void dumpData(Stream &serial, bool ignoreEmptyPages);
 
     /**
-     * @brief Reset in-memory pointers without erasing flash_ contents.
+     * @brief Reset in-memory pointers without erasing flash contents.
      * @note When to use: restart logging logic while preserving prior data on
      *       the chip.
      */
     void clearInternalState();
 
     /**
-     * @brief Erase the entire flash_ chip to start fresh.
+     * @brief Erase the entire flash chip to start fresh.
      * @note When to use: Never needs to be used in normal operation. After
      *       about 1 hour of runtime, the entire chip is overwritten anyways. 
      *       Can be used in testing to reset the chip to a known state and then 
@@ -145,7 +145,7 @@ public:
     void eraseAllData();
 
     /**
-     * @brief Returns the last timestamp that was actually written to flash_
+     * @brief Returns the last timestamp that was actually written to flash.
      */
     uint32_t getLastTimestamp() const {
         return lastTimestamp_ms_;
@@ -176,18 +176,18 @@ public:
     }
 
     /**
-     * @brief Returns whether the flash_ chip is in post-launch mode
-     *       without updating the postLaunchMode_ flag or reading from flash_.
+     * @brief Returns whether the flash chip is in post-launch mode
+     *       without updating the post-launch mode flag or reading from flash.
      */
     bool quickGetPostLaunchMode() {
         return this->postLaunchMode_;
     }
 
 private:
-    // Interval at which to store the timestamp in flash_
+    // Interval at which to store the timestamp in flash.
     uint16_t timestampInterval_ms_;
 
-    // The last timestamp we actually wrote to flash_
+    // The last timestamp we actually wrote to flash.
     uint32_t lastTimestamp_ms_;
 
     // The timestamp this module was given for launch
@@ -199,7 +199,7 @@ private:
     // Flash driver
     Adafruit_SPIFlash *flash_;
 
-    // Next address in flash_ at which to write
+    // Next address in flash at which to write.
     uint32_t nextWriteAddress_;
 
     // Address at which launch was detected
@@ -209,13 +209,13 @@ private:
 
 private:
     /**
-     * @brief Helper to write a block of bytes to flash_ at the current
-     *        nextWriteAddress_ and advance that pointer.
+     * @brief Helper to write a block of bytes to flash at the current
+     *        write address and advance that pointer.
      */
     bool writeToFlash(const uint8_t* data, size_t length);
 
     /**
-     * @brief Helper to read a block of bytes from flash_ (updates read pointer externally).
+     * @brief Helper to read a block of bytes from flash (updates read pointer externally).
      */
     bool readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length);
 
@@ -252,7 +252,7 @@ public:
 private:
 
     /**
-     * @brief Flushes the buffer to flash_
+     * @brief Flushes the buffer to flash.
      * 
      * Returns 0 on success
      * Returns 1 if the buffer is empty
@@ -281,11 +281,11 @@ private:
     }
 
     // The chip will keep overwriting data forever unless post launch data is being protected.
-    // Once it wraps back around to the launchWriteAddress_, it will stop writing data.
+    // Once it wraps back around to the launch write address, it will stop writing data.
     bool isChipFullDueToPostLaunchProtection_;
 
-    // If the fc boots and is already in post launch mode, then do not write to flash_
-    // calling clearPostLaunchMode() will allow writing to flash_ again after a reboot
+    // If the flight computer boots and is already in post launch mode, do not write to flash.
+    // Calling clearPostLaunchMode() will allow writing to flash again after a reboot.
     bool rebootedInPostLaunchMode_ = false;
 };
 

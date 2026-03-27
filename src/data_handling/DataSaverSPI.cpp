@@ -3,10 +3,10 @@
 
 #include <cstring>
 
-DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms_,
-                           Adafruit_SPIFlash* flash_)
-    : timestampInterval_ms_(timestampInterval_ms_),
-      flash_(flash_),
+DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
+                           Adafruit_SPIFlash* flash)
+    : timestampInterval_ms_(timestampInterval_ms),
+      flash_(flash),
       nextWriteAddress_(kDataStartAddress),
       bufferIndex_(0),
       lastTimestamp_ms_(0),
@@ -67,7 +67,7 @@ int DataSaverSPI::addDataToBuffer(const uint8_t* data, size_t length) {
     return 0;
 }
 
-// Write the entire buffer to flash_
+// Write the entire buffer to flash.
 int DataSaverSPI::flushBuffer() {
     if (bufferIndex_ == 0) {
         return 1;  // Nothing to flush
@@ -113,7 +113,7 @@ bool DataSaverSPI::begin() {
 
     this->postLaunchMode_ = isPostLaunchMode();
     if (postLaunchMode_) {
-        // If we are already in post-launch mode, then don't write to flash_ at all
+        // If we are already in post-launch mode, then don't write to flash at all.
         rebootedInPostLaunchMode_ = true;
         return false; 
     }
@@ -144,7 +144,7 @@ void DataSaverSPI::dumpData(Stream &serial, bool ignoreEmptyPages) { //NOLINT(re
     size_t recordSize = sizeof(Record_t); //NOLINT(cppcoreguidelines-init-variables)
     size_t numRecordsPerPage = SFLASH_PAGE_SIZE / recordSize; //NOLINT(cppcoreguidelines-init-variables)
 
-    // If not in post-launch mode, erase the next sector after nextWriteAddress_
+    // If not in post-launch mode, erase the next sector after the next write address.
     // This ensures that we don't accidentally dump old data from previous flights
     // If ignoreEmptyPages is true, then we don't need to erase the next sector
     if (!postLaunchMode_ && !ignoreEmptyPages) {
@@ -243,7 +243,7 @@ void DataSaverSPI::eraseAllData() {
 
     clearInternalState();
 
-    // Clear the launchWriteAddress_
+    // Clear the launch write address.
     launchWriteAddress_ = 0;
 
 }
@@ -286,21 +286,21 @@ void DataSaverSPI::launchDetected(uint32_t launchTimestamp_ms_) {
     uint32_t rollbackSize_bytes = dataPointsPerMinute * recordSize;
 
     // 3) Clamp rollbackSize_bytes to something reasonable. We must not exceed
-    //    the usable flash_ region (from address=1 to address=flash_->size()-1).
+    //    the usable flash region (from address=1 to address=flash size - 1).
     uint32_t const maxUsable = flash_->size() - kDataStartAddress;
     if (rollbackSize_bytes > maxUsable) {
         // If we can't keep an entire minute, just keep as much as we can
         rollbackSize_bytes = maxUsable;
     }
 
-    // 4) Next, we do ring-buffer math to find our new launchWriteAddress_
-    //    which is "1 minute's worth of data behind nextWriteAddress_" *in a circular sense*.
+    // 4) Next, we do ring-buffer math to find the new launch write address,
+    //    which is "1 minute's worth of data behind the next write address" in a circular sense.
 
-    //    Because nextWriteAddress_ can be anywhere in [1, flash_->size()-1],
+    //    Because the next write address can be anywhere in [1, flash size - 1],
     //    let’s do a safe modular subtraction:
     //
-    //       newAddr = ( nextWriteAddress_ + flash_->size() - rollbackSize_bytes ) 
-    //                                % flash_->size()
+    //       newAddr = (next write address + flash size - rollback size)
+    //                 % flash size
     //
     //    Then we ensure it’s never 0 because 0 is used for metadata.
 
