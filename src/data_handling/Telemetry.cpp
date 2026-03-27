@@ -28,7 +28,7 @@ bool isTimestampReachedOrPassed(std::uint32_t current, std::uint32_t target) {
     return static_cast<std::int32_t>(current - target) >= 0;
 }
 
-void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
+void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTime_ms) {
     if (inCommandMode_) {
         return;
     }
@@ -39,7 +39,7 @@ void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
         if (receivedChar == TelemetryFmt::kCommandEntryChar) {
             ++commandEntryProgress_;
             if (commandEntryProgress_ >= TelemetryFmt::kCommandEntrySequenceLength) {
-                enterCommandMode(currentTimeMs);
+                enterCommandMode(currentTime_ms);
             }
         } else {
             // Send a debug message to the stream
@@ -53,10 +53,10 @@ void Telemetry::checkForRadioCommandSequence(std::uint32_t currentTimeMs) {
     }
 }
 
-void Telemetry::enterCommandMode(std::uint32_t currentTimeMs) {
+void Telemetry::enterCommandMode(std::uint32_t currentTime_ms) {
     inCommandMode_ = true;
-    commandModeEnteredTimestamp_ms_ = currentTimeMs;
-    commandModeLastInputTimestamp_ms_ = currentTimeMs;
+    commandModeEnteredTimestamp_ms_ = currentTime_ms;
+    commandModeLastInputTimestamp_ms_ = currentTime_ms;
     commandEntryProgress_ = 0;
     commandModeTimeoutLocked_ = false;
     commandModeTimeoutLockDeadline_ms_ = 0;
@@ -77,15 +77,15 @@ void Telemetry::exitCommandMode() {
     }
 }
 
-void Telemetry::lockCommandModeTimeout(std::uint32_t lockDurationMs) {
-    if (!inCommandMode_ || lockDurationMs == 0) {
+void Telemetry::lockCommandModeTimeout(std::uint32_t lockDuration_ms) {
+    if (!inCommandMode_ || lockDuration_ms == 0) {
         return;
     }
 
-    const std::uint32_t nowMs = millis();
+    const std::uint32_t now_ms = millis();
     commandModeTimeoutLocked_ = true;
-    commandModeTimeoutLockDeadline_ms_ = nowMs + lockDurationMs;
-    commandModeLastInputTimestamp_ms_ = nowMs;
+    commandModeTimeoutLockDeadline_ms_ = now_ms + lockDuration_ms;
+    commandModeLastInputTimestamp_ms_ = now_ms;
 }
 
 void Telemetry::unlockCommandModeTimeout() {
@@ -105,7 +105,7 @@ void Telemetry::forceExitCommandMode() {
     exitCommandMode();
 }
 
-bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) {
+bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTime_ms) {
     if (!inCommandMode_) {
         return false;
     }
@@ -117,24 +117,24 @@ bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) 
         }
     }
 
-    // If currentTimeMs was sampled before command input was processed in this loop,
+    // If currentTime_ms was sampled before command input was processed in this loop,
     // avoid unsigned underflow in the inactivity subtraction.
-    if (isTimestampNewer(commandModeLastInputTimestamp_ms_, currentTimeMs)) {
+    if (isTimestampNewer(commandModeLastInputTimestamp_ms_, currentTime_ms)) {
         return true;
     }
 
     if (commandModeTimeoutLocked_) {
-        if (!isTimestampReachedOrPassed(currentTimeMs, commandModeTimeoutLockDeadline_ms_)) {
+        if (!isTimestampReachedOrPassed(currentTime_ms, commandModeTimeoutLockDeadline_ms_)) {
             return true;
         }
 
         commandModeTimeoutLocked_ = false;
         commandModeTimeoutLockDeadline_ms_ = 0;
-        commandModeLastInputTimestamp_ms_ = currentTimeMs;
+        commandModeLastInputTimestamp_ms_ = currentTime_ms;
         return true;
     }
 
-    if ((currentTimeMs - commandModeLastInputTimestamp_ms_) >= TelemetryFmt::kCommandModeInactivityTimeout_ms) {
+    if ((currentTime_ms - commandModeLastInputTimestamp_ms_) >= TelemetryFmt::kCommandModeInactivityTimeout_ms) {
         exitCommandMode();
         return false;
     }
@@ -142,7 +142,7 @@ bool Telemetry::shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs) 
     return true;
 }
 
-void Telemetry::preparePacket(std::uint32_t timestamp) {
+void Telemetry::preparePacket(std::uint32_t timestamp_ms) {
     // Write the packet header with sync bytes, start byte, and timestamp.
     // Only clear what we own in the header (full-packet clearing happens in setPacketToZero()).
 
@@ -153,7 +153,7 @@ void Telemetry::preparePacket(std::uint32_t timestamp) {
     this->packet_[TelemetryFmt::kStartByteIndex] = TelemetryFmt::kStartByteValue;
 
     // Write the timestamp in big-endian format
-    TelemetryFmt::writeU32Be(&this->packet_[TelemetryFmt::kTimestampIndex], timestamp);
+    TelemetryFmt::writeU32Be(&this->packet_[TelemetryFmt::kTimestampIndex], timestamp_ms);
 
     // Packet counter (4 bytes, big-endian)
     TelemetryFmt::writeU32Be(&this->packet_[TelemetryFmt::kPacketCounterIndex], packetCounter_);
@@ -205,8 +205,8 @@ bool Telemetry::canFitStreamWithEndMarker(const SendableSensorData* ssd) const {
     return hasRoom(nextEmptyPacketIndex_, payloadSize_bytes + TelemetryFmt::kEndMarkerSize_bytes);
 }
 
-void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded) {
-    if (!stream->shouldBeSent(currentTimeMs)) {
+void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t currentTime_ms, bool& payloadAdded) {
+    if (!stream->shouldBeSent(currentTime_ms)) {
         return;
     }
 
@@ -215,7 +215,7 @@ void Telemetry::tryAppendStream(SendableSensorData* stream, std::uint32_t curren
     }
 
     addSSDToPacket(stream);
-    stream->markWasSent(currentTimeMs);
+    stream->markWasSent(currentTime_ms);
     payloadAdded = true;
 }
 
@@ -237,22 +237,22 @@ bool Telemetry::finalizeAndSendPacket() {
     return true;
 }
 
-bool Telemetry::tick(uint32_t currentTime) {
+bool Telemetry::tick(uint32_t currentTime_ms) {
     // Checks if we should put the telemetry into command mode
-    checkForRadioCommandSequence(currentTime);
+    checkForRadioCommandSequence(currentTime_ms);
 
-    if (shouldPauseTelemetryForCommandMode(currentTime)) {
+    if (shouldPauseTelemetryForCommandMode(currentTime_ms)) {
         return false;
     }
 
     setPacketToZero();
-    preparePacket(currentTime);
+    preparePacket(currentTime_ms);
 
     bool payloadAdded = false;
 
     for (std::size_t i = 0; i < streamCount_; i++) {
         // i is safe because the stream count comes from the array passed in by the client.
-        tryAppendStream(streams_[i], currentTime, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        tryAppendStream(streams_[i], currentTime_ms, payloadAdded); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     }
 
     if (!payloadAdded) {

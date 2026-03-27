@@ -79,9 +79,9 @@ inline void writeU32Be(std::uint8_t* dst, std::uint32_t v) {
  *
  * Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback.
  */
-inline std::uint16_t hzToPeriodMs(std::uint16_t hz) {
-    return (hz == 0) ? 1000u
-                     : static_cast<std::uint16_t>((1000u + hz - 1u) / hz);
+inline std::uint16_t hzToPeriod_ms(std::uint16_t frequency_hz) {
+    return (frequency_hz == 0) ? 1000u
+                     : static_cast<std::uint16_t>((1000u + frequency_hz - 1u) / frequency_hz);
 }
 
 } // namespace TelemetryFmt
@@ -120,23 +120,23 @@ struct SendableSensorData {
     // --- Scheduling state ---
 
     /** Minimum time between sends for this stream. */
-    std::uint16_t periodMs;
+    std::uint16_t period_ms;
 
     /** Last send time in ms (same time base as tick()). */
-    std::uint32_t lastSentTimestamp;
+    std::uint32_t lastSentTimestamp_ms;
 
     /**
      * @brief Create a single SDH stream.
      * @param sdh SensorDataHandler to send (non-owning).
-     * @param sendFrequencyHz Desired send rate in Hz.
+     * @param sendFrequency_hz Desired send rate in Hz.
      */
-    SendableSensorData(SensorDataHandler* sdh, std::uint16_t sendFrequencyHz)
+    SendableSensorData(SensorDataHandler* sdh, std::uint16_t sendFrequency_hz)
         : singleSDH(sdh),
           multiSDH(0),
           multiSDHLength(0),
           multiSDHDataLabel(0),
-          periodMs(TelemetryFmt::hzToPeriodMs(sendFrequencyHz)),
-          lastSentTimestamp(0) {}
+          period_ms(TelemetryFmt::hzToPeriod_ms(sendFrequency_hz)),
+          lastSentTimestamp_ms(0) {}
 
     /**
      * @brief Create a multi SDH stream from a std::array.
@@ -147,26 +147,26 @@ struct SendableSensorData {
     template <std::size_t M>
     SendableSensorData(const std::array<SensorDataHandler*, M>& sdhList,
                        std::uint8_t label,
-                       std::uint16_t sendFrequencyHz)
+                       std::uint16_t sendFrequency_hz)
         : singleSDH(0),
           multiSDH(sdhList.data()),
           multiSDHLength(M),
           multiSDHDataLabel(label),
-          periodMs(TelemetryFmt::hzToPeriodMs(sendFrequencyHz)),
-          lastSentTimestamp(0) {}
+          period_ms(TelemetryFmt::hzToPeriod_ms(sendFrequency_hz)),
+          lastSentTimestamp_ms(0) {}
 
     /**
      * @brief Return true if enough time has elapsed such that this stream wants to be sent again.
      */
-    bool shouldBeSent(std::uint32_t now) const {
-        return (now - lastSentTimestamp) >= periodMs;
+    bool shouldBeSent(std::uint32_t now_ms) const {
+        return (now_ms - lastSentTimestamp_ms) >= period_ms;
     }
 
     /**
      * @brief Update internal state after sending.
      */
-    void markWasSent(std::uint32_t now) {
-        lastSentTimestamp = now;
+    void markWasSent(std::uint32_t now_ms) {
+        lastSentTimestamp_ms = now_ms;
     }
 
     /** @brief Convenience: true if configured as a single SDH stream. */
@@ -181,7 +181,7 @@ struct SendableSensorData {
  *
  * Usage pattern:
  * - Construct Telemetry with a stable list of SendableSensorData pointers.
- * - Call tick(currentTimeMs) every loop.
+ * - Call tick(currentTime_ms) every loop.
  *
  * Lifetime rule:
  * - Telemetry stores a pointer to the provided list of streams (non-owning).
@@ -206,10 +206,10 @@ public:
           packet_{} {}
     /**
      * @brief Call every loop to send due telemetry streams.
-     * @param currentTimeMs Current time in milliseconds.
+     * @param currentTime_ms Current time in milliseconds.
      * @return true if a packet was sent on this tick.
      */
-    bool tick(std::uint32_t currentTimeMs);
+    bool tick(std::uint32_t currentTime_ms);
 
     /**
      * @brief True if telemetry is currently paused for radio command mode.
@@ -223,9 +223,9 @@ public:
 
     /**
      * @brief Temporarily disable command-mode inactivity timeout.
-     * @param lockDurationMs Duration before auto-unlock fallback.
+     * @param lockDuration_ms Duration before auto-unlock fallback.
      */
-    void lockCommandModeTimeout(std::uint32_t lockDurationMs);
+    void lockCommandModeTimeout(std::uint32_t lockDuration_ms);
 
     /**
      * @brief Re-enable command-mode inactivity timeout immediately.
@@ -239,17 +239,17 @@ public:
 
 private:
     // Packet building helpers
-    void preparePacket(std::uint32_t timestamp);
+    void preparePacket(std::uint32_t timestamp_ms);
     void addSingleSDHToPacket(SensorDataHandler* sdh);
     void addSSDToPacket(SendableSensorData* ssd);
     void setPacketToZero();
     void addEndMarker();
-    void checkForRadioCommandSequence(std::uint32_t currentTimeMs);
-    void enterCommandMode(std::uint32_t currentTimeMs);
+    void checkForRadioCommandSequence(std::uint32_t currentTime_ms);
+    void enterCommandMode(std::uint32_t currentTime_ms);
     void exitCommandMode();
-    bool shouldPauseTelemetryForCommandMode(std::uint32_t currentTimeMs);
+    bool shouldPauseTelemetryForCommandMode(std::uint32_t currentTime_ms);
     bool canFitStreamWithEndMarker(const SendableSensorData* ssd) const;
-    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTimeMs, bool& payloadAdded);
+    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTime_ms, bool& payloadAdded);
     bool finalizeAndSendPacket();
 
     // Non-owning view of the stream list
