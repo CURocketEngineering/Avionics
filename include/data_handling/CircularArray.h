@@ -64,10 +64,10 @@ class CircularArray {
     uint8_t currentSize; // 0 to 255
 
   public:
-    CircularArray(uint8_t maxSizeIn = static_cast<uint8_t>(Capacity)) : maxSize(maxSizeIn) {
+    CircularArray(uint8_t maxSize_in = static_cast<uint8_t>(Capacity)) : maxSize(maxSize_in) {
         static_assert(Capacity > 0, "CircularArray capacity must be greater than 0");
         static_assert(Capacity <= kMaxCircularArrayCapacity, "CircularArray capacity must be less than or equal to 255 b/c of head being uint8_t");
-        assert(maxSizeIn > 0 && maxSizeIn <= Capacity);
+        assert(maxSize_in > 0 && maxSize_in <= Capacity);
         this->head = 0;
         this->currentSize = 0; // How full is the circular buffer? 
     }
