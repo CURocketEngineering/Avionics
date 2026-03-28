@@ -2,6 +2,8 @@
 
 Guidance for human and AI coding agents working in this repository.
 
+If you are an AI agent, say "I read the AGENTS.md" at the start of the chat, to acknowledge that you have read and understand these instructions.
+
 ## Scope
 
 These instructions apply to the entire repo unless a deeper `AGENTS.md` overrides them.
