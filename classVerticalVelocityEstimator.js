@@ -8,5 +8,5 @@ var classVerticalVelocityEstimator =
     [ "getVerticalAxis", "classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90", null ],
     [ "getVerticalDirection", "classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e", null ],
     [ "init", "classVerticalVelocityEstimator.html#af568600ad36b0b146b7d675f1b562724", null ],
-    [ "update", "classVerticalVelocityEstimator.html#a9f740ef28bc66fe44de75d05f41e58c2", null ]
+    [ "update", "classVerticalVelocityEstimator.html#ac1d3ea6c5184648e6a48508dbcc02fe7", null ]
 ];

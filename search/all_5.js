@@ -15,7 +15,7 @@ var searchData=
   ['data_5fhandling_12',['data_handling',['../dir_d44c64559bbebec7f509842c48db8b23.html#autotoc_md5',1,'']]],
   ['data_5fhandling_20directory_13',['data_handling Directory',['../dir_33671b85bb374cef191fae8fb6bc10f9.html#autotoc_md0',1,'']]],
   ['datanames_2eh_14',['DataNames.h',['../DataNames_8h.html',1,'']]],
-  ['datapoint_15',['DataPoint',['../classDataPoint.html',1,'DataPoint'],['../classDataPoint.html#a1e1b3678b2d1522b7956148a57e1602f',1,'DataPoint::DataPoint()'],['../classDataPoint.html#aaa61e919c7f71c30145a8b3f53f91841',1,'DataPoint::DataPoint(uint32_t timestamp_ms, float data)']]],
+  ['datapoint_15',['DataPoint',['../classDataPoint.html',1,'DataPoint'],['../classDataPoint.html#a1e1b3678b2d1522b7956148a57e1602f',1,'DataPoint::DataPoint()'],['../classDataPoint.html#a5efc8a46c7dd4e7be28bf588918bb03b',1,'DataPoint::DataPoint(uint32_t timestamp_ms_in, float data_in)']]],
   ['datapoint_2eh_16',['DataPoint.h',['../DataPoint_8h.html',1,'']]],
   ['datasaver_17',['dataSaver',['../classSensorDataHandler.html#aa99a1739e1aff7315c2801398b918f4b',1,'SensorDataHandler']]],
   ['datasaver_2eh_18',['DataSaver.h',['../DataSaver_8h.html',1,'']]],

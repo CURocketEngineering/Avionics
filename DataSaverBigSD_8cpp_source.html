@@ -125,7 +125,7 @@ $(function(){initNavTree('DataSaverBigSD_8cpp_source.html','',''); });
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    bufLen_ = 0;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    linesPending_ = 0;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    lastFlushMs_ = millis();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    lastFlushMs_ = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(millis());</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    lastSyncMs_ = lastFlushMs_;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    ready_ = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
@@ -144,7 +144,7 @@ $(function(){initNavTree('DataSaverBigSD_8cpp_source.html','',''); });
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// Format the new line</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">int</span> numCharsWritten = snprintf(buf_ + bufLen_, remaining, <span class="stringliteral">&quot;%lu,%u,%.6f\n&quot;</span>, <span class="comment">// NOLINT(cppcoreguidelines-init-variables)</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                     <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(dataPoint.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>), name, dataPoint.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                     <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(dataPoint.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>), name, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(dataPoint.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>));</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="comment">// Check snprintf result</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (numCharsWritten &lt;= 0 || (<span class="keywordtype">size_t</span>)numCharsWritten &gt;= remaining) {</div>
@@ -158,65 +158,66 @@ $(function(){initNavTree('DataSaverBigSD_8cpp_source.html','',''); });
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="comment">// Try again (safe now)</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        remaining = <span class="keyword">sizeof</span>(buf_);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        numCharsWritten = snprintf(buf_, remaining, <span class="stringliteral">&quot;%lu,%u,%.6f\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(dataPoint.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>), name, dataPoint.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        numCharsWritten = snprintf(buf_, remaining, <span class="stringliteral">&quot;%lu,%u,%.6f\n&quot;</span>, <span class="keyword">static_cast&lt;</span><span class="keywordtype">long</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(dataPoint.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>), name, <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(dataPoint.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>));</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">if</span> (numCharsWritten &lt;= 0 || (<span class="keywordtype">size_t</span>)numCharsWritten &gt;= remaining) {</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>          <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="DataSaverBigSD_8h.html#a95dc9f557ef312daf795c9b11da408fba3b9eb2458959d12755e61da3f97fc7f7">DS_LINE_TOO_LONG</a>;  <span class="comment">// can&#39;t encode this line even in an empty buffer</span></div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        }</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    bufLen_ += numCharsWritten;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    ++linesPending_;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    uint32_t <span class="keyword">const</span> now = millis();</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">bool</span> <span class="keyword">const</span> bufFull = (bufLen_ &gt;= kBufSize_bytes);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">bool</span> <span class="keyword">const</span> manyLines = (linesPending_ &gt;= kFlushLines);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordtype">bool</span> <span class="keyword">const</span> timeUp = (now - lastFlushMs_ &gt;= kFlushMs);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">if</span> (bufFull || manyLines || timeUp) {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">if</span> (file_.write(buf_, bufLen_) != bufLen_) {</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>          <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="DataSaverBigSD_8h.html#a95dc9f557ef312daf795c9b11da408fba842ced636355dfde0b93d675220363cf">DS_FLUSH_FAILED</a>;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        bufLen_ = 0;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        linesPending_ = 0;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        lastFlushMs_ = now;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">if</span> (now - lastSyncMs_ &gt;= <a class="code hl_variable" href="DataSaverBigSD_8h.html#ad118c1177fc283a5703db7b2bf4e1ab0">kSyncInterval_ms</a>) {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            file_.sync();</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            lastSyncMs_ = now;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">const</span> <span class="keyword">auto</span> numCharsWritten_u16 = <span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(numCharsWritten);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    bufLen_ = <span class="keyword">static_cast&lt;</span>uint16_t<span class="keyword">&gt;</span>(bufLen_ + numCharsWritten_u16);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    ++linesPending_;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keyword">const</span> <span class="keyword">auto</span> now = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(millis());</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">bool</span> <span class="keyword">const</span> bufFull = (bufLen_ &gt;= kBufSize_bytes);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordtype">bool</span> <span class="keyword">const</span> manyLines = (linesPending_ &gt;= kFlushLines);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">bool</span> <span class="keyword">const</span> timeUp = (now - lastFlushMs_ &gt;= kFlushMs);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">if</span> (bufFull || manyLines || timeUp) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keywordflow">if</span> (file_.write(buf_, bufLen_) != bufLen_) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>          <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="DataSaverBigSD_8h.html#a95dc9f557ef312daf795c9b11da408fba842ced636355dfde0b93d675220363cf">DS_FLUSH_FAILED</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        bufLen_ = 0;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        linesPending_ = 0;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        lastFlushMs_ = now;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">if</span> (now - lastSyncMs_ &gt;= <a class="code hl_variable" href="DataSaverBigSD_8h.html#ad118c1177fc283a5703db7b2bf4e1ab0">kSyncInterval_ms</a>) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            file_.sync();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            lastSyncMs_ = now;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>}</div>
 </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">/* -----------------------------  end()  ----------------------------------- */</span></div>
-<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="classDataSaverBigSD.html#a9b4887da8d8500b2c5b3ec221f064a3d">   96</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverBigSD.html#a9b4887da8d8500b2c5b3ec221f064a3d">DataSaverBigSD::end</a>() {</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">if</span> (!ready_) {</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keywordflow">if</span> (bufLen_ &gt; 0) {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        file_.write(buf_, bufLen_);</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        bufLen_ = 0;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    file_.sync();</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    file_.close();</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    ready_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">/* -----------------------------  end()  ----------------------------------- */</span></div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classDataSaverBigSD.html#a9b4887da8d8500b2c5b3ec221f064a3d">   97</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classDataSaverBigSD.html#a9b4887da8d8500b2c5b3ec221f064a3d">DataSaverBigSD::end</a>() {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">if</span> (!ready_) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordflow">if</span> (bufLen_ &gt; 0) {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        file_.write(buf_, bufLen_);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        bufLen_ = 0;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    file_.sync();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    file_.close();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    ready_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>}</div>
 </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">/* -------------------  nextFreeFilePath()  -------------------------------- */</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>std::string DataSaverBigSD::nextFreeFilePath() {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    std::array&lt;char, kFilePathBufferSize&gt; path;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordflow">for</span> (uint16_t flightNumber = 0;; ++flightNumber) {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        snprintf(path.data(), <span class="keyword">sizeof</span>(path), <span class="stringliteral">&quot;/stream-%u.csv&quot;</span>, flightNumber);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">if</span> (!sd_.<a class="code hl_function" href="structSdFat.html#a26fa48dfcd1b55854897fda0825a9729">exists</a>(path.data())) {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="keywordflow">return</span> std::string(path.data());</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        }</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>}</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">/* -------------------  nextFreeFilePath()  -------------------------------- */</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>std::string DataSaverBigSD::nextFreeFilePath() {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    std::array&lt;char, kFilePathBufferSize&gt; path;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordflow">for</span> (uint16_t flightNumber = 0;; ++flightNumber) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        snprintf(path.data(), <span class="keyword">sizeof</span>(path), <span class="stringliteral">&quot;/stream-%u.csv&quot;</span>, flightNumber);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">if</span> (!sd_.<a class="code hl_function" href="structSdFat.html#a26fa48dfcd1b55854897fda0825a9729">exists</a>(path.data())) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">return</span> std::string(path.data());</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>}</div>
 <div class="ttc" id="aArduinoHAL_8h_html"><div class="ttname"><a href="ArduinoHAL_8h.html">ArduinoHAL.h</a></div></div>
 <div class="ttc" id="aDataSaverBigSD_8h_html"><div class="ttname"><a href="DataSaverBigSD_8h.html">DataSaverBigSD.h</a></div></div>
 <div class="ttc" id="aDataSaverBigSD_8h_html_a57ac9cfd5a962d5f8756ff5600bd3c3b"><div class="ttname"><a href="DataSaverBigSD_8h.html#a57ac9cfd5a962d5f8756ff5600bd3c3b">kPreAllocateSize_MiB</a></div><div class="ttdeci">constexpr size_t kPreAllocateSize_MiB</div><div class="ttdef"><b>Definition</b> <a href="DataSaverBigSD_8h_source.html#l00011">DataSaverBigSD.h:11</a></div></div>
@@ -230,7 +231,7 @@ $(function(){initNavTree('DataSaverBigSD_8cpp_source.html','',''); });
 <div class="ttc" id="aclassDataPoint_html_a22a179660ba6fd06f4a7149d2f80e86e"><div class="ttname"><a href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">DataPoint::data</a></div><div class="ttdeci">float data</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00014">DataPoint.h:14</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a314cf9ac0f59ae12e9a576b4906ae9a2"><div class="ttname"><a href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">DataPoint::timestamp_ms</a></div><div class="ttdeci">uint32_t timestamp_ms</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00013">DataPoint.h:13</a></div></div>
 <div class="ttc" id="aclassDataSaverBigSD_html_a818c1fe885458b614eb19a54596c695f"><div class="ttname"><a href="classDataSaverBigSD.html#a818c1fe885458b614eb19a54596c695f">DataSaverBigSD::begin</a></div><div class="ttdeci">bool begin()</div><div class="ttdoc">Initialize the SD card and open a streaming file. Returns true on success.</div><div class="ttdef"><b>Definition</b> <a href="#l00011">DataSaverBigSD.cpp:11</a></div></div>
-<div class="ttc" id="aclassDataSaverBigSD_html_a9b4887da8d8500b2c5b3ec221f064a3d"><div class="ttname"><a href="classDataSaverBigSD.html#a9b4887da8d8500b2c5b3ec221f064a3d">DataSaverBigSD::end</a></div><div class="ttdeci">void end()</div><div class="ttdoc">Flush pending bytes and close the file.</div><div class="ttdef"><b>Definition</b> <a href="#l00096">DataSaverBigSD.cpp:96</a></div></div>
+<div class="ttc" id="aclassDataSaverBigSD_html_a9b4887da8d8500b2c5b3ec221f064a3d"><div class="ttname"><a href="classDataSaverBigSD.html#a9b4887da8d8500b2c5b3ec221f064a3d">DataSaverBigSD::end</a></div><div class="ttdeci">void end()</div><div class="ttdoc">Flush pending bytes and close the file.</div><div class="ttdef"><b>Definition</b> <a href="#l00097">DataSaverBigSD.cpp:97</a></div></div>
 <div class="ttc" id="aclassDataSaverBigSD_html_af2f8e1142c2704b5c23bac0b6d08fa1f"><div class="ttname"><a href="classDataSaverBigSD.html#af2f8e1142c2704b5c23bac0b6d08fa1f">DataSaverBigSD::saveDataPoint</a></div><div class="ttdeci">int saveDataPoint(const DataPoint &amp;dataPoint, uint8_t name) override</div><div class="ttdoc">Buffer a CSV line (timestamp,name,value) and flush in batches.</div><div class="ttdef"><b>Definition</b> <a href="#l00039">DataSaverBigSD.cpp:39</a></div></div>
 <div class="ttc" id="aclassDataSaverBigSD_html_af705c5b1eef94a44d14455bc6d8e46bf"><div class="ttname"><a href="classDataSaverBigSD.html#af705c5b1eef94a44d14455bc6d8e46bf">DataSaverBigSD::DataSaverBigSD</a></div><div class="ttdeci">DataSaverBigSD(uint8_t csPin=5)</div><div class="ttdef"><b>Definition</b> <a href="#l00008">DataSaverBigSD.cpp:8</a></div></div>
 <div class="ttc" id="aspi__mock_8h_html_a1cf6b1de1fffedaa1d26b189e9a8d2cc"><div class="ttname"><a href="spi__mock_8h.html#a1cf6b1de1fffedaa1d26b189e9a8d2cc">O_CREAT</a></div><div class="ttdeci">#define O_CREAT</div><div class="ttdef"><b>Definition</b> <a href="spi__mock_8h_source.html#l00101">spi_mock.h:101</a></div></div>

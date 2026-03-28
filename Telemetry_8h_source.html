@@ -147,7 +147,7 @@ $(function(){initNavTree('Telemetry_8h_source.html','',''); });
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span></div>
 <div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="namespaceTelemetryFmt.html#a30fffbf17324b298eb566e84546d1356">   82</a></span><span class="keyword">inline</span> std::uint16_t <a class="code hl_function" href="namespaceTelemetryFmt.html#a30fffbf17324b298eb566e84546d1356">hzToPeriod_ms</a>(std::uint16_t frequency_hz) {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">return</span> (frequency_hz == 0) ? 1000u</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordflow">return</span> (frequency_hz == 0) ? <span class="keyword">static_cast&lt;</span>std::uint16_t<span class="keyword">&gt;</span>(1000u)</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                     : <span class="keyword">static_cast&lt;</span>std::uint16_t<span class="keyword">&gt;</span>((1000u + frequency_hz - 1u) / frequency_hz);</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
 </div>

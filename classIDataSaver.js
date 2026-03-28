@@ -1,5 +1,6 @@
 var classIDataSaver =
 [
+    [ "~IDataSaver", "classIDataSaver.html#a0cd9960b70b6d12430f9f4d9601d5904", null ],
     [ "begin", "classIDataSaver.html#ace5e2181d713f498206b9a6bfb454dec", null ],
     [ "clearPostLaunchMode", "classIDataSaver.html#a79ac95353ea726856098888143c0195e", null ],
     [ "launchDetected", "classIDataSaver.html#ab85dcc857f197475c14f9e50e9d34a97", null ],

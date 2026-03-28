@@ -1,7 +1,7 @@
 var classDataPoint =
 [
     [ "DataPoint", "classDataPoint.html#a1e1b3678b2d1522b7956148a57e1602f", null ],
-    [ "DataPoint", "classDataPoint.html#aaa61e919c7f71c30145a8b3f53f91841", null ],
+    [ "DataPoint", "classDataPoint.html#a5efc8a46c7dd4e7be28bf588918bb03b", null ],
     [ "operator<", "classDataPoint.html#ab2c12b30fb4dd918684df5c3de11491e", null ],
     [ "operator<=", "classDataPoint.html#a956a671e82698d659740c446a0a5034b", null ],
     [ "operator>", "classDataPoint.html#a2e4598eaee0513048f4022a182aaccb5", null ],

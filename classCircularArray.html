@@ -109,7 +109,7 @@ Collaboration diagram for CircularArray&lt; T, Capacity &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae8a54cd0d4eeea4e7d69c73109678af3" id="r_ae8a54cd0d4eeea4e7d69c73109678af3"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ae8a54cd0d4eeea4e7d69c73109678af3">CircularArray</a> (uint8_t <a class="el" href="#a42d9a832b09f3976ca3562f930de766b">maxSize</a>=Capacity)</td></tr>
+<tr class="memitem:ac3332d14751b1ffa5534bb7f95945f2d" id="r_ac3332d14751b1ffa5534bb7f95945f2d"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac3332d14751b1ffa5534bb7f95945f2d">CircularArray</a> (uint8_t maxSize_in=static_cast&lt; uint8_t &gt;(Capacity))</td></tr>
 <tr class="memitem:a9e3c0151668d5ce6ef35feb67cf868c4" id="r_a9e3c0151668d5ce6ef35feb67cf868c4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9e3c0151668d5ce6ef35feb67cf868c4">push</a> (T data)</td></tr>
 <tr class="memitem:a210f905fdd5e0a5cba9cee0ce0dc750a" id="r_a210f905fdd5e0a5cba9cee0ce0dc750a"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a210f905fdd5e0a5cba9cee0ce0dc750a">pop</a> ()</td></tr>
 <tr class="memitem:a64b1995e7f05272c6fa99c5cc0bb8053" id="r_a64b1995e7f05272c6fa99c5cc0bb8053"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a64b1995e7f05272c6fa99c5cc0bb8053">getFromHead</a> (uint8_t index)</td></tr>
@@ -133,10 +133,10 @@ Protected Attributes</h2></td></tr>
 class CircularArray&lt; T, Capacity &gt;</div><p>Fixed-size circular buffer with median helper and head tracking. </p>
 <dl class="section note"><dt>Note</dt><dd>When to use: maintain a rolling window of recent samples for filters or detectors without reallocations. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00055">55</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00058">58</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae8a54cd0d4eeea4e7d69c73109678af3" name="ae8a54cd0d4eeea4e7d69c73109678af3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8a54cd0d4eeea4e7d69c73109678af3">&#9670;&#160;</a></span>CircularArray()</h2>
+<a id="ac3332d14751b1ffa5534bb7f95945f2d" name="ac3332d14751b1ffa5534bb7f95945f2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3332d14751b1ffa5534bb7f95945f2d">&#9670;&#160;</a></span>CircularArray()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,7 +149,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classCircularArray.html">CircularArray</a>&lt; T, Capacity &gt;::CircularArray </td>
           <td>(</td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>maxSize</em></span><span class="paramdefsep"> = </span><span class="paramdefval">Capacity</span></td><td>)</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>maxSize_in</em></span><span class="paramdefsep"> = </span><span class="paramdefval">static_cast&lt;uint8_t&gt;(Capacity)</span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -160,7 +160,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00064">64</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00067">67</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -190,7 +190,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00134">134</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00142">142</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -219,7 +219,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00095">95</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00101">101</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -248,7 +248,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00108">108</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00117">117</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -277,7 +277,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00112">112</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00121">121</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -306,7 +306,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00116">116</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00125">125</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -335,7 +335,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00104">104</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00113">113</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -364,7 +364,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00100">100</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00109">109</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +393,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00084">84</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00089">89</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00072">72</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00075">75</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -449,7 +449,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00057">57</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00060">60</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +475,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00061">61</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00064">64</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -501,7 +501,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00060">60</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00063">63</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -527,7 +527,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00059">59</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00062">62</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>
@@ -553,7 +553,7 @@ template&lt;typename T, std::size_t Capacity&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00058">58</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="CircularArray_8h_source.html#l00061">61</a> of file <a class="el" href="CircularArray_8h_source.html">CircularArray.h</a>.</p>
 
 </div>
 </div>

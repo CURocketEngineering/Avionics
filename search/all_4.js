@@ -4,7 +4,7 @@ var searchData=
   ['chunk_1',['&lt;b&gt;Proposed 64-Byte Data Chunk&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md27',1,'']]],
   ['chunk_20method_2',['&lt;b&gt;Why We Rejected the 64-Byte Chunk Method&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md28',1,'']]],
   ['chunks_3',['&lt;b&gt;Alternative Approach: 64-Byte Chunks&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md26',1,'']]],
-  ['circulararray_4',['CircularArray',['../classCircularArray.html',1,'CircularArray&lt; T, Capacity &gt;'],['../classCircularArray.html#ae8a54cd0d4eeea4e7d69c73109678af3',1,'CircularArray::CircularArray()']]],
+  ['circulararray_4',['CircularArray',['../classCircularArray.html',1,'CircularArray&lt; T, Capacity &gt;'],['../classCircularArray.html#ac3332d14751b1ffa5534bb7f95945f2d',1,'CircularArray::CircularArray()']]],
   ['circulararray_2eh_5',['CircularArray.h',['../CircularArray_8h.html',1,'']]],
   ['circulararray_3c_20datapoint_2c_20kcirculararrayallocatedslots_20_3e_6',['CircularArray&lt; DataPoint, kCircularArrayAllocatedSlots &gt;',['../classCircularArray.html',1,'']]],
   ['clear_7',['clear',['../classCircularArray.html#a68c4de6050f1462e92df759176692dbd',1,'CircularArray::clear()'],['../classDataSaverMock.html#a18cd7dc6a239991a749149436cfcdb86',1,'DataSaverMock::clear()'],['../classMockSerial.html#aa19c49045a394de46e22ebfae19b95a5',1,'MockSerial::clear()'],['../classMockSerialClass.html#a5bc2e706b702e7645f7ae8af5a026473',1,'MockSerialClass::clear()']]],

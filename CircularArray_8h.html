@@ -167,18 +167,18 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adce4396e29b6a3e076185063b646e518" id="r_adce4396e29b6a3e076185063b646e518"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t N&gt; </td></tr>
-<tr class="memitem:adce4396e29b6a3e076185063b646e518 template"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#adce4396e29b6a3e076185063b646e518">partition</a> (std::array&lt; T, N &gt; &amp;array, int left, int right, int pivotIndex)</td></tr>
-<tr class="memitem:a8b13da55799eef1f0f6e040d61856423" id="r_a8b13da55799eef1f0f6e040d61856423"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t N&gt; </td></tr>
-<tr class="memitem:a8b13da55799eef1f0f6e040d61856423 template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a8b13da55799eef1f0f6e040d61856423">quickSelect</a> (std::array&lt; T, N &gt; &amp;array, int left, int right, int k)</td></tr>
+<tr class="memitem:a3deb0b74ec66cb56af37e8a1d61b4d35" id="r_a3deb0b74ec66cb56af37e8a1d61b4d35"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t N&gt; </td></tr>
+<tr class="memitem:a3deb0b74ec66cb56af37e8a1d61b4d35 template"><td class="memItemLeft">std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a3deb0b74ec66cb56af37e8a1d61b4d35">partition</a> (std::array&lt; T, N &gt; &amp;array, std::size_t left, std::size_t right, std::size_t pivotIndex)</td></tr>
+<tr class="memitem:a834a66af21a94e8059145279b531b86b" id="r_a834a66af21a94e8059145279b531b86b"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t N&gt; </td></tr>
+<tr class="memitem:a834a66af21a94e8059145279b531b86b template"><td class="memItemLeft">T&#160;</td><td class="memItemRight"><a class="el" href="#a834a66af21a94e8059145279b531b86b">quickSelect</a> (std::array&lt; T, N &gt; &amp;array, std::size_t left, std::size_t right, std::size_t k)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:add4eb3fd69e9ef809c6237f0d9d19f72" id="r_add4eb3fd69e9ef809c6237f0d9d19f72"><td class="memItemLeft">constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#add4eb3fd69e9ef809c6237f0d9d19f72">kMaxCircularArrayCapacity</a> = 255</td></tr>
 </table>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="adce4396e29b6a3e076185063b646e518" name="adce4396e29b6a3e076185063b646e518"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adce4396e29b6a3e076185063b646e518">&#9670;&#160;</a></span>partition()</h2>
+<a id="a3deb0b74ec66cb56af37e8a1d61b4d35" name="a3deb0b74ec66cb56af37e8a1d61b4d35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3deb0b74ec66cb56af37e8a1d61b4d35">&#9670;&#160;</a></span>partition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,24 +186,24 @@ Variables</h2></td></tr>
 template&lt;typename T, std::size_t N&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">int partition </td>
+          <td class="memname">std::size_t partition </td>
           <td>(</td>
           <td class="paramtype">std::array&lt; T, N &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>array</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>right</em></span>, </td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>right</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>pivotIndex</em></span>&#160;)</td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>pivotIndex</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -212,8 +212,8 @@ template&lt;typename T, std::size_t N&gt; </div>
 
 </div>
 </div>
-<a id="a8b13da55799eef1f0f6e040d61856423" name="a8b13da55799eef1f0f6e040d61856423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b13da55799eef1f0f6e040d61856423">&#9670;&#160;</a></span>quickSelect()</h2>
+<a id="a834a66af21a94e8059145279b531b86b" name="a834a66af21a94e8059145279b531b86b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a834a66af21a94e8059145279b531b86b">&#9670;&#160;</a></span>quickSelect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,17 +228,17 @@ template&lt;typename T, std::size_t N&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>right</em></span>, </td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>right</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>k</em></span>&#160;)</td>
+          <td class="paramtype">std::size_t</td>          <td class="paramname"><span class="paramname"><em>k</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

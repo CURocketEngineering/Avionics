@@ -1,13 +1,13 @@
 <map id="IDataSaver" name="IDataSaver">
-<area shape="rect" id="Node000001" title="Abstract interface for persisting timestamped data points." alt="" coords="395,5,577,151"/>
-<area shape="rect" id="Node000002" href="$classDataSaverBigSD.html" title="Buffered CSV writer targeting large SD cards via SdFat." alt="" coords="5,269,151,394"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,102,329,118,272,139,216,167,165,201,134,233,109,270,105,267,130,230,162,197,213,162,270,134,327,113,381,97"/>
-<area shape="rect" id="Node000003" href="$classDataSaverMock.html" title=" " alt="" coords="175,271,381,391"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="420,163,329,273,325,269,416,160"/>
-<area shape="rect" id="Node000004" href="$classDataSaverSDSerial.html" title="IDataSaver implementation that streams CSV packets over UART." alt="" coords="405,279,567,384"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="489,164,489,278,483,278,483,164"/>
-<area shape="rect" id="Node000005" href="$classDataSaverSPI.html" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="591,199,773,464"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="552,160,593,212,589,216,548,163"/>
-<area shape="rect" id="Node000006" href="$classprintSaver.html" title="IDataSaver that prints samples to stdout for debugging." alt="" coords="797,299,930,364"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="591,100,639,116,691,137,741,164,786,197,809,220,828,246,854,297,849,300,823,249,805,223,783,201,738,168,688,142,638,121,589,105"/>
+<area shape="rect" id="Node000001" title="Abstract interface for persisting timestamped data points." alt="" coords="395,5,577,171"/>
+<area shape="rect" id="Node000002" href="$classDataSaverBigSD.html" title="Buffered CSV writer targeting large SD cards via SdFat." alt="" coords="5,289,151,414"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,116,329,133,272,156,216,185,165,221,134,253,110,290,105,287,130,250,162,217,213,181,270,151,327,128,381,111"/>
+<area shape="rect" id="Node000003" href="$classDataSaverMock.html" title=" " alt="" coords="175,291,381,411"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="415,183,327,293,323,289,410,180"/>
+<area shape="rect" id="Node000004" href="$classDataSaverSDSerial.html" title="IDataSaver implementation that streams CSV packets over UART." alt="" coords="405,299,567,404"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="489,184,489,298,483,298,483,184"/>
+<area shape="rect" id="Node000005" href="$classDataSaverSPI.html" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="591,219,773,484"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="558,180,593,227,589,231,553,183"/>
+<area shape="rect" id="Node000006" href="$classprintSaver.html" title="IDataSaver that prints samples to stdout for debugging." alt="" coords="797,319,930,384"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="591,114,639,132,691,155,741,183,786,217,809,240,827,267,854,317,849,320,823,269,804,243,783,221,738,187,688,159,637,137,589,119"/>
 </map>

@@ -186,7 +186,7 @@ $(function(){initNavTree('Telemetry_8cpp_source.html','',''); });
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">return</span>;</div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keyword">const</span> std::uint32_t now_ms = millis();</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keyword">const</span> <span class="keyword">auto</span> now_ms = <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(millis());</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    commandModeTimeoutLocked_ = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    commandModeTimeoutLockDeadline_ms_ = now_ms + lockDuration_ms;</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    commandModeLastInputTimestamp_ms_ = now_ms;</div>
@@ -199,7 +199,7 @@ $(function(){initNavTree('Telemetry_8cpp_source.html','',''); });
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    commandModeTimeoutLockDeadline_ms_ = 0;</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">if</span> (inCommandMode_) {</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        commandModeLastInputTimestamp_ms_ = millis();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        commandModeLastInputTimestamp_ms_ = <span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(millis());</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>}</div>
 </div>
@@ -287,7 +287,7 @@ $(function(){initNavTree('Telemetry_8cpp_source.html','',''); });
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keywordflow">if</span> (ssd-&gt;<a class="code hl_function" href="structSendableSensorData.html#a4462bf94153fb3ca5e3c05c2e9ff6cc1">isMulti</a>()) {</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        this-&gt;packet_[nextEmptyPacketIndex_] = ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a9871063b5ed50407ef3a00b3de773533">multiSDHDataLabel</a>;</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        nextEmptyPacketIndex_ += 1;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09">multiSDHLength</a>; i++) { </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#a2aeeedfbcd6203fb31a9549a34c7cf09">multiSDHLength</a>; i++) {</div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            <span class="comment">// multiSDHLength comes directly from the array passed in by the client</span></div>
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            <span class="comment">// So, we can ignore this raw pointer indexing warning</span></div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            this-&gt;addSingleSDHToPacket(ssd-&gt;<a class="code hl_variable" href="structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86">multiSDH</a>[i]); <span class="comment">// NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)</span></div>
@@ -296,7 +296,7 @@ $(function(){initNavTree('Telemetry_8cpp_source.html','',''); });
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>}</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="keywordtype">void</span> Telemetry::setPacketToZero() {</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; <a class="code hl_variable" href="namespaceTelemetryFmt.html#a14b9d8f548fbfe6fcdf0d16ac792cc55">TelemetryFmt::kPacketCapacity_bytes</a>; i++) { <span class="comment">// Completely clear packet</span></div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="namespaceTelemetryFmt.html#a14b9d8f548fbfe6fcdf0d16ac792cc55">TelemetryFmt::kPacketCapacity_bytes</a>; i++) { <span class="comment">// Completely clear packet</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        this-&gt;packet_[i] = 0;</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    }</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>}</div>

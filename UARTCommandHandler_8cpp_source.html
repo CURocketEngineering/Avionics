@@ -189,7 +189,7 @@ $(function(){initNavTree('UARTCommandHandler_8cpp_source.html','',''); });
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">if</span> (consumedInputThisCall) {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        lastInteractionTimestamp_ = millis();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        lastInteractionTimestamp_ = <span class="keyword">static_cast&lt;</span>uint32_t<span class="keyword">&gt;</span>(millis());</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>}</div>
 </div>
@@ -315,7 +315,7 @@ $(function(){initNavTree('UARTCommandHandler_8cpp_source.html','',''); });
 <div class="ttc" id="aclassCommandLine_html_ababd5a8df61121f8aebf80ac626671ed"><div class="ttname"><a href="classCommandLine.html#ababd5a8df61121f8aebf80ac626671ed">CommandLine::readInput</a></div><div class="ttdeci">void readInput()</div><div class="ttdef"><b>Definition</b> <a href="#l00064">UARTCommandHandler.cpp:64</a></div></div>
 <div class="ttc" id="aclassCommandLine_html_abf3e3cab8353a230ef26bc9d23eeca00"><div class="ttname"><a href="classCommandLine.html#abf3e3cab8353a230ef26bc9d23eeca00">CommandLine::useDefaultUART</a></div><div class="ttdeci">void useDefaultUART()</div><div class="ttdef"><b>Definition</b> <a href="#l00018">UARTCommandHandler.cpp:18</a></div></div>
 <div class="ttc" id="aclassStream_html"><div class="ttname"><a href="classStream.html">Stream</a></div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00082">serial_mock.h:82</a></div></div>
-<div class="ttc" id="aclassStream_html_a5b609e917972b1e6f4f7d0db7419c120"><div class="ttname"><a href="classStream.html#a5b609e917972b1e6f4f7d0db7419c120">Stream::println</a></div><div class="ttdeci">void println(const T &amp;message)</div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00117">serial_mock.h:117</a></div></div>
+<div class="ttc" id="aclassStream_html_a5b609e917972b1e6f4f7d0db7419c120"><div class="ttname"><a href="classStream.html#a5b609e917972b1e6f4f7d0db7419c120">Stream::println</a></div><div class="ttdeci">void println(const T &amp;message)</div><div class="ttdef"><b>Definition</b> <a href="serial__mock_8h_source.html#l00119">serial_mock.h:119</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

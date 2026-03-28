@@ -11,7 +11,7 @@ var searchData=
   ['sdfile_5ft_8',['SdFile_t',['../spi__mock_8h.html#a1b3692c2c12573ae3b0c8490db361c17',1,'spi_mock.h']]],
   ['sendablesensordata_9',['SendableSensorData',['../structSendableSensorData.html',1,'SendableSensorData'],['../structSendableSensorData.html#a518a4804cef85025f024491c6839d659',1,'SendableSensorData::SendableSensorData(SensorDataHandler *sdh, std::uint16_t sendFrequency_hz)'],['../structSendableSensorData.html#a6cecb59ba87b0251c362ccece0f93efe',1,'SendableSensorData::SendableSensorData(const std::array&lt; SensorDataHandler *, M &gt; &amp;sdhList, std::uint8_t label, std::uint16_t sendFrequency_hz)']]],
   ['sensor_20data_20handling_10',['&lt;b&gt;Sensor Data Handling&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md22',1,'']]],
-  ['sensordatahandler_11',['SensorDataHandler',['../classSensorDataHandler.html',1,'SensorDataHandler'],['../classSensorDataHandler.html#a1143bdcd75e2b8ad9324aa340e1e4dca',1,'SensorDataHandler::SensorDataHandler()']]],
+  ['sensordatahandler_11',['SensorDataHandler',['../classSensorDataHandler.html',1,'SensorDataHandler'],['../classSensorDataHandler.html#af132c194f6d4078a9b46f9ef04377cea',1,'SensorDataHandler::SensorDataHandler()']]],
   ['sensordatahandler_2ecpp_12',['SensorDataHandler.cpp',['../SensorDataHandler_8cpp.html',1,'']]],
   ['sensordatahandler_2eh_13',['SensorDataHandler.h',['../SensorDataHandler_8h.html',1,'']]],
   ['serial1_5fglobal_5finstance_14',['serial1_global_instance',['../serial__mock_8h.html#a57abecd3fd83c214f05cff4784f45033',1,'serial_mock.h']]],

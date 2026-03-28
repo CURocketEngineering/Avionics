@@ -144,174 +144,180 @@ $(function(){initNavTree('VerticalVelocityEstimator_8cpp_source.html','',''); })
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    std::array&lt;float, 3&gt; mag = { std::fabs(rawAcl[0]), std::fabs(rawAcl[1]), std::fabs(rawAcl[2]) };</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// Find the index of the largest magnitude.</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    verticalAxis_ = 0; <span class="comment">// Start with X</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">if</span> (mag[1] &gt; mag[verticalAxis_]) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        verticalAxis_ = 1; <span class="comment">// Y</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (mag[2] &gt; mag[verticalAxis_]) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        verticalAxis_ = 2; <span class="comment">// Z</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// Determine if it&#39;s positive or negative relative to &#39;up&#39;.</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    verticalDirection_ = (rawAcl[verticalAxis_] &gt; 0.0F) ? 1 : -1;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">// NOLINTBEGIN(readability-identifier-length)</span></div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="}">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a9f740ef28bc66fe44de75d05f41e58c2">   61</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#a9f740ef28bc66fe44de75d05f41e58c2">VerticalVelocityEstimator::update</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structAccelerationTriplet.html">AccelerationTriplet</a> &amp;accel, <span class="keyword">const</span> <a class="code hl_class" href="classDataPoint.html">DataPoint</a> &amp;altimeter) </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>{</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="comment">// Use the altimeter timestamp as the reference for this update.</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keyword">const</span> uint32_t currentTimestamp_ms = altimeter.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="comment">// If not initialized, do so with the altimeter reading.</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> (!initialized_) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keyword">const</span> <a class="code hl_struct" href="structInitialState.html">InitialState</a> initialState = { altimeter.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, currentTimestamp_ms };</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <a class="code hl_function" href="classVerticalVelocityEstimator.html#af568600ad36b0b146b7d675f1b562724">init</a>(initialState);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    }</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// Determine which axis is vertical if not done yet.</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    std::array&lt;float, 3&gt; rawAcl = { accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, accel.<a class="code hl_variable" href="structAccelerationTriplet.html#a7d0c0be6aeb1067835d9a15652b49257">y</a>.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, accel.<a class="code hl_variable" href="structAccelerationTriplet.html#a7babcf4dd3730f051f7152ffefa1606b">z</a>.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>};</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (!verticalAxisDetermined_) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        determineVerticalAxis(rawAcl);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        verticalAxisDetermined_ = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="comment">// Ensures the data is newer than the previous data and that is not the same as the last data</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">if</span> (currentTimestamp_ms &lt;= lastTimestamp_ms_)</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    {</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordflow">if</span>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a> &lt;= lastTimestamp_ms_)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// Compute time step in seconds (dt).</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(currentTimestamp_ms - lastTimestamp_ms_)) * <a class="code hl_variable" href="VerticalVelocityEstimator_8h.html#ad92bf0e993f86bb57a6c180d13e96eab">kMillisecondsToSeconds</a>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// Subtract gravity from the measured acceleration on the identified vertical axis.</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    inertialVerticalAcceleration_ =</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        (rawAcl[verticalAxis_] * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(verticalDirection_)) - kGravity_mps2;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="comment">// --- Prediction Step ---</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="comment">// State prediction:</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment">//     predictedAltitude_m = alt + vel * dt + 0.5 * a * dt^2</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="comment">//     predictedVelocity_mps = vel + a * dt</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedAltitude_m = stateAltitude_m_ + stateVelocity_mps_ * dt + 0.5F * inertialVerticalAcceleration_ * dt * dt;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedVelocity_mps = stateVelocity_mps_ + inertialVerticalAcceleration_ * dt;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="comment">// Process noise covariance Q (derived from acceleration noise variance).</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt2 = dt * dt;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt3 = dt2 * dt;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt4 = dt3 * dt;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q00 = 0.25F * dt4 * accelNoiseVariance_; <span class="comment">// var in position</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q01 = 0.5F  * dt3 * accelNoiseVariance_; <span class="comment">// covar pos-vel</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q10 = 0.5F  * dt3 * accelNoiseVariance_; <span class="comment">// covar vel-pos</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q11 =        dt2 * accelNoiseVariance_;  <span class="comment">// var in velocity</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// Predicted covariance: P&#39; = F P F^T + Q</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="comment">// F = [ [1, dt], [0, 1] ]</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="comment">// so:</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="comment">// P&#39;[0][0] = P_[0][0] + 2*dt*P_[0][1] + dt^2*P_[1][1] + q00</span></div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="comment">// P&#39;[0][1] = P_[0][1] + dt*P_[1][1] + q01</span></div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="comment">// P&#39;[1][0] = P_[1][0] + dt*P_[1][1] + q10  (should be symmetric to P&#39;[0][1])</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment">// P&#39;[1][1] = P_[1][1] + q11</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="comment">// 2.0F comes from the derivative of the position state equation</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov00 = P_[0][0] + 2.0F * dt * P_[0][1] + dt2 * P_[1][1] + q00; <span class="comment">//NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov01 = P_[0][1] + dt * P_[1][1] + q01;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov10 = P_[1][0] + dt * P_[1][1] + q10;  <span class="comment">// note: P_[1][0] == P_[0][1] if always kept symmetric</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov11 = P_[1][1] + q11;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">const</span> std::size_t yAxis = 1U;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">const</span> std::size_t zAxis = 2U;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    verticalAxis_ = 0; <span class="comment">// Start with X</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">auto</span> verticalAxisIndex = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(verticalAxis_));</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (mag[yAxis] &gt; mag[verticalAxisIndex]) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        verticalAxis_ = 1; <span class="comment">// Y</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        verticalAxisIndex = yAxis;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">if</span> (mag[zAxis] &gt; mag[verticalAxisIndex]) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        verticalAxis_ = 2; <span class="comment">// Z</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        verticalAxisIndex = zAxis;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Determine if it&#39;s positive or negative relative to &#39;up&#39;.</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    verticalDirection_ = (rawAcl[verticalAxisIndex] &gt; 0.0F) ? 1 : -1;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// NOLINTBEGIN(readability-identifier-length)</span></div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#ac1d3ea6c5184648e6a48508dbcc02fe7">   66</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#ac1d3ea6c5184648e6a48508dbcc02fe7">VerticalVelocityEstimator::update</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structAccelerationTriplet.html">AccelerationTriplet</a> &amp;accel, <span class="keyword">const</span> <a class="code hl_class" href="classDataPoint.html">DataPoint</a> &amp;altitude) </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>{</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="comment">// Use the altimeter timestamp as the reference for this update.</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">const</span> uint32_t currentTimestamp_ms = altitude.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="comment">// If not initialized, do so with the altimeter reading.</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">if</span> (!initialized_) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keyword">const</span> <a class="code hl_struct" href="structInitialState.html">InitialState</a> initialState = { altitude.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, currentTimestamp_ms };</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <a class="code hl_function" href="classVerticalVelocityEstimator.html#af568600ad36b0b146b7d675f1b562724">init</a>(initialState);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// Determine which axis is vertical if not done yet.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    std::array&lt;float, 3&gt; rawAcl = { accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, accel.<a class="code hl_variable" href="structAccelerationTriplet.html#a7d0c0be6aeb1067835d9a15652b49257">y</a>.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>, accel.<a class="code hl_variable" href="structAccelerationTriplet.html#a7babcf4dd3730f051f7152ffefa1606b">z</a>.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>};</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordflow">if</span> (!verticalAxisDetermined_) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        determineVerticalAxis(rawAcl);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        verticalAxisDetermined_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="comment">// Ensures the data is newer than the previous data and that is not the same as the last data</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordflow">if</span> (currentTimestamp_ms &lt;= lastTimestamp_ms_)</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">if</span>(accel.<a class="code hl_variable" href="structAccelerationTriplet.html#adf59c93553a776b9a498d8258c75e2d8">x</a>.<a class="code hl_variable" href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">timestamp_ms</a> &lt;= lastTimestamp_ms_)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="comment">// Compute time step in seconds (dt).</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt = (<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(currentTimestamp_ms - lastTimestamp_ms_)) * <a class="code hl_variable" href="VerticalVelocityEstimator_8h.html#ad92bf0e993f86bb57a6c180d13e96eab">kMillisecondsToSeconds</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="comment">// Subtract gravity from the measured acceleration on the identified vertical axis.</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keyword">const</span> <span class="keyword">auto</span> verticalAxisIndex = <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>uint8_t<span class="keyword">&gt;</span>(verticalAxis_));</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    inertialVerticalAcceleration_ =</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        (rawAcl[verticalAxisIndex] * <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(verticalDirection_)) - kGravity_mps2;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">// --- Prediction Step ---</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="comment">// State prediction:</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <span class="comment">//     predictedAltitude_m = alt + vel * dt + 0.5 * a * dt^2</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="comment">//     predictedVelocity_mps = vel + a * dt</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedAltitude_m = stateAltitude_m_ + stateVelocity_mps_ * dt + 0.5F * inertialVerticalAcceleration_ * dt * dt;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedVelocity_mps = stateVelocity_mps_ + inertialVerticalAcceleration_ * dt;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="comment">// Process noise covariance Q (derived from acceleration noise variance).</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt2 = dt * dt;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt3 = dt2 * dt;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> dt4 = dt3 * dt;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q00 = 0.25F * dt4 * accelNoiseVariance_; <span class="comment">// var in position</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q01 = 0.5F  * dt3 * accelNoiseVariance_; <span class="comment">// covar pos-vel</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q10 = 0.5F  * dt3 * accelNoiseVariance_; <span class="comment">// covar vel-pos</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> q11 =        dt2 * accelNoiseVariance_;  <span class="comment">// var in velocity</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="comment">// Predicted covariance: P&#39; = F P F^T + Q</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="comment">// F = [ [1, dt], [0, 1] ]</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="comment">// so:</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    <span class="comment">// P&#39;[0][0] = P_[0][0] + 2*dt*P_[0][1] + dt^2*P_[1][1] + q00</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="comment">// P&#39;[0][1] = P_[0][1] + dt*P_[1][1] + q01</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="comment">// P&#39;[1][0] = P_[1][0] + dt*P_[1][1] + q10  (should be symmetric to P&#39;[0][1])</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="comment">// P&#39;[1][1] = P_[1][1] + q11</span></div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">// --- Measurement Update (using altimeter reading) ---</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="comment">// Measurement z = altimeter altitude</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> z = altimeter.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>;</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// Innovation (residual): y = z - predictedAltitude_m</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> y = z - predictedAltitude_m;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    <span class="comment">// Innovation covariance: S = H P&#39; H^T + R</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment">// H = [1, 0], so S = P&#39;[0][0] + altimeter noise variance.</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> innovationCovariance = predictedCov00 + altimeterNoiseVariance_;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="comment">// Kalman gain: K = P&#39; H^T / S = [ P&#39;[0][0], P&#39;[1][0] ] / S</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> kalmanGain0 = predictedCov00 / innovationCovariance; </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> kalmanGain1 = predictedCov10 / innovationCovariance; </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="comment">// Update state with measurement</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    stateAltitude_m_ = predictedAltitude_m + kalmanGain0 * y;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    stateVelocity_mps_ = predictedVelocity_mps + kalmanGain1 * y;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="comment">// Update covariance: P = (I - K H) P&#39;</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="comment">// (I - K H) = [ [1 - K0, 0], [-K1, 1] ]</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="comment">// So:</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="comment">// P_[0][0] = (1 - K0)*P00</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="comment">// P_[0][1] = (1 - K0)*P01</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="comment">// P_[1][0] = P10 - K1*P00</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="comment">// P_[1][1] = P11 - K1*P01</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    P_[0][0] = (1.0F - kalmanGain0) * predictedCov00;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    P_[0][1] = (1.0F - kalmanGain0) * predictedCov01;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    P_[1][0] = predictedCov10 - kalmanGain1 * predictedCov00;</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    P_[1][1] = predictedCov11 - kalmanGain1 * predictedCov01;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// Update time</span></div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    lastTimestamp_ms_ = currentTimestamp_ms;</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="comment">// 2.0F comes from the derivative of the position state equation</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov00 = P_[0][0] + 2.0F * dt * P_[0][1] + dt2 * P_[1][1] + q00; <span class="comment">//NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov01 = P_[0][1] + dt * P_[1][1] + q01;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov10 = P_[1][0] + dt * P_[1][1] + q10;  <span class="comment">// note: P_[1][0] == P_[0][1] if always kept symmetric</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> predictedCov11 = P_[1][1] + q11;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="comment">// --- Measurement Update (using altimeter reading) ---</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">// Measurement z = altimeter altitude</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> z = altitude.<a class="code hl_variable" href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">data</a>;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="comment">// Innovation (residual): y = z - predictedAltitude_m</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> y = z - predictedAltitude_m;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="comment">// Innovation covariance: S = H P&#39; H^T + R</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="comment">// H = [1, 0], so S = P&#39;[0][0] + altimeter noise variance.</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> innovationCovariance = predictedCov00 + altimeterNoiseVariance_;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// Kalman gain: K = P&#39; H^T / S = [ P&#39;[0][0], P&#39;[1][0] ] / S</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> kalmanGain0 = predictedCov00 / innovationCovariance; </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">const</span> <span class="keywordtype">float</span> kalmanGain1 = predictedCov10 / innovationCovariance; </div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="comment">// Update state with measurement</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    stateAltitude_m_ = predictedAltitude_m + kalmanGain0 * y;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    stateVelocity_mps_ = predictedVelocity_mps + kalmanGain1 * y;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="comment">// Update covariance: P = (I - K H) P&#39;</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <span class="comment">// (I - K H) = [ [1 - K0, 0], [-K1, 1] ]</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="comment">// So:</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="comment">// P_[0][0] = (1 - K0)*P00</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="comment">// P_[0][1] = (1 - K0)*P01</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="comment">// P_[1][0] = P10 - K1*P00</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// P_[1][1] = P11 - K1*P01</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    P_[0][0] = (1.0F - kalmanGain0) * predictedCov00;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    P_[0][1] = (1.0F - kalmanGain0) * predictedCov01;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    P_[1][0] = predictedCov10 - kalmanGain1 * predictedCov00;</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    P_[1][1] = predictedCov11 - kalmanGain1 * predictedCov01;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="comment">// Update time</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    lastTimestamp_ms_ = currentTimestamp_ms;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>}</div>
 </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">// NOLINTEND(readability-identifier-length)</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="foldopen" id="foldopen00166" data-start="{" data-end="}">
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54">  166</a></span><span class="keywordtype">float</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54">VerticalVelocityEstimator::getEstimatedAltitude</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keywordflow">return</span> stateAltitude_m_;</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>}</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment">// NOLINTEND(readability-identifier-length)</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54">  172</a></span><span class="keywordtype">float</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54">VerticalVelocityEstimator::getEstimatedAltitude</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    <span class="keywordflow">return</span> stateAltitude_m_;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
 </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb">  170</a></span><span class="keywordtype">float</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb">VerticalVelocityEstimator::getEstimatedVelocity</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">return</span> stateVelocity_mps_;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>}</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb">  176</a></span><span class="keywordtype">float</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb">VerticalVelocityEstimator::getEstimatedVelocity</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keywordflow">return</span> stateVelocity_mps_;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>}</div>
 </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
-<div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1">  174</a></span><span class="keywordtype">float</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1">VerticalVelocityEstimator::getInertialVerticalAcceleration</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keywordflow">return</span> inertialVerticalAcceleration_;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>}</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="foldopen" id="foldopen00180" data-start="{" data-end="}">
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1">  180</a></span><span class="keywordtype">float</span> <a class="code hl_function" href="classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1">VerticalVelocityEstimator::getInertialVerticalAcceleration</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">return</span> inertialVerticalAcceleration_;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>}</div>
 </div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90">  178</a></span>int8_t <a class="code hl_function" href="classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90">VerticalVelocityEstimator::getVerticalAxis</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    <span class="keywordflow">return</span> verticalAxis_;</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>}</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="foldopen" id="foldopen00184" data-start="{" data-end="}">
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90">  184</a></span>int8_t <a class="code hl_function" href="classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90">VerticalVelocityEstimator::getVerticalAxis</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">return</span> verticalAxis_;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>}</div>
 </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e">  182</a></span>int8_t <a class="code hl_function" href="classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e">VerticalVelocityEstimator::getVerticalDirection</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordflow">return</span> verticalDirection_;</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>}</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="foldopen" id="foldopen00188" data-start="{" data-end="}">
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e">  188</a></span>int8_t <a class="code hl_function" href="classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e">VerticalVelocityEstimator::getVerticalDirection</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">return</span> verticalDirection_;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>}</div>
 </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
-<div class="foldopen" id="foldopen00186" data-start="{" data-end="}">
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a7fa5a7254aa7a34c83c678a12e3b5dad">  186</a></span>uint32_t <a class="code hl_function" href="classVerticalVelocityEstimator.html#a7fa5a7254aa7a34c83c678a12e3b5dad">VerticalVelocityEstimator::getTimestamp</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordflow">return</span> lastTimestamp_ms_;</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>}</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="classVerticalVelocityEstimator.html#a7fa5a7254aa7a34c83c678a12e3b5dad">  192</a></span>uint32_t <a class="code hl_function" href="classVerticalVelocityEstimator.html#a7fa5a7254aa7a34c83c678a12e3b5dad">VerticalVelocityEstimator::getTimestamp</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordflow">return</span> lastTimestamp_ms_;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>}</div>
 </div>
 <div class="ttc" id="aVerticalVelocityEstimator_8h_html"><div class="ttname"><a href="VerticalVelocityEstimator_8h.html">VerticalVelocityEstimator.h</a></div></div>
 <div class="ttc" id="aVerticalVelocityEstimator_8h_html_ad92bf0e993f86bb57a6c180d13e96eab"><div class="ttname"><a href="VerticalVelocityEstimator_8h.html#ad92bf0e993f86bb57a6c180d13e96eab">kMillisecondsToSeconds</a></div><div class="ttdeci">constexpr float kMillisecondsToSeconds</div><div class="ttdef"><b>Definition</b> <a href="VerticalVelocityEstimator_8h_source.html#l00010">VerticalVelocityEstimator.h:10</a></div></div>
 <div class="ttc" id="aclassDataPoint_html"><div class="ttname"><a href="classDataPoint.html">DataPoint</a></div><div class="ttdoc">Timestamped float measurement container.</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00011">DataPoint.h:11</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a22a179660ba6fd06f4a7149d2f80e86e"><div class="ttname"><a href="classDataPoint.html#a22a179660ba6fd06f4a7149d2f80e86e">DataPoint::data</a></div><div class="ttdeci">float data</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00014">DataPoint.h:14</a></div></div>
 <div class="ttc" id="aclassDataPoint_html_a314cf9ac0f59ae12e9a576b4906ae9a2"><div class="ttname"><a href="classDataPoint.html#a314cf9ac0f59ae12e9a576b4906ae9a2">DataPoint::timestamp_ms</a></div><div class="ttdeci">uint32_t timestamp_ms</div><div class="ttdef"><b>Definition</b> <a href="DataPoint_8h_source.html#l00013">DataPoint.h:13</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_a30939fccf2cbb35ad3bdb8a1ece2e3bb"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb">VerticalVelocityEstimator::getEstimatedVelocity</a></div><div class="ttdeci">virtual float getEstimatedVelocity() const</div><div class="ttdef"><b>Definition</b> <a href="#l00170">VerticalVelocityEstimator.cpp:170</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_a339c7edd7270215cb436707d5bd9024e"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e">VerticalVelocityEstimator::getVerticalDirection</a></div><div class="ttdeci">virtual int8_t getVerticalDirection() const</div><div class="ttdef"><b>Definition</b> <a href="#l00182">VerticalVelocityEstimator.cpp:182</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_a683e6c4901d3144c33b107a65c788c54"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54">VerticalVelocityEstimator::getEstimatedAltitude</a></div><div class="ttdeci">virtual float getEstimatedAltitude() const</div><div class="ttdef"><b>Definition</b> <a href="#l00166">VerticalVelocityEstimator.cpp:166</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_a7fa5a7254aa7a34c83c678a12e3b5dad"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a7fa5a7254aa7a34c83c678a12e3b5dad">VerticalVelocityEstimator::getTimestamp</a></div><div class="ttdeci">virtual uint32_t getTimestamp() const</div><div class="ttdef"><b>Definition</b> <a href="#l00186">VerticalVelocityEstimator.cpp:186</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_a30939fccf2cbb35ad3bdb8a1ece2e3bb"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a30939fccf2cbb35ad3bdb8a1ece2e3bb">VerticalVelocityEstimator::getEstimatedVelocity</a></div><div class="ttdeci">virtual float getEstimatedVelocity() const</div><div class="ttdef"><b>Definition</b> <a href="#l00176">VerticalVelocityEstimator.cpp:176</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_a339c7edd7270215cb436707d5bd9024e"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a339c7edd7270215cb436707d5bd9024e">VerticalVelocityEstimator::getVerticalDirection</a></div><div class="ttdeci">virtual int8_t getVerticalDirection() const</div><div class="ttdef"><b>Definition</b> <a href="#l00188">VerticalVelocityEstimator.cpp:188</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_a683e6c4901d3144c33b107a65c788c54"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a683e6c4901d3144c33b107a65c788c54">VerticalVelocityEstimator::getEstimatedAltitude</a></div><div class="ttdeci">virtual float getEstimatedAltitude() const</div><div class="ttdef"><b>Definition</b> <a href="#l00172">VerticalVelocityEstimator.cpp:172</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_a7fa5a7254aa7a34c83c678a12e3b5dad"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a7fa5a7254aa7a34c83c678a12e3b5dad">VerticalVelocityEstimator::getTimestamp</a></div><div class="ttdeci">virtual uint32_t getTimestamp() const</div><div class="ttdef"><b>Definition</b> <a href="#l00192">VerticalVelocityEstimator.cpp:192</a></div></div>
 <div class="ttc" id="aclassVerticalVelocityEstimator_html_a9c193f977c52797f3ac1661f84b49a45"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a9c193f977c52797f3ac1661f84b49a45">VerticalVelocityEstimator::VerticalVelocityEstimator</a></div><div class="ttdeci">VerticalVelocityEstimator(NoiseVariances noise={1.0f, 0.1f})</div><div class="ttdef"><b>Definition</b> <a href="#l00010">VerticalVelocityEstimator.cpp:10</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_a9f740ef28bc66fe44de75d05f41e58c2"><div class="ttname"><a href="classVerticalVelocityEstimator.html#a9f740ef28bc66fe44de75d05f41e58c2">VerticalVelocityEstimator::update</a></div><div class="ttdeci">void update(const AccelerationTriplet &amp;accel, const DataPoint &amp;altimeter)</div><div class="ttdef"><b>Definition</b> <a href="#l00061">VerticalVelocityEstimator.cpp:61</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_ac13987dbd56b4ab1cc1dd893184442b1"><div class="ttname"><a href="classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1">VerticalVelocityEstimator::getInertialVerticalAcceleration</a></div><div class="ttdeci">virtual float getInertialVerticalAcceleration() const</div><div class="ttdef"><b>Definition</b> <a href="#l00174">VerticalVelocityEstimator.cpp:174</a></div></div>
-<div class="ttc" id="aclassVerticalVelocityEstimator_html_af3f71d8fcdc037b05fffc56b6780dd90"><div class="ttname"><a href="classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90">VerticalVelocityEstimator::getVerticalAxis</a></div><div class="ttdeci">virtual int8_t getVerticalAxis() const</div><div class="ttdef"><b>Definition</b> <a href="#l00178">VerticalVelocityEstimator.cpp:178</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_ac13987dbd56b4ab1cc1dd893184442b1"><div class="ttname"><a href="classVerticalVelocityEstimator.html#ac13987dbd56b4ab1cc1dd893184442b1">VerticalVelocityEstimator::getInertialVerticalAcceleration</a></div><div class="ttdeci">virtual float getInertialVerticalAcceleration() const</div><div class="ttdef"><b>Definition</b> <a href="#l00180">VerticalVelocityEstimator.cpp:180</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_ac1d3ea6c5184648e6a48508dbcc02fe7"><div class="ttname"><a href="classVerticalVelocityEstimator.html#ac1d3ea6c5184648e6a48508dbcc02fe7">VerticalVelocityEstimator::update</a></div><div class="ttdeci">void update(const AccelerationTriplet &amp;accel, const DataPoint &amp;altitude)</div><div class="ttdef"><b>Definition</b> <a href="#l00066">VerticalVelocityEstimator.cpp:66</a></div></div>
+<div class="ttc" id="aclassVerticalVelocityEstimator_html_af3f71d8fcdc037b05fffc56b6780dd90"><div class="ttname"><a href="classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90">VerticalVelocityEstimator::getVerticalAxis</a></div><div class="ttdeci">virtual int8_t getVerticalAxis() const</div><div class="ttdef"><b>Definition</b> <a href="#l00184">VerticalVelocityEstimator.cpp:184</a></div></div>
 <div class="ttc" id="aclassVerticalVelocityEstimator_html_af568600ad36b0b146b7d675f1b562724"><div class="ttname"><a href="classVerticalVelocityEstimator.html#af568600ad36b0b146b7d675f1b562724">VerticalVelocityEstimator::init</a></div><div class="ttdeci">void init(InitialState initialState)</div><div class="ttdef"><b>Definition</b> <a href="#l00027">VerticalVelocityEstimator.cpp:27</a></div></div>
 <div class="ttc" id="astructAccelerationTriplet_html"><div class="ttname"><a href="structAccelerationTriplet.html">AccelerationTriplet</a></div><div class="ttdef"><b>Definition</b> <a href="StateEstimationTypes_8h_source.html#l00006">StateEstimationTypes.h:6</a></div></div>
 <div class="ttc" id="astructAccelerationTriplet_html_a7babcf4dd3730f051f7152ffefa1606b"><div class="ttname"><a href="structAccelerationTriplet.html#a7babcf4dd3730f051f7152ffefa1606b">AccelerationTriplet::z</a></div><div class="ttdeci">DataPoint z</div><div class="ttdef"><b>Definition</b> <a href="StateEstimationTypes_8h_source.html#l00009">StateEstimationTypes.h:9</a></div></div>
