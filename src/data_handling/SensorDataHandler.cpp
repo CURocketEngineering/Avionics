@@ -8,7 +8,7 @@ SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* dataSaverIn)
       name_(name),
       saveInterval_ms_(0U),
       lastSaveTime_ms_(0UL),
-      lastDataPointSaved_({0.0F, 0.0F})
+      lastDataPointSaved_({0UL, 0.0F})
 {}
 
 void SensorDataHandler::restrictSaveSpeed(uint16_t interval_ms){
