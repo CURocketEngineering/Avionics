@@ -99,6 +99,11 @@ bool parseCsvRow(const std::vector<std::string>& tokens, int idx_ts, int idx_ax,
         return false;
     }
 
+    const int minIndex = std::min({idx_ts, idx_ax, idx_ay, idx_az, idx_alt});
+    if (minIndex < 0) {
+        return false;
+    }
+
     ts  = safe_stoul(tokens[static_cast<std::vector<std::string>::size_type>(idx_ts)]);
     ax  = safe_stof(tokens[static_cast<std::vector<std::string>::size_type>(idx_ax)]);
     ay  = safe_stof(tokens[static_cast<std::vector<std::string>::size_type>(idx_ay)]);
