@@ -1,4 +1,5 @@
 #include "state_estimation/LaunchDetector.h"
+#include <cassert>
 
 // #define DEBUG
 
@@ -6,13 +7,27 @@
 #include "ArduinoHAL.h"
 #endif
 
+namespace
+{
+uint8_t validateAndComputeWindowSize_slots(uint16_t windowSize_ms, uint16_t windowInterval_ms)
+{
+    assert(windowInterval_ms > 0U);
+
+    const auto windowSize_slots = static_cast<uint16_t>(windowSize_ms / windowInterval_ms);
+    assert(windowSize_slots >= 1U);
+    assert(windowSize_slots <= static_cast<uint16_t>(kCircularArrayAllocatedSlots));
+
+    return static_cast<uint8_t>(windowSize_slots);
+}
+} // namespace
+
 LaunchDetector::LaunchDetector(float accelerationThreshold_ms2, //NOLINT(bugprone-easily-swappable-parameters)
                                uint16_t windowSize_ms,
                                uint16_t windowInterval_ms)
     : accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
       windowInterval_ms_(windowInterval_ms),
       acceptableTimeDifference_ms_(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
-      accelMagnitudeSquaredWindow_(static_cast<uint8_t>(windowSize_ms / windowInterval_ms)),
+      accelMagnitudeSquaredWindow_(validateAndComputeWindowSize_slots(windowSize_ms, windowInterval_ms)),
       launched_(false),
       launchedTime_ms_(0),
       medianAccelerationSquared_(0)

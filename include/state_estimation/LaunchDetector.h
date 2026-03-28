@@ -13,6 +13,8 @@
 
 constexpr float kAcceptablePercentDifferenceWindowInterval = 0.5F;
 constexpr std::size_t kCircularArrayAllocatedSlots = 100; // 100 slots allocated for the circular array (100 * sizeof(DataPoint)) = 800 bytes allocated)
+static_assert(kCircularArrayAllocatedSlots <= kMaxCircularArrayCapacity,
+              "LaunchDetector window allocation must fit CircularArray's uint8_t max size");
 
 // Potential returns from the update function
 // Positive values are errors

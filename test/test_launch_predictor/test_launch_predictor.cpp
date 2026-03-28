@@ -351,6 +351,21 @@ void test_window_not_full(void) {
     TEST_ASSERT_FALSE(lp.isLaunched());
 }
 
+void test_constructor_window_size_single_slot(void) {
+    LaunchDetector lp(10.0f, 5U, 5U);
+    TEST_ASSERT_EQUAL_UINT8(1U, lp.getWindowPtr()->getMaxSize());
+}
+
+void test_constructor_window_size_max_allocated_slots(void) {
+    const uint16_t windowInterval_ms = 5U;
+    const uint16_t windowSize_ms = static_cast<uint16_t>(
+        static_cast<uint16_t>(kCircularArrayAllocatedSlots) * windowInterval_ms);
+
+    LaunchDetector lp(10.0f, windowSize_ms, windowInterval_ms);
+    TEST_ASSERT_EQUAL_UINT8(static_cast<uint8_t>(kCircularArrayAllocatedSlots),
+                            lp.getWindowPtr()->getMaxSize());
+}
+
 /**
  * Test that resetting the predictor clears the launch flag and the window.
  */
@@ -388,6 +403,8 @@ int main(void) {
     RUN_TEST(test_median_acceleration_above_threshold);
     RUN_TEST(test_median_acceleration_edge_case);
     RUN_TEST(test_window_not_full);
+    RUN_TEST(test_constructor_window_size_single_slot);
+    RUN_TEST(test_constructor_window_size_max_allocated_slots);
     RUN_TEST(test_reset);
     return UNITY_END();
 }
