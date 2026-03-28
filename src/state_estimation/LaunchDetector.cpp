@@ -1,4 +1,5 @@
 #include "state_estimation/LaunchDetector.h"
+#include <cassert>
 
 // #define DEBUG
 
@@ -6,22 +7,37 @@
 #include "ArduinoHAL.h"
 #endif
 
+namespace
+{
+uint8_t validateAndComputeWindowSize_slots(uint16_t windowSize_ms, uint16_t windowInterval_ms)
+{
+    assert(windowInterval_ms > 0U);
+
+    const auto windowSize_slots = static_cast<uint16_t>(windowSize_ms / windowInterval_ms);
+    assert(windowSize_slots >= 1U);
+    assert(windowSize_slots <= static_cast<uint16_t>(kCircularArrayAllocatedSlots));
+
+    return static_cast<uint8_t>(windowSize_slots);
+}
+} // namespace
+
 LaunchDetector::LaunchDetector(float accelerationThreshold_ms2, //NOLINT(bugprone-easily-swappable-parameters)
                                uint16_t windowSize_ms,
                                uint16_t windowInterval_ms)
-    : accelMagnitudeSquaredWindow_(windowSize_ms / windowInterval_ms),
-      accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
+    : accelerationThresholdSq_ms2_(accelerationThreshold_ms2 * accelerationThreshold_ms2),
       windowInterval_ms_(windowInterval_ms),
+      acceptableTimeDifference_ms_(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
+      accelMagnitudeSquaredWindow_(validateAndComputeWindowSize_slots(windowSize_ms, windowInterval_ms)),
       launched_(false),
       launchedTime_ms_(0),
-      acceptableTimeDifference_ms_(static_cast<uint16_t>(static_cast<float>(windowInterval_ms) * kAcceptablePercentDifferenceWindowInterval)),
       medianAccelerationSquared_(0)
 {
     // These must remain here because they rely on accelMagnitudeSquaredWindow_ being constructed
-    minWindowSize_ms_ = (windowInterval_ms_ - acceptableTimeDifference_ms_) *
-                         (accelMagnitudeSquaredWindow_.getMaxSize() - 1);
-    maxWindowSize_ms_ = (windowInterval_ms_ + acceptableTimeDifference_ms_) *
-                         (accelMagnitudeSquaredWindow_.getMaxSize() - 1);
+    const uint16_t windowSpan_slots = static_cast<uint16_t>(accelMagnitudeSquaredWindow_.getMaxSize() - 1U);
+    minWindowSize_ms_ = static_cast<uint16_t>(
+        static_cast<uint32_t>(windowInterval_ms_ - acceptableTimeDifference_ms_) * windowSpan_slots);
+    maxWindowSize_ms_ = static_cast<uint16_t>(
+        static_cast<uint32_t>(windowInterval_ms_ + acceptableTimeDifference_ms_) * windowSpan_slots);
 }
 
 
@@ -74,9 +90,11 @@ int LaunchDetector::update(AccelerationTriplet accel)
 
     // Make sure we are near the window interval +- kAcceptablePercentDifferenceWindowInterval
     uint32_t timeDiff_ms = time_ms - accelMagnitudeSquaredWindow_.getFromHead(0).timestamp_ms; //NOLINT(cppcoreguidelines-init-variables)
+    const uint32_t minAllowedDiff_ms = static_cast<uint32_t>(windowInterval_ms_) - static_cast<uint32_t>(acceptableTimeDifference_ms_);
+    const uint32_t maxAllowedDiff_ms = static_cast<uint32_t>(windowInterval_ms_) + static_cast<uint32_t>(acceptableTimeDifference_ms_);
 
     // Check that the data didn't come in too fast
-    if (timeDiff_ms < windowInterval_ms_ - acceptableTimeDifference_ms_){
+    if (timeDiff_ms < minAllowedDiff_ms){
         #ifdef DEBUG
         Serial.println("LaunchDetector: DATA TOO EARLY");
         Serial.printf("Time diff: %lu\n", static_cast<unsigned long>(timeDiff_ms));
@@ -87,7 +105,7 @@ int LaunchDetector::update(AccelerationTriplet accel)
         return LP_DATA_TOO_FAST;
     }
 
-    if (timeDiff_ms > windowInterval_ms_ + acceptableTimeDifference_ms_)
+    if (timeDiff_ms > maxAllowedDiff_ms)
     {
         #ifdef DEBUG
         Serial.println("LaunchDetector: DATA TOO LATE");

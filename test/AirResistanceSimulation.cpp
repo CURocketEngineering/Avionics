@@ -24,7 +24,7 @@ void AirResistanceSimulator::tick()
         return;
     }
 
-    const float dt = tick_ms_ / 1000.0f;
+    const float dt = static_cast<float>(tick_ms_) / 1000.0f;
 
     /* ---- determine forces ---- */
     if (t_ms_ < launchTime_ms_) {

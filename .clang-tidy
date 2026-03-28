@@ -1,2 +1,1 @@
-Checks: '*, -llvm-header-guard, -cppcoreguidelines-avoid-non-const-global-variables, -llvmlibc-*, -modernize-use-trailing-return-type, -altera-unroll-loops, -google-readability-todo, -altera-id-dependent-backward-branch'
-
+Checks: '*, -llvm-header-guard, -cppcoreguidelines-avoid-non-const-global-variables, -cppcoreguidelines-init-variables, -llvmlibc-*, -modernize-use-trailing-return-type, -altera-unroll-loops, -google-readability-todo, -altera-id-dependent-backward-branch'

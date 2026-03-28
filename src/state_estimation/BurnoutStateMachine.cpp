@@ -9,22 +9,20 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
                                          LaunchDetector* launchDetector,
                                          ApogeeDetector* apogeeDetector,
                                          VerticalVelocityEstimator* verticalVelocityEstimator)
-    : dataSaver_(dataSaver),
+    : state_(STATE_ARMED),
+      dataSaver_(dataSaver),
       launchDetector_(launchDetector),
       apogeeDetector_(apogeeDetector),
-      verticalVelocityEstimator_(verticalVelocityEstimator),
-      state_(STATE_ARMED)
+      verticalVelocityEstimator_(verticalVelocityEstimator)
+      
 {
 }
 
 int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
-    // Update the state.
-    int lpStatus = LP_DEFAULT_FAIL; 
-
     switch (state_) {
         case STATE_ARMED:
             // Serial.println("lp update");
-            lpStatus = launchDetector_->update(accel);
+            launchDetector_->update(accel);
             // Serial.println(lpStatus);
             if (launchDetector_->isLaunched()) {
                 // Change state to ascent.

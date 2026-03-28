@@ -58,7 +58,6 @@ void test_burnout_state_machine_with_real_data(void)
     float    maxAltitude    = -1000.0f;
     uint32_t maxAltTime     = 0;
     uint32_t launchTime     = 0;
-    uint32_t coastTime = 0;
 
     // ── main playback loop ──────────────────────────────────────────────
     while (provider.hasNextDataPoint())

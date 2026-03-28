@@ -82,7 +82,7 @@ void Telemetry::lockCommandModeTimeout(std::uint32_t lockDuration_ms) {
         return;
     }
 
-    const std::uint32_t now_ms = millis();
+    const auto now_ms = static_cast<std::uint32_t>(millis());
     commandModeTimeoutLocked_ = true;
     commandModeTimeoutLockDeadline_ms_ = now_ms + lockDuration_ms;
     commandModeLastInputTimestamp_ms_ = now_ms;
@@ -93,7 +93,7 @@ void Telemetry::unlockCommandModeTimeout() {
     commandModeTimeoutLockDeadline_ms_ = 0;
 
     if (inCommandMode_) {
-        commandModeLastInputTimestamp_ms_ = millis();
+        commandModeLastInputTimestamp_ms_ = static_cast<std::uint32_t>(millis());
     }
 }
 
@@ -178,7 +178,7 @@ void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
     if (ssd->isMulti()) {
         this->packet_[nextEmptyPacketIndex_] = ssd->multiSDHDataLabel;
         nextEmptyPacketIndex_ += 1;
-        for (int i = 0; i < ssd->multiSDHLength; i++) { 
+        for (size_t i = 0; i < ssd->multiSDHLength; i++) {
             // multiSDHLength comes directly from the array passed in by the client
             // So, we can ignore this raw pointer indexing warning
             this->addSingleSDHToPacket(ssd->multiSDH[i]); // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
@@ -187,7 +187,7 @@ void Telemetry::addSSDToPacket(SendableSensorData* ssd) {
 }
 
 void Telemetry::setPacketToZero() {
-    for (int i = 0; i < TelemetryFmt::kPacketCapacity_bytes; i++) { // Completely clear packet
+    for (size_t i = 0; i < TelemetryFmt::kPacketCapacity_bytes; i++) { // Completely clear packet
         this->packet_[i] = 0;
     }
 }

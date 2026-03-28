@@ -9,14 +9,14 @@
 constexpr std::size_t kMaxCircularArrayCapacity = 255;
 
 template<typename T, std::size_t N>
-int partition(std::array<T, N>& array, int left, int right, int pivotIndex) {
+std::size_t partition(std::array<T, N>& array, std::size_t left, std::size_t right, std::size_t pivotIndex) {
     T pivotValue = array[pivotIndex];
     std::swap(array[pivotIndex], array[right]); // Move pivot to end
-    int storeIndex = left;
-    for (int i = left; i < right; i++) {
+    std::size_t storeIndex = left;
+    for (std::size_t i = left; i < right; ++i) {
         if (array[i] < pivotValue) {
             std::swap(array[i], array[storeIndex]);
-            storeIndex++;
+            ++storeIndex;
         }
     }
     std::swap(array[storeIndex], array[right]); // Move pivot to its final place
@@ -30,13 +30,16 @@ int partition(std::array<T, N>& array, int left, int right, int pivotIndex) {
 // O(n^2) worst case time complexity
 // If we were to just use bubble sort, that would be O(n^2) time complexity
 template<typename T, std::size_t N>
-T quickSelect(std::array<T, N> &array, int left, int right, int k){
+T quickSelect(std::array<T, N>& array, std::size_t left, std::size_t right, std::size_t k) {
     while (left < right){
-        int pivotIndex = (left + right) / 2;
-        int pivotNewIndex = partition(array, left, right, pivotIndex);
+        const std::size_t pivotIndex = left + (right - left) / 2;
+        const std::size_t pivotNewIndex = partition(array, left, right, pivotIndex);
         if (pivotNewIndex == k){
             return array[k];
         } else if (k < pivotNewIndex){
+            if (pivotNewIndex == 0U) {
+                break;
+            }
             right = pivotNewIndex - 1;
         } else {
             left = pivotNewIndex + 1;
@@ -61,19 +64,21 @@ class CircularArray {
     uint8_t currentSize; // 0 to 255
 
   public:
-    CircularArray(uint8_t maxSize = Capacity) : maxSize(maxSize) {
+    CircularArray(uint8_t maxSize_in = static_cast<uint8_t>(Capacity)) : maxSize(maxSize_in) {
         static_assert(Capacity > 0, "CircularArray capacity must be greater than 0");
         static_assert(Capacity <= kMaxCircularArrayCapacity, "CircularArray capacity must be less than or equal to 255 b/c of head being uint8_t");
-        assert(maxSize > 0 && maxSize <= Capacity);
+        assert(maxSize_in > 0 && maxSize_in <= Capacity);
         this->head = 0;
         this->currentSize = 0; // How full is the circular buffer? 
     }
 
     void push(T data){
         // After the first push, start moving the head
-        if (currentSize)
-            head = (head + 1) % maxSize;
-        array[head] = data;
+        if (currentSize) {
+            const uint16_t nextHead = static_cast<uint16_t>(head) + 1U;
+            head = static_cast<uint8_t>(nextHead % maxSize);
+        }
+        array[static_cast<std::size_t>(head)] = data;
 
         // Cap current size at maxSize
         if (currentSize < maxSize){
@@ -85,15 +90,19 @@ class CircularArray {
         if (currentSize == 0){
             return T();
         }
-        T data = array[head];
-        head = (head + maxSize - 1) % maxSize;
+        T data = array[static_cast<std::size_t>(head)];
+        const uint16_t headStep = static_cast<uint16_t>(head) + static_cast<uint16_t>(maxSize) - 1U;
+        head = static_cast<uint8_t>(headStep % maxSize);
         currentSize--;
         return data;
     }
 
     // How many indexes back from the head
     T getFromHead(uint8_t index){
-        return array[(head + maxSize - index) % maxSize];
+        const std::size_t headIndex = static_cast<std::size_t>(head);
+        const std::size_t maxSizeIndex = static_cast<std::size_t>(maxSize);
+        const std::size_t offset = static_cast<std::size_t>(index);
+        return array[(headIndex + maxSizeIndex - offset) % maxSizeIndex];
     }
 
     // Has the circular array been filled          
@@ -127,15 +136,14 @@ class CircularArray {
         }
 
         // Find the median
-        int n = static_cast<int>(count);
-        return quickSelect(scratchArray, 0, n - 1, n / 2);
+        return quickSelect(scratchArray, 0U, count - 1U, count / 2U);
     }
 
     void clear(){
         head = 0;
         currentSize = 0;
         for (uint8_t i = 0; i < maxSize; i++){
-            array[i] = T();
+            array[static_cast<std::size_t>(i)] = T();
         }
     }
 

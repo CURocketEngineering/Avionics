@@ -18,10 +18,10 @@ void tearDown(void) {
     Test that once launch is detected, further updates are ignored
 */
 void test_already_launched(void){
-    FastLaunchDetector fld(10.0);
+    FastLaunchDetector fld(10.0f);
     TEST_ASSERT_FALSE(fld.hasLaunched());
     //give point that exceeds threshold
-    DataPoint dp1(1000, 100.0);
+    DataPoint dp1(1000U, 100.0f);
     AccelerationTriplet accel1 = { dp1, dp1, dp1 };
     fld.update(accel1);
     TEST_ASSERT_TRUE(fld.hasLaunched());
@@ -34,9 +34,9 @@ void test_already_launched(void){
     Test that resetting fld will reset launched and launchtime vars
 */
 void test_reset(void){
-    FastLaunchDetector fld(10.0);
+    FastLaunchDetector fld(10.0f);
     //first update with value above threshold
-    DataPoint dp1(1000, 100.0);
+    DataPoint dp1(1000U, 100.0f);
     AccelerationTriplet accel1 = { dp1, dp1, dp1 };
     fld.update(accel1);
     TEST_ASSERT_TRUE(fld.hasLaunched());
@@ -52,16 +52,16 @@ void test_reset(void){
  * leads to launch detection.
  */
 void test_acceleration_edge_case(void) {
-    FastLaunchDetector fld(10.0);
+    FastLaunchDetector fld(10.0f);
     // First update with value just below threshold.
-    DataPoint dp1(1000, 9.9);
-    DataPoint dp2(1000, 0.0);     
+    DataPoint dp1(1000U, 9.9f);
+    DataPoint dp2(1000U, 0.0f);     
     AccelerationTriplet accel1 = { dp1, dp2, dp2 };
     fld.update(accel1); // Total MAG is only 9.9^2 = 98.01 which is less than 100
     TEST_ASSERT_FALSE(fld.hasLaunched());
     
     // Then update with value just above threshold.
-    DataPoint dp3(1000, 10.1);     
+    DataPoint dp3(1000U, 10.1f);     
     AccelerationTriplet accel2 = { dp3, dp2, dp2 }; 
     fld.update(accel2);// Total MAG is 10.1^2 = 102.01 which is more than 100
     TEST_ASSERT_TRUE(fld.hasLaunched());
@@ -71,9 +71,9 @@ void test_acceleration_edge_case(void) {
  * Test that when the accel is above the threshold the launch is detected.
  */
 void test_acceleration_above_threshold(void) {
-    FastLaunchDetector fld(10.0);
+    FastLaunchDetector fld(10.0f);
     // update with high acceleration values.
-    DataPoint dp1(1000, 100.0);
+    DataPoint dp1(1000U, 100.0f);
     AccelerationTriplet accel1 = { dp1, dp1, dp1 };
     int result = fld.update(accel1);
     TEST_ASSERT_EQUAL_INT(FLD_LAUNCH_DETECTED, result);
@@ -88,9 +88,9 @@ void test_acceleration_above_threshold(void) {
  */
 void test_acceleration_below_threshold(void) {
     // Use a threshold of 10 m/s^2; squared threshold = 100.
-    FastLaunchDetector fld(10.0);
+    FastLaunchDetector fld(10.0f);
     // update with low acceleration value.
-    DataPoint dp1(1000, 1.0);
+    DataPoint dp1(1000U, 1.0f);
     AccelerationTriplet accel1 = { dp1, dp1, dp1 };
     fld.update(accel1);
     // [1,1,1] results in acceleration squared = 1^2+1^2+1^2 = 3

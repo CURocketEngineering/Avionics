@@ -80,7 +80,7 @@ inline void writeU32Be(std::uint8_t* dst, std::uint32_t v) {
  * Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback.
  */
 inline std::uint16_t hzToPeriod_ms(std::uint16_t frequency_hz) {
-    return (frequency_hz == 0) ? 1000u
+    return (frequency_hz == 0) ? static_cast<std::uint16_t>(1000u)
                      : static_cast<std::uint16_t>((1000u + frequency_hz - 1u) / frequency_hz);
 }
 

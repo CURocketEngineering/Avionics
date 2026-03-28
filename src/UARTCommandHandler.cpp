@@ -85,7 +85,7 @@ void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complex
     }
 
     if (consumedInputThisCall) {
-        lastInteractionTimestamp_ = millis();
+        lastInteractionTimestamp_ = static_cast<uint32_t>(millis());
     }
 }
 

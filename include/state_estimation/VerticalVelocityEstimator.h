@@ -58,10 +58,10 @@ public:
      * The altimeter DataPoint contains the altitude measurement.
      *
      * @param accel     Accelerometer readings for x, y, and z (vertical) axes.
-     * @param altimeter Altimeter reading.
+     * @param altitude  Altimeter reading.
      */
     void update(const AccelerationTriplet& accel,
-                const DataPoint &altimeter);
+                const DataPoint &altitude);
 
     /**
      * @return Current estimated altitude (meters).

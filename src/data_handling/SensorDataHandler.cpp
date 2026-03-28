@@ -3,12 +3,12 @@
 #include "data_handling/SensorDataHandler.h"
 #include "ArduinoHAL.h"
 
-SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* dataSaver)
-    : name_(name),
-      dataSaver(dataSaver),
-      saveInterval_ms_(0),
-      lastSaveTime_ms_(0),
-      lastDataPointSaved_({0, 0})
+SensorDataHandler::SensorDataHandler(uint8_t name, IDataSaver* dataSaver_in)
+    : dataSaver(dataSaver_in),
+      name_(name),
+      saveInterval_ms_(0U),
+      lastSaveTime_ms_(0UL),
+      lastDataPointSaved_({0UL, 0.0F})
 {}
 
 void SensorDataHandler::restrictSaveSpeed(uint16_t interval_ms){

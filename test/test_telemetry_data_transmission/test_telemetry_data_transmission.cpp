@@ -1,5 +1,7 @@
 #include "unity.h"
 #include <array>
+#include <cstdio>
+#include <vector>
 #include "data_handling/Telemetry.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
@@ -38,12 +40,11 @@ public:
 };
 
 void test_initialization(void) {
-    MockDataSaver mockXAcl, mockYAcl, mockZAcl, altitude, packetCounter;
+    MockDataSaver mockXAcl, mockYAcl, mockZAcl, altitude;
     uint8_t xAclName = 1;
     uint8_t yAclName = 2;
     uint8_t zAclName = 3;
     uint8_t altName = 4;
-    uint8_t packetCounterName = 5;
     SensorDataHandler xAclData(xAclName, &mockXAcl);
     SensorDataHandler yAclData(yAclName, &mockYAcl);
     SensorDataHandler zAclData(zAclName, &mockZAcl);
@@ -54,10 +55,9 @@ void test_initialization(void) {
     accelerationTriplet[1] = &yAclData;
     accelerationTriplet[2] = &zAclData;
 
-    std::array<SendableSensorData*, 2> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-        new SendableSensorData(&altitudeData, 1),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    SendableSensorData altitudeSsd(&altitudeData, 1);
+    std::array<SendableSensorData*, 2> ssds{&accelerationSsd, &altitudeSsd};
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
 }
@@ -109,10 +109,9 @@ void test_a_full_second_of_ticks(void) {
     accelerationTriplet[1] = &yAclData;
     accelerationTriplet[2] = &zAclData;
 
-    std::array<SendableSensorData*, 2> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-        new SendableSensorData(&altitudeData, 1),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    SendableSensorData altitudeSsd(&altitudeData, 1);
+    std::array<SendableSensorData*, 2> ssds{&accelerationSsd, &altitudeSsd};
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
 
@@ -130,9 +129,9 @@ void test_a_full_second_of_ticks(void) {
     }
     printf("\n");
     // Test all bytes sent correctly for first second
-    for (int i = 0; i < 51; i++) {
+    for (std::size_t i = 0; i < 51U; ++i) {
         char message[50];
-        sprintf(message, "Byte %d mismatch", i);
+        std::snprintf(message, sizeof(message), "Byte %zu mismatch", i);
         TEST_ASSERT_EQUAL_MESSAGE(expectedSentBytes[i], mockRfdSerial.writeCalls.at(i), message);
     }
 
@@ -152,18 +151,18 @@ void test_a_full_second_of_ticks(void) {
     }
     printf("\n");
     // Test all bytes sent correctly for second second
-    for (int i = 0; i < 51; i++) {
+    for (std::size_t i = 0; i < 51U; ++i) {
         // Skip timestamp bytes
-        if (i >= 4 && i <= 11) {
+        if (i >= 4U && i <= 11U) {
             continue;
         }
-        if (i >= 33 && i <= 40) {
+        if (i >= 33U && i <= 40U) {
             continue;
         }
 
 
         char message[50];
-        sprintf(message, "Byte %d mismatch", i);
+        std::snprintf(message, sizeof(message), "Byte %zu mismatch", i);
         TEST_ASSERT_EQUAL_MESSAGE(expectedSentBytes[i], mockRfdSerial.writeCalls.at(i),
                                     message);
     }
@@ -180,9 +179,8 @@ void test_first_packet_counter_is_zero(void) {
     zAclData.addData(DataPoint(1, 1.234567f));
 
     std::array<SensorDataHandler*, 3> accelerationTriplet{&xAclData, &yAclData, &zAclData};
-    std::array<SendableSensorData*, 1> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    std::array<SendableSensorData*, 1> ssds{&accelerationSsd};
 
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
@@ -206,9 +204,8 @@ void test_second_packet_counter_is_one(void) {
     zAclData.addData(DataPoint(1, 1.234567f));
 
     std::array<SensorDataHandler*, 3> accelerationTriplet{&xAclData, &yAclData, &zAclData};
-    std::array<SendableSensorData*, 1> ssds{
-        new SendableSensorData(accelerationTriplet, 102, 2),
-    };
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    std::array<SendableSensorData*, 1> ssds{&accelerationSsd};
 
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
@@ -217,7 +214,7 @@ void test_second_packet_counter_is_one(void) {
 
     // First packet: kHeaderSize_bytes(12) + label(1) + 3 floats(12) + end marker(4) = 29 bytes
     // Second packet counter starts at byte 29 + kPacketCounterIndex
-    const int secondPacketStart = 29;
+    const std::size_t secondPacketStart = 29U;
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex));
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex + 1));
     TEST_ASSERT_EQUAL(0, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex + 2));
