@@ -63,14 +63,14 @@ void VerticalVelocityEstimator::determineVerticalAxis(const std::array<float, 3>
 }
 
 // NOLINTBEGIN(readability-identifier-length)
-void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const DataPoint &altimeter) 
+void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const DataPoint &altitude) 
 {
     // Use the altimeter timestamp as the reference for this update.
-    const uint32_t currentTimestamp_ms = altimeter.timestamp_ms;
+    const uint32_t currentTimestamp_ms = altitude.timestamp_ms;
 
     // If not initialized, do so with the altimeter reading.
     if (!initialized_) {
-        const InitialState initialState = { altimeter.data, currentTimestamp_ms };
+        const InitialState initialState = { altitude.data, currentTimestamp_ms };
         init(initialState);
         return;
     }
@@ -137,7 +137,7 @@ void VerticalVelocityEstimator::update(const AccelerationTriplet &accel, const D
 
     // --- Measurement Update (using altimeter reading) ---
     // Measurement z = altimeter altitude
-    const float z = altimeter.data;
+    const float z = altitude.data;
     // Innovation (residual): y = z - predictedAltitude_m
     const float y = z - predictedAltitude_m;
     // Innovation covariance: S = H P' H^T + R
