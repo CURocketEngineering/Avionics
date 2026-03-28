@@ -19,7 +19,7 @@ public:
      *       readings.
      */
     DataPoint() 
-    : timestamp_ms(0), data(0) {}
+    : timestamp_ms(0UL), data(0.0F) {}
 
     /**
      * @brief Construct a populated data point.
