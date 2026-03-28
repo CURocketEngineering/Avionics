@@ -18,11 +18,11 @@ LaunchDetector::LaunchDetector(float accelerationThreshold_ms2, //NOLINT(bugpron
       medianAccelerationSquared_(0)
 {
     // These must remain here because they rely on accelMagnitudeSquaredWindow_ being constructed
-    const uint16_t windowSpan_ms = static_cast<uint16_t>(accelMagnitudeSquaredWindow_.getMaxSize() - 1U);
+    const uint16_t windowSpan_slots = static_cast<uint16_t>(accelMagnitudeSquaredWindow_.getMaxSize() - 1U);
     minWindowSize_ms_ = static_cast<uint16_t>(
-        static_cast<uint32_t>(windowInterval_ms_ - acceptableTimeDifference_ms_) * windowSpan_ms);
+        static_cast<uint32_t>(windowInterval_ms_ - acceptableTimeDifference_ms_) * windowSpan_slots);
     maxWindowSize_ms_ = static_cast<uint16_t>(
-        static_cast<uint32_t>(windowInterval_ms_ + acceptableTimeDifference_ms_) * windowSpan_ms);
+        static_cast<uint32_t>(windowInterval_ms_ + acceptableTimeDifference_ms_) * windowSpan_slots);
 }
 
 
