@@ -74,9 +74,9 @@ class BaseStateMachine {
             StateEntryCallback functionPtr;
         };
 
-        FlightState state;
-        std::size_t callbackCount = 0;
-        std::array<StateCallbackRegistration, kMaxStateEntryCallbacks> onStateEntryCallbacks{};
+        FlightState state_;
+        std::size_t callbackCount_ = 0;
+        std::array<StateCallbackRegistration, kMaxStateEntryCallbacks> onStateEntryCallbacks_{};
 };
 
 #endif

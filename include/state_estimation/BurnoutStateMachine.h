@@ -38,10 +38,10 @@ class BurnoutStateMachine : public BaseStateMachine {
     int update(const AccelerationTriplet& accel, const DataPoint& alt) override;
 
   private:
-    IDataSaver* dataSaver;
-    LaunchDetector* launchDetector;
-    ApogeeDetector* apogeeDetector;
-    VerticalVelocityEstimator* verticalVelocityEstimator;
+    IDataSaver* dataSaver_;
+    LaunchDetector* launchDetector_;
+    ApogeeDetector* apogeeDetector_;
+    VerticalVelocityEstimator* verticalVelocityEstimator_;
 };
 
 

@@ -7,11 +7,12 @@
 #include <cstring>
 
 #include "ArduinoHAL.h"
+#include "UARTCommandHandler.h"
 #include "data_handling/SensorDataHandler.h"
 
 /**
  * @file Telemetry.h
- * @brief Packs SensorDataHandler values into a fixed-size byte packet and streams over a Stream (UART).
+ * @brief Packs SensorDataHandler values into a fixed-size byte packet and streams them over a Stream (UART).
  *
  * Design goals:
  * - Keep Telemetry as a normal class (non-templated) so implementation lives in Telemetry.cpp.
@@ -28,22 +29,22 @@
 namespace TelemetryFmt {
 
 /** Maximum packet size (bytes). Must match your radio/modem configuration. */
-constexpr std::size_t kPacketCapacity = 120;
+constexpr std::size_t kPacketCapacity_bytes = 120;
 
 /** Header markers: 3 sync zeros followed by a start byte. */
-constexpr std::size_t kSyncZeros = 3;
+constexpr std::size_t kSyncZeroCount_bytes = 3;
 
 /** Number of bytes in a packed 32-bit value. */
-constexpr std::size_t kU32Bytes = 4;
+constexpr std::size_t kBytesInU32_bytes = 4;
 
 /** Header layout: [0..2]=0, [3]=START, [4..7]=timestamp (big-endian). */
-constexpr std::size_t kStartByteIndex = kSyncZeros;          // 3
+constexpr std::size_t kStartByteIndex = kSyncZeroCount_bytes;          // 3
 constexpr std::size_t kTimestampIndex = kStartByteIndex + 1; // 4
-constexpr std::size_t kPacketCounterIndex = kTimestampIndex + kU32Bytes; // 8
-constexpr std::size_t kHeaderBytes = kSyncZeros + 1 + kU32Bytes + kU32Bytes; // 12 (CHANGED from 8 to 12)
+constexpr std::size_t kPacketCounterIndex = kTimestampIndex + kBytesInU32_bytes; // 8
+constexpr std::size_t kHeaderSize_bytes = kSyncZeroCount_bytes + 1 + kBytesInU32_bytes + kBytesInU32_bytes; // 12 (CHANGED from 8 to 12)
 
 /** End marker layout: 3 zeros followed by an end byte. */
-constexpr std::size_t kEndMarkerBytes = kSyncZeros + 1;
+constexpr std::size_t kEndMarkerSize_bytes = kSyncZeroCount_bytes + 1;
 
 /** Start-of-packet marker byte value. */
 constexpr std::uint8_t kStartByteValue = 51;
@@ -52,9 +53,10 @@ constexpr std::uint8_t kStartByteValue = 51;
 constexpr std::uint8_t kEndByteValue = 52;
 
 /** 32-bit helper constants */
-constexpr std::size_t kBytesIn32Bit = 4;
-constexpr unsigned kBitsPerByte = 8;
-constexpr std::uint8_t kAllOnesByte = 0xFF;
+constexpr unsigned kBitsPerByte_bits = 8;
+constexpr std::uint32_t kCommandModeInactivityTimeout_ms = 10000;
+constexpr std::size_t kCommandEntrySequenceLength = 3;
+constexpr char kCommandEntryChar = 'c';
 
 /** Assumptions used by float packing. */
 static_assert(sizeof(std::uint32_t) == 4, "Expected 32-bit uint32_t");
@@ -63,10 +65,10 @@ static_assert(sizeof(float) == 4, "Expected 32-bit float");
 /**
  * @brief Write a 32-bit value in big-endian order to dst[0..3].
  */
-inline void write_u32_be(std::uint8_t* dst, std::uint32_t v) {
+inline void writeU32Be(std::uint8_t* dst, std::uint32_t v) {
 
-    for (std::size_t i = 0; i < kBytesIn32Bit; ++i) {
-        const unsigned shift = static_cast<unsigned>((kBytesIn32Bit - 1 - i) * kBitsPerByte);
+    for (std::size_t i = 0; i < kBytesInU32_bytes; ++i) {
+        const unsigned shift = static_cast<unsigned>((kBytesInU32_bytes - 1 - i) * kBitsPerByte_bits);
         dst[i] = static_cast<std::uint8_t>(v >> shift);
     }
 }
@@ -77,16 +79,12 @@ inline void write_u32_be(std::uint8_t* dst, std::uint32_t v) {
  *
  * Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback.
  */
-inline std::uint16_t hz_to_period_ms(std::uint16_t hz) {
-    return (hz == 0) ? 1000u
-                     : static_cast<std::uint16_t>((1000u + hz - 1u) / hz);
+inline std::uint16_t hzToPeriod_ms(std::uint16_t frequency_hz) {
+    return (frequency_hz == 0) ? static_cast<std::uint16_t>(1000u)
+                     : static_cast<std::uint16_t>((1000u + frequency_hz - 1u) / frequency_hz);
 }
 
 } // namespace TelemetryFmt
-
-// Backwards-compatible names if existing code uses START_BYTE / END_BYTE.
-static const std::uint8_t START_BYTE = TelemetryFmt::kStartByteValue;
-static const std::uint8_t END_BYTE   = TelemetryFmt::kEndByteValue;
 
 /**
  * @brief Declares one telemetry "stream" to include in packets.
@@ -122,23 +120,23 @@ struct SendableSensorData {
     // --- Scheduling state ---
 
     /** Minimum time between sends for this stream. */
-    std::uint16_t periodMs;
+    std::uint16_t period_ms;
 
     /** Last send time in ms (same time base as tick()). */
-    std::uint32_t lastSentTimestamp;
+    std::uint32_t lastSentTimestamp_ms;
 
     /**
      * @brief Create a single SDH stream.
      * @param sdh SensorDataHandler to send (non-owning).
-     * @param sendFrequencyHz Desired send rate in Hz.
+     * @param sendFrequency_hz Desired send rate in Hz.
      */
-    SendableSensorData(SensorDataHandler* sdh, std::uint16_t sendFrequencyHz)
+    SendableSensorData(SensorDataHandler* sdh, std::uint16_t sendFrequency_hz)
         : singleSDH(sdh),
           multiSDH(0),
           multiSDHLength(0),
           multiSDHDataLabel(0),
-          periodMs(TelemetryFmt::hz_to_period_ms(sendFrequencyHz)),
-          lastSentTimestamp(0) {}
+          period_ms(TelemetryFmt::hzToPeriod_ms(sendFrequency_hz)),
+          lastSentTimestamp_ms(0) {}
 
     /**
      * @brief Create a multi SDH stream from a std::array.
@@ -149,26 +147,26 @@ struct SendableSensorData {
     template <std::size_t M>
     SendableSensorData(const std::array<SensorDataHandler*, M>& sdhList,
                        std::uint8_t label,
-                       std::uint16_t sendFrequencyHz)
+                       std::uint16_t sendFrequency_hz)
         : singleSDH(0),
           multiSDH(sdhList.data()),
           multiSDHLength(M),
           multiSDHDataLabel(label),
-          periodMs(TelemetryFmt::hz_to_period_ms(sendFrequencyHz)),
-          lastSentTimestamp(0) {}
+          period_ms(TelemetryFmt::hzToPeriod_ms(sendFrequency_hz)),
+          lastSentTimestamp_ms(0) {}
 
     /**
      * @brief Return true if enough time has elapsed such that this stream wants to be sent again.
      */
-    bool shouldBeSent(std::uint32_t now) const {
-        return (now - lastSentTimestamp) >= periodMs;
+    bool shouldBeSent(std::uint32_t now_ms) const {
+        return (now_ms - lastSentTimestamp_ms) >= period_ms;
     }
 
     /**
      * @brief Update internal state after sending.
      */
-    void markWasSent(std::uint32_t now) {
-        lastSentTimestamp = now;
+    void markWasSent(std::uint32_t now_ms) {
+        lastSentTimestamp_ms = now_ms;
     }
 
     /** @brief Convenience: true if configured as a single SDH stream. */
@@ -183,7 +181,7 @@ struct SendableSensorData {
  *
  * Usage pattern:
  * - Construct Telemetry with a stable list of SendableSensorData pointers.
- * - Call tick(currentTimeMs) every loop.
+ * - Call tick(currentTime_ms) every loop.
  *
  * Lifetime rule:
  * - Telemetry stores a pointer to the provided list of streams (non-owning).
@@ -198,42 +196,86 @@ public:
      */
     template <std::size_t N>
     Telemetry(const std::array<SendableSensorData*, N>& streams,
-              Stream& rfdSerialConnection)
-        : streams(streams.data()),
-          streamCount(N),
-          rfdSerialConnection(rfdSerialConnection),
-          nextEmptyPacketIndex(0),
-          packet{} {}
+              Stream& rfdSerialConnection,
+              CommandLine* commandLine = nullptr)
+        : streams_(streams.data()),
+          streamCount_(N),
+          rfdSerialConnection_(rfdSerialConnection),
+          commandLine_(commandLine),
+          nextEmptyPacketIndex_(0),
+          packet_{} {}
     /**
      * @brief Call every loop to send due telemetry streams.
-     * @param currentTimeMs Current time in milliseconds.
+     * @param currentTime_ms Current time in milliseconds.
      * @return true if a packet was sent on this tick.
      */
-    bool tick(std::uint32_t currentTimeMs);
+    bool tick(std::uint32_t currentTime_ms);
+
+    /**
+     * @brief True if telemetry is currently paused for radio command mode.
+     */
+    bool isInCommandMode() const { return inCommandMode_; }
+
+    /**
+     * @brief Optional command line interface to drive while telemetry manages command mode.
+     */
+    void setCommandLine(CommandLine* newCommandLine) { commandLine_ = newCommandLine; }
+
+    /**
+     * @brief Temporarily disable command-mode inactivity timeout.
+     * @param lockDuration_ms Duration before auto-unlock fallback.
+     */
+    void lockCommandModeTimeout(std::uint32_t lockDuration_ms);
+
+    /**
+     * @brief Re-enable command-mode inactivity timeout immediately.
+     */
+    void unlockCommandModeTimeout();
+
+    /**
+     * @brief Immediately exit command mode if currently active.
+     */
+    void forceExitCommandMode();
 
 private:
     // Packet building helpers
-    void preparePacket(std::uint32_t timestamp);
+    void preparePacket(std::uint32_t timestamp_ms);
     void addSingleSDHToPacket(SensorDataHandler* sdh);
     void addSSDToPacket(SendableSensorData* ssd);
     void setPacketToZero();
     void addEndMarker();
+    void checkForRadioCommandSequence(std::uint32_t currentTime_ms);
+    void enterCommandMode(std::uint32_t currentTime_ms);
+    void exitCommandMode();
+    bool shouldPauseTelemetryForCommandMode(std::uint32_t currentTime_ms);
+    bool canFitStreamWithEndMarker(const SendableSensorData* ssd) const;
+    void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTime_ms, bool& payloadAdded);
+    bool finalizeAndSendPacket();
 
     // Non-owning view of the stream list
-    SendableSensorData* const* streams;
+    SendableSensorData* const* streams_;
 
     // Number of streams in the list
     // Shall not be changed after construction
     // Used to iterate over streams
-    const std::size_t streamCount;
+    const std::size_t streamCount_;
 
     // Output
-    Stream& rfdSerialConnection;
+    Stream& rfdSerialConnection_;
+    CommandLine* commandLine_;
 
     // Packet state
-    std::uint32_t packetCounter = 0;
-    std::size_t nextEmptyPacketIndex;
-    std::array<std::uint8_t, TelemetryFmt::kPacketCapacity> packet;
+    std::uint32_t packetCounter_ = 0;
+    std::size_t nextEmptyPacketIndex_;
+    std::array<std::uint8_t, TelemetryFmt::kPacketCapacity_bytes> packet_;
+
+    // Command mode handling
+    bool inCommandMode_ = false; 
+    std::uint32_t commandModeEnteredTimestamp_ms_ = 0;
+    std::uint32_t commandModeLastInputTimestamp_ms_ = 0;
+    std::size_t commandEntryProgress_ = 0;
+    bool commandModeTimeoutLocked_ = false;
+    std::uint32_t commandModeTimeoutLockDeadline_ms_ = 0;
 };
 
 #endif

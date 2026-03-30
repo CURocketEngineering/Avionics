@@ -3,46 +3,46 @@
 
 // Constructor
 ApogeeDetector::ApogeeDetector(float apogeeThreshold_m)
-: apogeeThreshold_m(apogeeThreshold_m)
+: apogeeThreshold_m_(apogeeThreshold_m)
 {}
 
 // Initialize the filter state
 void ApogeeDetector::init(ApogeeDetectorInitialState initialState) {
-    apogee_flag = false;
+    apogeeDetected_ = false;
 
-    maxAltitude = initialState.initialAltitude;
-    maxAltitudeTimestamp = initialState.initialTimestamp;
+    maxAltitude_ = initialState.initialAltitude;
+    maxAltitudeTimestamp_ = initialState.initialTimestamp;
 }
 
 // Update the filter with new sensor data.
 void ApogeeDetector::update(VerticalVelocityEstimator* verticalVelocityEstimator) {
     
-    const float estimated_altitude_meters = verticalVelocityEstimator->getEstimatedAltitude();
+    const float estimatedAltitude_m = verticalVelocityEstimator->getEstimatedAltitude();
 
     // Update maximum altitude seen so far.
-    if (estimated_altitude_meters > maxAltitude) {
-        maxAltitude = estimated_altitude_meters;
-        maxAltitudeTimestamp = verticalVelocityEstimator->getTimestamp();
+    if (estimatedAltitude_m > maxAltitude_) {
+        maxAltitude_ = estimatedAltitude_m;
+        maxAltitudeTimestamp_ = verticalVelocityEstimator->getTimestamp();
     }
     
     // Apogee detection: if the current estimated altitude is at least apogeeThreshold_m
     // below the maximum and the estimated velocity is negative, mark apogee.
-    if (!apogee_flag && ((maxAltitude - estimated_altitude_meters) >= apogeeThreshold_m) && (verticalVelocityEstimator->getEstimatedVelocity() < 0)) {
-        apogee_flag = true;
+    if (!apogeeDetected_ && ((maxAltitude_ - estimatedAltitude_m) >= apogeeThreshold_m_) && (verticalVelocityEstimator->getEstimatedVelocity() < 0)) {
+        apogeeDetected_ = true;
         // (Optionally, you could “snap” the altitude to maxAltitude here.)
     }
 }
 
 // Return true if apogee has been detected.
 bool ApogeeDetector::isApogeeDetected() const {
-    return apogee_flag;
+    return apogeeDetected_;
 }
 
 // Get the detected apogee as a DataPoint.
 // If apogee has not been detected, returns a DataPoint with timestamp 0 and altitude 0.
 DataPoint ApogeeDetector::getApogee() const {
-    if (apogee_flag) {
-        return {maxAltitudeTimestamp, maxAltitude};
+    if (apogeeDetected_) {
+        return {maxAltitudeTimestamp_, maxAltitude_};
     }
     return {0, 0.0F};
 }

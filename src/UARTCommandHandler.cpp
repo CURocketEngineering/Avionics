@@ -2,15 +2,26 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 
-constexpr int COMMAND_CHARS_ASCII_END = 31; // ASCII control characters end at 31, so we can ignore those in input
+constexpr int kCommandCharsAsciiEnd = 31; // ASCII control characters end at 31, so we can ignore those in input
 
 
-CommandLine::CommandLine(Stream * UART) : UART(UART) {
+CommandLine::CommandLine(Stream* uartStream) : uart_(uartStream), defaultUart_(uartStream) {
+}
+
+void CommandLine::switchUART(Stream* newUart) {
+    if (newUart == nullptr) {
+        return;
+    }
+    uart_ = newUart;
+}
+
+void CommandLine::useDefaultUART() {
+    uart_ = defaultUart_;
 }
 
 void CommandLine::begin() {
     help();
-    UART->print(SHELL_PROMPT); 
+    uart_->print(kShellPrompt);
 }
 
 static bool isBackspace_(char receivedChar) {
@@ -51,8 +62,11 @@ void tokenizeWhitespace(const std::string& line,
 } // namespace
 
 void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complexity)
-    while (UART->available() > 0) {
-        const char receivedChar = static_cast<char>(UART->read());
+    bool consumedInputThisCall = false;
+
+    while (uart_->available() > 0) {
+        consumedInputThisCall = true;
+        const char receivedChar = static_cast<char>(uart_->read());
 
         if (isBackspace_(receivedChar)) {
             lastWasCR_ = false;
@@ -69,23 +83,27 @@ void CommandLine::readInput() { // NOLINT(readability-function-cognitive-complex
             handleChar_(receivedChar);
         }
     }
+
+    if (consumedInputThisCall) {
+        lastInteractionTimestamp_ = static_cast<uint32_t>(millis());
+    }
 }
 
 void CommandLine::handleBackspace_() {
-    if (fullLine.empty()) {return;}
-    fullLine.pop_back();
-    UART->print("\b \b"); // erase last char on terminal
+    if (fullLine_.empty()) {return;}
+    fullLine_.pop_back();
+    uart_->print("\b \b"); // erase last char on terminal
 }
 
 void CommandLine::handleNewline_() {
-    UART->println();
+    uart_->println();
 
-    std::string line = fullLine;
-    fullLine.clear();
+    std::string line = fullLine_;
+    fullLine_.clear();
 
     trimSpaces(line);
     if (line.empty()) {
-        UART->print(SHELL_PROMPT);
+        uart_->print(kShellPrompt);
         return;
     }
 
@@ -97,30 +115,30 @@ void CommandLine::handleNewline_() {
         executeCommand(cmd, args);
     }
 
-    UART->print(SHELL_PROMPT);
+    uart_->print(kShellPrompt);
 }
 
 void CommandLine::handleChar_(char receivedChar) {
     // Optional: ignore other control chars (keep tab if you want)
-    if (static_cast<unsigned char>(receivedChar) <= COMMAND_CHARS_ASCII_END && receivedChar != '\t') {return;}
+    if (static_cast<unsigned char>(receivedChar) <= kCommandCharsAsciiEnd && receivedChar != '\t') {return;}
 
-    if (fullLine.length() >= UART_BUFFER_SIZE - 1) {
-        UART->println();
-        UART->println("Buffer overflow, input ignored.");
-        fullLine.clear();
-        UART->print(SHELL_PROMPT);
+    if (fullLine_.length() >= kUartBufferSize - 1) {
+        uart_->println();
+        uart_->println("Buffer overflow, input ignored.");
+        fullLine_.clear();
+        uart_->print(kShellPrompt);
         return;
     }
 
-    fullLine += receivedChar;
-    UART->print(receivedChar);
+    fullLine_ += receivedChar;
+    uart_->print(receivedChar);
 }
 
 
 // Add a command with its long name, short name, and function pointer
 void CommandLine::addCommand(const std::string& longName, const std::string& shortName, std::function<void(std::queue<std::string>, std::string&)> funcPtr) { //NOLINT(readability-convert-member-functions-to-static)
     Command newCommand{ longName, shortName, funcPtr };
-    commands.push_back(newCommand);
+    commands_.push_back(newCommand);
 }
 
 // Execute a command based on its long name or short name
@@ -132,7 +150,7 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
     }
 
     std::string response;
-    for (const auto& cmd : commands) {
+    for (const auto& cmd : commands_) {
         if (cmd.longName == command || cmd.shortName == command) {
 
             cmd.funcPtr(arguments, response);
@@ -140,23 +158,23 @@ void CommandLine::executeCommand(const std::string& command, std::queue<std::str
         }
     }
 
-    // Print the name of the command that was not found, and suggest using "help" to see available commands
-    UART->println("Command not found: " + String(command.c_str()));
-    UART->println("Type 'help' or '?' to see available commands.");
+    // Print the name of the command that was not found, and suggest using "help" to see available commands.
+    uart_->println("Command not found: " + String(command.c_str()));
+    uart_->println("Type 'help' or '?' to see available commands.");
 }
 
 // Help function to list all commands with their long and short names
 void CommandLine::help(){
-    if (commands.empty()) {
-        UART->println("No commands available.");  
-        UART->println("help<?>"); 
+    if (commands_.empty()) {
+        uart_->println("No commands available.");
+        uart_->println("help<?>");
         return;
     }
  
-    for (const auto& cmd : commands) {
-        UART->println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
+    for (const auto& cmd : commands_) {
+        uart_->println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
     }
-    UART->println("help<?>"); 
+    uart_->println("help<?>");
 
 }
 

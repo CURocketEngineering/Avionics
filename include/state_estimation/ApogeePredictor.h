@@ -29,21 +29,23 @@ public:
     /**
      * @param velocityEstimator       Reference to the velocity estimator
      * @param accelFilterAlpha             EMA weight for smoothing deceleration [0–1]
-     * @param minimumClimbVelocity_ms   Minimum upward velocity (m/s) for a valid prediction
+     * @param minimumClimbVelocity_mps  Minimum upward velocity (m/s) for a valid prediction
      */
     explicit ApogeePredictor(const VerticalVelocityEstimator& velocityEstimator,
                              float accelFilterAlpha = 0.2F,
-                             float minimumClimbVelocity_ms = 1.0F);
+                             float minimumClimbVelocity_mps = 1.0F);
 
     /** Call after every estimator refresh to update prediction */
     void update();
 
     /** Optional: Update using a quadratic-drag model (more accurate under drag) */
-    void quad_update();
+    void quadUpdate();
 
-    void poly_update();
+    void polyUpdate();
 
-    void analytic_update();
+    void analyticUpdate();
+
+    void simulateUpdate();
 
     // ----- Accessors -----
     [[nodiscard]] bool     isPredictionValid()            const;
@@ -51,22 +53,27 @@ public:
     [[nodiscard]] uint32_t getPredictedApogeeTimestamp_ms() const;
     [[nodiscard]] float    getPredictedApogeeAltitude_m() const;
     [[nodiscard]] float    getFilteredDeceleration()      const;
-    [[nodiscard]] float    getdragCoefficient()      const;
+    [[nodiscard]] float    getDragCoefficient()      const;
 
 
 private:
     const VerticalVelocityEstimator& vve_;
 
-    float filteredDecel_;   ///< Smoothed deceleration (m/s², positive)
+    float filteredDecel_mps2_;   ///< Smoothed deceleration (m/s², positive)
     float alpha_;           ///< EMA smoothing weight
-    float minClimbVel_;     ///< Minimum climb speed (m/s) to consider a prediction
+    float minimumClimbVelocity_mps_; ///< Minimum climb speed (m/s) to consider a prediction
 
     // Latest prediction results
     bool     valid_;        ///< Whether the current prediction is valid
     float    tToApogee_;    ///< Time until apogee (seconds)
     uint32_t predApogeeTs_; ///< Timestamp of predicted apogee (ms)
     float    predApogeeAlt_;///< Predicted altitude at apogee (m)
-    float currentDragCoefficient = 0.0025F;     ///< Drag coefficient
+    float currentDragCoefficient_ = 0.0005F;     ///< Drag coefficient
+    
+    //variables for simulation apogee prediction
+    float beta_ = 400.0f;
+    float filteredApogee_ = 0.0f;
+    bool apogeeInitialized_ = false;
 
     // Bookkeeping
     uint32_t lastTs_;       ///< Last timestamp received

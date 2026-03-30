@@ -26,7 +26,7 @@ class BatteryVoltage {
          * @param voltageThreshold A threshold voltage for low battery checks (not used in current implementation but can be useful for future extensions).
          */
         BatteryVoltage(uint8_t adcPin, float factor, int numAdcBits, float voltageThreshold)
-            : pin(adcPin), factor(factor), numAdcBits(numAdcBits), voltageThreshold(voltageThreshold) {analogReadResolution(numAdcBits);}
+            : pin_(adcPin), factor_(factor), numAdcBits_(numAdcBits), voltageThreshold_(voltageThreshold) {analogReadResolution(numAdcBits_);}
     
         /**
          * @brief Sample the ADC and convert to battery voltage.
@@ -34,13 +34,13 @@ class BatteryVoltage {
          */
         float readVoltage() {
             // Set the pin for reading
-            pinMode(pin, INPUT);
-            uint32_t rawValue = analogRead(pin);  // Should give a value between 0 and 2^numAdcBits - 1
+            pinMode(pin_, INPUT);
+            uint32_t rawValue = analogRead(pin_);  // Should give a value between 0 and 2^numAdcBits_ - 1
             float vRef = 3.3f; // reference voltage for the ADC on MARTHA 1.4
 
             // Convert raw ADC value to voltage at the pin, then apply the factor to get battery voltage
-            float vPin = (static_cast<float>(rawValue) / (static_cast<float>(1 << numAdcBits) - 1)) * vRef;
-            float vBat = vPin * factor;
+            float vPin = (static_cast<float>(rawValue) / (static_cast<float>(1 << numAdcBits_) - 1)) * vRef;
+            float vBat = vPin * factor_;
 
             return vBat;
         }
@@ -51,14 +51,14 @@ class BatteryVoltage {
          * @note Could be useful for future extension, like triggering a low power mode
          */
         bool isLow(){
-            return readVoltage() < voltageThreshold;
+            return readVoltage() < voltageThreshold_;
     }
     
     private:
-        uint8_t pin;
-        float factor;
-        int numAdcBits;
-        float voltageThreshold;
+        uint8_t pin_;
+        float factor_;
+        int numAdcBits_;
+        float voltageThreshold_;
     };
     
     #endif // PowerManagement_H
