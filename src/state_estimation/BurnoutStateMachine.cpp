@@ -88,6 +88,10 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
         case STATE_DESCENT:
             // Do nothing
             break;
+
+        default:
+            // Handle unexpected states if necessary
+            break;
     }
 
     return 0;

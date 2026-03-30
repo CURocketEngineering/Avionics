@@ -127,6 +127,10 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
         case STATE_DESCENT:
             // Do nothing
             break;
+
+        default:
+            // Handle unexpected states if necessary
+            break;
     }
 
     return 0;
