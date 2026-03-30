@@ -44,8 +44,8 @@ class BaseStateMachine {
 
         /**
          * @brief Register a callback to invoke each time a target state is entered.
-         * @param state The state that triggers the callback.
-         * @param functionPtr Function to call when entering @p state.
+         * @param targetState The state that triggers the callback.
+         * @param functionPtr Function to call when entering @p targetState.
          * @return true if callback was registered, false for nullptr, duplicate,
          *         or full callback buffer.
          */
