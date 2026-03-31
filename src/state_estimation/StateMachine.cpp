@@ -23,27 +23,10 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
     // Update the state.
     switch (getFlightState()) {
         case STATE_ARMED:
-            // Serial.println("lp update");
+
+            // Update launch detector and check for launch detection
+            // As soon as this is true, jump straight to ascent, regardless of the FLD
             launchDetector_->update(accel);
-            fastLaunchDetector_->update(accel);
-            if (fastLaunchDetector_->hasLaunched()) {
-                // Change state to soft ascent.
-                changeState(STATE_SOFT_ASCENT);
-
-                // Save the FLD launch time
-                fldLaunchTime_ms_ = fastLaunchDetector_->getLaunchedTime();
-
-                // Log the state change.
-                dataSaver_->saveDataPoint(
-                    DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
-                    STATE_CHANGE
-                );
-
-                // Put the data saver into post-launch mode
-                dataSaver_->launchDetected(fastLaunchDetector_->getLaunchedTime());
-            }
-            
-            // The FLD should always trigger before the LP, but we check for LP launch just in case
             if (launchDetector_->isLaunched()) {
                 // Change state to ascent.
                 changeState(STATE_ASCENT);
@@ -62,6 +45,30 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
 
                 // Update the vertical velocity estimator
                 verticalVelocityEstimator_->update(accel, alt);
+                return 0;
+            }
+
+
+            // If the launch detector didn't trigger, check the fast launch detector
+            // The fast launch detector should trigger before the launch detector, but it is more susceptible to noise.
+            // This allows us to jump to a soft ascent while waiting for the launch detector to confirm.
+            fastLaunchDetector_->update(accel);
+            if (fastLaunchDetector_->hasLaunched()) {
+                // Change state to soft ascent.
+                changeState(STATE_SOFT_ASCENT);
+
+                // Save the FLD launch time
+                fldLaunchTime_ms_ = fastLaunchDetector_->getLaunchedTime();
+
+                // Log the state change.
+                dataSaver_->saveDataPoint(
+                    DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
+                    STATE_CHANGE
+                );
+
+                // Put the data saver into post-launch mode
+                dataSaver_->launchDetected(fastLaunchDetector_->getLaunchedTime());
+                return 0;
             }
             break;
 
@@ -89,8 +96,9 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
 
                 // Update the vertical velocity estimator
                 verticalVelocityEstimator_->update(accel, alt);
+                return 0;
             }
-            else if (accel.x.timestamp_ms - fldLaunchTime_ms_ > fastLaunchDetector_->getConfirmationWindow()) {
+            if (accel.x.timestamp_ms - fldLaunchTime_ms_ > fastLaunchDetector_->getConfirmationWindow()) {
                 // If the confirmation window has passed without launch detected by LaunchDetector,
                 // Revert to ARMED state.
                 changeState(STATE_ARMED);
@@ -105,6 +113,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
 
                 // Clear post-launch mode
                 dataSaver_->clearPostLaunchMode();
+                return 0;
             }
             break;
             
@@ -122,11 +131,14 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                     STATE_CHANGE
                 );
             }
-            break;
+            return 0;
+
+        case STATE_DESCENT:
+            return 0; // Do nothing state
 
         default:
-            // All other states have no actions or transitions
-            break;
+            // Unexpected state, error return 
+            return 1;
     }
 
     return 0;
