@@ -67,38 +67,55 @@ int DataSaverSPI::addDataToBuffer(const uint8_t* data, size_t length) {
     return 0;
 }
 
-// Write the entire buffer to flash
 int DataSaverSPI::flushBuffer() {
     if (bufferIndex == 0) {
-        return 1;  // Nothing to flush
+        return 1;
     }
 
-    // Check if we need to wrap around
-    if (nextWriteAddress + bufferIndex > flash->size()) {
-        // Wrap around
-        nextWriteAddress = kDataStartAddress;
-    }   
+    uint32_t writeAddress = nextWriteAddress;
 
-    // Check that we haven't wrapped around to the launch address while in post-launch mode
-    if (postLaunchMode && nextWriteAddress <= launchWriteAddress && nextWriteAddress + kBufferSize_bytes * 2 > launchWriteAddress) {
+    // Wrap before protection check / write
+    if (writeAddress + kBufferSize_bytes > flash->size()) {
+        writeAddress = kDataStartAddress;
+    }
+
+    // Must check protection BEFORE writing
+    if (postLaunchMode &&
+        writeAddress <= launchWriteAddress &&
+        writeAddress + kBufferSize_bytes * 2 > launchWriteAddress) {
         isChipFullDueToPostLaunchProtection = true;
-        return -1; // Indicate no write due to post-launch protection
+        return -1;
     }
 
+    // Fill unused buffer bytes with 0xFF (erased state)
+    if (bufferIndex < kBufferSize_bytes) {
+        memset(buffer + bufferIndex, kEmptyPageValue,
+               kBufferSize_bytes - bufferIndex);
+    }
+
+    // Write current page
+    if (!flash->writeBuffer(writeAddress, buffer, kBufferSize_bytes)) {
+        return -1;
+    }
+
+    bufferIndex = 0;
+    bufferFlushes++;
+
+    // Advance
+    nextWriteAddress = writeAddress + kBufferSize_bytes;
+    if (nextWriteAddress >= flash->size()) {
+        nextWriteAddress = kDataStartAddress;
+    }
+
+    // Pre-erase next sector if next write starts a new sector
     if (nextWriteAddress % SFLASH_SECTOR_SIZE == 0) {
         if (!flash->eraseSector(nextWriteAddress / SFLASH_SECTOR_SIZE)) {
+            // Current write already succeeded, so maybe don't treat this
+            // as a failed flush unless you want "next write prep failed"
             return -1;
         }
     }
 
-    // Write 1 page of data
-    if (!flash->writeBuffer(nextWriteAddress, buffer, kBufferSize_bytes)) {
-        return -1;
-    }
-
-    nextWriteAddress += kBufferSize_bytes;  // keep it aligned to the buffer size or page size
-    bufferIndex = 0; // Reset the buffer
-    bufferFlushes++;
     return 0;
 }
 
