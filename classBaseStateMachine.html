@@ -94,7 +94,7 @@ $(function(){initNavTree('classBaseStateMachine.html','','classBaseStateMachine-
 </div><!--header-->
 <div class="contents">
 
-<p>Abstract interface for flight state machines driven by IMU/altimeter data.  
+<p>Base class for flight state machines driven by IMU/altimeter data.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a>&gt;</code></p>
@@ -103,11 +103,11 @@ Inheritance diagram for BaseStateMachine:</div>
 <div class="dyncontent">
 <div class="center"><img src="classBaseStateMachine__inherit__graph.png" border="0" usemap="#aBaseStateMachine_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="aBaseStateMachine_inherit__map" id="aBaseStateMachine_inherit__map">
-<area shape="rect" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="115,5,250,91"/>
-<area shape="rect" href="classBurnoutStateMachine.html" title="State machine variant that explicitly models motor burnout before coast." alt="" coords="5,139,184,244"/>
-<area shape="poly" title=" " alt="" coords="152,104,129,140,125,137,147,101"/>
-<area shape="rect" href="classStateMachine.html" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="208,139,336,244"/>
-<area shape="poly" title=" " alt="" coords="219,101,241,137,237,140,214,104"/>
+<area shape="rect" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="73,5,292,211"/>
+<area shape="rect" href="classBurnoutStateMachine.html" title="State machine variant that explicitly models motor burnout before coast." alt="" coords="5,259,184,344"/>
+<area shape="poly" title=" " alt="" coords="133,224,116,260,111,257,128,222"/>
+<area shape="rect" href="classStateMachine.html" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="208,259,336,344"/>
+<area shape="poly" title=" " alt="" coords="238,222,255,257,250,260,234,224"/>
 </map>
 </div>
 <div class="dynheader">
@@ -115,25 +115,65 @@ Collaboration diagram for BaseStateMachine:</div>
 <div class="dyncontent">
 <div class="center"><img src="classBaseStateMachine__coll__graph.png" border="0" usemap="#aBaseStateMachine_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aBaseStateMachine_coll__map" id="aBaseStateMachine_coll__map">
-<area shape="rect" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,140,91"/>
+<area shape="rect" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,224,211"/>
 </map>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a6ec126c798749decaab78d13d9ed4a58" id="r_a6ec126c798749decaab78d13d9ed4a58"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a6ec126c798749decaab78d13d9ed4a58">StateEntryCallback</a> = void (*)()</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ab1eea1f77fda99bcdced3390b342ab5f" id="r_ab1eea1f77fda99bcdced3390b342ab5f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ab1eea1f77fda99bcdced3390b342ab5f">BaseStateMachine</a> (<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> initialState=<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7aaad1f49300d4e2acbbf7143874e9b39b">STATE_UNARMED</a>)</td></tr>
+<tr class="memitem:a1fe995d91fc2a60a353e848e7adff354" id="r_a1fe995d91fc2a60a353e848e7adff354"><td class="memItemLeft">virtual&#160;</td><td class="memItemRight"><a class="el" href="#a1fe995d91fc2a60a353e848e7adff354">~BaseStateMachine</a> ()=default</td></tr>
 <tr class="memitem:a5e54ffb4caa0be27ac15f3980e1d123f" id="r_a5e54ffb4caa0be27ac15f3980e1d123f"><td class="memItemLeft">virtual int&#160;</td><td class="memItemRight"><a class="el" href="#a5e54ffb4caa0be27ac15f3980e1d123f">update</a> (const <a class="el" href="structAccelerationTriplet.html">AccelerationTriplet</a> &amp;accel, const <a class="el" href="classDataPoint.html">DataPoint</a> &amp;alt)=0</td></tr>
 <tr class="memdesc:a5e54ffb4caa0be27ac15f3980e1d123f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Advance the state machine with the latest measurements.  <br /></td></tr>
-<tr class="memitem:a8343e067635a3fa9fab2e80b08941f82" id="r_a8343e067635a3fa9fab2e80b08941f82"><td class="memItemLeft">virtual uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a8343e067635a3fa9fab2e80b08941f82">getState</a> () const =0</td></tr>
-<tr class="memdesc:a8343e067635a3fa9fab2e80b08941f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current discrete state identifier.  <br /></td></tr>
+<tr class="memitem:a2aaa738f1a8f4cd95167ccddcca299f3" id="r_a2aaa738f1a8f4cd95167ccddcca299f3"><td class="memItemLeft">virtual uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a2aaa738f1a8f4cd95167ccddcca299f3">getState</a> () const</td></tr>
+<tr class="memdesc:a2aaa738f1a8f4cd95167ccddcca299f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current discrete state identifier.  <br /></td></tr>
+<tr class="memitem:a48ce05f4879cc476f04035cfb2df02b0" id="r_a48ce05f4879cc476f04035cfb2df02b0"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a48ce05f4879cc476f04035cfb2df02b0">registerOnStateEntry</a> (<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> targetState, <a class="el" href="#a6ec126c798749decaab78d13d9ed4a58">StateEntryCallback</a> functionPtr)</td></tr>
+<tr class="memdesc:a48ce05f4879cc476f04035cfb2df02b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback to invoke each time a target state is entered.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a58cb5bba5d1cd79738ee0b2fa2fa5977" id="r_a58cb5bba5d1cd79738ee0b2fa2fa5977"><td class="memItemLeft">static constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a58cb5bba5d1cd79738ee0b2fa2fa5977">getMaxStateEntryCallbacks</a> ()</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-attribs" class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a9a47ead9932a613d3f80f6147c6952a2" id="r_a9a47ead9932a613d3f80f6147c6952a2"><td class="memItemLeft">static constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="#a9a47ead9932a613d3f80f6147c6952a2">kMaxStateEntryCallbacks</a> = 32</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a530432fcdb09edb0343c57af8f230d15" id="r_a530432fcdb09edb0343c57af8f230d15"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a530432fcdb09edb0343c57af8f230d15">changeState</a> (<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> newState)</td></tr>
+<tr class="memdesc:a530432fcdb09edb0343c57af8f230d15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transition to a new state and trigger registered on-entry callbacks.  <br /></td></tr>
+<tr class="memitem:aada6d206fbc56a4497c45882f8dfdfb2" id="r_aada6d206fbc56a4497c45882f8dfdfb2"><td class="memItemLeft"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a>&#160;</td><td class="memItemRight"><a class="el" href="#aada6d206fbc56a4497c45882f8dfdfb2">getFlightState</a> () const</td></tr>
+<tr class="memdesc:aada6d206fbc56a4497c45882f8dfdfb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current state as <a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> enum.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Abstract interface for flight state machines driven by IMU/altimeter data. </p>
-<dl class="section note"><dt>Note</dt><dd>When to use: derive a concrete state machine to map sensor inputs to discrete flight phases without changing call sites. </dd></dl>
+<div class="textblock"><p>Base class for flight state machines driven by IMU/altimeter data. </p>
+<dl class="section note"><dt>Note</dt><dd>When to use: derive a concrete state machine to map sensor inputs to discrete flight phases without changing call sites. This class owns current-state tracking plus on-entry callback dispatch with no dynamic memory allocation. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8h_source.html#l00013">13</a> of file <a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a>.</p>
-</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a8343e067635a3fa9fab2e80b08941f82" name="a8343e067635a3fa9fab2e80b08941f82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8343e067635a3fa9fab2e80b08941f82">&#9670;&#160;</a></span>getState()</h2>
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8h_source.html#l00019">19</a> of file <a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a>.</p>
+</div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
+<a id="a6ec126c798749decaab78d13d9ed4a58" name="a6ec126c798749decaab78d13d9ed4a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ec126c798749decaab78d13d9ed4a58">&#9670;&#160;</a></span>StateEntryCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a6ec126c798749decaab78d13d9ed4a58">BaseStateMachine::StateEntryCallback</a> = void (*)()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8h_source.html#l00022">22</a> of file <a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ab1eea1f77fda99bcdced3390b342ab5f" name="ab1eea1f77fda99bcdced3390b342ab5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1eea1f77fda99bcdced3390b342ab5f">&#9670;&#160;</a></span>BaseStateMachine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -142,7 +182,96 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint8_t BaseStateMachine::getState </td>
+          <td class="memname">BaseStateMachine::BaseStateMachine </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a></td>          <td class="paramname"><span class="paramname"><em>initialState</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7aaad1f49300d4e2acbbf7143874e9b39b">STATE_UNARMED</a></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel explicit">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8cpp_source.html#l00003">3</a> of file <a class="el" href="BaseStateMachine_8cpp_source.html">BaseStateMachine.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a1fe995d91fc2a60a353e848e7adff354" name="a1fe995d91fc2a60a353e848e7adff354"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fe995d91fc2a60a353e848e7adff354">&#9670;&#160;</a></span>~BaseStateMachine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual BaseStateMachine::~BaseStateMachine </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span><span class="mlabel default">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
+<a id="a530432fcdb09edb0343c57af8f230d15" name="a530432fcdb09edb0343c57af8f230d15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a530432fcdb09edb0343c57af8f230d15">&#9670;&#160;</a></span>changeState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool BaseStateMachine::changeState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a></td>          <td class="paramname"><span class="paramname"><em>newState</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transition to a new state and trigger registered on-entry callbacks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newState</td><td>State to transition into. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if state changed, false if already in <code class="param">newState</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8cpp_source.html#l00033">33</a> of file <a class="el" href="BaseStateMachine_8cpp_source.html">BaseStateMachine.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aada6d206fbc56a4497c45882f8dfdfb2" name="aada6d206fbc56a4497c45882f8dfdfb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aada6d206fbc56a4497c45882f8dfdfb2">&#9670;&#160;</a></span>getFlightState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> BaseStateMachine::getFlightState </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -150,7 +279,63 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current state as <a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> enum. </p>
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8cpp_source.html#l00051">51</a> of file <a class="el" href="BaseStateMachine_8cpp_source.html">BaseStateMachine.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a58cb5bba5d1cd79738ee0b2fa2fa5977" name="a58cb5bba5d1cd79738ee0b2fa2fa5977"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58cb5bba5d1cd79738ee0b2fa2fa5977">&#9670;&#160;</a></span>getMaxStateEntryCallbacks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t BaseStateMachine::getMaxStateEntryCallbacks </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8h_source.html#l00054">54</a> of file <a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a>.</p>
+
+</div>
+</div>
+<a id="a2aaa738f1a8f4cd95167ccddcca299f3" name="a2aaa738f1a8f4cd95167ccddcca299f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aaa738f1a8f4cd95167ccddcca299f3">&#9670;&#160;</a></span>getState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t BaseStateMachine::getState </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -158,7 +343,40 @@ Public Member Functions</h2></td></tr>
 <p>Current discrete state identifier. </p>
 <dl class="section note"><dt>Note</dt><dd>When to use: downstream logic (ejection, logging, UI) queries this to decide actions. </dd></dl>
 
-<p>Implemented in <a class="el" href="classBurnoutStateMachine.html#af860fd832c468f0c36abd3a9cea73144">BurnoutStateMachine</a>, and <a class="el" href="classStateMachine.html#a41e682913490eaefb10b50cd2e4e2b70">StateMachine</a>.</p>
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8cpp_source.html#l00005">5</a> of file <a class="el" href="BaseStateMachine_8cpp_source.html">BaseStateMachine.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a48ce05f4879cc476f04035cfb2df02b0" name="a48ce05f4879cc476f04035cfb2df02b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48ce05f4879cc476f04035cfb2df02b0">&#9670;&#160;</a></span>registerOnStateEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool BaseStateMachine::registerOnStateEntry </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a></td>          <td class="paramname"><span class="paramname"><em>targetState</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a6ec126c798749decaab78d13d9ed4a58">StateEntryCallback</a></td>          <td class="paramname"><span class="paramname"><em>functionPtr</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register a callback to invoke each time a target state is entered. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">targetState</td><td>The state that triggers the callback. </td></tr>
+    <tr><td class="paramname">functionPtr</td><td>Function to call when entering <code class="param">targetState</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if callback was registered, false for nullptr, duplicate, or full callback buffer. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8cpp_source.html#l00009">9</a> of file <a class="el" href="BaseStateMachine_8cpp_source.html">BaseStateMachine.cpp</a>.</p>
 
 </div>
 </div>
@@ -203,8 +421,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Member Data Documentation</h2>
+<a id="a9a47ead9932a613d3f80f6147c6952a2" name="a9a47ead9932a613d3f80f6147c6952a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a47ead9932a613d3f80f6147c6952a2">&#9670;&#160;</a></span>kMaxStateEntryCallbacks</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t BaseStateMachine::kMaxStateEntryCallbacks = 32</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="BaseStateMachine_8h_source.html#l00024">24</a> of file <a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="BaseStateMachine_8h_source.html">BaseStateMachine.h</a></li>
+<li><a class="el" href="BaseStateMachine_8cpp_source.html">BaseStateMachine.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

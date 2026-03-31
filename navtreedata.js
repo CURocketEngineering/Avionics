@@ -80,6 +80,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
+        [ "Typedefs", "functions_type.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
@@ -101,8 +102,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Adafruit__SPIFlash__mock_8h.html",
-"classAdafruit__LIS3MDL.html#add00be660d65b34d7fe76536dfddb5d9",
-"dir_33671b85bb374cef191fae8fb6bc10f9.html"
+"classAdafruit__LIS3MDL.html#ab4f3a6a9fc80387a01b67f6c3dfb7b12",
+"classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

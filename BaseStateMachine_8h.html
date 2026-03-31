@@ -93,7 +93,10 @@ $(function(){initNavTree('BaseStateMachine_8h.html','',''); });
   <div class="headertitle"><div class="title">BaseStateMachine.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="DataPoint_8h_source.html">data_handling/DataPoint.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;cstdint&gt;</code><br />
+<code>#include &quot;<a class="el" href="DataPoint_8h_source.html">data_handling/DataPoint.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="StateEstimationTypes_8h_source.html">state_estimation/StateEstimationTypes.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="States_8h_source.html">state_estimation/States.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -101,16 +104,22 @@ Include dependency graph for BaseStateMachine.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="BaseStateMachine_8h__incl.png" border="0" usemap="#aBaseStateMachine_8h" loading="lazy" alt=""/></div>
 <map name="aBaseStateMachine_8h" id="aBaseStateMachine_8h">
-<area shape="rect" title=" " alt="" coords="104,5,259,31"/>
-<area shape="rect" href="DataPoint_8h.html" title=" " alt="" coords="5,167,200,192"/>
-<area shape="poly" title=" " alt="" coords="123,33,83,51,65,64,52,80,46,99,52,119,65,139,81,156,77,159,61,142,47,121,41,99,47,77,62,60,80,46,121,28"/>
-<area shape="rect" href="StateEstimationTypes_8h.html" title=" " alt="" coords="61,79,301,119"/>
-<area shape="poly" title=" " alt="" coords="184,31,184,65,179,65,179,31"/>
-<area shape="rect" href="States_8h.html" title=" " alt="" coords="325,86,515,111"/>
-<area shape="poly" title=" " alt="" coords="217,28,373,79,371,84,215,33"/>
-<area shape="rect" title=" " alt="" coords="69,240,136,265"/>
-<area shape="poly" title=" " alt="" coords="105,192,105,226,100,226,100,192"/>
-<area shape="poly" title=" " alt="" coords="164,121,126,159,122,155,160,117"/>
+<area shape="rect" title=" " alt="" coords="143,5,297,31"/>
+<area shape="rect" title=" " alt="" coords="5,86,61,111"/>
+<area shape="poly" title=" " alt="" coords="192,33,74,81,71,83,69,78,72,76,190,28"/>
+<area shape="rect" title=" " alt="" coords="86,86,157,111"/>
+<area shape="poly" title=" " alt="" coords="207,33,148,79,145,75,204,29"/>
+<area shape="rect" title=" " alt="" coords="303,240,369,265"/>
+<area shape="poly" title=" " alt="" coords="219,31,213,62,209,103,213,148,219,170,229,191,241,206,256,218,291,236,288,241,253,222,237,209,224,193,214,172,208,149,204,103,208,61,214,30"/>
+<area shape="rect" href="DataPoint_8h.html" title=" " alt="" coords="239,167,433,192"/>
+<area shape="poly" title=" " alt="" coords="227,30,245,70,273,117,312,156,308,160,269,120,240,73,222,32"/>
+<area shape="rect" href="StateEstimationTypes_8h.html" title=" " alt="" coords="283,79,523,119"/>
+<area shape="poly" title=" " alt="" coords="248,28,347,71,345,76,246,33"/>
+<area shape="rect" href="States_8h.html" title=" " alt="" coords="461,167,651,192"/>
+<area shape="poly" title=" " alt="" coords="298,22,365,28,435,39,496,55,520,65,537,77,549,94,556,114,560,152,555,153,551,115,544,96,533,81,517,70,494,60,434,45,364,34,297,27"/>
+<area shape="poly" title=" " alt="" coords="339,192,339,226,333,226,333,192"/>
+<area shape="poly" title=" " alt="" coords="389,121,357,158,353,154,385,117"/>
+<area shape="poly" title=" " alt="" coords="521,195,383,239,381,234,520,189"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -118,26 +127,28 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="BaseStateMachine_8h__dep__incl.png" border="0" usemap="#aBaseStateMachine_8hdep" loading="lazy" alt=""/></div>
 <map name="aBaseStateMachine_8hdep" id="aBaseStateMachine_8hdep">
-<area shape="rect" title=" " alt="" coords="280,5,435,31"/>
-<area shape="rect" href="BurnoutStateMachine_8h.html" title=" " alt="" coords="183,79,358,104"/>
-<area shape="poly" title=" " alt="" coords="335,41,287,81,283,76,331,37"/>
-<area shape="rect" href="StateMachine_8h.html" title=" " alt="" coords="383,79,505,104"/>
-<area shape="poly" title=" " alt="" coords="383,37,432,76,428,81,380,41"/>
-<area shape="rect" href="BurnoutStateMachine_8cpp.html" title=" " alt="" coords="105,152,295,177"/>
-<area shape="poly" title=" " alt="" coords="251,116,213,154,210,150,247,112"/>
-<area shape="rect" href="Serial__Sim_8h.html" title=" " alt="" coords="319,152,422,177"/>
-<area shape="poly" title=" " alt="" coords="299,110,356,150,353,154,296,114"/>
-<area shape="rect" href="Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,225,168,251"/>
-<area shape="poly" title=" " alt="" coords="313,183,133,228,132,223,311,178"/>
-<area shape="rect" href="Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,225,359,251"/>
-<area shape="poly" title=" " alt="" coords="346,188,293,227,290,223,343,183"/>
-<area shape="rect" href="Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,225,550,251"/>
-<area shape="poly" title=" " alt="" coords="399,183,453,223,449,227,396,188"/>
-<area shape="rect" href="Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,225,757,251"/>
-<area shape="poly" title=" " alt="" coords="432,178,618,223,617,228,430,183"/>
-<area shape="poly" title=" " alt="" coords="424,116,384,154,381,150,420,112"/>
-<area shape="rect" href="StateMachine_8cpp.html" title=" " alt="" coords="447,152,585,177"/>
-<area shape="poly" title=" " alt="" coords="468,112,506,150,502,154,464,116"/>
+<area shape="rect" title=" " alt="" coords="211,5,365,31"/>
+<area shape="rect" href="BaseStateMachine_8cpp.html" title=" " alt="" coords="5,79,176,104"/>
+<area shape="poly" title=" " alt="" coords="244,38,124,81,122,76,243,33"/>
+<area shape="rect" href="BurnoutStateMachine_8h.html" title=" " alt="" coords="201,79,375,104"/>
+<area shape="poly" title=" " alt="" coords="291,44,291,79,285,79,285,44"/>
+<area shape="rect" href="StateMachine_8h.html" title=" " alt="" coords="400,79,523,104"/>
+<area shape="poly" title=" " alt="" coords="329,33,434,76,432,81,327,38"/>
+<area shape="rect" href="BurnoutStateMachine_8cpp.html" title=" " alt="" coords="121,152,311,177"/>
+<area shape="poly" title=" " alt="" coords="268,116,230,154,226,150,264,112"/>
+<area shape="rect" href="Serial__Sim_8h.html" title=" " alt="" coords="335,152,438,177"/>
+<area shape="poly" title=" " alt="" coords="316,110,372,150,369,154,313,114"/>
+<area shape="rect" href="Serial__Sim__BMP390_8h.html" title=" " alt="" coords="21,225,184,251"/>
+<area shape="poly" title=" " alt="" coords="329,183,149,228,148,223,327,178"/>
+<area shape="rect" href="Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="209,225,375,251"/>
+<area shape="poly" title=" " alt="" coords="362,188,309,227,306,223,359,183"/>
+<area shape="rect" href="Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="399,225,566,251"/>
+<area shape="poly" title=" " alt="" coords="415,183,469,223,465,227,412,188"/>
+<area shape="rect" href="Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="590,225,773,251"/>
+<area shape="poly" title=" " alt="" coords="448,178,634,223,633,228,446,183"/>
+<area shape="poly" title=" " alt="" coords="441,115,401,154,397,150,438,111"/>
+<area shape="rect" href="StateMachine_8cpp.html" title=" " alt="" coords="463,152,601,177"/>
+<area shape="poly" title=" " alt="" coords="485,112,522,150,519,154,481,116"/>
 </map>
 </div>
 </div>
@@ -146,7 +157,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:BaseStateMachine" id="r_BaseStateMachine"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html">BaseStateMachine</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract interface for flight state machines driven by IMU/altimeter data.  <a href="classBaseStateMachine.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for flight state machines driven by IMU/altimeter data.  <a href="classBaseStateMachine.html#details">More...</a><br /></td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

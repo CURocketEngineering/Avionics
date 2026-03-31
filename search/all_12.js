@@ -13,12 +13,13 @@ var searchData=
   ['readvoltage_10',['readVoltage',['../classBatteryVoltage.html#a0b863d8ac1103926797c004ac152a475',1,'BatteryVoltage']]],
   ['recent_20first_11',['Flight Test History (most recent first)',['../md_docs_2FlightTests.html#autotoc_md37',1,'']]],
   ['record_5ft_12',['Record_t',['../structRecord__t.html',1,'']]],
-  ['rejected_20the_2064_20byte_20chunk_20method_13',['&lt;b&gt;Why We Rejected the 64-Byte Chunk Method&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md28',1,'']]],
-  ['reset_14',['reset',['../classFastLaunchDetector.html#a5be144c3b467a3b3cd8232afb5978760',1,'FastLaunchDetector::reset()'],['../classLaunchDetector.html#a95dcd28cad213d76923dad7f3fac46d7',1,'LaunchDetector::reset()']]],
-  ['resettimestamp_15',['resetTimestamp',['../classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf',1,'DataSaverSPI']]],
-  ['restricted_20flash_20storage_20specifications_16',['Restricted Flash Storage Specifications',['../md_docs_2FlashDataSaving.html',1,'']]],
-  ['restrictsavespeed_17',['restrictSaveSpeed',['../classSensorDataHandler.html#aa3d1311af6c98e99432479968121f0c7',1,'SensorDataHandler']]],
-  ['rocket_20engineering_18',['Avionics for Clemson University Rocket Engineering',['../index.html',1,'']]],
-  ['rocket_20types_19',['Rocket Types',['../md_docs_2FlightTests.html#autotoc_md34',1,'']]],
-  ['rule_20',['The RULE',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md13',1,'']]]
+  ['registeronstateentry_13',['registerOnStateEntry',['../classBaseStateMachine.html#a48ce05f4879cc476f04035cfb2df02b0',1,'BaseStateMachine']]],
+  ['rejected_20the_2064_20byte_20chunk_20method_14',['&lt;b&gt;Why We Rejected the 64-Byte Chunk Method&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md28',1,'']]],
+  ['reset_15',['reset',['../classFastLaunchDetector.html#a5be144c3b467a3b3cd8232afb5978760',1,'FastLaunchDetector::reset()'],['../classLaunchDetector.html#a95dcd28cad213d76923dad7f3fac46d7',1,'LaunchDetector::reset()']]],
+  ['resettimestamp_16',['resetTimestamp',['../classDataSaverSPI.html#a0a66ee142c623f8c1e2260020a03d9bf',1,'DataSaverSPI']]],
+  ['restricted_20flash_20storage_20specifications_17',['Restricted Flash Storage Specifications',['../md_docs_2FlashDataSaving.html',1,'']]],
+  ['restrictsavespeed_18',['restrictSaveSpeed',['../classSensorDataHandler.html#aa3d1311af6c98e99432479968121f0c7',1,'SensorDataHandler']]],
+  ['rocket_20engineering_19',['Avionics for Clemson University Rocket Engineering',['../index.html',1,'']]],
+  ['rocket_20types_20',['Rocket Types',['../md_docs_2FlightTests.html#autotoc_md34',1,'']]],
+  ['rule_21',['The RULE',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md13',1,'']]]
 ];

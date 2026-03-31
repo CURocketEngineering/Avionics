@@ -1,5 +1,5 @@
 <map id="BurnoutStateMachine" name="BurnoutStateMachine">
-<area shape="rect" id="Node000001" title="State machine variant that explicitly models motor burnout before coast." alt="" coords="5,139,184,244"/>
-<area shape="rect" id="Node000002" href="$classBaseStateMachine.html" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="27,5,162,91"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,104,97,138,92,138,92,104"/>
+<area shape="rect" id="Node000001" title="State machine variant that explicitly models motor burnout before coast." alt="" coords="25,259,204,344"/>
+<area shape="rect" id="Node000002" href="$classBaseStateMachine.html" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,224,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,224,117,259,112,259,112,224"/>
 </map>

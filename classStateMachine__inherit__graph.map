@@ -1,5 +1,5 @@
 <map id="StateMachine" name="StateMachine">
-<area shape="rect" id="Node000001" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="9,139,137,244"/>
-<area shape="rect" id="Node000002" href="$classBaseStateMachine.html" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,140,91"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,104,75,138,70,138,70,104"/>
+<area shape="rect" id="Node000001" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="51,259,179,344"/>
+<area shape="rect" id="Node000002" href="$classBaseStateMachine.html" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,224,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,224,117,259,112,259,112,224"/>
 </map>

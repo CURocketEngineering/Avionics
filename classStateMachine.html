@@ -103,9 +103,9 @@ Inheritance diagram for StateMachine:</div>
 <div class="dyncontent">
 <div class="center"><img src="classStateMachine__inherit__graph.png" border="0" usemap="#aStateMachine_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="aStateMachine_inherit__map" id="aStateMachine_inherit__map">
-<area shape="rect" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="9,139,137,244"/>
-<area shape="rect" href="classBaseStateMachine.html" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,140,91"/>
-<area shape="poly" title=" " alt="" coords="75,104,75,138,70,138,70,104"/>
+<area shape="rect" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="51,259,179,344"/>
+<area shape="rect" href="classBaseStateMachine.html" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,224,211"/>
+<area shape="poly" title=" " alt="" coords="117,224,117,259,112,259,112,224"/>
 </map>
 </div>
 <div class="dynheader">
@@ -113,9 +113,9 @@ Collaboration diagram for StateMachine:</div>
 <div class="dyncontent">
 <div class="center"><img src="classStateMachine__coll__graph.png" border="0" usemap="#aStateMachine_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aStateMachine_coll__map" id="aStateMachine_coll__map">
-<area shape="rect" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="9,139,137,244"/>
-<area shape="rect" href="classBaseStateMachine.html" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,140,91"/>
-<area shape="poly" title=" " alt="" coords="75,104,75,138,70,138,70,104"/>
+<area shape="rect" title="Nominal flight state machine using launch/apogee detection and VVE." alt="" coords="51,259,179,344"/>
+<area shape="rect" href="classBaseStateMachine.html" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,224,211"/>
+<area shape="poly" title=" " alt="" coords="117,224,117,259,112,259,112,224"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -125,8 +125,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2cd14f5f5d9b076823ff85e221cab15e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wire dependencies for the state machine.  <br /></td></tr>
 <tr class="memitem:a552f60dab35286b089d99e530414a593" id="r_a552f60dab35286b089d99e530414a593"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a552f60dab35286b089d99e530414a593">update</a> (const <a class="el" href="structAccelerationTriplet.html">AccelerationTriplet</a> &amp;accel, const <a class="el" href="classDataPoint.html">DataPoint</a> &amp;alt) override</td></tr>
 <tr class="memdesc:a552f60dab35286b089d99e530414a593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process new sensor data and transition states if thresholds are met.  <br /></td></tr>
-<tr class="memitem:a41e682913490eaefb10b50cd2e4e2b70" id="r_a41e682913490eaefb10b50cd2e4e2b70"><td class="memItemLeft">uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a41e682913490eaefb10b50cd2e4e2b70">getState</a> () const override</td></tr>
-<tr class="memdesc:a41e682913490eaefb10b50cd2e4e2b70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the current state value.  <br /></td></tr>
+<tr class="inherit_header pub_methods_classBaseStateMachine"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classBaseStateMachine')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Member Functions inherited from <a class="el" href="classBaseStateMachine.html">BaseStateMachine</a></td></tr>
+<tr class="memitem:ab1eea1f77fda99bcdced3390b342ab5f inherit pub_methods_classBaseStateMachine" id="r_ab1eea1f77fda99bcdced3390b342ab5f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#ab1eea1f77fda99bcdced3390b342ab5f">BaseStateMachine</a> (<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> initialState=<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7aaad1f49300d4e2acbbf7143874e9b39b">STATE_UNARMED</a>)</td></tr>
+<tr class="memitem:a1fe995d91fc2a60a353e848e7adff354 inherit pub_methods_classBaseStateMachine" id="r_a1fe995d91fc2a60a353e848e7adff354"><td class="memItemLeft">virtual&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a1fe995d91fc2a60a353e848e7adff354">~BaseStateMachine</a> ()=default</td></tr>
+<tr class="memitem:a2aaa738f1a8f4cd95167ccddcca299f3 inherit pub_methods_classBaseStateMachine" id="r_a2aaa738f1a8f4cd95167ccddcca299f3"><td class="memItemLeft">virtual uint8_t&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a2aaa738f1a8f4cd95167ccddcca299f3">getState</a> () const</td></tr>
+<tr class="memdesc:a2aaa738f1a8f4cd95167ccddcca299f3 inherit pub_methods_classBaseStateMachine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current discrete state identifier.  <br /></td></tr>
+<tr class="memitem:a48ce05f4879cc476f04035cfb2df02b0 inherit pub_methods_classBaseStateMachine" id="r_a48ce05f4879cc476f04035cfb2df02b0"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a48ce05f4879cc476f04035cfb2df02b0">registerOnStateEntry</a> (<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> targetState, <a class="el" href="classBaseStateMachine.html#a6ec126c798749decaab78d13d9ed4a58">StateEntryCallback</a> functionPtr)</td></tr>
+<tr class="memdesc:a48ce05f4879cc476f04035cfb2df02b0 inherit pub_methods_classBaseStateMachine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register a callback to invoke each time a target state is entered.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-inherited" class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classBaseStateMachine"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classBaseStateMachine')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Public Types inherited from <a class="el" href="classBaseStateMachine.html">BaseStateMachine</a></td></tr>
+<tr class="memitem:a6ec126c798749decaab78d13d9ed4a58 inherit pub_types_classBaseStateMachine" id="r_a6ec126c798749decaab78d13d9ed4a58"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a6ec126c798749decaab78d13d9ed4a58">StateEntryCallback</a> = void (*)()</td></tr>
+<tr class="inherit_header pub_static_methods_classBaseStateMachine"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_methods_classBaseStateMachine')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Static Public Member Functions inherited from <a class="el" href="classBaseStateMachine.html">BaseStateMachine</a></td></tr>
+<tr class="memitem:a58cb5bba5d1cd79738ee0b2fa2fa5977 inherit pub_static_methods_classBaseStateMachine" id="r_a58cb5bba5d1cd79738ee0b2fa2fa5977"><td class="memItemLeft">static constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a58cb5bba5d1cd79738ee0b2fa2fa5977">getMaxStateEntryCallbacks</a> ()</td></tr>
+<tr class="inherit_header pub_static_attribs_classBaseStateMachine"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_attribs_classBaseStateMachine')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Static Public Attributes inherited from <a class="el" href="classBaseStateMachine.html">BaseStateMachine</a></td></tr>
+<tr class="memitem:a9a47ead9932a613d3f80f6147c6952a2 inherit pub_static_attribs_classBaseStateMachine" id="r_a9a47ead9932a613d3f80f6147c6952a2"><td class="memItemLeft">static constexpr std::size_t&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a9a47ead9932a613d3f80f6147c6952a2">kMaxStateEntryCallbacks</a> = 32</td></tr>
+<tr class="inherit_header pro_methods_classBaseStateMachine"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classBaseStateMachine')"><span class="dynarrow"><span class="arrowhead closed"></span></span>Protected Member Functions inherited from <a class="el" href="classBaseStateMachine.html">BaseStateMachine</a></td></tr>
+<tr class="memitem:a530432fcdb09edb0343c57af8f230d15 inherit pro_methods_classBaseStateMachine" id="r_a530432fcdb09edb0343c57af8f230d15"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#a530432fcdb09edb0343c57af8f230d15">changeState</a> (<a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> newState)</td></tr>
+<tr class="memdesc:a530432fcdb09edb0343c57af8f230d15 inherit pro_methods_classBaseStateMachine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transition to a new state and trigger registered on-entry callbacks.  <br /></td></tr>
+<tr class="memitem:aada6d206fbc56a4497c45882f8dfdfb2 inherit pro_methods_classBaseStateMachine" id="r_aada6d206fbc56a4497c45882f8dfdfb2"><td class="memItemLeft"><a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a>&#160;</td><td class="memItemRight"><a class="el" href="classBaseStateMachine.html#aada6d206fbc56a4497c45882f8dfdfb2">getFlightState</a> () const</td></tr>
+<tr class="memdesc:aada6d206fbc56a4497c45882f8dfdfb2 inherit pro_methods_classBaseStateMachine"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current state as <a class="el" href="States_8h.html#a201c80e927ae9ae73dcc0b8b4f7ca1a7">FlightState</a> enum.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Nominal flight state machine using launch/apogee detection and VVE. </p>
@@ -185,38 +204,6 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="a41e682913490eaefb10b50cd2e4e2b70" name="a41e682913490eaefb10b50cd2e4e2b70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41e682913490eaefb10b50cd2e4e2b70">&#9670;&#160;</a></span>getState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t StateMachine::getState </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Retrieve the current state value. </p>
-<dl class="section note"><dt>Note</dt><dd>When to use: downstream logic that needs to branch on flight phase. </dd></dl>
-
-<p>Implements <a class="el" href="classBaseStateMachine.html#a8343e067635a3fa9fab2e80b08941f82">BaseStateMachine</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="StateMachine_8cpp_source.html#l00135">135</a> of file <a class="el" href="StateMachine_8cpp_source.html">StateMachine.cpp</a>.</p>
-
-</div>
-</div>
 <a id="a552f60dab35286b089d99e530414a593" name="a552f60dab35286b089d99e530414a593"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a552f60dab35286b089d99e530414a593">&#9670;&#160;</a></span>update()</h2>
 

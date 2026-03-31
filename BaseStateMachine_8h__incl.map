@@ -1,12 +1,18 @@
 <map id="BaseStateMachine.h" name="BaseStateMachine.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,259,31"/>
-<area shape="rect" id="Node000002" href="$DataPoint_8h.html" title=" " alt="" coords="5,167,200,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,33,83,51,65,64,52,80,46,99,52,119,65,139,81,156,77,159,61,142,47,121,41,99,47,77,62,60,80,46,121,28"/>
-<area shape="rect" id="Node000004" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="61,79,301,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,31,184,65,179,65,179,31"/>
-<area shape="rect" id="Node000005" href="$States_8h.html" title=" " alt="" coords="325,86,515,111"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="217,28,373,79,371,84,215,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="69,240,136,265"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="105,192,105,226,100,226,100,192"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="164,121,126,159,122,155,160,117"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="143,5,297,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,86,61,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,33,74,81,71,83,69,78,72,76,190,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="86,86,157,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,33,148,79,145,75,204,29"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="303,240,369,265"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="219,31,213,62,209,103,213,148,219,170,229,191,241,206,256,218,291,236,288,241,253,222,237,209,224,193,214,172,208,149,204,103,208,61,214,30"/>
+<area shape="rect" id="Node000005" href="$DataPoint_8h.html" title=" " alt="" coords="239,167,433,192"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="227,30,245,70,273,117,312,156,308,160,269,120,240,73,222,32"/>
+<area shape="rect" id="Node000006" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="283,79,523,119"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="248,28,347,71,345,76,246,33"/>
+<area shape="rect" id="Node000007" href="$States_8h.html" title=" " alt="" coords="461,167,651,192"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="298,22,365,28,435,39,496,55,520,65,537,77,549,94,556,114,560,152,555,153,551,115,544,96,533,81,517,70,494,60,434,45,364,34,297,27"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="339,192,339,226,333,226,333,192"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="389,121,357,158,353,154,385,117"/>
+<area shape="poly" id="edge9_Node000007_Node000004" title=" " alt="" coords="521,195,383,239,381,234,520,189"/>
 </map>

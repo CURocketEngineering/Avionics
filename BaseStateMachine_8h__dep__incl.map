@@ -1,22 +1,24 @@
 <map id="BaseStateMachine.h" name="BaseStateMachine.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="280,5,435,31"/>
-<area shape="rect" id="Node000002" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="183,79,358,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="335,41,287,81,283,76,331,37"/>
-<area shape="rect" id="Node000009" href="$StateMachine_8h.html" title=" " alt="" coords="383,79,505,104"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="383,37,432,76,428,81,380,41"/>
-<area shape="rect" id="Node000003" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="105,152,295,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="251,116,213,154,210,150,247,112"/>
-<area shape="rect" id="Node000004" href="$Serial__Sim_8h.html" title=" " alt="" coords="319,152,422,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="299,110,356,150,353,154,296,114"/>
-<area shape="rect" id="Node000005" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="5,225,168,251"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="313,183,133,228,132,223,311,178"/>
-<area shape="rect" id="Node000006" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="193,225,359,251"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="346,188,293,227,290,223,343,183"/>
-<area shape="rect" id="Node000007" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="383,225,550,251"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="399,183,453,223,449,227,396,188"/>
-<area shape="rect" id="Node000008" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="574,225,757,251"/>
-<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="432,178,618,223,617,228,430,183"/>
-<area shape="poly" id="edge9_Node000009_Node000004" title=" " alt="" coords="424,116,384,154,381,150,420,112"/>
-<area shape="rect" id="Node000010" href="$StateMachine_8cpp.html" title=" " alt="" coords="447,152,585,177"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="468,112,506,150,502,154,464,116"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="211,5,365,31"/>
+<area shape="rect" id="Node000002" href="$BaseStateMachine_8cpp.html" title=" " alt="" coords="5,79,176,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,38,124,81,122,76,243,33"/>
+<area shape="rect" id="Node000003" href="$BurnoutStateMachine_8h.html" title=" " alt="" coords="201,79,375,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="291,44,291,79,285,79,285,44"/>
+<area shape="rect" id="Node000010" href="$StateMachine_8h.html" title=" " alt="" coords="400,79,523,104"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="329,33,434,76,432,81,327,38"/>
+<area shape="rect" id="Node000004" href="$BurnoutStateMachine_8cpp.html" title=" " alt="" coords="121,152,311,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="268,116,230,154,226,150,264,112"/>
+<area shape="rect" id="Node000005" href="$Serial__Sim_8h.html" title=" " alt="" coords="335,152,438,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="316,110,372,150,369,154,313,114"/>
+<area shape="rect" id="Node000006" href="$Serial__Sim__BMP390_8h.html" title=" " alt="" coords="21,225,184,251"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="329,183,149,228,148,223,327,178"/>
+<area shape="rect" id="Node000007" href="$Serial__Sim__LIS2MDL_8h.html" title=" " alt="" coords="209,225,375,251"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="362,188,309,227,306,223,359,183"/>
+<area shape="rect" id="Node000008" href="$Serial__Sim__LIS3MDL_8h.html" title=" " alt="" coords="399,225,566,251"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="415,183,469,223,465,227,412,188"/>
+<area shape="rect" id="Node000009" href="$Serial__Sim__LSM6DSOX_8h.html" title=" " alt="" coords="590,225,773,251"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="448,178,634,223,633,228,446,183"/>
+<area shape="poly" id="edge10_Node000010_Node000005" title=" " alt="" coords="441,115,401,154,397,150,438,111"/>
+<area shape="rect" id="Node000011" href="$StateMachine_8cpp.html" title=" " alt="" coords="463,152,601,177"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="485,112,522,150,519,154,481,116"/>
 </map>

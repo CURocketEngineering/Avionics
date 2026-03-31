@@ -1,3 +1,3 @@
 <map id="BaseStateMachine" name="BaseStateMachine">
-<area shape="rect" id="Node000001" title="Abstract interface for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,140,91"/>
+<area shape="rect" id="Node000001" title="Base class for flight state machines driven by IMU/altimeter data." alt="" coords="5,5,224,211"/>
 </map>
