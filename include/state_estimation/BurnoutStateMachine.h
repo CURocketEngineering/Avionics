@@ -37,14 +37,7 @@ class BurnoutStateMachine : public BaseStateMachine {
      */
     int update(const AccelerationTriplet& accel, const DataPoint& alt) override;
 
-    /**
-     * @brief Current state identifier.
-     * @note When to use: consumers needing current phase (e.g., pyro logic).
-     */
-    uint8_t getState() const override;
-
   private:
-    uint8_t state_;
     IDataSaver* dataSaver_;
     LaunchDetector* launchDetector_;
     ApogeeDetector* apogeeDetector_;

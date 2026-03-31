@@ -9,7 +9,7 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
                                          LaunchDetector* launchDetector,
                                          ApogeeDetector* apogeeDetector,
                                          VerticalVelocityEstimator* verticalVelocityEstimator)
-    : state_(STATE_ARMED),
+    : BaseStateMachine(STATE_ARMED),
       dataSaver_(dataSaver),
       launchDetector_(launchDetector),
       apogeeDetector_(apogeeDetector),
@@ -19,14 +19,14 @@ BurnoutStateMachine::BurnoutStateMachine(IDataSaver* dataSaver,
 }
 
 int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
-    switch (state_) {
+    switch (getFlightState()) {
         case STATE_ARMED:
             // Serial.println("lp update");
             launchDetector_->update(accel);
             // Serial.println(lpStatus);
             if (launchDetector_->isLaunched()) {
                 // Change state to ascent.
-                state_ = STATE_POWERED_ASCENT;
+                changeState(STATE_POWERED_ASCENT);
 
                 // Log the state change.
                 Serial.println("To pa (launch detected)");
@@ -55,7 +55,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
             apogeeDetector_->update(verticalVelocityEstimator_);
             Serial.println(verticalVelocityEstimator_->getInertialVerticalAcceleration());
             if (verticalVelocityEstimator_->getInertialVerticalAcceleration() <= 0) { // when acceleration returns to less than gravity after launch, we're coasting
-                state_ = STATE_COAST_ASCENT;
+                changeState(STATE_COAST_ASCENT);
 
                 // Log the state change.
                 Serial.println("To ca");
@@ -72,7 +72,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
             verticalVelocityEstimator_->update(accel, alt);
             apogeeDetector_->update(verticalVelocityEstimator_);
             if (apogeeDetector_->isApogeeDetected()) {
-                state_ = STATE_DESCENT;
+                changeState(STATE_DESCENT);
 
                 // Log the state change.
                 Serial.println("To descent");
@@ -85,14 +85,10 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
             }
             break;
 
-        case STATE_DESCENT:
-            // Do nothing
+        default:
+            // All other states have no actions or transitions
             break;
     }
 
     return 0;
-}
-
-uint8_t BurnoutStateMachine::getState() const {
-    return state_;
 }
