@@ -127,7 +127,6 @@ int DataSaverSPI::flushBuffer() {
     }
 
     if (shouldStopForPostLaunchWindow()) {
-        isChipFullDueToPostLaunchProtection_ = true;
         return -1;
     }
 
