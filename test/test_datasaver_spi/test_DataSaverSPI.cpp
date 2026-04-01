@@ -144,7 +144,7 @@ void test_pre_erase_skips_protected_launch_sector(void) {
         result = dss->saveTimestamp(1000U + i);
     }
 
-    TEST_ASSERT_EQUAL(-1, result);
+    TEST_ASSERT_EQUAL(1, result);
     TEST_ASSERT_TRUE(dss->getIsChipFullDueToPostLaunchProtection());
     TEST_ASSERT_EQUAL_HEX8(0x5A, flash->fakeMemory[launchWriteAddress]);
 }

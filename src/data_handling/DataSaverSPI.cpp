@@ -20,19 +20,23 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
 
 int DataSaverSPI::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
   if (rebootedInPostLaunchMode_ || isChipFullDueToPostLaunchProtection_) {
-    return 1;  // Do not save if we rebooted in post-launch mode
+    return 1;  // Do not save if writes are blocked by post-launch state.
   }
 
     // Write a timestamp automatically if enough time has passed since the last one
     uint32_t const timestamp = dataPoint.timestamp_ms;
     if (timestamp - lastTimestamp_ms_ > timestampInterval_ms_) {
-      if (saveTimestamp(timestamp) < 0) {
-        return -1;
+      int const timestampResult = saveTimestamp(timestamp);
+      if (timestampResult != 0) {
+        return timestampResult;
       }
     }
 
     Record_t record = {name, dataPoint.data};
-    if (addRecordToBuffer(&record) < 0) {
+    if (addRecordToBuffer(&record) != 0) {
+      if (isChipFullDueToPostLaunchProtection_) {
+        return 1;
+      }
       return -1;
     }
 
@@ -42,11 +46,14 @@ int DataSaverSPI::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
 
 int DataSaverSPI::saveTimestamp(uint32_t timestamp_ms){
     if (rebootedInPostLaunchMode_ || isChipFullDueToPostLaunchProtection_) {
-      return 1;  // Do not save if we rebooted in post-launch mode
+      return 1;  // Do not save if writes are blocked by post-launch state.
     }
 
     TimestampRecord_t timeStampRecord = {TIMESTAMP, timestamp_ms};
     if (addRecordToBuffer(&timeStampRecord) != 0) {
+      if (isChipFullDueToPostLaunchProtection_) {
+        return 1;
+      }
       return -1;
     }
 

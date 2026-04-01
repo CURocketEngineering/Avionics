@@ -61,7 +61,8 @@ public:
      * 
      * @param dataPoint The data point to save
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
-     * @return int 0 on success; non-zero on error
+     * @return int 0 on success, 1 when writes are blocked by post-launch state,
+     *         and -1 on write/buffer error.
      */
     int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
@@ -71,7 +72,7 @@ public:
      * @note When to use: emitted internally when gaps exceed
      *       timestampInterval_ms_, or explicitly in tests.
      * @return int 0 on success, 1 when writes are blocked by post-launch state,
-     *         and -1 on write/buffer error.
+     *         and -1 on non-post-launch write/buffer error.
      */
     int saveTimestamp(uint32_t timestamp_ms);
 

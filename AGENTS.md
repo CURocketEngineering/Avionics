@@ -31,7 +31,7 @@ Avionics is our modular C++ (Arduino-core compatible) library used for all of ou
 ## Hard Rules
 
 1. Never include Arduino headers directly (`<Arduino.h>`, etc.) from Avionics code.
-2. Always include `hal/ArduinoHAL.h` for Arduino-facing APIs.
+2. Always include `ArduinoHAL.h` from `hal/` for Arduino-facing APIs.
 3. Keep host-native tests buildable; avoid adding dependencies that only exist on embedded targets.
 4. Maintain `include/` and `src/` parity for non-header-only modules.
 5. Keep changes compatible with the repo's C++ standard (`-std=c++11` in `platformio.ini`).
