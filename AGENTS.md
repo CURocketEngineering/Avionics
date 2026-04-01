@@ -105,8 +105,9 @@ python -m http.server --directory build/doxygen 8000
 
 1. Prefer small, focused patches.
 2. If behavior changes, update or add tests in `test/` to cover it.
-3. Preserve public API names unless the task explicitly asks for a breaking change.
-4. Keep docs in sync when changing module behavior:
+3. If you are patching a bug, add a regression test that fails without the fix and passes with it.
+4. Preserve public API names unless the task explicitly asks for a breaking change.
+5. Keep docs in sync when changing module behavior:
    - top-level `README.md` for high-level behavior,
    - `docs/*.md` for detailed formats/protocols.
 
