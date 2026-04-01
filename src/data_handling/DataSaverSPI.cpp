@@ -86,18 +86,42 @@ int DataSaverSPI::flushBuffer() {
         return -1; // Indicate no write due to post-launch protection
     }
 
+    // Fallback erase for first entry into a sector. In steady-state this sector
+    // should already be prepared by the previous flush.
     if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0) {
-        if (!flash_->eraseSector(nextWriteAddress_ / SFLASH_SECTOR_SIZE)) {
-            return -1;
+        uint32_t const currentSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
+        if (preparedSectorNumber_ != currentSectorNumber) {
+            if (!flash_->eraseSector(currentSectorNumber)) {
+                return -1;
+            }
+            preparedSectorNumber_ = currentSectorNumber;
         }
     }
 
-    // Write 1 page of data
+    // Write 1 page of data.
     if (!flash_->writeBuffer(nextWriteAddress_, buffer_, kBufferSize_bytes)) {
         return -1;
     }
 
     nextWriteAddress_ += kBufferSize_bytes;  // keep it aligned to the buffer size or page size
+
+    // Keep next write address in the data region immediately so boundary prep
+    // never targets a sector beyond flash capacity.
+    if (nextWriteAddress_ >= flash_->size()) {
+        nextWriteAddress_ = kDataStartAddress;
+    }
+
+    // Pre-erase one step earlier: after writing the previous page, erase the
+    // sector that the next page will start in. This lets erase latency overlap
+    // with buffer fill time.
+    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0) {
+        uint32_t const nextSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
+        if (!flash_->eraseSector(nextSectorNumber)) {
+            return -1;
+        }
+        preparedSectorNumber_ = nextSectorNumber;
+    }
+
     bufferIndex_ = 0; // Reset the buffer
     bufferFlushes_++;
     return 0;
@@ -235,6 +259,7 @@ void DataSaverSPI::clearInternalState() {
     launchWriteAddress_ = 0;
     bufferFlushes_ = 0;
     isChipFullDueToPostLaunchProtection_ = false;
+    preparedSectorNumber_ = std::numeric_limits<uint32_t>::max();
 }
 
 void DataSaverSPI::eraseAllData() {

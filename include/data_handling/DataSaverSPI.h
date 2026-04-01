@@ -6,6 +6,7 @@
 #include "data_handling/DataSaver.h"
 #include <array>
 #include <cstdlib>
+#include <limits>
 
 
 constexpr uint32_t kMetadataStartAddress = 0x000000;  // Start writing metadata at the beginning of flash
@@ -287,6 +288,10 @@ private:
     // If the flight computer boots and is already in post launch mode, do not write to flash.
     // Calling clearPostLaunchMode() will allow writing to flash again after a reboot.
     bool rebootedInPostLaunchMode_ = false;
+
+    // Tracks which sector has already been pre-erased for the next boundary write.
+    // UINT32_MAX means "no prepared sector".
+    uint32_t preparedSectorNumber_ = std::numeric_limits<uint32_t>::max();
 };
 
 #endif // DATA_SAVER_SPI_H

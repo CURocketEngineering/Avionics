@@ -86,6 +86,21 @@ void test_launch_detected(void) {
     TEST_ASSERT_NOT_EQUAL(0, dss->getLaunchWriteAddress());
 }
 
+void test_next_sector_is_erased_before_crossing_boundary(void) {
+    for (size_t i = 0; i < FAKE_MEMORY_SIZE_BYTES; i++) {
+        flash->fakeMemory[i] = 0x00;
+    }
+    dss->clearInternalState();
+
+    // 817 timestamp writes trigger exactly 16 flushes (one 4 KiB sector).
+    for (uint32_t i = 0; i < 817U; i++) {
+        TEST_ASSERT_EQUAL(0, dss->saveTimestamp(i));
+    }
+
+    TEST_ASSERT_EQUAL_UINT32(16U, dss->getBufferFlushes());
+    TEST_ASSERT_EQUAL_HEX8(0xFF, flash->fakeMemory[kDataStartAddress + SFLASH_SECTOR_SIZE]);
+}
+
 void test_record_size(void) {
     Record_t record = {1, 2.0f};
     TEST_ASSERT_EQUAL(5, sizeof(record)); // 1 byte for name, 4 bytes for data
@@ -106,5 +121,6 @@ int main(void) {
     RUN_TEST(test_clearplm_next_write);
     RUN_TEST(test_erase_all_data);
     RUN_TEST(test_launch_detected);
+    RUN_TEST(test_next_sector_is_erased_before_crossing_boundary);
     return UNITY_END();
 }
