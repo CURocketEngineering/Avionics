@@ -132,7 +132,6 @@ public:
      * @param ignoreEmptyPages  Skip pages that appear unwritten.
      * @note When to use: post-flight data retrieval before erasing or
      *       redeploying the flash chip.
-     * @return void
      */
     void dumpData(Stream &serial, bool ignoreEmptyPages);
 

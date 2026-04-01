@@ -94,6 +94,7 @@ python -m http.server --directory build/doxygen 8000
   - Deploy target: `gh-pages` branch
   - Published folder: `build/doxygen`
 - If code changes affect public behavior/API, update doc comments and relevant Markdown docs in the same change.
+- Don't use a return type of `void` in doc comments; just omit the `@return` line if there is no return value.
 
 ## Data-Driven Tests
 
