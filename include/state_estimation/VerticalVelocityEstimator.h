@@ -7,9 +7,6 @@
 #include "data_handling/DataPoint.h"
 #include "state_estimation/StateEstimationTypes.h"
 
-
-
-constexpr float kMinimumDeltaTime_s = 0.01f; // Minimum delta time for updates (10ms)
 constexpr float kMillisecondsToSeconds = 0.001f; // Conversion factor from milliseconds to seconds
 
 struct alignas(8) NoiseVariances {
@@ -61,10 +58,10 @@ public:
      * The altimeter DataPoint contains the altitude measurement.
      *
      * @param accel     Accelerometer readings for x, y, and z (vertical) axes.
-     * @param altimeter Altimeter reading.
+     * @param altitude  Altimeter reading.
      */
     void update(const AccelerationTriplet& accel,
-                const DataPoint &altimeter);
+                const DataPoint &altitude);
 
     /**
      * @return Current estimated altitude (meters).
@@ -82,7 +79,7 @@ public:
     virtual uint32_t getTimestamp() const;
 
     /**
-     * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - g.
+     * @return Computed inertial vertical acceleration (m/s²), i.e., raw_accel - gravity.
      */
     virtual float getInertialVerticalAcceleration() const;
 
@@ -105,32 +102,32 @@ private:
 
 private:
     // Kalman filter state: altitude (m), vertical velocity (m/s).
-    float stateAltitude_m;
-    float stateVelocity_mps;
+    float stateAltitude_m_;
+    float stateVelocity_mps_;
 
     // Covariance matrix (2x2).
-    float P[2][2] = {{}, {}};
+    float P_[2][2] = {{}, {}};
 
     // Time of last update (milliseconds).
-    uint32_t lastTimestamp_ms;
+    uint32_t lastTimestamp_ms_;
 
     // True after init() has been called.
-    bool initialized;
+    bool initialized_;
 
     // Noise parameters.
-    float accelNoiseVariance;      // Acceleration noise variance (process noise).
-    float altimeterNoiseVariance;  // Altimeter noise variance (measurement noise).
+    float accelNoiseVariance_;      // Acceleration noise variance (process noise).
+    float altimeterNoiseVariance_;  // Altimeter noise variance (measurement noise).
 
     // Gravity constant (m/s²).
-    const float g = 9.81f;
+    static constexpr float kGravity_mps2 = 9.81f;
 
     // Which axis is vertical, and in what direction?
-    int8_t verticalAxis;  
-    int8_t verticalDirection;  
-    bool verticalAxisDetermined;
+    int8_t verticalAxis_;  
+    int8_t verticalDirection_;  
+    bool verticalAxisDetermined_;
 
     // Latest computed inertial acceleration along the vertical axis.
-    float inertialVerticalAcceleration;
+    float inertialVerticalAcceleration_;
 };
 
 #endif // VELOCITY_ESTIMATOR_H

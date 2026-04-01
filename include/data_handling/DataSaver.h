@@ -12,6 +12,8 @@
  */
 class IDataSaver {
     public:
+        virtual ~IDataSaver() = default;
+
         /**
          * @brief Persist a data point with a source identifier.
          * @param dp   Data point to store.
@@ -51,6 +53,7 @@ class IDataSaver {
          */
         virtual void launchDetected(uint32_t launchTimestamp_ms){
             // Default implementation does nothing
+            (void)launchTimestamp_ms;
         }
 
         // default method that does nothing, can be overridden

@@ -23,7 +23,7 @@ class DataSaverSDSerial: public IDataSaver {
          * @note When to use: quick logging to a serial-equipped recorder when
          *       file systems are unavailable.
          */
-        DataSaverSDSerial(HardwareSerial &SD_serial);
+        DataSaverSDSerial(HardwareSerial &sdSerial);
         
         using IDataSaver::saveDataPoint; // Allow the use of the other saveDataPoint overload
 
@@ -36,7 +36,7 @@ class DataSaverSDSerial: public IDataSaver {
         virtual int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
     private:
-        HardwareSerial &SD_serial;
+        HardwareSerial &sdSerial_;
 
 };
 

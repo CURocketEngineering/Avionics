@@ -152,7 +152,7 @@ void test_ground_level_frozen_after_launch(void)
     // Feed many different altitudes
     for (int i = 0; i < 100; ++i)
     {
-        float currentASL = groundASL + (i * 10.0f);  // Climbing
+        float currentASL = groundASL + (static_cast<float>(i) * 10.0f);  // Climbing
         estimator.update(currentASL);
     }
     

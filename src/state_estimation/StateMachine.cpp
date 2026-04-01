@@ -10,62 +10,65 @@ StateMachine::StateMachine(IDataSaver* dataSaver,
                            ApogeeDetector* apogeeDetector,
                            VerticalVelocityEstimator* verticalVelocityEstimator,
                            FastLaunchDetector* fastLaunchDetector)
-    : dataSaver(dataSaver),
-      launchDetector(launchDetector),
-      apogeeDetector(apogeeDetector),
-      verticalVelocityEstimator(verticalVelocityEstimator),
-      fastLaunchDetector(fastLaunchDetector),
-      state(STATE_ARMED)
+    : BaseStateMachine(STATE_ARMED),
+      dataSaver_(dataSaver),
+      launchDetector_(launchDetector),
+      apogeeDetector_(apogeeDetector),
+      verticalVelocityEstimator_(verticalVelocityEstimator),
+      fastLaunchDetector_(fastLaunchDetector)
 {
 }
 
 int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
-    // Update the state
-    int lpStatus = LP_DEFAULT_FAIL; 
-    int fldStatus = FLD_DEFAULT_FAIL;
-
-    switch (state) {
+    // Update the state.
+    switch (getFlightState()) {
         case STATE_ARMED:
-            // Serial.println("lp update");
-            lpStatus = launchDetector->update(accel);
-            fldStatus = fastLaunchDetector->update(accel);
-            // Serial.println(lpStatus);
-            if (fastLaunchDetector->hasLaunched()) {
-                // Change state to soft ascent
-                state = STATE_SOFT_ASCENT;
 
-                // Save the FLD launch time
-                fldLaunchTime_ms = fastLaunchDetector->getLaunchedTime();
+            // Update launch detector and check for launch detection
+            // As soon as this is true, jump straight to ascent, regardless of the FLD
+            launchDetector_->update(accel);
+            if (launchDetector_->isLaunched()) {
+                // Change state to ascent.
+                changeState(STATE_ASCENT);
 
-                // Log the state change
-                dataSaver->saveDataPoint(
-                    DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
-                    STATE_CHANGE
-                );
-
-                // Put the data saver into post-launch mode
-                dataSaver->launchDetected(fastLaunchDetector->getLaunchedTime());
-            }
-            
-            // The FLD should always trigger before the LP, but we check for LP launch just in case
-            if (launchDetector->isLaunched()) {
-                // Change state to ascent
-                state = STATE_ASCENT;
-
-                // Log the state change
-                dataSaver->saveDataPoint(
+                // Log the state change.
+                dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_ASCENT),
                     STATE_CHANGE
                 );
 
                 // Put the data saver into post-launch mode
-                dataSaver->launchDetected(launchDetector->getLaunchedTime());
+                dataSaver_->launchDetected(launchDetector_->getLaunchedTime());
                 
                 // Start the apogee detection system
-                apogeeDetector->init({alt.data, alt.timestamp_ms});
+                apogeeDetector_->init({alt.data, alt.timestamp_ms});
 
                 // Update the vertical velocity estimator
-                verticalVelocityEstimator->update(accel, alt);
+                verticalVelocityEstimator_->update(accel, alt);
+                return 0;
+            }
+
+
+            // If the launch detector didn't trigger, check the fast launch detector
+            // The fast launch detector should trigger before the launch detector, but it is more susceptible to noise.
+            // This allows us to jump to a soft ascent while waiting for the launch detector to confirm.
+            fastLaunchDetector_->update(accel);
+            if (fastLaunchDetector_->hasLaunched()) {
+                // Change state to soft ascent.
+                changeState(STATE_SOFT_ASCENT);
+
+                // Save the FLD launch time
+                fldLaunchTime_ms_ = fastLaunchDetector_->getLaunchedTime();
+
+                // Log the state change.
+                dataSaver_->saveDataPoint(
+                    DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
+                    STATE_CHANGE
+                );
+
+                // Put the data saver into post-launch mode
+                dataSaver_->launchDetected(fastLaunchDetector_->getLaunchedTime());
+                return 0;
             }
             break;
 
@@ -77,66 +80,66 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
         * and clear post-launch mode.
         */
             // Serial.println("lp update");
-            lpStatus = launchDetector->update(accel);
-            // Serial.println(lpStatus);
-            if (launchDetector->isLaunched()) {
-                // Change state to ascent
-                state = STATE_ASCENT;
-
-                // Log the state change
-                dataSaver->saveDataPoint(
+            launchDetector_->update(accel);
+            if (launchDetector_->isLaunched()) {
+                // Change state to ascent.
+                changeState(STATE_ASCENT);
+                
+                // Log the state change.
+                dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_ASCENT),
                     STATE_CHANGE
                 );
 
                 // Start the apogee detection system
-                apogeeDetector->init({alt.data, alt.timestamp_ms});
+                apogeeDetector_->init({alt.data, alt.timestamp_ms});
 
                 // Update the vertical velocity estimator
-                verticalVelocityEstimator->update(accel, alt);
+                verticalVelocityEstimator_->update(accel, alt);
+                return 0;
             }
-            else if (accel.x.timestamp_ms - fldLaunchTime_ms > fastLaunchDetector->getConfirmationWindow()) {
+            if (accel.x.timestamp_ms - fldLaunchTime_ms_ > fastLaunchDetector_->getConfirmationWindow()) {
                 // If the confirmation window has passed without launch detected by LaunchDetector,
-                // revert to ARMED state
-                state = STATE_ARMED;
-                fldLaunchTime_ms = 0;
-                fastLaunchDetector->reset();
+                // Revert to ARMED state.
+                changeState(STATE_ARMED);
+                fldLaunchTime_ms_ = 0;
+                fastLaunchDetector_->reset();
 
-                // Log the state change
-                dataSaver->saveDataPoint(
+                // Log the state change.
+                dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_ARMED),
                     STATE_CHANGE
                 );
 
                 // Clear post-launch mode
-                dataSaver->clearPostLaunchMode();
+                dataSaver_->clearPostLaunchMode();
+                return 0;
             }
             break;
             
         case STATE_ASCENT:
             // Serial.println("apogee update");
             // Update the vertical velocity estimator
-            verticalVelocityEstimator->update(accel, alt);
-            apogeeDetector->update(verticalVelocityEstimator);
-            if (apogeeDetector->isApogeeDetected()) {
-                state = STATE_DESCENT;
+            verticalVelocityEstimator_->update(accel, alt);
+            apogeeDetector_->update(verticalVelocityEstimator_);
+            if (apogeeDetector_->isApogeeDetected()) {
+                changeState(STATE_DESCENT);
 
-                // Log the state change
-                dataSaver->saveDataPoint(
+                // Log the state change.
+                dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_DESCENT),
                     STATE_CHANGE
                 );
             }
-            break;
+            return 0;
 
         case STATE_DESCENT:
-            // Do nothing
-            break;
+            return 0; // Do nothing state
+
+        default:
+            // Unexpected state, error return 
+            return 1;
     }
 
     return 0;
-}
-
-uint8_t StateMachine::getState() const {
-    return state;
 }

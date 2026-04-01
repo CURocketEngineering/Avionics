@@ -49,10 +49,10 @@ class GroundLevelEstimator{
 
     private:
 
-        bool launched = false; // Turned true if launch is detected
-        float estimatedGroundLevel_m = 0.0F; // EGL in meters
-        uint32_t sampleCount = 0; // Number of samples used for ground level estimate
-        float alpha; // Determines how much weight the most recent number added has on the current EGL
+        bool launched_ = false; // Turned true if launch is detected
+        float estimatedGroundLevel_m_ = 0.0F; // EGL in meters
+        uint32_t sampleCount_ = 0; // Number of samples used for ground level estimate
+        float alpha_; // Determines how much weight the most recent number added has on the current EGL
 
 };
 

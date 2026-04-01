@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include <cmath>
 #include <algorithm>
+#include <cstdint>
+#include <limits>
 
 // Linear interpolation helper function
 inline float lerp(float a, float b, float t) {
@@ -28,7 +30,7 @@ inline void printMissingPreprocessedDataMessage(const std::string& missingFile) 
 
 // Structure to hold sensor data parsed from the CSV
 struct SensorData {
-    long time;  // Time in milliseconds
+    uint32_t time;  // Time in milliseconds
     float accelx;
     float accely;
     float accelz;
@@ -50,7 +52,12 @@ inline SensorData parseCSVRow(const std::vector<std::string>& row) {
         exit(EXIT_FAILURE);
     }
     SensorData data;
-    data.time    = stoll(row[0]);
+    const unsigned long long parsedTime = stoull(row[0]);
+    if (parsedTime > static_cast<unsigned long long>(std::numeric_limits<uint32_t>::max())) {
+        std::cerr << "Timestamp out of uint32_t range: " << row[0] << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    data.time    = static_cast<uint32_t>(parsedTime);
     data.accelx  = stof(row[1]);
     data.accely  = stof(row[2]);
     data.accelz  = stof(row[3]);
@@ -74,8 +81,8 @@ private:
     std::vector<SensorData> allData;
     bool dataLoaded;
     float sampleRate_hz;
-    long currentTime_ms;  // Current time in milliseconds
-    long timeStep_ms;     // Time step in milliseconds
+    uint32_t currentTime_ms;  // Current time in milliseconds
+    uint32_t timeStep_ms;     // Time step in milliseconds
 
     void loadAllData() {
         while (static_cast<bool>(getline(file, currentLine))) {
@@ -99,9 +106,9 @@ private:
         if (!allData.empty()) {
             std::cout << "Loaded " << allData.size() << " data points\n";
             std::cout << "Time range: " << allData.front().time << " to " << allData.back().time << " ms\n";
-            if (sampleRate_hz > 0) {
-                long total_time = allData.back().time - allData.front().time;
-                long expected_samples = total_time / timeStep_ms;
+            if (sampleRate_hz > 0 && timeStep_ms > 0) {
+                const uint32_t total_time_ms = allData.back().time - allData.front().time;
+                const uint32_t expected_samples = total_time_ms / timeStep_ms;
                 std::cout << "Sample rate: " << sampleRate_hz << " Hz (step: " << timeStep_ms << " ms)\n";
                 std::cout << "Expected samples at " << sampleRate_hz << " Hz: " << expected_samples << "\n";
             }
@@ -109,11 +116,11 @@ private:
     }
 
 public:
-    CSVDataProvider(const std::string& filename, float sampleRate_hz = 0) : 
+    CSVDataProvider(const std::string& filename, float sampleRate_hz_in = 0.0f) :
         dataLoaded(false),
-        sampleRate_hz(sampleRate_hz),
+        sampleRate_hz(sampleRate_hz_in),
         currentTime_ms(0),
-        timeStep_ms(sampleRate_hz > 0 ? static_cast<long>((1.0 / sampleRate_hz) * 1000.0) : 0) {
+        timeStep_ms(sampleRate_hz_in > 0.0f ? static_cast<uint32_t>((1.0f / sampleRate_hz_in) * 1000.0f) : 0U) {
         file.open(filename);
         if (!file.is_open()) {
             printMissingPreprocessedDataMessage(filename);
@@ -125,7 +132,7 @@ public:
     }
 
     // Get interpolated data at a specific timestamp
-    SensorData getInterpolatedData(long timestamp) {
+    SensorData getInterpolatedData(uint32_t timestamp) {
         if (!dataLoaded || allData.empty()) {
             std::cerr << "No data available for interpolation" << std::endl;
             exit(EXIT_FAILURE);
@@ -133,7 +140,7 @@ public:
 
         // Find the two data points to interpolate between
         auto it = std::lower_bound(allData.begin(), allData.end(), timestamp,
-                                 [](const SensorData& data, long ts) {
+                                 [](const SensorData& data, uint32_t ts) {
                                      return data.time < ts;
                                  });
 
@@ -173,9 +180,9 @@ public:
     }
 
     // Get the time range of the data
-    std::pair<long, long> getTimeRange() const {
+    std::pair<uint32_t, uint32_t> getTimeRange() const {
         if (!dataLoaded || allData.empty()) {
-            return {0, 0};
+            return {0U, 0U};
         }
         return {allData.front().time, allData.back().time};
     }
@@ -255,7 +262,7 @@ public:
     // Set or update the sample rate
     void setSampleRate(float hz) {
         sampleRate_hz = hz;
-        timeStep_ms = hz > 0 ? static_cast<long>((1.0 / hz) * 1000.0) : 0;
+        timeStep_ms = hz > 0.0f ? static_cast<uint32_t>((1.0f / hz) * 1000.0f) : 0U;
         // Reset current time to start fresh with new rate
         currentTime_ms = 0;
     }

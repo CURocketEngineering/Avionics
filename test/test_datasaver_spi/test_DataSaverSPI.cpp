@@ -1,6 +1,8 @@
 #include "unity.h"
 #include "data_handling/DataSaverSPI.h"
 #include "data_handling/DataPoint.h"
+#include <cstddef>
+#include <cstdint>
 
 DataSaverSPI* dss;
 Adafruit_SPIFlash* flash;
@@ -16,36 +18,36 @@ void tearDown(void) {
 }
 
 void test_save_data_point(void) {
-    DataPoint dp(500, 1.0);
+    DataPoint dp(500U, 1.0f);
     int result = dss->saveDataPoint(dp, 1);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL_UINT32(500, dss->getLastTimestamp());
     TEST_ASSERT_EQUAL_UINT32(500, dss->getLastDataPoint().timestamp_ms);
-    TEST_ASSERT_EQUAL_FLOAT(1.0, dss->getLastDataPoint().data);
+    TEST_ASSERT_EQUAL_FLOAT(1.0f, dss->getLastDataPoint().data);
 
-    DataPoint dp2(550, 2.0); // Not enough time has passed
+    DataPoint dp2(550U, 2.0f); // Not enough time has passed
     result = dss->saveDataPoint(dp2, 1);
     TEST_ASSERT_EQUAL(0, result);
     TEST_ASSERT_EQUAL_UINT32(500, dss->getLastTimestamp()); // The timestamp should not have changed
     TEST_ASSERT_EQUAL_UINT32(550, dss->getLastDataPoint().timestamp_ms); // The data point should have changed
-    TEST_ASSERT_EQUAL_FLOAT(2.0, dss->getLastDataPoint().data);
+    TEST_ASSERT_EQUAL_FLOAT(2.0f, dss->getLastDataPoint().data);
 }
 
 void test_flush_buffer(void) {
     dss->clearInternalState();
     TEST_ASSERT_EQUAL(0, dss->getBufferIndex());
-    DataPoint dp(500, 1.0);
+    DataPoint dp(500U, 1.0f);
     dss->saveDataPoint(dp, 1); // Saves a timestamp and data point (10 bytes)
-    int expectedBufferSize_bytes = 10;
+    size_t expectedBufferSize_bytes = 10;
     TEST_ASSERT_EQUAL(expectedBufferSize_bytes, dss->getBufferIndex());
     TEST_ASSERT_EQUAL(0, dss->getBufferFlushes());
 
     
 
-    int hits_to_flush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
-    for (int i = 0; i < hits_to_flush; i++) {
-        DataPoint dp(500, 1.0);
-        dss->saveDataPoint(dp, 1);
+    size_t hitsToFlush = (DataSaverSPI::kBufferSize_bytes - 10) / 5 + 1; // + 1 to trigger flush
+    for (size_t i = 0; i < hitsToFlush; i++) {
+        DataPoint dpLoop(500U, 1.0f);
+        dss->saveDataPoint(dpLoop, 1);
         expectedBufferSize_bytes += 5;
         if (expectedBufferSize_bytes >= DataSaverSPI::kBufferSize_bytes) {
             expectedBufferSize_bytes = 5;
@@ -58,8 +60,8 @@ void test_flush_buffer(void) {
 
 void test_clearplm_next_write(void){
     // Write some data points to flash to move the nextWriteAddress forward
-    for (int i = 0; i < 50; i++) {
-        DataPoint dp(500 + i * 100, 1.0);
+    for (uint32_t i = 0; i < 50U; i++) {
+        DataPoint dp(500U + i * 100U, 1.0f);
         dss->saveDataPoint(dp, 1);
     }
 
@@ -75,7 +77,7 @@ void test_erase_all_data(void) {
     TEST_ASSERT_EQUAL_UINT32(kDataStartAddress, dss->getNextWriteAddress());
     TEST_ASSERT_EQUAL_UINT32(0, dss->getLastTimestamp());
     TEST_ASSERT_EQUAL_UINT32(0, dss->getLastDataPoint().timestamp_ms);
-    TEST_ASSERT_EQUAL_FLOAT(0.0, dss->getLastDataPoint().data);
+    TEST_ASSERT_EQUAL_FLOAT(0.0f, dss->getLastDataPoint().data);
 }
 
 void test_launch_detected(void) {
@@ -95,7 +97,7 @@ void test_timestamp_record_size(void) {
 }
 
 
-int main(int argc, char **argv) {
+int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_record_size);
     RUN_TEST(test_timestamp_record_size);

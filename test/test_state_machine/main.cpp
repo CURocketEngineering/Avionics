@@ -55,7 +55,7 @@ void test_launch(){
 
         // Adding 9.8 because the launchDetector expects measured acceleration
         // I.e. 0m/s^2 stationary on ground is measured as 9.8m/s^2 by the accelerometer
-        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8);
+        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8f);
         DataPoint alt(sim.getCurrentTime(), sim.getAltitude());
         // std::cout << aclZ.data << "  mag: " << lp.getMedianAccelerationSquared() << " Ts: " << aclZ.timestamp_ms << std::endl;
         AccelerationTriplet accel = {aclX, aclY, aclZ};
@@ -94,7 +94,7 @@ void test_apogee_detection(){
 
         // Subtracting 9.8 because the launchDetector expects measured acceleration
         // I.e. 0m/s^2 stationary on ground is measured as -9.8m/s^2 by the accelerometer
-        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8 + aclNoise(gen));
+        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8f + aclNoise(gen));
         DataPoint alt(sim.getCurrentTime(), sim.getAltitude() + altNoise(gen));
         AccelerationTriplet accel = {aclX, aclY, aclZ};
         sm.update(accel, alt);
@@ -128,7 +128,7 @@ void test_apogee_detection_noise(){
 
         // Subtracting 9.8 because the launchDetector expects measured acceleration
         // I.e. 0m/s^2 stationary on ground is measured as -9.8m/s^2 by the accelerometer
-        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8);
+        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8f);
         DataPoint alt(sim.getCurrentTime(), sim.getAltitude());
         // std::cout << aclZ.data << "  mag: " << lp.getMedianAccelerationSquared() << " Ts: " << aclZ.timestamp_ms << std::endl;
         AccelerationTriplet accel = {aclX, aclY, aclZ};
@@ -177,10 +177,11 @@ void test_fast_launch_with_revert(){
 
     //feed 100 points of false data to revert fld after no confirmation
     for (int i = 0; i < 100; i++) {
-        DataPoint aclX(i * 10, 0);
-        DataPoint aclY(i * 10, 0);
-        DataPoint aclZ(i * 10, 0);
-        DataPoint alt(i * 10, 0);
+        const uint32_t timestamp_ms = static_cast<uint32_t>(i) * 10U;
+        DataPoint aclX(timestamp_ms, 0.0f);
+        DataPoint aclY(timestamp_ms, 0.0f);
+        DataPoint aclZ(timestamp_ms, 0.0f);
+        DataPoint alt(timestamp_ms, 0.0f);
         // std::cout << aclZ.data << "  mag: " << lp.getMedianAccelerationSquared() << " Ts: " << aclZ.timestamp_ms << std::endl;
         AccelerationTriplet accel = {aclX, aclY, aclZ};
         sm.update(accel, alt);
@@ -196,6 +197,9 @@ void test_fast_launch_with_revert(){
 
     // Check that data saver is not in post launch mode
     TEST_ASSERT_FALSE(dss->quickGetPostLaunchMode());
+
+    delete dss;
+    delete flash;
 }
 
 //Triggers fast launch detector then does trigger launch detector during confirmation window
@@ -223,7 +227,7 @@ void test_fast_launch_with_confirm(){
 
         // Adding 9.8 because the launchDetector expects measured acceleration
         // I.e. 0m/s^2 stationary on ground is measured as 9.8m/s^2 by the accelerometer
-        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8);
+        DataPoint aclZ(sim.getCurrentTime(), sim.getIntertialVerticalAcl() + 9.8f);
         DataPoint alt(sim.getCurrentTime(), sim.getAltitude());
         // std::cout << aclZ.data << "  mag: " << lp.getMedianAccelerationSquared() << " Ts: " << aclZ.timestamp_ms << std::endl;
         AccelerationTriplet accel = {aclX, aclY, aclZ};
@@ -250,6 +254,9 @@ void test_fast_launch_with_confirm(){
 
     // Check that data saver is in post launch mode
     TEST_ASSERT_TRUE(dss->quickGetPostLaunchMode());
+
+    delete dss;
+    delete flash;
 }
 
 //

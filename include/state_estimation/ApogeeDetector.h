@@ -99,11 +99,11 @@ public:
     int8_t getVerticalDirection() const;
 
 private:
-    bool apogeeDetected = false;              ///< True if apogee has been detected.
-    float apogeeThreshold_m = 1.0F;        ///< Minimum drop required to confirm apogee.
+    bool apogeeDetected_ = false;              ///< True if apogee has been detected.
+    float apogeeThreshold_m_ = 1.0F;        ///< Minimum drop required to confirm apogee.
 
-    float maxAltitude = 0.0F;              ///< Maximum altitude observed so far.
-    uint32_t maxAltitudeTimestamp = 0;     ///< Timestamp when max altitude was reached.
+    float maxAltitude_ = 0.0F;              ///< Maximum altitude observed so far.
+    uint32_t maxAltitudeTimestamp_ = 0;     ///< Timestamp when max altitude was reached.
 };
 
 #endif // APOGEE_DETECTOR_H

@@ -19,16 +19,16 @@ public:
     }
 
     void begin(Stream *inStream, BaseStateMachine *stateMachine) {
-        serial = inStream;
-        this->stateMachine = stateMachine;
+        serial_ = inStream;
+        this->stateMachine_ = stateMachine;
 
         // Handshake: send "START\n" until we get ACK (0x06)
         uint8_t ack = 0;
         while (ack != 0x06) {
-            serial->write("START\n");
+            serial_->write("START\n");
             delay(100);
-            if (serial->available() > 0) {
-                ack = serial->read();
+            if (serial_->available() > 0) {
+                ack = serial_->read();
             }
         }
     }
@@ -37,60 +37,58 @@ public:
     // 1) Read as many characters as available
     // 2) If we detect a newline, parse that line
     void update() {
-        int availableBytes = serial->available();
-
-        while (serial->available() > 0) {
-            char c = static_cast<char>(serial->read());
+        while (serial_->available() > 0) {
+            char c = static_cast<char>(serial_->read());
 
             // If we get a newline, parse the line
             if (c == '\n') {
-                // We have a full line in _partialLine
-                handleIncomingLine(_partialLine);
-                _partialLine = "";  // Clear for the next line
+                // We have a full line in partialLine_
+                handleIncomingLine(partialLine_);
+                partialLine_ = "";  // Clear for the next line
             } 
             else {
-                _partialLine += c;
+                partialLine_ += c;
             }
         }
     }
 
     bool serialAvailable(void){
-        return serial->available() > 0;
+        return serial_->available() > 0;
     }
 
     // These next update functions provide the sensor data to calling code
     void updateTimeStamp(float &timestamp) {
-        timestamp = _timestamp;
+        timestamp = timestamp_;
     }
 
     void updateAcl(sensors_event_t *accel) {
-        accel->acceleration.x = accel_x;
-        accel->acceleration.y = accel_y;
-        accel->acceleration.z = accel_z;
+        accel->acceleration.x = accelX_;
+        accel->acceleration.y = accelY_;
+        accel->acceleration.z = accelZ_;
     }
 
     void updateGyro(sensors_event_t *gyro) {
-        gyro->gyro.x = gyro_x;
-        gyro->gyro.y = gyro_y;
-        gyro->gyro.z = gyro_z;
+        gyro->gyro.x = gyroX_;
+        gyro->gyro.y = gyroY_;
+        gyro->gyro.z = gyroZ_;
     }
 
     void updateMag(sensors_event_t *mag) {
-        mag->magnetic.x = magnetic_x;
-        mag->magnetic.y = magnetic_y;
-        mag->magnetic.z = magnetic_z;
+        mag->magnetic.x = magneticX_;
+        mag->magnetic.y = magneticY_;
+        mag->magnetic.z = magneticZ_;
     }
 
     void updateAlt(float &alt){
-        alt = _alt;
+        alt = alt_;
     }
 
     void updatePres(float &pres){
-        pres = _pres;
+        pres = pres_;
     }
 
     void updateTemp(sensors_event_t &temp){
-        temp.temperature = _temp;
+        temp.temperature = temp_;
     }
 
 private:
@@ -107,20 +105,20 @@ private:
         }
 
         // We'll parse each comma‐separated float in the line
-        _timestamp   = parseNextFloat(line);
-        accel_x      = parseNextFloat(line);
-        accel_y      = parseNextFloat(line);
-        accel_z      = parseNextFloat(line);
-        _alt         = parseNextFloat(line);
-        // gyro_x       = parseNextFloat(line);
-        // gyro_y       = parseNextFloat(line);
-        // gyro_z       = parseNextFloat(line);
-        // magnetic_x   = parseNextFloat(line);
-        // magnetic_y   = parseNextFloat(line);
-        // magnetic_z   = parseNextFloat(line);
+        timestamp_   = parseNextFloat(line);
+        accelX_      = parseNextFloat(line);
+        accelY_      = parseNextFloat(line);
+        accelZ_      = parseNextFloat(line);
+        alt_         = parseNextFloat(line);
+        // gyroX_       = parseNextFloat(line);
+        // gyroY_       = parseNextFloat(line);
+        // gyroZ_       = parseNextFloat(line);
+        // magneticX_   = parseNextFloat(line);
+        // magneticY_   = parseNextFloat(line);
+        // magneticZ_   = parseNextFloat(line);
        
-        // _pres        = parseNextFloat(line);
-        // _temp        = line.toFloat(); // The remaining chunk is the last float
+        // pres_        = parseNextFloat(line);
+        // temp_        = line.toFloat(); // The remaining chunk is the last float
 
         Serial.println("Parsed Data!");
 
@@ -144,28 +142,28 @@ private:
         return value;
     }
 
-    // Send ACK alongside the current state to the serial port
+    // Send ACK alongside the current state to the serial_ port
     void ack(){
-        serial->write(stateMachine->getState());
+        serial_->write(stateMachine_->getState());
         // Ack will be a series of 0xaa, 0xbb, 0xcc
-        serial->write(0xaa);
-        serial->write(0xbb);
-        serial->write(0xcc);
+        serial_->write(0xaa);
+        serial_->write(0xbb);
+        serial_->write(0xcc);
     }
 
 private:
-    Stream* serial = nullptr;
-    BaseStateMachine* stateMachine = nullptr;
-    String  _partialLine;  // used to accumulate characters until newline
+    Stream* serial_ = nullptr;
+    BaseStateMachine* stateMachine_ = nullptr;
+    String  partialLine_;  // used to accumulate characters until newline
 
     // Parsed sensor data
-    float _timestamp = 0;
-    float accel_x = 0, accel_y = 0, accel_z = 0;
-    float gyro_x  = 0, gyro_y  = 0, gyro_z  = 0;
-    float magnetic_x = 0, magnetic_y = 0, magnetic_z = 0;
-    float _alt  = 0;
-    float _pres = 0;
-    float _temp = 0;
+    float timestamp_ = 0;
+    float accelX_ = 0, accelY_ = 0, accelZ_ = 0;
+    float gyroX_  = 0, gyroY_  = 0, gyroZ_  = 0;
+    float magneticX_ = 0, magneticY_ = 0, magneticZ_ = 0;
+    float alt_  = 0;
+    float pres_ = 0;
+    float temp_ = 0;
 };
 
 #endif // SERIAL_SIM_H

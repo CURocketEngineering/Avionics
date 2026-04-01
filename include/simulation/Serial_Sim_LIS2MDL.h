@@ -14,10 +14,10 @@ public:
     bool begin_SPI(int cs) { return true; } // Mock successful initialization SPI
     bool begin(int addr) { return true; } // Mock successful initialization I2C
 
-    void setDataRate(int rate) { dataRate = rate; }
+    void setDataRate(int rate) { dataRate_ = rate; }
     void enableInterrupts(bool a) {}
 
-    int getDataRate() { return dataRate; }
+    int getDataRate() { return dataRate_; }
 
     void getEvent(sensors_event_t *mag) {
         SerialSim::getInstance().updateMag(mag);
@@ -25,7 +25,7 @@ public:
     }
 
 private:
-    int dataRate = LIS2MDL_RATE_100_HZ;
+    int dataRate_ = LIS2MDL_RATE_100_HZ;
 
 };
 

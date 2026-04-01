@@ -2,6 +2,8 @@
 
 Guidance for human and AI coding agents working in this repository.
 
+If you are an AI agent, say "I read the AGENTS.md" at the start of the chat, to acknowledge that you have read and understand these instructions.
+
 ## Scope
 
 These instructions apply to the entire repo unless a deeper `AGENTS.md` overrides them.
@@ -34,18 +36,21 @@ Avionics is our modular C++ (Arduino-core compatible) library used for all of ou
 4. Maintain `include/` and `src/` parity for non-header-only modules.
 5. Keep changes compatible with the repo's C++ standard (`-std=c++11` in `platformio.ini`).
 
-## Variable Naming
+## Naming Conventions
 - Use `camelCase` for variables and functions.
 - Use `PascalCase` for class and struct names.
-- Add units to the end via an underscore suffix when a name represents a measured value, physical quantity, size, or rate (for example, `timestamp_ms`, `altitude_m`, `velocity_mps`).
-- For digital storage and communication units, use unambiguous suffixes:
-  - Prefer exact units like `_bytes` and `_bits`
-  - Use `_KiB` and `_MiB` for binary storage sizes
-  - Use `_kbps` and `_Mbps` for data rates
-  - If needed, use `_megabytes` and `_megabits` instead of ambiguous shorthand
-- Avoid abbreviations unless they are widely understood in the context (for example, `imu`, `gps`, `crc`, `uart`)
-- For constants, use `kConstantName` format
-- For private member variables, use a leading underscore (for example, `_privateVar`)
+- Use `kConstantName` for constants.
+- Use a trailing underscore for private member variables (for example, `privateVar_` and `privateTimestamp_ms_`).
+
+- Add unit suffixes with an underscore when a name represents a physical quantity, time value, size, rate, or other semantically meaningful measured quantity (for example, `timestamp_ms`, `altitude_m`, `velocity_mps`, `gravity_mps2`, `packetSize_bytes`).
+- Prefer exact units like `_bytes` and `_bits` when the exact count matters.
+- Use unambiguous binary storage suffixes like `_KiB` and `_MiB` when a quantity is naturally expressed that way.
+- Use unambiguous data-rate suffixes like `_kbps` and `_Mbps`.
+- Avoid ambiguous suffixes such as `_MB`, `_mB`, or `_Mb` unless the meaning is completely clear in context.
+
+- Avoid abbreviations unless they are widely understood in the project context or domain (for example, `imu`, `gps`, `crc`, `uart`).
+- Prefer descriptive names over shortened ones when there is any chance of confusion.
+- Use a `_in` suffix for function parameters that would otherwise match member variables to avoid shadowing. For example, `DataPoint(uint32_t timestamp_ms_in, float data_in) : timestamp_ms(timestamp_ms_in), data(data_in) {}`.
 
 ## Build, Test, and Checks
 
@@ -55,11 +60,16 @@ Run from repo root:
 # Install toolchain (if needed)
 pip install -U platformio
 
+# It may already be installed at `~/.platformio/penv/bin/pio` use the full path if `pio` is not in your PATH.
+
 # Run unit tests (same environment as CI)
 pio test -e native
 
 # Run static analysis (same tool as CI)
 pio check -e native --fail-on-defect=low --fail-on-defect=medium --fail-on-defect=high
+
+# Clear the build, so a fresh one can be done (good to ensure all build warnings reappear)
+pio run -t clean
 ```
 
 Target a specific test directory when iterating:

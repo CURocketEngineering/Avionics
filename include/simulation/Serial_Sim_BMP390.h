@@ -52,10 +52,10 @@ public:
     bool begin_I2C(int addr) { return true; } // Mock successful initialization
     bool begin_I2C() { return true; } // Mock successful initialization
 
-    void setTemperatureOversampling(int oversampling) { temperatureOversampling = oversampling; }
-    void setPressureOversampling(int oversampling) { pressureOversampling = oversampling; }
-    void setIIRFilterCoeff(int coeff) { iirFilterCoeff = coeff; }
-    void setOutputDataRate(int rate) { outputDataRate = rate; }
+    void setTemperatureOversampling(int oversampling) { temperatureOversampling_ = oversampling; }
+    void setPressureOversampling(int oversampling) { pressureOversampling_ = oversampling; }
+    void setIIRFilterCoeff(int coeff) { iirFilterCoeff_ = coeff; }
+    void setOutputDataRate(int rate) { outputDataRate_ = rate; }
     void setConversionDelay(int delay) {}
     void startConversion() {}
     bool updateConversion(){return true;}
@@ -107,10 +107,10 @@ public:
 
 
 private:
-    int temperatureOversampling = BMP3_NO_OVERSAMPLING;
-    int pressureOversampling = BMP3_OVERSAMPLING_2X;
-    int iirFilterCoeff = BMP3_IIR_FILTER_COEFF_3;
-    int outputDataRate = BMP3_ODR_100_HZ;
+    int temperatureOversampling_ = BMP3_NO_OVERSAMPLING;
+    int pressureOversampling_ = BMP3_OVERSAMPLING_2X;
+    int iirFilterCoeff_ = BMP3_IIR_FILTER_COEFF_3;
+    int outputDataRate_ = BMP3_ODR_100_HZ;
 
 };
 
