@@ -287,6 +287,8 @@ public:
 #ifdef UNIT_TEST
     /**
      * @brief Test-only helper to override internal post-launch state.
+     *        Resets in-memory state first so the injected state is
+     *        self-consistent and does not depend on prior test writes.
      * @param nextWriteAddress_in Next write address to inject.
      * @param launchWriteAddress_in Launch-protected address to inject.
      * @param postLaunchMode_in Post-launch mode flag to inject.
@@ -294,6 +296,7 @@ public:
     void setPostLaunchStateForTest(uint32_t nextWriteAddress_in,
                                    uint32_t launchWriteAddress_in,
                                    bool postLaunchMode_in) {
+        clearInternalState();
         nextWriteAddress_ = nextWriteAddress_in;
         launchWriteAddress_ = launchWriteAddress_in;
         postLaunchMode_ = postLaunchMode_in;

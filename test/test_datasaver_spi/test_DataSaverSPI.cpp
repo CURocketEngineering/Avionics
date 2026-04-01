@@ -151,14 +151,12 @@ void test_pre_erase_skips_protected_launch_sector(void) {
 
 void test_flush_wraps_using_full_page_write_size(void) {
     dss->clearInternalState();
-    TEST_ASSERT_EQUAL(0, dss->saveTimestamp(1U));
-
     uint32_t const nearEndAddress = FAKE_MEMORY_SIZE_BYTES - DataSaverSPI::kBufferSize_bytes + 1U;
     dss->setPostLaunchStateForTest(nearEndAddress, 0U, false);
 
     int result = 0;
     uint32_t const recordsPerFlush = DataSaverSPI::kBufferSize_bytes / sizeof(TimestampRecord_t);
-    for (uint32_t i = 0; i < recordsPerFlush; i++) {
+    for (uint32_t i = 0; i < recordsPerFlush + 1U; i++) {
         result = dss->saveTimestamp(2U + i);
     }
 
