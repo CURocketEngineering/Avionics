@@ -68,33 +68,70 @@ int DataSaverSPI::addDataToBuffer(const uint8_t* data, size_t length) {
     return 0;
 }
 
+uint32_t DataSaverSPI::normalizeDataAddress(uint32_t address) const {
+    if (address >= flash_->size()) {
+        return kDataStartAddress;
+    }
+    return address;
+}
+
+bool DataSaverSPI::isProtectedLaunchSector(uint32_t sectorNumber) const {
+    if (!postLaunchMode_) {
+        return false;
+    }
+    return sectorNumber == launchWriteAddress_ / SFLASH_SECTOR_SIZE;
+}
+
+int DataSaverSPI::eraseSectorIfAllowed(uint32_t sectorNumber) {
+    if (isProtectedLaunchSector(sectorNumber)) {
+        isChipFullDueToPostLaunchProtection_ = true; // We can't erase the next sector to allow for more writes.
+        return -1;
+    }
+    if (!flash_->eraseSector(sectorNumber)) {
+        return -1;
+    }
+    preparedSectorNumber_ = sectorNumber;
+    return 0;
+}
+
+bool DataSaverSPI::shouldStopForPostLaunchWindow() {
+    if (!postLaunchMode_) {
+        return false;
+    }
+    if (nextWriteAddress_ > launchWriteAddress_) {
+        return false;
+    }
+    if (nextWriteAddress_ + kBufferSize_bytes * 2 <= launchWriteAddress_) {
+        return false;
+    }
+    isChipFullDueToPostLaunchProtection_ = true;
+    return true;
+}
+
 // Write the entire buffer to flash.
 int DataSaverSPI::flushBuffer() {
     if (bufferIndex_ == 0) {
         return 1;  // Nothing to flush
     }
 
-    // Check if we need to wrap around
-    if (nextWriteAddress_ + bufferIndex_ > flash_->size()) {
-        // Wrap around
+    // If the next write would go past the end of the flash, wrap around to the beginning of the data section.
+    if (nextWriteAddress_ + kBufferSize_bytes > flash_->size()) {
         nextWriteAddress_ = kDataStartAddress;
-    }   
+    }
 
-    // Check that we haven't wrapped around to the launch address while in post-launch mode
-    if (postLaunchMode_ && nextWriteAddress_ <= launchWriteAddress_ && nextWriteAddress_ + kBufferSize_bytes * 2 > launchWriteAddress_) {
+    if (shouldStopForPostLaunchWindow()) {
         isChipFullDueToPostLaunchProtection_ = true;
-        return -1; // Indicate no write due to post-launch protection
+        return -1;
     }
 
     // Fallback erase for first entry into a sector. In steady-state this sector
     // should already be prepared by the previous flush.
-    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0) {
+    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0U) {
         uint32_t const currentSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
         if (preparedSectorNumber_ != currentSectorNumber) {
-            if (!flash_->eraseSector(currentSectorNumber)) {
+            if (eraseSectorIfAllowed(currentSectorNumber) < 0) {
                 return -1;
             }
-            preparedSectorNumber_ = currentSectorNumber;
         }
     }
 
@@ -103,23 +140,22 @@ int DataSaverSPI::flushBuffer() {
         return -1;
     }
 
-    nextWriteAddress_ += kBufferSize_bytes;  // keep it aligned to the buffer size or page size
-
-    // Keep next write address in the data region immediately so boundary prep
-    // never targets a sector beyond flash capacity.
-    if (nextWriteAddress_ >= flash_->size()) {
-        nextWriteAddress_ = kDataStartAddress;
-    }
+    nextWriteAddress_ = normalizeDataAddress(nextWriteAddress_ + kBufferSize_bytes);
 
     // Pre-erase one step earlier: after writing the previous page, erase the
     // sector that the next page will start in. This lets erase latency overlap
     // with buffer fill time.
-    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0) {
+    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0U) {
         uint32_t const nextSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
-        if (!flash_->eraseSector(nextSectorNumber)) {
-            return -1;
+
+        // If the next sector, is protected, skip the erase and still return 0
+        if (!isProtectedLaunchSector(nextSectorNumber)) {
+
+            // Try to erase the next sector and return -1 on failure
+            if (eraseSectorIfAllowed(nextSectorNumber) < 0) {
+                return -1;
+            }
         }
-        preparedSectorNumber_ = nextSectorNumber;
     }
 
     bufferIndex_ = 0; // Reset the buffer

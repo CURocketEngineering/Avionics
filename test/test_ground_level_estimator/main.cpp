@@ -60,7 +60,7 @@ void test_ground_level_with_noise(void)
     std::normal_distribution<float> noise(0.0f, 2.0f);  // ±2m standard deviation
     
     // Feed noisy samples
-    for (int i = 0; i < 500; ++i) // At 200 samples, the test was a but flaky due to noise.
+    for (int i = 0; i < 500; ++i) // At 200 samples, the test was a bit flaky due to noise.
     {
         float noisyASL = trueGroundASL + noise(rng);
         float agl = estimator.update(noisyASL);
