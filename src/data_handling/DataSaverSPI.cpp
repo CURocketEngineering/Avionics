@@ -89,16 +89,17 @@ bool DataSaverSPI::isProtectedLaunchSector(uint32_t sectorNumber) const {
     return sectorNumber == launchWriteAddress_ / SFLASH_SECTOR_SIZE;
 }
 
-int DataSaverSPI::eraseSectorIfAllowed(uint32_t sectorNumber) {
+DataSaverSPI::SectorEraseResult DataSaverSPI::eraseSectorForWriteAndLatchOnProtection(
+    uint32_t sectorNumber) {
     if (isProtectedLaunchSector(sectorNumber)) {
-        isChipFullDueToPostLaunchProtection_ = true; // We can't erase the next sector to allow for more writes.
-        return -1;
+        isChipFullDueToPostLaunchProtection_ = true;
+        return SectorEraseResult::kProtectedSectorLatched;
     }
     if (!flash_->eraseSector(sectorNumber)) {
-        return -1;
+        return SectorEraseResult::kFlashEraseFailed;
     }
     preparedSectorNumber_ = sectorNumber;
-    return 0;
+    return SectorEraseResult::kErased;
 }
 
 bool DataSaverSPI::shouldStopForPostLaunchWindow() {
@@ -135,7 +136,9 @@ int DataSaverSPI::flushBuffer() {
     if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0U) {
         uint32_t const currentSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
         if (preparedSectorNumber_ != currentSectorNumber) {
-            if (eraseSectorIfAllowed(currentSectorNumber) < 0) {
+            SectorEraseResult const eraseResult =
+                eraseSectorForWriteAndLatchOnProtection(currentSectorNumber);
+            if (eraseResult != SectorEraseResult::kErased) {
                 return -1;
             }
         }
@@ -153,14 +156,10 @@ int DataSaverSPI::flushBuffer() {
     // with buffer fill time.
     if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0U) {
         uint32_t const nextSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
-
-        // If the next sector, is protected, skip the erase and still return 0
-        if (!isProtectedLaunchSector(nextSectorNumber)) {
-
-            // Try to erase the next sector and return -1 on failure
-            if (eraseSectorIfAllowed(nextSectorNumber) < 0) {
-                return -1;
-            }
+        SectorEraseResult const preEraseResult =
+            eraseSectorForWriteAndLatchOnProtection(nextSectorNumber);
+        if (preEraseResult == SectorEraseResult::kFlashEraseFailed) {
+            return -1;
         }
     }
 

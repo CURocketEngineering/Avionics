@@ -321,11 +321,23 @@ private:
     bool isProtectedLaunchSector(uint32_t sectorNumber) const;
 
     /**
-     * @brief Erases a sector unless blocked by post-launch protection.
-     * @param sectorNumber Sector index to erase.
-     * @return int 0 on successful erase, -1 when blocked or flash erase fails.
+     * @brief Outcome of attempting to erase a sector before writing into it.
      */
-    int eraseSectorIfAllowed(uint32_t sectorNumber);
+    enum class SectorEraseResult {
+        kErased,
+        kProtectedSectorLatched,
+        kFlashEraseFailed
+    };
+
+    /**
+     * @brief Erases a sector for writing and latches post-launch protection if blocked.
+     * @param sectorNumber Sector index to erase.
+     * @return SectorEraseResult::kErased on successful erase.
+     * @return SectorEraseResult::kProtectedSectorLatched when sector is
+     *         post-launch protected (and chip-full is latched).
+     * @return SectorEraseResult::kFlashEraseFailed when flash erase fails.
+     */
+    SectorEraseResult eraseSectorForWriteAndLatchOnProtection(uint32_t sectorNumber);
 
     /**
      * @brief Checks if the upcoming write window would violate post-launch protection.

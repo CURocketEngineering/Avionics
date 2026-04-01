@@ -113,7 +113,7 @@ void test_next_sector_is_erased_before_crossing_boundary(void) {
     TEST_ASSERT_EQUAL_HEX8(0xFF, flash->fakeMemory[expectedBoundaryAddress]);
 }
 
-void test_pre_erase_skips_protected_launch_sector(void) {
+void test_pre_erase_latches_on_protected_launch_sector(void) {
     for (size_t i = 0; i < FAKE_MEMORY_SIZE_BYTES; i++) {
         flash->fakeMemory[i] = 0x00;
     }
@@ -134,16 +134,13 @@ void test_pre_erase_skips_protected_launch_sector(void) {
         result = dss->saveTimestamp(i);
     }
 
-    // This flush writes successfully; only pre-erase is skipped for the
-    // protected next sector.
+    // The flush still writes successfully, but pre-erase hitting the protected
+    // next sector now latches chip-full protection.
     TEST_ASSERT_EQUAL(0, result);
-    TEST_ASSERT_FALSE(dss->getIsChipFullDueToPostLaunchProtection());
+    TEST_ASSERT_TRUE(dss->getIsChipFullDueToPostLaunchProtection());
     TEST_ASSERT_EQUAL_HEX8(0x5A, flash->fakeMemory[launchWriteAddress]);
 
-    for (uint32_t i = 0; i < recordsPerFlush; i++) {
-        result = dss->saveTimestamp(1000U + i);
-    }
-
+    result = dss->saveTimestamp(1000U);
     TEST_ASSERT_EQUAL(1, result);
     TEST_ASSERT_TRUE(dss->getIsChipFullDueToPostLaunchProtection());
     TEST_ASSERT_EQUAL_HEX8(0x5A, flash->fakeMemory[launchWriteAddress]);
@@ -186,7 +183,7 @@ int main(void) {
     RUN_TEST(test_erase_all_data);
     RUN_TEST(test_launch_detected);
     RUN_TEST(test_next_sector_is_erased_before_crossing_boundary);
-    RUN_TEST(test_pre_erase_skips_protected_launch_sector);
+    RUN_TEST(test_pre_erase_latches_on_protected_launch_sector);
     RUN_TEST(test_flush_wraps_using_full_page_write_size);
     return UNITY_END();
 }
