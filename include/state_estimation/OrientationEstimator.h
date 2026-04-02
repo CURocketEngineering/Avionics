@@ -30,15 +30,13 @@ public:
     void update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime);
     void updateFullAHRS(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime);
     void updateIMU(AccelerationTriplet accel, GyroTriplet gyro, uint32_t currentTime);
-
-    void launchDetected();
     void getEuler();
+
     Quanternion getQuanternion() const{
         Quanternion q = {q0, q1, q2, q3};
         return q;
     }
-
-
+    void launchDetected() { hasLaunched = true;}
     float getRoll() const { return roll; }
     float getPitch() const { return pitch; }
     float getYaw() const { return yaw; }

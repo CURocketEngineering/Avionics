@@ -21,7 +21,6 @@ void OrientationEstimator::update(AccelerationTriplet accel,
     float mz = mag.z.data;
 
     float dt = (currentTime - lastUpdateTime) / 1000.0f;
-    if (dt <= 0.0f || dt > 0.1f) return;
 
     // --- Sensor usage flags ---
     bool useAccel = false;
