@@ -23,17 +23,7 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
 	float _2q0mx, _2q0my, _2q0mz, _2q1mx, _2bx, _2bz, _4bx, _4bz, _2q0, _2q1, _2q2, _2q3, _2q0q2, _2q2q3, q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
 
 
-     float dt = (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
-     float alpha = 0.1f;
-     static float filtered_dt = 0.01f;
-
-     filtered_dt = alpha * dt + (1 - alpha) * filtered_dt;
-     dt = filtered_dt;
-
-     float baseRate = 100.0f;
-     float effectiveRate = 1.0f / dt;
-
-     float betaScaled = beta * (effectiveRate / baseRate);
+    float dt = (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
 
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
 	if((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f)) {
@@ -104,10 +94,10 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
 		s3 *= recipNorm;
 
 		// Apply feedback step
-		qDot1 -= betaScaled * s0;
-		qDot2 -= betaScaled * s1;
-		qDot3 -= betaScaled * s2;
-		qDot4 -= betaScaled * s3;
+		qDot1 -= beta * s0;
+		qDot2 -= beta * s1;
+		qDot3 -= beta * s2;
+		qDot4 -= beta * s3;
 	}
 
 	// Integrate rate of change of quaternion to yield quaternion
@@ -124,6 +114,7 @@ void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, M
 	q3 *= recipNorm;
 
 	getEuler();
+	lastUpdateTime = currentTime;
 }
 
 void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro, uint32_t currentTime){
@@ -140,16 +131,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 	float qDot1, qDot2, qDot3, qDot4;
 	float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2 ,_8q1, _8q2, q0q0, q1q1, q2q2, q3q3;
 
-     float dt = (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
-     float alpha = 0.1f;
-     static float filtered_dt = 0.01f;
-
-     filtered_dt = alpha * dt + (1 - alpha) * filtered_dt;
-     dt = filtered_dt;
-
-     float baseRate = 100.0f;
-     float effectiveRate = 1.0f / dt;
-     float betaScaled = beta * (effectiveRate / baseRate);
+    float dt = (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
 
 	// Rate of change of quaternion from gyroscope
 	qDot1 = 0.5f * (-q1 * gx - q2 * gy - q3 * gz);
@@ -193,10 +175,10 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 		s3 *= recipNorm;
 
 		// Apply feedback step
-		qDot1 -= betaScaled * s0;
-		qDot2 -= betaScaled * s1;
-		qDot3 -= betaScaled * s2;
-		qDot4 -= betaScaled * s3;
+		qDot1 -= beta * s0;
+		qDot2 -= beta * s1;
+		qDot3 -= beta * s2;
+		qDot4 -= beta * s3;
 	}
 
 	// Integrate rate of change of quaternion to yield quaternion
@@ -213,6 +195,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 	q3 *= recipNorm;
 
 	getEuler();
+	lastUpdateTime = currentTime;
 }
 
 void OrientationEstimator::getEuler()
@@ -234,4 +217,9 @@ void OrientationEstimator::getEuler()
         2.0f * (q0 * q3 + q1 * q2),
         1.0f - 2.0f * (q2 * q2 + q3 * q3)
     );
+
+    const float rad2deg = 57.29577951308232f;
+    roll *= rad2deg;
+    pitch *= rad2deg;
+    yaw *= rad2deg;
 }

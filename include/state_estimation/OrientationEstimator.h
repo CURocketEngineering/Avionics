@@ -19,7 +19,7 @@ public:
     float roll, pitch, yaw; // Euler angles in degrees
     uint32_t lastUpdateTime;   // timestamp of the last update in milliseconds
 
-    OrientationEstimator(float gain = 0.1f)
+    OrientationEstimator(float gain = 0.0f)
         : q0(1.0f), q1(0.0f), q2(0.0f), q3(0.0f),
           beta(gain), lastUpdateTime(0), roll(0.0f), pitch(0.0f), yaw(0.0f) {}
 
