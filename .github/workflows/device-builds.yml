@@ -1,0 +1,62 @@
+# Checks that this instance of Avionics, when placed as a submodule for
+# device repos, still builds successfully.
+# Runs on pull requests to surface downstream breakage without blocking merges.
+
+name: Test Device Builds
+
+on:
+  #triggers the workflow on pull requests
+  pull_request:
+    branches:
+      - '**'
+
+  #allows manual triggering of the workflow
+  workflow_dispatch:
+
+jobs:
+  test-device-builds:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        repo:
+          - name: MARTHA-1.4
+            url: https://github.com/CURocketEngineering/MARTHA-1.4.git
+            path: martha
+            avionics_path: lib/Avionics
+            build_cmd: pio run
+          # - name: MARTHA-1.3
+          #   url: https://github.com/CURocketEngineering/MARTHA-1.3.git
+          #   path: martha
+          #   avionics_path: lib/Avionics
+          #   build_cmd: pio run
+
+    steps:
+      #gets the current repo
+      - name: Checkout Avionics repo
+        uses: actions/checkout@v4
+        with:
+          path: Avionics
+
+      #clones a dependent device repo
+      - name: Clone ${{ matrix.repo.name }} repo
+        run: |
+          git clone "${{ matrix.repo.url }}" "${{ matrix.repo.path }}"
+
+      #replaces the linked Avionics repo with the current Avionics code
+      - name: Replace device Avionics dependency with checked-out Avionics code
+        run: |
+          rm -rf "${{ matrix.repo.path }}/${{ matrix.repo.avionics_path }}"
+          mkdir -p "$(dirname "${{ matrix.repo.path }}/${{ matrix.repo.avionics_path }}")"
+          cp -R Avionics "${{ matrix.repo.path }}/${{ matrix.repo.avionics_path }}"
+
+      #installed PlatformIO core
+      - name: Install PlatformIO Core
+        run: |
+          pip install -U platformio
+
+      #runs platformio build
+      - name: Run PlatformIO Build for ${{ matrix.repo.name }}
+        working-directory: ${{ matrix.repo.path }}
+        run: ${{ matrix.repo.build_cmd }}

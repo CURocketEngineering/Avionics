@@ -28,17 +28,17 @@ public:
 
     int update(AccelerationTriplet accel);
 
-    bool hasLaunched() const { return launched; }
-    uint32_t getLaunchedTime() const { return launchedTime_ms; }
-    uint32_t getConfirmationWindow() const { return confirmationWindow_ms; }
+    bool hasLaunched() const { return launched_; }
+    uint32_t getLaunchedTime() const { return launchedTime_ms_; }
+    uint32_t getConfirmationWindow() const { return confirmationWindow_ms_; }
     void reset();
 
 private:
-    float accelerationThresholdSq_ms2;
+    float accelerationThresholdSq_ms2_;
 
-    bool launched;
-    uint32_t launchedTime_ms;
-    uint32_t confirmationWindow_ms;
+    bool launched_;
+    uint32_t launchedTime_ms_;
+    uint32_t confirmationWindow_ms_;
 };
 
 

@@ -1,5 +1,6 @@
 #pragma once 
 
+#include <cassert>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -26,14 +27,15 @@ class DataSaverMock: public IDataSaver {
 
         // Assertions
         void assertSaveDataPointCalledWith(const DataPoint& expectedDp, uint8_t expectedName) {
-            bool found = false;
             for (const auto& call : saveDataPointCalls) {
                 if (call.first.timestamp_ms == expectedDp.timestamp_ms &&
                     call.first.data == expectedDp.data &&
                     call.second == expectedName) {
-                    found = true;
-                    break;
+                    return;
                 }
             }
+
+            std::cerr << "Expected saveDataPoint call was not found in DataSaverMock.\n";
+            assert(false);
         }
 };

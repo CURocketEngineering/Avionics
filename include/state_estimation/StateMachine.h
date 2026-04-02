@@ -37,20 +37,13 @@ class StateMachine : public BaseStateMachine {
      */
     int update(const AccelerationTriplet& accel, const DataPoint& alt) override;
 
-    /**
-     * @brief Retrieve the current state value.
-     * @note When to use: downstream logic that needs to branch on flight phase.
-     */
-    uint8_t getState() const override;
-
   private:
-    uint8_t state;
-    IDataSaver* dataSaver;
-    LaunchDetector* launchDetector;
-    ApogeeDetector* apogeeDetector;
-    VerticalVelocityEstimator* verticalVelocityEstimator;
-    FastLaunchDetector* fastLaunchDetector;
-    uint32_t fldLaunchTime_ms = 0;
+    IDataSaver* dataSaver_;
+    LaunchDetector* launchDetector_;
+    ApogeeDetector* apogeeDetector_;
+    VerticalVelocityEstimator* verticalVelocityEstimator_;
+    FastLaunchDetector* fastLaunchDetector_;
+    uint32_t fldLaunchTime_ms_ = 0;
 };
 
 
