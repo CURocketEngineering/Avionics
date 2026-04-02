@@ -3,7 +3,79 @@
 
 #define M_PI 3.14159265358979323846
 
-void OrientationEstimator::update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime){
+void OrientationEstimator::update(AccelerationTriplet accel,
+                                  GyroTriplet gyro,
+                                  MagTriplet mag,
+                                  uint32_t currentTime)
+{
+    float ax = accel.x.data;
+    float ay = accel.y.data;
+    float az = accel.z.data;
+
+    float gx = gyro.x.data;
+    float gy = gyro.y.data;
+    float gz = gyro.z.data;
+
+    float mx = mag.x.data;
+    float my = mag.y.data;
+    float mz = mag.z.data;
+
+    float dt = (currentTime - lastUpdateTime) / 1000.0f;
+    if (dt <= 0.0f || dt > 0.1f) return;
+
+    // --- Sensor usage flags ---
+    bool useAccel = false;
+    bool useMag   = false;
+
+    if (hasLaunched == false){
+		useAccel = true;
+		useMag = true;
+		beta = betaPad;
+	}
+	else{
+		beta = betaFlight;
+	}
+
+    // --- Magnetometer validity check ---
+    float magMag = sqrt(mx*mx + my*my + mz*mz);
+    if (magMag < 0.01f || magMag > 10.0f) {
+        useMag = false;
+    }
+
+    // --- Route to appropriate update ---
+    if (!useMag) {
+        // IMU-only path (gyro + optional accel)
+        if (useAccel) {
+            updateIMU(accel, gyro, currentTime);
+        } else {
+            // PURE GYRO INTEGRATION (no correction)
+            float qDot1 = 0.5f * (-q1 * gx - q2 * gy - q3 * gz);
+            float qDot2 = 0.5f * ( q0 * gx + q2 * gz - q3 * gy);
+            float qDot3 = 0.5f * ( q0 * gy - q1 * gz + q3 * gx);
+            float qDot4 = 0.5f * ( q0 * gz + q1 * gy - q2 * gx);
+
+            q0 += qDot1 * dt;
+            q1 += qDot2 * dt;
+            q2 += qDot3 * dt;
+            q3 += qDot4 * dt;
+
+            float recipNorm = 1.0f / sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+            q0 *= recipNorm;
+            q1 *= recipNorm;
+            q2 *= recipNorm;
+            q3 *= recipNorm;
+
+            getEuler();
+            lastUpdateTime = currentTime;
+        }
+        return;
+    }
+
+    // used when on pad
+    updateFullAHRS(accel, gyro, mag, currentTime);
+}
+
+void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime){
      float ax = accel.x.data;
      float ay = accel.y.data;
      float az = accel.z.data;

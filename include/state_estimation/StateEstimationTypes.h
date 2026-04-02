@@ -21,4 +21,11 @@ struct MagTriplet {
     DataPoint z;
 };
 
+struct Quanternion {
+    float w;
+    float x;
+    float y;
+    float z;
+};
+
 #endif // STATE_ESTIMATION_TYPES_H
