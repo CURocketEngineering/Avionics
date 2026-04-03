@@ -9,4 +9,23 @@ struct AccelerationTriplet {
     DataPoint z;
 };
 
+struct GyroTriplet {
+    DataPoint x;
+    DataPoint y;
+    DataPoint z;
+};
+
+struct MagTriplet {
+    DataPoint x;
+    DataPoint y;
+    DataPoint z;
+};
+
+struct Quanternion {
+    float w;
+    float x;
+    float y;
+    float z;
+};
+
 #endif // STATE_ESTIMATION_TYPES_H

@@ -32,6 +32,9 @@
 #define EST_VERTICAL_VELOCITY 18
 #define EST_ALTITUDE 19
 #define TIME_TO_APOGEE 22
+#define ROLL 25
+#define PITCH 26
+#define YAW 27
 
 // Power
 #define BATTERY_VOLTAGE 20
