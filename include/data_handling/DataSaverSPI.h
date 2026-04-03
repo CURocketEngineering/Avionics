@@ -6,6 +6,7 @@
 #include "data_handling/DataSaver.h"
 #include <array>
 #include <cstdlib>
+#include <limits>
 
 
 constexpr uint32_t kMetadataStartAddress = 0x000000;  // Start writing metadata at the beginning of flash
@@ -60,7 +61,8 @@ public:
      * 
      * @param dataPoint The data point to save
      * @param name An 8-bit “identifier” for the data point (could be a sensor ID)
-     * @return int 0 on success; non-zero on error
+     * @return int 0 on success, 1 when writes are blocked by post-launch state,
+     *         and -1 on write/buffer error.
      */
     int saveDataPoint(const DataPoint& dataPoint, uint8_t name) override;
 
@@ -69,12 +71,16 @@ public:
      * @param timestamp_ms Timestamp in milliseconds to record.
      * @note When to use: emitted internally when gaps exceed
      *       timestampInterval_ms_, or explicitly in tests.
+     * @return int 0 on success, 1 when writes are blocked by post-launch state,
+     *         and -1 on non-post-launch write/buffer error.
      */
     int saveTimestamp(uint32_t timestamp_ms);
 
     /**
      * @brief Initialize the flash chip and metadata.
      * @note When to use: call during setup before any saveDataPoint usage.
+     * @return true when flash is initialized and writable for logging.
+     * @return false when initialization fails or chip is already in post-launch mode.
      */
     virtual bool begin() override;
 
@@ -116,6 +122,7 @@ public:
      * 
      * The rocket may not be recovered for several hours, this prevents the cool launch data
      * from being overwitten with boring laying-on-the-ground data.
+     * @param launchTimestamp_ms Timestamp at which launch was detected.
      */
     void launchDetected(uint32_t launchTimestamp_ms);
 
@@ -146,6 +153,7 @@ public:
 
     /**
      * @brief Returns the last timestamp that was actually written to flash.
+     * @return Last persisted timestamp in milliseconds.
      */
     uint32_t getLastTimestamp() const {
         return lastTimestamp_ms_;
@@ -154,15 +162,24 @@ public:
     /**
      * @brief Returns the last DataPoint that was written (not necessarily
      *        including timestamp, just the data chunk).
+     * @return Copy of the last cached data point.
      */
     DataPoint getLastDataPoint() const {
         return lastDataPoint_;
     }
 
+    /**
+     * @brief Returns the launch-protected address computed during launch detection.
+     * @return Address in flash used as post-launch protection boundary.
+     */
     uint32_t getLaunchWriteAddress() const {
         return launchWriteAddress_;
     }
 
+    /**
+     * @brief Returns the next flash address where a full page will be written.
+     * @return Next write address in flash.
+     */
     uint32_t getNextWriteAddress() const {
         return nextWriteAddress_;
     }
@@ -178,6 +195,7 @@ public:
     /**
      * @brief Returns whether the flash chip is in post-launch mode
      *       without updating the post-launch mode flag or reading from flash.
+     * @return true when in post-launch mode; otherwise false.
      */
     bool quickGetPostLaunchMode() {
         return this->postLaunchMode_;
@@ -211,11 +229,18 @@ private:
     /**
      * @brief Helper to write a block of bytes to flash at the current
      *        write address and advance that pointer.
+     * @param data Pointer to bytes to write.
+     * @param length Number of bytes to write.
+     * @return true on successful write and pointer advance; otherwise false.
      */
     bool writeToFlash(const uint8_t* data, size_t length);
 
     /**
      * @brief Helper to read a block of bytes from flash (updates read pointer externally).
+     * @param readAddress Input/output flash address. Advanced by `length` on success.
+     * @param buffer Output byte buffer.
+     * @param length Number of bytes to read.
+     * @return true on successful read and pointer advance; otherwise false.
      */
     bool readFromFlash(uint32_t& readAddress, uint8_t* buffer, size_t length);
 
@@ -228,6 +253,7 @@ public:
     /**
      * @brief Returns the current buffer index
      * Useful for testing
+     * @return Number of bytes currently buffered.
      */
     size_t getBufferIndex() const {
         return bufferIndex_;
@@ -236,20 +262,89 @@ public:
     /**
      * @brief Returns the current buffer flush count
      * Useful for testing
+     * @return Number of successful page flushes.
      */
     uint32_t getBufferFlushes() const {
         return bufferFlushes_;
     }
 
+    /**
+     * @brief Returns whether writes have been stopped by post-launch protection.
+     * @return true if chip-full post-launch protection latch is set; otherwise false.
+     */
     bool getIsChipFullDueToPostLaunchProtection() const {
         return isChipFullDueToPostLaunchProtection_;
     }
 
+    /**
+     * @brief Returns whether startup detected existing post-launch mode metadata.
+     * @return true if rebooted in post-launch mode; otherwise false.
+     */
     bool getRebootedInPostLaunchMode() const {
         return rebootedInPostLaunchMode_;
     }
 
+#ifdef UNIT_TEST
+    /**
+     * @brief Test-only helper to override internal post-launch state.
+     *        Resets in-memory state first so the injected state is
+     *        self-consistent and does not depend on prior test writes.
+     * @param nextWriteAddress_in Next write address to inject.
+     * @param launchWriteAddress_in Launch-protected address to inject.
+     * @param postLaunchMode_in Post-launch mode flag to inject.
+     */
+    void setPostLaunchStateForTest(uint32_t nextWriteAddress_in,
+                                   uint32_t launchWriteAddress_in,
+                                   bool postLaunchMode_in) {
+        clearInternalState();
+        nextWriteAddress_ = nextWriteAddress_in;
+        launchWriteAddress_ = launchWriteAddress_in;
+        postLaunchMode_ = postLaunchMode_in;
+        isChipFullDueToPostLaunchProtection_ = false;
+    }
+#endif
+
 private:
+    /**
+     * @brief Normalizes an address into the data region when crossing flash end.
+     * @param address Candidate flash address.
+     * @return `address` when in range, otherwise `kDataStartAddress`.
+     */
+    uint32_t normalizeDataAddress(uint32_t address) const;
+
+    /**
+     * @brief Checks if a sector is protected by post-launch rules.
+     * @param sectorNumber Sector index to evaluate.
+     * @return true when sector contains `launchWriteAddress_` and post-launch mode is active.
+     * @return false otherwise.
+     */
+    bool isProtectedLaunchSector(uint32_t sectorNumber) const;
+
+    /**
+     * @brief Outcome of attempting to erase a sector before writing into it.
+     */
+    enum class SectorEraseResult {
+        kErased,
+        kProtectedSectorLatched,
+        kFlashEraseFailed
+    };
+
+    /**
+     * @brief Erases a sector for writing and latches post-launch protection if blocked.
+     * @param sectorNumber Sector index to erase.
+     * @return SectorEraseResult::kErased on successful erase.
+     * @return SectorEraseResult::kProtectedSectorLatched when sector is
+     *         post-launch protected (and chip-full is latched).
+     * @return SectorEraseResult::kFlashEraseFailed when flash erase fails.
+     */
+    SectorEraseResult eraseSectorForWriteAndLatchOnProtection(uint32_t sectorNumber);
+
+    /**
+     * @brief Checks if the upcoming write window would violate post-launch protection.
+     * @return true when writing must stop and chip-full protection is latched.
+     * @return false when write may proceed.
+     */
+    bool shouldStopForPostLaunchWindow();
 
     /**
      * @brief Flushes the buffer to flash.
@@ -272,10 +367,20 @@ private:
 
     // Overloaded functions to add data to the buffer from a Record_t or TimestampRecord_t
     // More efficient than callling addDataToBuffer with each part of the record
+    /**
+     * @brief Adds a 5-byte record payload to the page buffer.
+     * @param record Pointer to packed record bytes.
+     * @return int 0 on success; -1 on flush/buffer error.
+     */
     int addRecordToBuffer(Record_t * record) {
         return addDataToBuffer(reinterpret_cast<const uint8_t*>(record), 5);
     }
 
+    /**
+     * @brief Adds a 5-byte timestamp record payload to the page buffer.
+     * @param record Pointer to packed timestamp record bytes.
+     * @return int 0 on success; -1 on flush/buffer error.
+     */
     int addRecordToBuffer(TimestampRecord_t * record) {
         return addDataToBuffer(reinterpret_cast<const uint8_t*>(record), 5);
     }
@@ -287,6 +392,10 @@ private:
     // If the flight computer boots and is already in post launch mode, do not write to flash.
     // Calling clearPostLaunchMode() will allow writing to flash again after a reboot.
     bool rebootedInPostLaunchMode_ = false;
+
+    // Tracks which sector has already been pre-erased for the next boundary write.
+    // UINT32_MAX means "no prepared sector".
+    uint32_t preparedSectorNumber_ = std::numeric_limits<uint32_t>::max();
 };
 
 #endif // DATA_SAVER_SPI_H

@@ -86,6 +86,82 @@ void test_launch_detected(void) {
     TEST_ASSERT_NOT_EQUAL(0, dss->getLaunchWriteAddress());
 }
 
+void test_next_sector_is_erased_before_crossing_boundary(void) {
+    for (size_t i = 0; i < FAKE_MEMORY_SIZE_BYTES; i++) {
+        flash->fakeMemory[i] = 0x00;
+    }
+    dss->clearInternalState();
+
+    size_t const recordsPerFlush = DataSaverSPI::kBufferSize_bytes / sizeof(TimestampRecord_t);
+    uint32_t flushesToSectorBoundary = 0;
+    uint32_t expectedBoundaryAddress = kDataStartAddress;
+    do {
+        expectedBoundaryAddress += DataSaverSPI::kBufferSize_bytes;
+        if (expectedBoundaryAddress >= FAKE_MEMORY_SIZE_BYTES) {
+            expectedBoundaryAddress = kDataStartAddress;
+        }
+        flushesToSectorBoundary++;
+    } while (expectedBoundaryAddress % SFLASH_SECTOR_SIZE != 0U);
+
+    // +1 triggers the Nth flush by overflowing a full buffer with one more record.
+    uint32_t const writesNeeded = static_cast<uint32_t>(flushesToSectorBoundary * recordsPerFlush) + 1U;
+    for (uint32_t i = 0; i < writesNeeded; i++) {
+        TEST_ASSERT_EQUAL(0, dss->saveTimestamp(i));
+    }
+
+    TEST_ASSERT_EQUAL_UINT32(flushesToSectorBoundary, dss->getBufferFlushes());
+    TEST_ASSERT_EQUAL_HEX8(0xFF, flash->fakeMemory[expectedBoundaryAddress]);
+}
+
+void test_pre_erase_latches_on_protected_launch_sector(void) {
+    for (size_t i = 0; i < FAKE_MEMORY_SIZE_BYTES; i++) {
+        flash->fakeMemory[i] = 0x00;
+    }
+    dss->clearInternalState();
+
+    uint32_t const protectedSectorNumber = kDataStartAddress / SFLASH_SECTOR_SIZE + 1U;
+    uint32_t const protectedSectorStartAddress = protectedSectorNumber * SFLASH_SECTOR_SIZE;
+    uint32_t const launchWriteAddress = protectedSectorStartAddress + 3000U;
+    uint32_t const writeAddressBeforeBoundary = protectedSectorStartAddress - DataSaverSPI::kBufferSize_bytes;
+
+    flash->fakeMemory[launchWriteAddress] = 0x5A;
+    dss->setPostLaunchStateForTest(writeAddressBeforeBoundary, launchWriteAddress, true);
+
+    uint32_t const recordsPerFlush = DataSaverSPI::kBufferSize_bytes / sizeof(TimestampRecord_t);
+
+    int result = 0;
+    for (uint32_t i = 0; i < recordsPerFlush + 1U; i++) {
+        result = dss->saveTimestamp(i);
+    }
+
+    // The flush still writes successfully, but pre-erase hitting the protected
+    // next sector now latches chip-full protection.
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_TRUE(dss->getIsChipFullDueToPostLaunchProtection());
+    TEST_ASSERT_EQUAL_HEX8(0x5A, flash->fakeMemory[launchWriteAddress]);
+
+    result = dss->saveTimestamp(1000U);
+    TEST_ASSERT_EQUAL(1, result);
+    TEST_ASSERT_TRUE(dss->getIsChipFullDueToPostLaunchProtection());
+    TEST_ASSERT_EQUAL_HEX8(0x5A, flash->fakeMemory[launchWriteAddress]);
+}
+
+void test_flush_wraps_using_full_page_write_size(void) {
+    dss->clearInternalState();
+    uint32_t const nearEndAddress = FAKE_MEMORY_SIZE_BYTES - DataSaverSPI::kBufferSize_bytes + 1U;
+    dss->setPostLaunchStateForTest(nearEndAddress, 0U, false);
+
+    int result = 0;
+    uint32_t const recordsPerFlush = DataSaverSPI::kBufferSize_bytes / sizeof(TimestampRecord_t);
+    for (uint32_t i = 0; i < recordsPerFlush + 1U; i++) {
+        result = dss->saveTimestamp(2U + i);
+    }
+
+    TEST_ASSERT_EQUAL(0, result);
+    TEST_ASSERT_EQUAL_UINT32(1U, dss->getBufferFlushes());
+    TEST_ASSERT_EQUAL_UINT32(kDataStartAddress + DataSaverSPI::kBufferSize_bytes, dss->getNextWriteAddress());
+}
+
 void test_record_size(void) {
     Record_t record = {1, 2.0f};
     TEST_ASSERT_EQUAL(5, sizeof(record)); // 1 byte for name, 4 bytes for data
@@ -106,5 +182,8 @@ int main(void) {
     RUN_TEST(test_clearplm_next_write);
     RUN_TEST(test_erase_all_data);
     RUN_TEST(test_launch_detected);
+    RUN_TEST(test_next_sector_is_erased_before_crossing_boundary);
+    RUN_TEST(test_pre_erase_latches_on_protected_launch_sector);
+    RUN_TEST(test_flush_wraps_using_full_page_write_size);
     return UNITY_END();
 }

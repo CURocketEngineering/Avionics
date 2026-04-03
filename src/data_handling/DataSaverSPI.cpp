@@ -20,19 +20,23 @@ DataSaverSPI::DataSaverSPI(uint16_t timestampInterval_ms,
 
 int DataSaverSPI::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
   if (rebootedInPostLaunchMode_ || isChipFullDueToPostLaunchProtection_) {
-    return 1;  // Do not save if we rebooted in post-launch mode
+    return 1;  // Do not save if writes are blocked by post-launch state.
   }
 
     // Write a timestamp automatically if enough time has passed since the last one
     uint32_t const timestamp = dataPoint.timestamp_ms;
     if (timestamp - lastTimestamp_ms_ > timestampInterval_ms_) {
-      if (saveTimestamp(timestamp) < 0) {
-        return -1;
+      int const timestampResult = saveTimestamp(timestamp);
+      if (timestampResult != 0) {
+        return timestampResult;
       }
     }
 
     Record_t record = {name, dataPoint.data};
-    if (addRecordToBuffer(&record) < 0) {
+    if (addRecordToBuffer(&record) != 0) {
+      if (isChipFullDueToPostLaunchProtection_) {
+        return 1;
+      }
       return -1;
     }
 
@@ -42,11 +46,14 @@ int DataSaverSPI::saveDataPoint(const DataPoint& dataPoint, uint8_t name) {
 
 int DataSaverSPI::saveTimestamp(uint32_t timestamp_ms){
     if (rebootedInPostLaunchMode_ || isChipFullDueToPostLaunchProtection_) {
-      return 1;  // Do not save if we rebooted in post-launch mode
+      return 1;  // Do not save if writes are blocked by post-launch state.
     }
 
     TimestampRecord_t timeStampRecord = {TIMESTAMP, timestamp_ms};
     if (addRecordToBuffer(&timeStampRecord) != 0) {
+      if (isChipFullDueToPostLaunchProtection_) {
+        return 1;
+      }
       return -1;
     }
 
@@ -68,36 +75,94 @@ int DataSaverSPI::addDataToBuffer(const uint8_t* data, size_t length) {
     return 0;
 }
 
+uint32_t DataSaverSPI::normalizeDataAddress(uint32_t address) const {
+    if (address >= flash_->size()) {
+        return kDataStartAddress;
+    }
+    return address;
+}
+
+bool DataSaverSPI::isProtectedLaunchSector(uint32_t sectorNumber) const {
+    if (!postLaunchMode_) {
+        return false;
+    }
+    return sectorNumber == launchWriteAddress_ / SFLASH_SECTOR_SIZE;
+}
+
+DataSaverSPI::SectorEraseResult DataSaverSPI::eraseSectorForWriteAndLatchOnProtection(
+    uint32_t sectorNumber) {
+    if (isProtectedLaunchSector(sectorNumber)) {
+        isChipFullDueToPostLaunchProtection_ = true;
+        return SectorEraseResult::kProtectedSectorLatched;
+    }
+    if (!flash_->eraseSector(sectorNumber)) {
+        return SectorEraseResult::kFlashEraseFailed;
+    }
+    preparedSectorNumber_ = sectorNumber;
+    return SectorEraseResult::kErased;
+}
+
+bool DataSaverSPI::shouldStopForPostLaunchWindow() {
+    if (!postLaunchMode_) {
+        return false;
+    }
+    if (nextWriteAddress_ > launchWriteAddress_) {
+        return false;
+    }
+    if (nextWriteAddress_ + kBufferSize_bytes * 2 <= launchWriteAddress_) {
+        return false;
+    }
+    isChipFullDueToPostLaunchProtection_ = true;
+    return true;
+}
+
 // Write the entire buffer to flash.
 int DataSaverSPI::flushBuffer() {
     if (bufferIndex_ == 0) {
         return 1;  // Nothing to flush
     }
 
-    // Check if we need to wrap around
-    if (nextWriteAddress_ + bufferIndex_ > flash_->size()) {
-        // Wrap around
+    // If the next write would go past the end of the flash, wrap around to the beginning of the data section.
+    if (nextWriteAddress_ + kBufferSize_bytes > flash_->size()) {
         nextWriteAddress_ = kDataStartAddress;
-    }   
-
-    // Check that we haven't wrapped around to the launch address while in post-launch mode
-    if (postLaunchMode_ && nextWriteAddress_ <= launchWriteAddress_ && nextWriteAddress_ + kBufferSize_bytes * 2 > launchWriteAddress_) {
-        isChipFullDueToPostLaunchProtection_ = true;
-        return -1; // Indicate no write due to post-launch protection
     }
 
-    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0) {
-        if (!flash_->eraseSector(nextWriteAddress_ / SFLASH_SECTOR_SIZE)) {
-            return -1;
+    if (shouldStopForPostLaunchWindow()) {
+        return -1;
+    }
+
+    // Fallback erase for first entry into a sector. In steady-state this sector
+    // should already be prepared by the previous flush.
+    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0U) {
+        uint32_t const currentSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
+        if (preparedSectorNumber_ != currentSectorNumber) {
+            SectorEraseResult const eraseResult =
+                eraseSectorForWriteAndLatchOnProtection(currentSectorNumber);
+            if (eraseResult != SectorEraseResult::kErased) {
+                return -1;
+            }
         }
     }
 
-    // Write 1 page of data
+    // Write 1 page of data.
     if (!flash_->writeBuffer(nextWriteAddress_, buffer_, kBufferSize_bytes)) {
         return -1;
     }
 
-    nextWriteAddress_ += kBufferSize_bytes;  // keep it aligned to the buffer size or page size
+    nextWriteAddress_ = normalizeDataAddress(nextWriteAddress_ + kBufferSize_bytes);
+
+    // Pre-erase one step earlier: after writing the previous page, erase the
+    // sector that the next page will start in. This lets erase latency overlap
+    // with buffer fill time.
+    if (nextWriteAddress_ % SFLASH_SECTOR_SIZE == 0U) {
+        uint32_t const nextSectorNumber = nextWriteAddress_ / SFLASH_SECTOR_SIZE;
+        SectorEraseResult const preEraseResult =
+            eraseSectorForWriteAndLatchOnProtection(nextSectorNumber);
+        if (preEraseResult == SectorEraseResult::kFlashEraseFailed) {
+            return -1;
+        }
+    }
+
     bufferIndex_ = 0; // Reset the buffer
     bufferFlushes_++;
     return 0;
@@ -235,6 +300,7 @@ void DataSaverSPI::clearInternalState() {
     launchWriteAddress_ = 0;
     bufferFlushes_ = 0;
     isChipFullDueToPostLaunchProtection_ = false;
+    preparedSectorNumber_ = std::numeric_limits<uint32_t>::max();
 }
 
 void DataSaverSPI::eraseAllData() {
