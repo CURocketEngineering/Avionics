@@ -175,7 +175,6 @@ void CommandLine::help(){
         uart_->println(String(cmd.longName.c_str()) + "<" + String(cmd.shortName.c_str()) + ">");  
     }
     uart_->println("help<?>");
-
 }
 
 void CommandLine::trimSpaces(std::string& str) { //NOLINT(readability-convert-member-functions-to-static)

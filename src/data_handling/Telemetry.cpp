@@ -2,6 +2,8 @@
 #include "ArduinoHAL.h"
 #include <algorithm>
 #include <cstdint>
+#include <string>
+#include <queue>
 
 // Helpers for checking if the packet has room for more data.
 std::size_t bytesNeededForSSD(const SendableSensorData* ssd) {
@@ -260,4 +262,117 @@ bool Telemetry::tick(uint32_t currentTime_ms) {
     }
 
     return finalizeAndSendPacket();
+}
+
+// ─── Low Power Mode ─────────────────────────────────────────────────────────
+
+void Telemetry::registerLowPowerCommand(CommandLine& cli) {
+    // Capture 'this' by pointer. Telemetry must outlive the CommandLine,
+    // which is the typical pattern for static-lifetime embedded objects.
+    cli.addCommand(
+        "lowpower", "lp",
+        [this](std::queue<std::string> args, std::string& response) {
+            if (args.empty()) {
+                response = "Usage: lowpower <divisor|off|status>";
+                return;
+            }
+
+            const std::string arg = args.front();
+            args.pop();
+
+            // --- "off" ---
+            if (arg == "off") {
+                if (!lowPowerActive_) {
+                    response = "Low power mode is already inactive.";
+                } else {
+                    deactivateLowPowerMode();
+                    response = "Low power mode deactivated. Original rates restored.";
+                }
+                return;
+            }
+
+            // --- "status" ---
+            if (arg == "status") {
+                if (lowPowerActive_) {
+                    response = "Low power mode ACTIVE, divisor=" + std::to_string(lowPowerDivisor_);
+                } else {
+                    response = "Low power mode INACTIVE.";
+                }
+                return;
+            }
+
+            // --- numeric divisor ---
+            int value = 0;
+            try {
+                value = std::stoi(arg);
+            } catch (...) {
+                response = "Invalid argument '" + arg + "'. Use a number (2-255), 'off', or 'status'.";
+                return;
+            }
+
+            if (value < 2 || value > 255) {
+                response = "Divisor must be between 2 and 255. Got: " + std::to_string(value);
+                return;
+            }
+
+            activateLowPowerMode(static_cast<std::uint8_t>(value));
+            response = "Low power mode activated, divisor=" + std::to_string(value)
+                     + ". All stream rates divided by " + std::to_string(value) + ".";
+        }
+    );
+}
+
+void Telemetry::activateLowPowerMode(std::uint8_t divisor) {
+    if (divisor < 2) {
+        divisor = 2;
+    }
+
+    if (lowPowerActive_) {
+        // Restore original rates first so the new divisor applies
+        // to the baseline, not to already-scaled values.
+        restoreLowPowerOriginalPeriods();
+    } else {
+        // First activation — snapshot the current (normal) periods.
+        saveLowPowerOriginalPeriods();
+    }
+
+    applyLowPowerDivisor(divisor);
+    lowPowerDivisor_ = divisor;
+    lowPowerActive_ = true;
+}
+
+void Telemetry::deactivateLowPowerMode() {
+    if (!lowPowerActive_) {
+        return;
+    }
+
+    restoreLowPowerOriginalPeriods();
+    lowPowerActive_ = false;
+    lowPowerDivisor_ = 0;
+}
+
+void Telemetry::saveLowPowerOriginalPeriods() {
+    const std::size_t count = std::min(streamCount_, kMaxStreams);
+    for (std::size_t i = 0; i < count; ++i) {
+        lowPowerOriginalPeriods_[i] = streams_[i]->period_ms; // NOLINT
+    }
+}
+
+void Telemetry::restoreLowPowerOriginalPeriods() {
+    const std::size_t count = std::min(streamCount_, kMaxStreams);
+    for (std::size_t i = 0; i < count; ++i) {
+        streams_[i]->period_ms = lowPowerOriginalPeriods_[i]; // NOLINT
+    }
+}
+
+void Telemetry::applyLowPowerDivisor(std::uint8_t div) {
+    const std::size_t count = std::min(streamCount_, kMaxStreams);
+    for (std::size_t i = 0; i < count; ++i) {
+        // Multiply the *original* period by the divisor.
+        // Clamp to uint16_t max (65535ms ≈ 0.015 Hz) to prevent overflow.
+        const std::uint32_t scaled = static_cast<std::uint32_t>(lowPowerOriginalPeriods_[i]) * div;
+        streams_[i]->period_ms = static_cast<std::uint16_t>( // NOLINT
+            std::min(scaled, static_cast<std::uint32_t>(UINT16_MAX))
+        );
+    }
 }

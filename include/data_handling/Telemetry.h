@@ -75,13 +75,34 @@ inline void writeU32Be(std::uint8_t* dst, std::uint32_t v) {
 
 
 /**
- * @brief Convert frequency (Hz) to period (ms), using integer math.
+ * @brief Convert frequency (Hz) to period (ms).
  *
- * Uses ceil(1000 / Hz). If Hz == 0, returns 1000ms as a safe fallback.
+ * Accepts a float so sub-1 Hz rates can be specified directly
+ * (e.g., 0.5f Hz → 2000ms, 0.1f Hz → 10000ms).
+ *
+ * Uses ceil semantics. If frequency_hz <= 0, returns 1000ms as a safe fallback.
+ * Result is clamped to uint16_t range (max 65535ms ≈ 0.015 Hz).
  */
-inline std::uint16_t hzToPeriod_ms(std::uint16_t frequency_hz) {
-    return (frequency_hz == 0) ? static_cast<std::uint16_t>(1000u)
-                     : static_cast<std::uint16_t>((1000u + frequency_hz - 1u) / frequency_hz);
+inline std::uint16_t hzToPeriod_ms(float frequency_hz) {
+    if (frequency_hz <= 0.0f) {
+        return static_cast<std::uint16_t>(1000u);
+    }
+
+    // 1000.0 / freq, rounded up
+    const float period = 1000.0f / frequency_hz;
+
+    // Ceiling: if there's a fractional part, round up
+    auto result = static_cast<std::uint32_t>(period);
+    if (static_cast<float>(result) < period) {
+        ++result;
+    }
+
+    // Clamp to uint16_t max
+    if (result > UINT16_MAX) {
+        return static_cast<std::uint16_t>(UINT16_MAX);
+    }
+
+    return static_cast<std::uint16_t>(result);
 }
 
 } // namespace TelemetryFmt
@@ -128,9 +149,9 @@ struct SendableSensorData {
     /**
      * @brief Create a single SDH stream.
      * @param sdh SensorDataHandler to send (non-owning).
-     * @param sendFrequency_hz Desired send rate in Hz.
+     * @param sendFrequency_hz Desired send rate in Hz (supports fractional, e.g. 0.5f).
      */
-    SendableSensorData(SensorDataHandler* sdh, std::uint16_t sendFrequency_hz)
+    SendableSensorData(SensorDataHandler* sdh, float sendFrequency_hz)
         : singleSDH(sdh),
           multiSDH(0),
           multiSDHLength(0),
@@ -147,7 +168,7 @@ struct SendableSensorData {
     template <std::size_t M>
     SendableSensorData(const std::array<SensorDataHandler*, M>& sdhList,
                        std::uint8_t label,
-                       std::uint16_t sendFrequency_hz)
+                       float sendFrequency_hz)
         : singleSDH(0),
           multiSDH(sdhList.data()),
           multiSDHLength(M),
@@ -183,6 +204,14 @@ struct SendableSensorData {
  * - Construct Telemetry with a stable list of SendableSensorData pointers.
  * - Call tick(currentTime_ms) every loop.
  *
+ * Low power mode:
+ * - Call registerLowPowerCommand(cli) during setup to add the "lowpower"/"lp" command.
+ * - Ground station can then toggle low power mode via the Avionics Shell:
+ *     lp <divisor>   — Enable: multiply all stream periods by divisor (2–255)
+ *     lp off         — Disable: restore original stream rates
+ *     lp status      — Print current state
+ * - Divisor-based scaling preserves relative stream priorities.
+ *
  * Lifetime rule:
  * - Telemetry stores a pointer to the provided list of streams (non-owning).
  *   The list must outlive Telemetry.
@@ -203,7 +232,9 @@ public:
           rfdSerialConnection_(rfdSerialConnection),
           commandLine_(commandLine),
           nextEmptyPacketIndex_(0),
-          packet_{} {}
+          packet_{},
+          lowPowerOriginalPeriods_{} {}
+
     /**
      * @brief Call every loop to send due telemetry streams.
      * @param currentTime_ms Current time in milliseconds.
@@ -237,6 +268,40 @@ public:
      */
     void forceExitCommandMode();
 
+    // ── Low Power Mode ──────────────────────────────────────────────────
+
+    /**
+     * @brief Register the "lowpower" / "lp" command with a CommandLine.
+     * @param cli The CommandLine instance to register on.
+     *
+     * Must be called during setup, after the CommandLine is constructed.
+     * Telemetry must outlive the CommandLine (typical for static-lifetime objects).
+     */
+    void registerLowPowerCommand(CommandLine& cli);
+
+    /**
+     * @brief Activate low power mode with the given divisor.
+     *
+     * Each stream's period_ms is multiplied by divisor.
+     * If already active, original rates are restored first before
+     * applying the new divisor (avoids compounding).
+     *
+     * @param divisor Rate divisor, clamped to [2, 255].
+     */
+    void activateLowPowerMode(std::uint8_t divisor);
+
+    /**
+     * @brief Deactivate low power mode, restoring original stream rates.
+     * Safe to call when not active (no-op).
+     */
+    void deactivateLowPowerMode();
+
+    /** @brief True if low power mode is currently active. */
+    bool isLowPowerModeActive() const { return lowPowerActive_; }
+
+    /** @brief Current low power divisor (0 if inactive). */
+    std::uint8_t getLowPowerDivisor() const { return lowPowerDivisor_; }
+
 private:
     // Packet building helpers
     void preparePacket(std::uint32_t timestamp_ms);
@@ -251,6 +316,11 @@ private:
     bool canFitStreamWithEndMarker(const SendableSensorData* ssd) const;
     void tryAppendStream(SendableSensorData* stream, std::uint32_t currentTime_ms, bool& payloadAdded);
     bool finalizeAndSendPacket();
+
+    // Low power mode helpers
+    void saveLowPowerOriginalPeriods();
+    void restoreLowPowerOriginalPeriods();
+    void applyLowPowerDivisor(std::uint8_t div);
 
     // Non-owning view of the stream list
     SendableSensorData* const* streams_;
@@ -276,6 +346,12 @@ private:
     std::size_t commandEntryProgress_ = 0;
     bool commandModeTimeoutLocked_ = false;
     std::uint32_t commandModeTimeoutLockDeadline_ms_ = 0;
+
+    // Low power mode state
+    static constexpr std::size_t kMaxStreams = 32;
+    std::uint16_t lowPowerOriginalPeriods_[kMaxStreams];
+    bool lowPowerActive_ = false;
+    std::uint8_t lowPowerDivisor_ = 0;
 };
 
 #endif
