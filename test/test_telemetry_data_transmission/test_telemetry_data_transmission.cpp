@@ -55,8 +55,8 @@ void test_initialization(void) {
     accelerationTriplet[1] = &yAclData;
     accelerationTriplet[2] = &zAclData;
 
-    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
-    SendableSensorData altitudeSsd(&altitudeData, 1);
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2.0f);
+    SendableSensorData altitudeSsd(&altitudeData, 1.0f);
     std::array<SendableSensorData*, 2> ssds{&accelerationSsd, &altitudeSsd};
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
@@ -109,8 +109,8 @@ void test_a_full_second_of_ticks(void) {
     accelerationTriplet[1] = &yAclData;
     accelerationTriplet[2] = &zAclData;
 
-    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
-    SendableSensorData altitudeSsd(&altitudeData, 1);
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2.0f);
+    SendableSensorData altitudeSsd(&altitudeData, 1.0f);
     std::array<SendableSensorData*, 2> ssds{&accelerationSsd, &altitudeSsd};
     Stream mockRfdSerial;
     Telemetry telemetry(ssds, mockRfdSerial);
@@ -179,7 +179,7 @@ void test_first_packet_counter_is_zero(void) {
     zAclData.addData(DataPoint(1, 1.234567f));
 
     std::array<SensorDataHandler*, 3> accelerationTriplet{&xAclData, &yAclData, &zAclData};
-    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2.0f);
     std::array<SendableSensorData*, 1> ssds{&accelerationSsd};
 
     Stream mockRfdSerial;
@@ -204,7 +204,7 @@ void test_second_packet_counter_is_one(void) {
     zAclData.addData(DataPoint(1, 1.234567f));
 
     std::array<SensorDataHandler*, 3> accelerationTriplet{&xAclData, &yAclData, &zAclData};
-    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2);
+    SendableSensorData accelerationSsd(accelerationTriplet, 102, 2.0f);
     std::array<SendableSensorData*, 1> ssds{&accelerationSsd};
 
     Stream mockRfdSerial;
@@ -221,11 +221,284 @@ void test_second_packet_counter_is_one(void) {
     TEST_ASSERT_EQUAL(1, mockRfdSerial.writeCalls.at(secondPacketStart + TelemetryFmt::kPacketCounterIndex + 3));
 }
 
+// =====================================================================
+// hzToPeriod_ms float frequency tests
+// =====================================================================
+
+void test_hz_to_period_integer_values(void) {
+    // Existing behavior should be preserved with float input
+    TEST_ASSERT_EQUAL_UINT16(500, TelemetryFmt::hzToPeriod_ms(2.0f));   // 2 Hz → 500ms
+    TEST_ASSERT_EQUAL_UINT16(1000, TelemetryFmt::hzToPeriod_ms(1.0f));  // 1 Hz → 1000ms
+    TEST_ASSERT_EQUAL_UINT16(100, TelemetryFmt::hzToPeriod_ms(10.0f));  // 10 Hz → 100ms
+    TEST_ASSERT_EQUAL_UINT16(50, TelemetryFmt::hzToPeriod_ms(20.0f));   // 20 Hz → 50ms
+}
+
+void test_hz_to_period_fractional_values(void) {
+    TEST_ASSERT_EQUAL_UINT16(2000, TelemetryFmt::hzToPeriod_ms(0.5f));   // 0.5 Hz → 2000ms
+    TEST_ASSERT_EQUAL_UINT16(10000, TelemetryFmt::hzToPeriod_ms(0.1f));  // 0.1 Hz → 10000ms
+    TEST_ASSERT_EQUAL_UINT16(4000, TelemetryFmt::hzToPeriod_ms(0.25f));  // 0.25 Hz → 4000ms
+    TEST_ASSERT_EQUAL_UINT16(5000, TelemetryFmt::hzToPeriod_ms(0.2f));   // 0.2 Hz → 5000ms
+}
+
+void test_hz_to_period_zero_returns_fallback(void) {
+    TEST_ASSERT_EQUAL_UINT16(1000, TelemetryFmt::hzToPeriod_ms(0.0f));
+}
+
+void test_hz_to_period_negative_returns_fallback(void) {
+    TEST_ASSERT_EQUAL_UINT16(1000, TelemetryFmt::hzToPeriod_ms(-5.0f));
+}
+
+void test_hz_to_period_very_slow_rate_clamps_to_max(void) {
+    // 0.01 Hz → 100000ms, but uint16_t max is 65535
+    TEST_ASSERT_EQUAL_UINT16(UINT16_MAX, TelemetryFmt::hzToPeriod_ms(0.01f));
+}
+
+void test_hz_to_period_ceil_semantics(void) {
+    // 3 Hz → 1000/3 = 333.33... → should ceil to 334
+    TEST_ASSERT_EQUAL_UINT16(334, TelemetryFmt::hzToPeriod_ms(3.0f));
+    // 7 Hz → 1000/7 = 142.857... → should ceil to 143
+    TEST_ASSERT_EQUAL_UINT16(143, TelemetryFmt::hzToPeriod_ms(7.0f));
+}
+
+void test_sendable_sensor_data_fractional_hz_period(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 1.0f));
+
+    // 0.5 Hz should give period_ms = 2000
+    SendableSensorData ssd(&sdh, 0.5f);
+    TEST_ASSERT_EQUAL_UINT16(2000, ssd.period_ms);
+
+    // Should not be sent again until 2000ms have elapsed
+    ssd.markWasSent(0);
+    TEST_ASSERT_FALSE(ssd.shouldBeSent(1000));
+    TEST_ASSERT_FALSE(ssd.shouldBeSent(1999));
+    TEST_ASSERT_TRUE(ssd.shouldBeSent(2000));
+}
+
+// =====================================================================
+// Low power mode tests
+// =====================================================================
+
+void test_low_power_mode_initially_inactive(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 1.0f));
+
+    SendableSensorData ssd(&sdh, 10.0f);
+    std::array<SendableSensorData*, 1> ssds{&ssd};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    TEST_ASSERT_FALSE(telemetry.isLowPowerModeActive());
+    TEST_ASSERT_EQUAL_UINT8(0, telemetry.getLowPowerDivisor());
+}
+
+void test_low_power_mode_activate_scales_periods(void) {
+    MockDataSaver mock1, mock2;
+    SensorDataHandler sdh1(1, &mock1);
+    SensorDataHandler sdh2(2, &mock2);
+    sdh1.addData(DataPoint(1, 1.0f));
+    sdh2.addData(DataPoint(1, 2.0f));
+
+    // 10 Hz → 100ms, 2 Hz → 500ms
+    SendableSensorData ssd1(&sdh1, 10.0f);
+    SendableSensorData ssd2(&sdh2, 2.0f);
+    std::array<SendableSensorData*, 2> ssds{&ssd1, &ssd2};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    TEST_ASSERT_EQUAL_UINT16(100, ssd1.period_ms);
+    TEST_ASSERT_EQUAL_UINT16(500, ssd2.period_ms);
+
+    telemetry.activateLowPowerMode(4);
+
+    TEST_ASSERT_TRUE(telemetry.isLowPowerModeActive());
+    TEST_ASSERT_EQUAL_UINT8(4, telemetry.getLowPowerDivisor());
+    // 100 * 4 = 400ms, 500 * 4 = 2000ms
+    TEST_ASSERT_EQUAL_UINT16(400, ssd1.period_ms);
+    TEST_ASSERT_EQUAL_UINT16(2000, ssd2.period_ms);
+}
+
+void test_low_power_mode_deactivate_restores_periods(void) {
+    MockDataSaver mock1, mock2;
+    SensorDataHandler sdh1(1, &mock1);
+    SensorDataHandler sdh2(2, &mock2);
+    sdh1.addData(DataPoint(1, 1.0f));
+    sdh2.addData(DataPoint(1, 2.0f));
+
+    SendableSensorData ssd1(&sdh1, 10.0f);   // 100ms
+    SendableSensorData ssd2(&sdh2, 2.0f);    // 500ms
+    std::array<SendableSensorData*, 2> ssds{&ssd1, &ssd2};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    telemetry.activateLowPowerMode(5);
+    TEST_ASSERT_EQUAL_UINT16(500, ssd1.period_ms);
+    TEST_ASSERT_EQUAL_UINT16(2500, ssd2.period_ms);
+
+    telemetry.deactivateLowPowerMode();
+    TEST_ASSERT_FALSE(telemetry.isLowPowerModeActive());
+    TEST_ASSERT_EQUAL_UINT16(100, ssd1.period_ms);
+    TEST_ASSERT_EQUAL_UINT16(500, ssd2.period_ms);
+}
+
+void test_low_power_mode_change_divisor_does_not_compound(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 1.0f));
+
+    SendableSensorData ssd(&sdh, 10.0f);  // 100ms
+    std::array<SendableSensorData*, 1> ssds{&ssd};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    // Activate with divisor 4: 100 * 4 = 400
+    telemetry.activateLowPowerMode(4);
+    TEST_ASSERT_EQUAL_UINT16(400, ssd.period_ms);
+
+    // Change to divisor 10: should be 100 * 10 = 1000, NOT 400 * 10 = 4000
+    telemetry.activateLowPowerMode(10);
+    TEST_ASSERT_EQUAL_UINT16(1000, ssd.period_ms);
+}
+
+void test_low_power_mode_deactivate_when_inactive_is_noop(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 1.0f));
+
+    SendableSensorData ssd(&sdh, 10.0f);  // 100ms
+    std::array<SendableSensorData*, 1> ssds{&ssd};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    // Should not crash or change anything
+    telemetry.deactivateLowPowerMode();
+    TEST_ASSERT_FALSE(telemetry.isLowPowerModeActive());
+    TEST_ASSERT_EQUAL_UINT16(100, ssd.period_ms);
+}
+
+void test_low_power_mode_clamps_divisor_below_2(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 1.0f));
+
+    SendableSensorData ssd(&sdh, 10.0f);  // 100ms
+    std::array<SendableSensorData*, 1> ssds{&ssd};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    // Divisor of 1 should be clamped to 2
+    telemetry.activateLowPowerMode(1);
+    TEST_ASSERT_EQUAL_UINT16(200, ssd.period_ms);
+}
+
+void test_low_power_mode_clamps_period_to_uint16_max(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 1.0f));
+
+    // 0.1 Hz → 10000ms period
+    SendableSensorData ssd(&sdh, 0.1f);
+    std::array<SendableSensorData*, 1> ssds{&ssd};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    TEST_ASSERT_EQUAL_UINT16(10000, ssd.period_ms);
+
+    // Divisor 10: 10000 * 10 = 100000 → clamped to 65535
+    telemetry.activateLowPowerMode(10);
+    TEST_ASSERT_EQUAL_UINT16(UINT16_MAX, ssd.period_ms);
+
+    // Restore should give back the original 10000ms
+    telemetry.deactivateLowPowerMode();
+    TEST_ASSERT_EQUAL_UINT16(10000, ssd.period_ms);
+}
+
+void test_low_power_mode_affects_tick_behavior(void) {
+    MockDataSaver mock;
+    SensorDataHandler sdh(1, &mock);
+    sdh.addData(DataPoint(1, 42.0f));
+
+    // 2 Hz → 500ms period
+    SendableSensorData ssd(&sdh, 2.0f);
+    std::array<SendableSensorData*, 1> ssds{&ssd};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    // Normal mode: should send at t=500
+    TEST_ASSERT_TRUE(telemetry.tick(500));
+    mockRfdSerial.clearWriteCalls();
+
+    // Activate divisor 4: period becomes 500 * 4 = 2000ms
+    telemetry.activateLowPowerMode(4);
+
+    // Should NOT send at t=1000 (only 500ms since last send, need 2000ms now)
+    TEST_ASSERT_FALSE(telemetry.tick(1000));
+    TEST_ASSERT_FALSE(telemetry.tick(1500));
+    TEST_ASSERT_FALSE(telemetry.tick(2000));
+
+    // Should send at t=2500 (2000ms since last send at t=500)
+    TEST_ASSERT_TRUE(telemetry.tick(2500));
+    mockRfdSerial.clearWriteCalls();
+
+    // Deactivate: period restored to 500ms
+    telemetry.deactivateLowPowerMode();
+
+    // Should send at t=3000 (500ms since last send at t=2500)
+    TEST_ASSERT_TRUE(telemetry.tick(3000));
+}
+
+void test_low_power_mode_preserves_relative_priorities(void) {
+    MockDataSaver mock1, mock2;
+    SensorDataHandler sdh1(1, &mock1);
+    SensorDataHandler sdh2(2, &mock2);
+    sdh1.addData(DataPoint(1, 1.0f));
+    sdh2.addData(DataPoint(1, 2.0f));
+
+    // 10 Hz (100ms) and 2 Hz (500ms) — ratio is 5:1
+    SendableSensorData ssd1(&sdh1, 10.0f);
+    SendableSensorData ssd2(&sdh2, 2.0f);
+    std::array<SendableSensorData*, 2> ssds{&ssd1, &ssd2};
+    Stream mockRfdSerial;
+    Telemetry telemetry(ssds, mockRfdSerial);
+
+    telemetry.activateLowPowerMode(4);
+
+    // Ratio should still be 5:1 → 400ms and 2000ms
+    TEST_ASSERT_EQUAL_UINT16(400, ssd1.period_ms);
+    TEST_ASSERT_EQUAL_UINT16(2000, ssd2.period_ms);
+    TEST_ASSERT_EQUAL(5, ssd2.period_ms / ssd1.period_ms);
+}
+
 int main(void) {
     UNITY_BEGIN();
+
+    // Original tests
     RUN_TEST(test_initialization);
     RUN_TEST(test_a_full_second_of_ticks);
     RUN_TEST(test_first_packet_counter_is_zero);
     RUN_TEST(test_second_packet_counter_is_one);
+
+    // Float frequency conversion tests
+    RUN_TEST(test_hz_to_period_integer_values);
+    RUN_TEST(test_hz_to_period_fractional_values);
+    RUN_TEST(test_hz_to_period_zero_returns_fallback);
+    RUN_TEST(test_hz_to_period_negative_returns_fallback);
+    RUN_TEST(test_hz_to_period_very_slow_rate_clamps_to_max);
+    RUN_TEST(test_hz_to_period_ceil_semantics);
+    RUN_TEST(test_sendable_sensor_data_fractional_hz_period);
+
+    // Low power mode tests
+    RUN_TEST(test_low_power_mode_initially_inactive);
+    RUN_TEST(test_low_power_mode_activate_scales_periods);
+    RUN_TEST(test_low_power_mode_deactivate_restores_periods);
+    RUN_TEST(test_low_power_mode_change_divisor_does_not_compound);
+    RUN_TEST(test_low_power_mode_deactivate_when_inactive_is_noop);
+    RUN_TEST(test_low_power_mode_clamps_divisor_below_2);
+    RUN_TEST(test_low_power_mode_clamps_period_to_uint16_max);
+    RUN_TEST(test_low_power_mode_affects_tick_behavior);
+    RUN_TEST(test_low_power_mode_preserves_relative_priorities);
+
     return UNITY_END();
 }
