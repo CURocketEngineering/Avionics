@@ -34,11 +34,8 @@ void test_orientation_estimator_with_real_data(void) {
         return;
     }
     csv << "time,accelx,accely,accelz,gyrox,gyroy,gyroz,magx,magy,magz,roll,pitch,yaw\n";
-
-    bool hasData = false;
-    uint32_t currentTime = 0;
+    
     while (provider.hasNextDataPoint()) {
-        hasData = true;
         SensorData data = provider.getNextDataPoint();
 
         // Create sensor triplets from the data point
