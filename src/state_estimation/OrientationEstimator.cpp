@@ -2,9 +2,13 @@
 #include "state_estimation/OrientationEstimator.h"
 #include <cmath>
 
-constexpr float lowMagThreshold = 0.01f;
-constexpr float highMagThreshold = 10.0f;
-
+constexpr float lowMagThreshold = 0.01F;
+constexpr float highMagThreshold = 10.0F;
+constexpr float one = 1.0F;
+constexpr float two = 2.0F;
+constexpr float four = 4.0F;
+constexpr float eight = 8.0F;
+constexpr float recipTwo = 0.5F;
 
 
 void OrientationEstimator::update(AccelerationTriplet accel,
@@ -26,7 +30,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
     bool useAccel = false;
     bool useMag   = false;
 
-	if (hasLaunched == false){
+	if (!hasLaunched){
 		useAccel = true;
 		useMag = true;
 		beta = betaPad;
@@ -48,17 +52,17 @@ void OrientationEstimator::update(AccelerationTriplet accel,
             updateIMU(accel, gyro, currentTime);
         } else {
             // PURE GYRO INTEGRATION (no correction)
-            float qDot1 = 0.5F * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
-            float qDot2 = 0.5F * ( q0 * gyroX + q2 * gyroZ - q3 * gyroY);
-            float qDot3 = 0.5F * ( q0 * gyroY - q1 * gyroZ + q3 * gyroX);
-            float qDot4 = 0.5F * ( q0 * gyroZ + q1 * gyroY - q2 * gyroX);
+            const float qDot1 = recipTwo * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
+            const float qDot2 = recipTwo * ( q0 * gyroX + q2 * gyroZ - q3 * gyroY);
+            const float qDot3 = recipTwo * ( q0 * gyroY - q1 * gyroZ + q3 * gyroX);
+            const float qDot4 = recipTwo * ( q0 * gyroZ + q1 * gyroY - q2 * gyroX);
 
             q0 += qDot1 * dt;
             q1 += qDot2 * dt;
             q2 += qDot3 * dt;
             q3 += qDot4 * dt;
 
-            float recipNorm = 1.0F / static_cast<float>(std::sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3));
+            const float recipNorm = one / static_cast<float>(std::sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3));
             q0 *= recipNorm;
             q1 *= recipNorm;
             q2 *= recipNorm;
@@ -103,10 +107,10 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 	}
 
 	// Rate of change of quaternion from gyroscope
-	qDot1 = 0.5F * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
-	qDot2 = 0.5F * (q0 * gyroX + q2 * gyroZ - q3 * gyroY);
-	qDot3 = 0.5F * (q0 * gyroY - q1 * gyroZ + q3 * gyroX);
-	qDot4 = 0.5F * (q0 * gyroZ + q1 * gyroY - q2 * gyroX);
+	qDot1 = recipTwo * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
+	qDot2 = recipTwo * (q0 * gyroX + q2 * gyroZ - q3 * gyroY);
+	qDot3 = recipTwo * (q0 * gyroY - q1 * gyroZ + q3 * gyroX);
+	qDot4 = recipTwo * (q0 * gyroZ + q1 * gyroY - q2 * gyroX);
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
 	if(!((accelX == 0.0F) && (accelY == 0.0F) && (accelZ == 0.0F))) {
@@ -124,16 +128,16 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 		magZ *= recipNorm;
 
 		// Auxiliary variables to avoid repeated arithmetic
-		_2q0magX = 2.0F * q0 * magX;
-		_2q0magY = 2.0F * q0 * magY;
-		_2q0magZ = 2.0F * q0 * magZ;
-		_2q1magX = 2.0F * q1 * magX;
-		_2q0 = 2.0F * q0;
-		_2q1 = 2.0F * q1;
-		_2q2 = 2.0F * q2;
-		_2q3 = 2.0F * q3;
-		_2q0q2 = 2.0F * q0 * q2;
-		_2q2q3 = 2.0F * q2 * q3;
+		_2q0magX = two * q0 * magX;
+		_2q0magY = two * q0 * magY;
+		_2q0magZ = two * q0 * magZ;
+		_2q1magX = two * q1 * magX;
+		_2q0 = two * q0;
+		_2q1 = two * q1;
+		_2q2 = two * q2;
+		_2q3 = two * q3;
+		_2q0q2 = two * q0 * q2;
+		_2q2q3 = two * q2 * q3;
 		q0q0 = q0 * q0;
 		q0q1 = q0 * q1;
 		q0q2 = q0 * q2;
@@ -150,14 +154,14 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 		hy = _2q0magX * q3 + magY * q0q0 - _2q0magZ * q1 + _2q1magX * q2 - magY * q1q1 + magY * q2q2 + _2q2 * magZ * q3 - magY * q3q3;
 		_2bx = static_cast<float>(std::sqrt(hx * hx + hy * hy));
 		_2bz = -_2q0magX * q2 + _2q0magY * q1 + magZ * q0q0 + _2q1magX * q3 - magZ * q1q1 + _2q2 * magY * q3 - magZ * q2q2 + magZ * q3q3;
-		_4bx = 2.0F * _2bx;
-		_4bz = 2.0F * _2bz;
+		_4bx = two * _2bx;
+		_4bz = two * _2bz;
 
 		// Gradient decent algorithm corrective step
-		s0 = -_2q2 * (2.0F * q1q3 - _2q0q2 - accelX) + _2q1 * (2.0F * q0q1 + _2q2q3 - accelY) - _2bz * q2 * (_2bx * (0.5F - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (-_2bx * q3 + _2bz * q1) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + _2bx * q2 * (_2bx * (q0q2 + q1q3) + _2bz * (0.5F - q1q1 - q2q2) - magZ);
-		s1 = _2q3 * (2.0F * q1q3 - _2q0q2 - accelX) + _2q0 * (2.0F * q0q1 + _2q2q3 - accelY) - 4.0F * q1 * (1 - 2.0F * q1q1 - 2.0F * q2q2 - accelZ) + _2bz * q3 * (_2bx * (0.5F - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (_2bx * q2 + _2bz * q0) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + (_2bx * q3 - _4bz * q1) * (_2bx * (q0q2 + q1q3) + _2bz * (0.5F - q1q1 - q2q2) - magZ);
-		s2 = -_2q0 * (2.0F * q1q3 - _2q0q2 - accelX) + _2q3 * (2.0F * q0q1 + _2q2q3 - accelY) - 4.0F * q2 * (1 - 2.0F * q1q1 - 2.0F * q2q2 - accelZ) + (-_4bx * q2 - _2bz * q0) * (_2bx * (0.5F - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (_2bx * q1 + _2bz * q3) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + (_2bx * q0 - _4bz * q2) * (_2bx * (q0q2 + q1q3) + _2bz * (0.5F - q1q1 - q2q2) - magZ);
-		s3 = _2q1 * (2.0F * q1q3 - _2q0q2 - accelX) + _2q2 * (2.0F * q0q1 + _2q2q3 - accelY) + (-_4bx * q3 + _2bz * q1) * (_2bx * (0.5F - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (-_2bx * q0 + _2bz * q2) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + _2bx * q1 * (_2bx * (q0q2 + q1q3) + _2bz * (0.5F - q1q1 - q2q2) - magZ);
+		s0 = -_2q2 * (two * q1q3 - _2q0q2 - accelX) + _2q1 * (two * q0q1 + _2q2q3 - accelY) - _2bz * q2 * (_2bx * (recipTwo - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (-_2bx * q3 + _2bz * q1) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + _2bx * q2 * (_2bx * (q0q2 + q1q3) + _2bz * (recipTwo - q1q1 - q2q2) - magZ);
+		s1 = _2q3 * (two * q1q3 - _2q0q2 - accelX) + _2q0 * (two * q0q1 + _2q2q3 - accelY) - four * q1 * (1 - two * q1q1 - two * q2q2 - accelZ) + _2bz * q3 * (_2bx * (recipTwo - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (_2bx * q2 + _2bz * q0) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + (_2bx * q3 - _4bz * q1) * (_2bx * (q0q2 + q1q3) + _2bz * (recipTwo - q1q1 - q2q2) - magZ);
+		s2 = -_2q0 * (two * q1q3 - _2q0q2 - accelX) + _2q3 * (two * q0q1 + _2q2q3 - accelY) - four * q2 * (1 - two * q1q1 - two * q2q2 - accelZ) + (-_4bx * q2 - _2bz * q0) * (_2bx * (recipTwo - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (_2bx * q1 + _2bz * q3) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + (_2bx * q0 - _4bz * q2) * (_2bx * (q0q2 + q1q3) + _2bz * (recipTwo - q1q1 - q2q2) - magZ);
+		s3 = _2q1 * (two * q1q3 - _2q0q2 - accelX) + _2q2 * (two * q0q1 + _2q2q3 - accelY) + (-_4bx * q3 + _2bz * q1) * (_2bx * (recipTwo - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - magX) + (-_2bx * q0 + _2bz * q2) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - magY) + _2bx * q1 * (_2bx * (q0q2 + q1q3) + _2bz * (recipTwo - q1q1 - q2q2) - magZ);
 		recipNorm = 1 / std::sqrt(s0 * s0 + s1 * s1 + s2 * s2 + s3 * s3); // normalise step magnitude
 		s0 *= recipNorm;
 		s1 *= recipNorm;
@@ -205,10 +209,10 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
     float dt = static_cast<float>(currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
 
 	// Rate of change of quaternion from gyroscope
-	qDot1 = 0.5F * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
-	qDot2 = 0.5F * (q0 * gyroX + q2 * gyroZ - q3 * gyroY);
-	qDot3 = 0.5F * (q0 * gyroY - q1 * gyroZ + q3 * gyroX);
-	qDot4 = 0.5F * (q0 * gyroZ + q1 * gyroY - q2 * gyroX);
+	qDot1 = recipTwo * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
+	qDot2 = recipTwo * (q0 * gyroX + q2 * gyroZ - q3 * gyroY);
+	qDot3 = recipTwo * (q0 * gyroY - q1 * gyroZ + q3 * gyroX);
+	qDot4 = recipTwo * (q0 * gyroZ + q1 * gyroY - q2 * gyroX);
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
 	if(!((accelX == 0.0f) && (accelY == 0.0f) && (accelZ == 0.0f))) {
@@ -220,15 +224,15 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 		accelZ *= recipNorm;   
 
 		// Auxiliary variables to avoid repeated arithmetic
-		_2q0 = 2.0F * q0;
-		_2q1 = 2.0F * q1;
-		_2q2 = 2.0F * q2;
-		_2q3 = 2.0F * q3;
-		_4q0 = 4.0F * q0;
-		_4q1 = 4.0F * q1;
-		_4q2 = 4.0F * q2;
-		_8q1 = 8.0F * q1;
-		_8q2 = 8.0F * q2;
+		_2q0 = two * q0;
+		_2q1 = two * q1;
+		_2q2 = two * q2;
+		_2q3 = two * q3;
+		_4q0 = four * q0;
+		_4q1 = four * q1;
+		_4q2 = four * q2;
+		_8q1 = eight * q1;
+		_8q2 = eight * q2;
 		q0q0 = q0 * q0;
 		q1q1 = q1 * q1;
 		q2q2 = q2 * q2;
@@ -236,9 +240,9 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 
 		// Gradient decent algorithm corrective step
 		s0 = _4q0 * q2q2 + _2q2 * accelX + _4q0 * q1q1 - _2q1 * accelY;
-		s1 = _4q1 * q3q3 - _2q3 * accelX + 4.0F * q0q0 * q1 - _2q0 * accelY - _4q1 + _8q1 * q1q1 + _8q1 * q2q2 + _4q1 * accelZ;
-		s2 = 4.0F * q0q0 * q2 + _2q0 * accelX + _4q2 * q3q3 - _2q3 * accelY - _4q2 + _8q2 * q1q1 + _8q2 * q2q2 + _4q2 * accelZ;
-		s3 = 4.0F * q1q1 * q3 - _2q1 * accelX + 4.0F * q2q2 * q3 - _2q2 * accelY;
+		s1 = _4q1 * q3q3 - _2q3 * accelX + four * q0q0 * q1 - _2q0 * accelY - _4q1 + _8q1 * q1q1 + _8q1 * q2q2 + _4q1 * accelZ;
+		s2 = four * q0q0 * q2 + _2q0 * accelX + _4q2 * q3q3 - _2q3 * accelY - _4q2 + _8q2 * q1q1 + _8q2 * q2q2 + _4q2 * accelZ;
+		s3 = four * q1q1 * q3 - _2q1 * accelX + four * q2q2 * q3 - _2q2 * accelY;
 		recipNorm = 1 / std::sqrt(s0 * s0 + s1 * s1 + s2 * s2 + s3 * s3); // normalise step magnitude
 		s0 *= recipNorm;
 		s1 *= recipNorm;
@@ -273,20 +277,20 @@ void OrientationEstimator::getEuler()
 {
     // Roll (x-accelXis rotation)
     roll = static_cast<float>(std::atan2(
-        2.0F * (q0 * q1 + q2 * q3),
-        1.0F - 2.0F * (q1 * q1 + q2 * q2)
+        two * (q0 * q1 + q2 * q3),
+        one - two * (q1 * q1 + q2 * q2)
     ));
 
     // Pitch (y-accelXis rotation)
-    float t = 2.0F * (q0 * q2 - q3 * q1);
-    if (t > 1.0F) t = 1.0F;
-	if (t < -1.0F) t = -1.0F;
+    float t = two * (q0 * q2 - q3 * q1);
+    if (t > one) t = one;
+	if (t < -one) t = -one;
     pitch = static_cast<float>(std::asin(t));
 
     // Yaw (z-accelXis rotation)
     yaw = static_cast<float>(std::atan2(
-        2.0F * (q0 * q3 + q1 * q2),
-        1.0F - 2.0F * (q2 * q2 + q3 * q3)
+        two * (q0 * q3 + q1 * q2),
+        one - two * (q2 * q2 + q3 * q3)
     ));
 
     const float rad2deg = 57.29577951308232F;
