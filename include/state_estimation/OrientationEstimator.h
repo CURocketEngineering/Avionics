@@ -32,8 +32,8 @@ public:
     void updateIMU(AccelerationTriplet accel, GyroTriplet gyro, uint32_t currentTime);
     void getEuler();
 
-    Quanternion getQuanternion() const{
-        Quanternion q = {q0, q1, q2, q3};
+    Quaternion getQuaternion() const{
+        Quaternion q = {q0, q1, q2, q3};
         return q;
     }
     void launchDetected() { hasLaunched = true;}

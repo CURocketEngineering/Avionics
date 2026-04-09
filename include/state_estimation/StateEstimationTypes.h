@@ -21,7 +21,7 @@ struct MagTriplet {
     DataPoint z;
 };
 
-struct Quanternion {
+struct alignas(16) Quaternion {
     float w;
     float x;
     float y;
