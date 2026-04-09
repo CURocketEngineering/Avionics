@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['telemetry_0',['Telemetry',['../classTelemetry.html',1,'']]],
-  ['timestamprecord_5ft_1',['TimestampRecord_t',['../structTimestampRecord__t.html',1,'']]]
+  ['record_5ft_0',['Record_t',['../structRecord__t.html',1,'']]]
 ];

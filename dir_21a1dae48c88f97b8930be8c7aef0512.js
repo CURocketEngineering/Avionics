@@ -7,6 +7,7 @@ var dir_21a1dae48c88f97b8930be8c7aef0512 =
     [ "FastLaunchDetector.h", "FastLaunchDetector_8h.html", "FastLaunchDetector_8h" ],
     [ "GroundLevelEstimator.h", "GroundLevelEstimator_8h.html", "GroundLevelEstimator_8h" ],
     [ "LaunchDetector.h", "LaunchDetector_8h.html", "LaunchDetector_8h" ],
+    [ "OrientationEstimator.h", "OrientationEstimator_8h.html", "OrientationEstimator_8h" ],
     [ "StateEstimationTypes.h", "StateEstimationTypes_8h.html", "StateEstimationTypes_8h" ],
     [ "StateMachine.h", "StateMachine_8h.html", "StateMachine_8h" ],
     [ "States.h", "States_8h.html", "States_8h" ],

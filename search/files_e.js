@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['verticalvelocityestimator_2ecpp_0',['VerticalVelocityEstimator.cpp',['../VerticalVelocityEstimator_8cpp.html',1,'']]],
-  ['verticalvelocityestimator_2eh_1',['VerticalVelocityEstimator.h',['../VerticalVelocityEstimator_8h.html',1,'']]]
+  ['uartcommandhandler_2ecpp_0',['UARTCommandHandler.cpp',['../UARTCommandHandler_8cpp.html',1,'']]],
+  ['uartcommandhandler_2eh_1',['UARTCommandHandler.h',['../UARTCommandHandler_8h.html',1,'']]]
 ];

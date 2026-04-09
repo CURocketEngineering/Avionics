@@ -1,3 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structInitialState.html" title=" " alt="" coords="5,5,99,31"/>
+<area shape="rect" id="Node000000" href="$classIDataSaver.html" title="Abstract interface for persisting timestamped data points." alt="" coords="5,104,100,129"/>
+<area shape="rect" id="Node000001" href="$classDataSaverBigSD.html" title="Buffered CSV writer targeting large SD cards via SdFat." alt="" coords="156,5,285,31"/>
+<area shape="poly" id="edge3_Node000000_Node000001" title=" " alt="" coords="75,93,108,65,147,40,173,28,175,33,149,44,111,70,79,97"/>
+<area shape="rect" id="Node000002" href="$classDataSaverMock.html" title=" " alt="" coords="158,55,283,80"/>
+<area shape="poly" id="edge4_Node000000_Node000002" title=" " alt="" coords="109,97,176,78,177,83,110,103"/>
+<area shape="rect" id="Node000003" href="$classDataSaverSDSerial.html" title="IDataSaver implementation that streams CSV packets over UART." alt="" coords="148,104,293,129"/>
+<area shape="poly" id="edge5_Node000000_Node000003" title=" " alt="" coords="114,114,148,114,148,119,114,119"/>
+<area shape="rect" id="Node000004" href="$classDataSaverSPI.html" title="SPI flash implementation of IDataSaver with timestamp compression." alt="" coords="165,153,276,179"/>
+<area shape="poly" id="edge6_Node000000_Node000004" title=" " alt="" coords="110,131,177,151,176,156,109,136"/>
+<area shape="rect" id="Node000005" href="$classprintSaver.html" title="IDataSaver that prints samples to stdout for debugging." alt="" coords="176,203,265,228"/>
+<area shape="poly" id="edge7_Node000000_Node000005" title=" " alt="" coords="80,137,112,163,149,188,178,200,175,205,147,192,108,167,76,141"/>
 </map>

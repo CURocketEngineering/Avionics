@@ -1,0 +1,3 @@
+<map id="OrientationEstimator" name="OrientationEstimator">
+<area shape="rect" id="Node000001" title="Orientation estimator using Madgwick&#39;s algorithm for sensor fusion." alt="" coords="5,5,180,191"/>
+</map>

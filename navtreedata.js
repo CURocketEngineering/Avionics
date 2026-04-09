@@ -102,8 +102,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Adafruit__SPIFlash__mock_8h.html",
-"classAdafruit__LIS3MDL.html#ab4f3a6a9fc80387a01b67f6c3dfb7b12",
-"classVerticalVelocityEstimator.html#af3f71d8fcdc037b05fffc56b6780dd90"
+"classAdafruit__LIS2MDL.html#aa9d2081c2e02fbf81b771e7ccbbe9fbb",
+"classStream.html#a8a37da1a85cd7c2fa52f4eab9548abda"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

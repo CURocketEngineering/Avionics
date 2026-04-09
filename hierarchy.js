@@ -20,6 +20,7 @@ var hierarchy =
     [ "FastLaunchDetector", "classFastLaunchDetector.html", null ],
     [ "File32", "structFile32.html", null ],
     [ "GroundLevelEstimator", "classGroundLevelEstimator.html", null ],
+    [ "GyroTriplet", "structGyroTriplet.html", null ],
     [ "IDataSaver", "classIDataSaver.html", [
       [ "DataSaverBigSD", "classDataSaverBigSD.html", null ],
       [ "DataSaverMock", "classDataSaverMock.html", null ],
@@ -29,12 +30,15 @@ var hierarchy =
     ] ],
     [ "InitialState", "structInitialState.html", null ],
     [ "LaunchDetector", "classLaunchDetector.html", null ],
+    [ "MagTriplet", "structMagTriplet.html", null ],
     [ "MockSerial", "classMockSerial.html", null ],
     [ "MockSerialClass", "classMockSerialClass.html", null ],
     [ "MockSPIClass", "classMockSPIClass.html", [
       [ "SPIClass", "classSPIClass.html", null ]
     ] ],
     [ "NoiseVariances", "structNoiseVariances.html", null ],
+    [ "OrientationEstimator", "classOrientationEstimator.html", null ],
+    [ "Quaternion", "structQuaternion.html", null ],
     [ "Record_t", "structRecord__t.html", null ],
     [ "SdFat", "structSdFat.html", null ],
     [ "SendableSensorData", "structSendableSensorData.html", null ],

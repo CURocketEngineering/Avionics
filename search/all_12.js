@@ -21,5 +21,6 @@ var searchData=
   ['restrictsavespeed_18',['restrictSaveSpeed',['../classSensorDataHandler.html#aa3d1311af6c98e99432479968121f0c7',1,'SensorDataHandler']]],
   ['rocket_20engineering_19',['Avionics for Clemson University Rocket Engineering',['../index.html',1,'']]],
   ['rocket_20types_20',['Rocket Types',['../md_docs_2FlightTests.html#autotoc_md34',1,'']]],
-  ['rule_21',['The RULE',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md13',1,'']]]
+  ['roll_21',['ROLL',['../DataNames_8h.html#af902416f65138704a180dbae2dc9d8f2',1,'DataNames.h']]],
+  ['rule_22',['The RULE',['../dir_52c912f73dac9c4c0e442232e1b2bd80.html#autotoc_md13',1,'']]]
 ];

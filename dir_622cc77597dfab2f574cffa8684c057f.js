@@ -7,6 +7,7 @@ var dir_622cc77597dfab2f574cffa8684c057f =
     [ "FastLaunchDetector.cpp", "FastLaunchDetector_8cpp.html", null ],
     [ "GroundLevelEstimator.cpp", "GroundLevelEstimator_8cpp.html", null ],
     [ "LaunchDetector.cpp", "LaunchDetector_8cpp.html", null ],
+    [ "OrientationEstimator.cpp", "OrientationEstimator_8cpp.html", "OrientationEstimator_8cpp" ],
     [ "StateMachine.cpp", "StateMachine_8cpp.html", null ],
     [ "VerticalVelocityEstimator.cpp", "VerticalVelocityEstimator_8cpp.html", null ]
 ];

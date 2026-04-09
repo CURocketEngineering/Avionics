@@ -3,7 +3,7 @@ var searchData=
   ['labels_0',['&lt;b&gt;Data Save Rates (No Labels)&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md17',1,'']]],
   ['lastsenttimestamp_5fms_1',['lastSentTimestamp_ms',['../structSendableSensorData.html#aca1fd36dfe6c7910354da427afd15eb2',1,'SendableSensorData']]],
   ['launch_20data_20protection_2',['&lt;b&gt;Post-Launch Data Protection&lt;/b&gt;',['../md_docs_2FlashDataSaving.html#autotoc_md29',1,'']]],
-  ['launchdetected_3',['launchDetected',['../classIDataSaver.html#ab85dcc857f197475c14f9e50e9d34a97',1,'IDataSaver::launchDetected()'],['../classDataSaverSPI.html#aec6ba457bb1daac36ec1769001097631',1,'DataSaverSPI::launchDetected()'],['../classGroundLevelEstimator.html#a5993686a16bfa41f3e0fc793cf7b798c',1,'GroundLevelEstimator::launchDetected()']]],
+  ['launchdetected_3',['launchDetected',['../classIDataSaver.html#ab85dcc857f197475c14f9e50e9d34a97',1,'IDataSaver::launchDetected()'],['../classDataSaverSPI.html#aec6ba457bb1daac36ec1769001097631',1,'DataSaverSPI::launchDetected()'],['../classGroundLevelEstimator.html#a5993686a16bfa41f3e0fc793cf7b798c',1,'GroundLevelEstimator::launchDetected()'],['../classOrientationEstimator.html#a651bcd08db0ca0bc632251e34eac8f8a',1,'OrientationEstimator::launchDetected()']]],
   ['launchdetector_4',['LaunchDetector',['../classLaunchDetector.html',1,'LaunchDetector'],['../classLaunchDetector.html#a10e33e12876e820753cde55b85c6f6dc',1,'LaunchDetector::LaunchDetector()']]],
   ['launchdetector_2ecpp_5',['LaunchDetector.cpp',['../LaunchDetector_8cpp.html',1,'']]],
   ['launchdetector_2eh_6',['LaunchDetector.h',['../LaunchDetector_8h.html',1,'']]],

@@ -1,0 +1,17 @@
+<map id="OrientationEstimator.cpp" name="OrientationEstimator.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="149,5,333,31"/>
+<area shape="rect" id="Node000002" href="$OrientationEstimator_8h.html" title=" " alt="" coords="57,79,266,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,33,192,71,189,67,228,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="290,86,353,111"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="255,29,301,74,298,78,251,33"/>
+<area shape="rect" id="Node000003" href="$DataPoint_8h.html" title=" " alt="" coords="5,255,200,280"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,121,58,140,43,153,32,168,26,186,32,205,48,228,70,245,66,249,44,232,27,208,20,186,27,165,40,149,55,136,90,116"/>
+<area shape="rect" id="Node000005" href="$StateEstimationTypes_8h.html" title=" " alt="" coords="41,167,281,207"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="164,119,164,153,159,153,159,119"/>
+<area shape="rect" id="Node000006" href="$States_8h.html" title=" " alt="" coords="224,255,413,280"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="225,116,263,136,295,165,306,183,314,203,321,240,315,241,309,204,302,185,291,168,260,140,222,121"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="177,328,244,353"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="121,278,183,318,180,323,119,282"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="149,208,122,245,118,242,145,205"/>
+<area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="303,282,241,323,238,318,300,278"/>
+</map>

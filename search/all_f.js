@@ -10,5 +10,8 @@ var searchData=
   ['operator_3c_3d_7',['operator&lt;=',['../classDataPoint.html#a956a671e82698d659740c446a0a5034b',1,'DataPoint']]],
   ['operator_3e_8',['operator&gt;',['../classDataPoint.html#a2e4598eaee0513048f4022a182aaccb5',1,'DataPoint']]],
   ['operator_3e_3d_9',['operator&gt;=',['../classDataPoint.html#a5e9253185f55bdefe6dbb317211e4660',1,'DataPoint']]],
-  ['overview_10',['Architecture Overview',['../index.html#autotoc_md48',1,'']]]
+  ['orientationestimator_10',['OrientationEstimator',['../classOrientationEstimator.html',1,'OrientationEstimator'],['../classOrientationEstimator.html#a3e95dd4a1554c41d3b2402f7e633b282',1,'OrientationEstimator::OrientationEstimator()']]],
+  ['orientationestimator_2ecpp_11',['OrientationEstimator.cpp',['../OrientationEstimator_8cpp.html',1,'']]],
+  ['orientationestimator_2eh_12',['OrientationEstimator.h',['../OrientationEstimator_8h.html',1,'']]],
+  ['overview_13',['Architecture Overview',['../index.html#autotoc_md48',1,'']]]
 ];

@@ -20,9 +20,12 @@ var DataNames_8h =
     [ "MAGNETOMETER_Z", "DataNames_8h.html#a5da689928b36356bb0e1dd916535f4ff", null ],
     [ "MEDIAN_ACCELERATION_SQUARED", "DataNames_8h.html#a68fb5f756defd46579385240f7aa8ede", null ],
     [ "NUM_PACKETS_SENT", "DataNames_8h.html#aa8dc33d1e8137bfaff062c6482867f1e", null ],
+    [ "PITCH", "DataNames_8h.html#acd633835a520a62245ec6cfeb6d00e97", null ],
     [ "PRESSURE", "DataNames_8h.html#a67bafb91da1f123097b90c52747bcf36", null ],
+    [ "ROLL", "DataNames_8h.html#af902416f65138704a180dbae2dc9d8f2", null ],
     [ "STATE_CHANGE", "DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51", null ],
     [ "TEMPERATURE", "DataNames_8h.html#af4e8dcb1c210baad2e179d49669eabff", null ],
     [ "TIME_TO_APOGEE", "DataNames_8h.html#a3bb4cc7f03274826941c4fcbecebd103", null ],
-    [ "TIMESTAMP", "DataNames_8h.html#ac59bf49f337079e65fe54acbfa21977e", null ]
+    [ "TIMESTAMP", "DataNames_8h.html#ac59bf49f337079e65fe54acbfa21977e", null ],
+    [ "YAW", "DataNames_8h.html#ac71b1e54b98dc1031873048bc61d0438", null ]
 ];
