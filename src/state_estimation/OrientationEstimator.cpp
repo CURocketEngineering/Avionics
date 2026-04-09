@@ -2,14 +2,14 @@
 #include "state_estimation/OrientationEstimator.h"
 #include <cmath>
 
-constexpr float lowMagThreshold = 0.01F;
-constexpr float highMagThreshold = 10.0F;
+constexpr float kLowMagThreshold = 0.01F;
+constexpr float kHighMagThreshold = 10.0F;
 constexpr float kOne = 1.0F;
 constexpr float kTwo = 2.0F;
 constexpr float kFour = 4.0F;
 constexpr float kEight = 8.0F;
 constexpr float kRecipTwo = 0.5F;
-constexpr float milliToSec = 1000.0F;
+constexpr float kMilliToSec = 1000.0F;
 
 
 void OrientationEstimator::update(AccelerationTriplet accel,
@@ -25,7 +25,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
     const float magY = mag.y.data;
     const float magZ = mag.z.data;
 
-    const float dt = static_cast<float>(currentTime - lastUpdateTime) / milliToSec;
+    const float dt = static_cast<float>(currentTime - lastUpdateTime) / kMilliToSec;
 
     // --- Sensor usage flags ---
     bool useAccel = false;
@@ -42,7 +42,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
 
     // --- Magnetometer validity check ---
     const auto magMag = static_cast<float>(std::sqrt(magX*magX + magY*magY + magZ*magZ));
-    if (magMag < lowMagThreshold || magMag > highMagThreshold) {
+    if (magMag < kLowMagThreshold || magMag > kHighMagThreshold) {
         useMag = false;
     }
 
@@ -109,7 +109,7 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 	float _2q0magX, _2q0magY, _2q0magZ, _2q1magX, _2bx, _2bz, _4bx, _4bz, _2q0, _2q1, _2q2, _2q3, _2q0q2, _2q2q3, q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3; //NOLINT(readability-isolate-declaration)
 
 
-    const float dt = static_cast<float>(currentTime - lastUpdateTime) / milliToSec; // convert ms to seconds
+    const float dt = static_cast<float>(currentTime - lastUpdateTime) / kMilliToSec; // convert ms to seconds
 
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
 	if((magX == 0.0F) && (magY == 0.0F) && (magZ == 0.0F)) {
@@ -226,7 +226,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 
 	float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2 ,_8q1, _8q2, q0q0, q1q1, q2q2, q3q3; //NOLINT(readability-isolate-declaration)
 
-    const float dt = static_cast<float>(currentTime - lastUpdateTime) / milliToSec; // convert ms to seconds
+    const float dt = static_cast<float>(currentTime - lastUpdateTime) / kMilliToSec; // convert ms to seconds
 
 	// Rate of change of quaternion from gyroscope
 	qDot1 = kRecipTwo * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
