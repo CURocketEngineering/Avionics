@@ -12,8 +12,6 @@
 #include "state_estimation/StateEstimationTypes.h"
 #include "../CSVMockData.h"
 
-// Use a mock Serial for debug prints in tests
-
 void setUp(void) {
     Serial.clear();
 }
@@ -24,11 +22,17 @@ void tearDown(void) {
 
 void test_orientation_estimator_with_real_data(void) {
     // Create CSV provider to read test data with 25Hz sample rate (40ms interval)
+    // download data/AA Data Collection - Second Launch Trimmed.csv
     CSVDataProvider provider("data/AA Data Collection - Second Launch Trimmed.csv", 25.0f);
     OrientationEstimator estimator;
 
 
     std::ofstream csv("orientation_test_output.csv");
+        if (!csv.is_open()) {
+        std::cerr << "Failed to open output CSV file" << std::endl;
+        TEST_FAIL();
+        return;
+    }
     csv << "time,accelx,accely,accelz,gyrox,gyroy,gyroz,magx,magy,magz,roll,pitch,yaw\n";
 
     bool hasData = false;
