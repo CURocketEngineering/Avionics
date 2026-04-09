@@ -31,7 +31,7 @@ Avionics is our modular C++ (Arduino-core compatible) library used for all of ou
 ## Hard Rules
 
 1. Never include Arduino headers directly (`<Arduino.h>`, etc.) from Avionics code.
-2. Always include `hal/ArduinoHAL.h` for Arduino-facing APIs.
+2. Always include `ArduinoHAL.h` from `hal/` for Arduino-facing APIs.
 3. Keep host-native tests buildable; avoid adding dependencies that only exist on embedded targets.
 4. Maintain `include/` and `src/` parity for non-header-only modules.
 5. Keep changes compatible with the repo's C++ standard (`-std=c++11` in `platformio.ini`).
@@ -94,6 +94,7 @@ python -m http.server --directory build/doxygen 8000
   - Deploy target: `gh-pages` branch
   - Published folder: `build/doxygen`
 - If code changes affect public behavior/API, update doc comments and relevant Markdown docs in the same change.
+- Don't use a return type of `void` in doc comments; just omit the `@return` line if there is no return value.
 
 ## Data-Driven Tests
 
@@ -105,8 +106,9 @@ python -m http.server --directory build/doxygen 8000
 
 1. Prefer small, focused patches.
 2. If behavior changes, update or add tests in `test/` to cover it.
-3. Preserve public API names unless the task explicitly asks for a breaking change.
-4. Keep docs in sync when changing module behavior:
+3. If you are patching a bug, add a regression test that fails without the fix and passes with it.
+4. Preserve public API names unless the task explicitly asks for a breaking change.
+5. Keep docs in sync when changing module behavior:
    - top-level `README.md` for high-level behavior,
    - `docs/*.md` for detailed formats/protocols.
 
