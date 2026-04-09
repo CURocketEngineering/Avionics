@@ -9,6 +9,7 @@ constexpr float two = 2.0F;
 constexpr float four = 4.0F;
 constexpr float eight = 8.0F;
 constexpr float recipTwo = 0.5F;
+constexpr float milliToSec = 1000.0F;
 
 
 void OrientationEstimator::update(AccelerationTriplet accel,
@@ -24,7 +25,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
     const float magY = mag.y.data;
     const float magZ = mag.z.data;
 
-    const float dt = static_cast<float>(currentTime - lastUpdateTime) / 1000.0f;
+    const float dt = static_cast<float>(currentTime - lastUpdateTime) / milliToSec;
 
     // --- Sensor usage flags ---
     bool useAccel = false;
@@ -40,7 +41,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
 	}
 
     // --- Magnetometer validity check ---
-    const float magMag = static_cast<float>(std::sqrt(magX*magX + magY*magY + magZ*magZ));
+    const auto magMag = static_cast<float>(std::sqrt(magX*magX + magY*magY + magZ*magZ));
     if (magMag < lowMagThreshold || magMag > highMagThreshold) {
         useMag = false;
     }
@@ -98,7 +99,7 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 	float _2q0magX, _2q0magY, _2q0magZ, _2q1magX, _2bx, _2bz, _4bx, _4bz, _2q0, _2q1, _2q2, _2q3, _2q0q2, _2q2q3, q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
 
 
-    const float dt = static_cast<float>(currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
+    const float dt = static_cast<float>(currentTime - lastUpdateTime) / milliToSec; // convert ms to seconds
 
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
 	if((magX == 0.0F) && (magY == 0.0F) && (magZ == 0.0F)) {
@@ -113,7 +114,7 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 	qDot4 = recipTwo * (q0 * gyroZ + q1 * gyroY - q2 * gyroX);
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
-	if(!((accelX == 0.0F) && (accelY == 0.0F) && (accelZ == 0.0F))) {
+	if((accelX != 0.0F) || (accelY != 0.0F) || (accelZ != 0.0F)) {
 
 		// Normalise accelerometer measurement
 		recipNorm = 1 / std::sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
@@ -206,7 +207,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 	float qDot1, qDot2, qDot3, qDot4;
 	float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2 ,_8q1, _8q2, q0q0, q1q1, q2q2, q3q3;
 
-    float dt = static_cast<float>(currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
+    const float dt = static_cast<float>(currentTime - lastUpdateTime) / milliToSec; // convert ms to seconds
 
 	// Rate of change of quaternion from gyroscope
 	qDot1 = recipTwo * (-q1 * gyroX - q2 * gyroY - q3 * gyroZ);
@@ -215,7 +216,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 	qDot4 = recipTwo * (q0 * gyroZ + q1 * gyroY - q2 * gyroX);
 
 	// Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
-	if(!((accelX == 0.0f) && (accelY == 0.0f) && (accelZ == 0.0f))) {
+	if((accelX != 0.0f) || (accelY != 0.0f) || (accelZ != 0.0f)) {
 
 		// Normalise accelerometer measurement
 		recipNorm = 1 / std::sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
@@ -283,8 +284,12 @@ void OrientationEstimator::getEuler()
 
     // Pitch (y-accelXis rotation)
     float t = two * (q0 * q2 - q3 * q1);
-    if (t > one) t = one;
-	if (t < -one) t = -one;
+    if (t > one){
+		t = one;
+	}
+	if (t < -one){
+		t = -one;
+	}
     pitch = static_cast<float>(std::asin(t));
 
     // Yaw (z-accelXis rotation)
