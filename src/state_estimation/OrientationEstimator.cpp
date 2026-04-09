@@ -8,10 +8,6 @@ void OrientationEstimator::update(AccelerationTriplet accel,
                                   MagTriplet mag,
                                   uint32_t currentTime)
 {
-    float ax = accel.x.data;
-    float ay = accel.y.data;
-    float az = accel.z.data;
-
     float gx = gyro.x.data;
     float gy = gyro.y.data;
     float gz = gyro.z.data;
@@ -20,7 +16,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
     float my = mag.y.data;
     float mz = mag.z.data;
 
-    float dt = (currentTime - lastUpdateTime) / 1000.0f;
+    float dt = (float) (currentTime - lastUpdateTime) / 1000.0f;
 
     // --- Sensor usage flags ---
     bool useAccel = false;
@@ -36,7 +32,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
 	}
 
     // --- Magnetometer validity check ---
-    float magMag = sqrt(mx*mx + my*my + mz*mz);
+    float magMag = (float) sqrt(mx*mx + my*my + mz*mz);
     if (magMag < 0.01f || magMag > 10.0f) {
         useMag = false;
     }
@@ -58,7 +54,7 @@ void OrientationEstimator::update(AccelerationTriplet accel,
             q2 += qDot3 * dt;
             q3 += qDot4 * dt;
 
-            float recipNorm = 1.0f / sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
+            float recipNorm = 1.0f / (float) sqrt(q0*q0 + q1*q1 + q2*q2 + q3*q3);
             q0 *= recipNorm;
             q1 *= recipNorm;
             q2 *= recipNorm;
@@ -94,7 +90,7 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 	float _2q0mx, _2q0my, _2q0mz, _2q1mx, _2bx, _2bz, _4bx, _4bz, _2q0, _2q1, _2q2, _2q3, _2q0q2, _2q2q3, q0q0, q0q1, q0q2, q0q3, q1q1, q1q2, q1q3, q2q2, q2q3, q3q3;
 
 
-    float dt = (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
+    float dt = (float) (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
 
 	// Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
 	if((mx == 0.0f) && (my == 0.0f) && (mz == 0.0f)) {
@@ -148,7 +144,7 @@ void OrientationEstimator::updateFullAHRS(AccelerationTriplet accel, GyroTriplet
 		// Reference direction of Earth's magnetic field
 		hx = mx * q0q0 - _2q0my * q3 + _2q0mz * q2 + mx * q1q1 + _2q1 * my * q2 + _2q1 * mz * q3 - mx * q2q2 - mx * q3q3;
 		hy = _2q0mx * q3 + my * q0q0 - _2q0mz * q1 + _2q1mx * q2 - my * q1q1 + my * q2q2 + _2q2 * mz * q3 - my * q3q3;
-		_2bx = sqrt(hx * hx + hy * hy);
+		_2bx = (float) sqrt(hx * hx + hy * hy);
 		_2bz = -_2q0mx * q2 + _2q0my * q1 + mz * q0q0 + _2q1mx * q3 - mz * q1q1 + _2q2 * my * q3 - mz * q2q2 + mz * q3q3;
 		_4bx = 2.0f * _2bx;
 		_4bz = 2.0f * _2bz;
@@ -202,7 +198,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 	float qDot1, qDot2, qDot3, qDot4;
 	float _2q0, _2q1, _2q2, _2q3, _4q0, _4q1, _4q2 ,_8q1, _8q2, q0q0, q1q1, q2q2, q3q3;
 
-    float dt = (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
+    float dt = (float) (currentTime - lastUpdateTime) / 1000.0f; // convert ms to seconds
 
 	// Rate of change of quaternion from gyroscope
 	qDot1 = 0.5f * (-q1 * gx - q2 * gy - q3 * gz);
@@ -272,7 +268,7 @@ void OrientationEstimator::updateIMU(AccelerationTriplet accel, GyroTriplet gyro
 void OrientationEstimator::getEuler()
 {
     // Roll (x-axis rotation)
-    roll = atan2(
+    roll = (float) atan2(
         2.0f * (q0 * q1 + q2 * q3),
         1.0f - 2.0f * (q1 * q1 + q2 * q2)
     );
@@ -281,10 +277,10 @@ void OrientationEstimator::getEuler()
     float t = 2.0f * (q0 * q2 - q3 * q1);
     if (t > 1.0f) t = 1.0f;
 	if (t < -1.0f) t = -1.0f;
-    pitch = asin(t);
+    pitch = (float) asin(t);
 
     // Yaw (z-axis rotation)
-    yaw = atan2(
+    yaw = (float) atan2(
         2.0f * (q0 * q3 + q1 * q2),
         1.0f - 2.0f * (q2 * q2 + q3 * q3)
     );

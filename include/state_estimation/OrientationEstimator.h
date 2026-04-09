@@ -24,8 +24,8 @@ public:
 
     OrientationEstimator(float gainPad = 0.05f, float gainFlight = 0.005f)
         : q0(1.0f), q1(0.0f), q2(0.0f), q3(0.0f),
-          betaPad(gainPad), betaFlight(gainFlight), lastUpdateTime(0),
-          roll(0.0f), pitch(0.0f), yaw(0.0f), hasLaunched(false) {}
+          betaPad(gainPad), betaFlight(gainFlight),
+          roll(0.0f), pitch(0.0f), yaw(0.0f), hasLaunched(false), lastUpdateTime(0) {}
 
     void update(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime);
     void updateFullAHRS(AccelerationTriplet accel, GyroTriplet gyro, MagTriplet mag, uint32_t currentTime);
