@@ -15,7 +15,7 @@
  * @note When to use: standard flights where launch->coast->descent transitions
  *       are driven by detectors and logging is desired at each change.
  */
-class StateMachine : public BaseStateMachine {
+class BasicStateMachine : public BaseStateMachine {
   public: 
     /**
      * @brief Wire dependencies for the state machine.
@@ -26,7 +26,7 @@ class StateMachine : public BaseStateMachine {
      * @note When to use: build once during setup with already configured
      *       estimator/detector instances.
      */
-    StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
+    BasicStateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
                  VerticalVelocityEstimator* verticalVelocityEstimator, FastLaunchDetector* fastLaunchDetector);
 
     /**
