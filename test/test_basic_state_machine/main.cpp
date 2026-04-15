@@ -1,6 +1,6 @@
 #include "unity.h"
 #include "SimpleSimulation.h"   
-#include "state_estimation/StateMachine.h"
+#include "state_estimation/BasicStateMachine.h"
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaverSPI.h"
 #include "DataSaver_mock.h"
@@ -33,7 +33,7 @@ void test_init(){
     ApogeeDetector ad;
     VerticalVelocityEstimator vve;
     FastLaunchDetector fld(30, 500);
-    StateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
 
     TEST_ASSERT_EQUAL(STATE_ARMED, sm.getState());
 }
@@ -43,7 +43,7 @@ void test_launch(){
     ApogeeDetector ad;
     VerticalVelocityEstimator vve;
     FastLaunchDetector fld(30, 500);
-    StateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
 
     // Start sim
     SimpleSimulator sim(10000, 70, 3000, 10);
@@ -77,7 +77,7 @@ void test_apogee_detection(){
     ApogeeDetector ad;
     VerticalVelocityEstimator vve;
     FastLaunchDetector fld(30, 500);
-    StateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
 
     // Start sim
     SimpleSimulator sim(3000, 70, 2000, 5);
@@ -116,7 +116,7 @@ void test_apogee_detection_noise(){
     ApogeeDetector ad;
     VerticalVelocityEstimator vve;
     FastLaunchDetector fld(30, 500);
-    StateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(dataSaverPtr, &lp, &ad, &vve, &fld);
 
     // Start sim
     SimpleSimulator sim(10000, 70, 3000, 10);
@@ -159,7 +159,7 @@ void test_fast_launch_with_revert(){
     flash = new Adafruit_SPIFlash();
     dss = new DataSaverSPI(100, flash);
 
-    StateMachine sm(dss, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(dss, &lp, &ad, &vve, &fld);
 
     //feed stateMachine one point of acceleration data to trigger fld
     DataPoint fldaclX(0, 100);
@@ -215,7 +215,7 @@ void test_fast_launch_with_confirm(){
     flash = new Adafruit_SPIFlash();
     dss = new DataSaverSPI(100, flash);
 
-    StateMachine sm(dss, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(dss, &lp, &ad, &vve, &fld);
 
     // Start sim
     SimpleSimulator sim(10000, 70, 3000, 10);

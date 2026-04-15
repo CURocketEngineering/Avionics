@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <cmath>
 #include "unity.h"
-#include "state_estimation/StateMachine.h"
+#include "state_estimation/BasicStateMachine.h"
 #include "state_estimation/LaunchDetector.h"
 #include "state_estimation/ApogeeDetector.h"
 #include "state_estimation/VerticalVelocityEstimator.h"
@@ -14,7 +14,7 @@
 #include "../CSVMockData.h"
 
 /**
- * Test the StateMachine using real flight data from CSV.
+ * Test the BasicStateMachine using real flight data from CSV.
  * This test reads sensor data from a CSV file, feeds it into the state machine,
  * and logs the results including launch and apogee predictions.
  */
@@ -28,7 +28,7 @@ void test_state_machine_with_real_data(void) {
     VerticalVelocityEstimator vve;
     DataSaverMock dataSaver;
     FastLaunchDetector fld (30, 500);
-    StateMachine sm(&dataSaver, &lp, &ad, &vve, &fld);
+    BasicStateMachine sm(&dataSaver, &lp, &ad, &vve, &fld);
     
     // Create output CSV file for analysis
     std::ofstream outputFile("state_machine_results.csv");

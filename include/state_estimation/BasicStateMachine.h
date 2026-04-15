@@ -1,5 +1,5 @@
-#ifndef FLIGHT_STATE_MACHINE_H
-#define FLIGHT_STATE_MACHINE_H
+#ifndef FLIGHT_BASIC_STATE_MACHINE_H
+#define FLIGHT_BASIC_STATE_MACHINE_H
 
 #include "data_handling/DataPoint.h"
 #include "data_handling/DataSaver.h"
@@ -15,8 +15,8 @@
  * @note When to use: standard flights where launch->coast->descent transitions
  *       are driven by detectors and logging is desired at each change.
  */
-class StateMachine : public BaseStateMachine {
-  public: 
+class BasicStateMachine : public BaseStateMachine {
+  public:
     /**
      * @brief Wire dependencies for the state machine.
      * @param dataSaver  Logger used to persist state changes.
@@ -26,8 +26,8 @@ class StateMachine : public BaseStateMachine {
      * @note When to use: build once during setup with already configured
      *       estimator/detector instances.
      */
-    StateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector, 
-                 VerticalVelocityEstimator* verticalVelocityEstimator, FastLaunchDetector* fastLaunchDetector);
+    BasicStateMachine(IDataSaver* dataSaver, LaunchDetector* launchDetector, ApogeeDetector* apogeeDetector,
+                      VerticalVelocityEstimator* verticalVelocityEstimator, FastLaunchDetector* fastLaunchDetector);
 
     /**
      * @brief Process new sensor data and transition states if thresholds are met.

@@ -3,8 +3,8 @@
 
 #include "Adafruit_Sensor.h"
 #include "ArduinoHAL.h"
+#include "state_estimation/BasicStateMachine.h"
 #include "state_estimation/BurnoutStateMachine.h"
-#include "state_estimation/StateMachine.h"
 
 /**
  * @brief Serial-based sensor/flight simulation singleton for hardware-in-the-loop.

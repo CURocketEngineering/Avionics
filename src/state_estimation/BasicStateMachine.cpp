@@ -1,15 +1,15 @@
 #include "ArduinoHAL.h"
 
 #include "data_handling/DataNames.h"
+#include "state_estimation/BasicStateMachine.h"
 #include "state_estimation/StateEstimationTypes.h"
-#include "state_estimation/StateMachine.h"
 
 
-StateMachine::StateMachine(IDataSaver* dataSaver,
-                           LaunchDetector* launchDetector,
-                           ApogeeDetector* apogeeDetector,
-                           VerticalVelocityEstimator* verticalVelocityEstimator,
-                           FastLaunchDetector* fastLaunchDetector)
+BasicStateMachine::BasicStateMachine(IDataSaver* dataSaver,
+                                     LaunchDetector* launchDetector,
+                                     ApogeeDetector* apogeeDetector,
+                                     VerticalVelocityEstimator* verticalVelocityEstimator,
+                                     FastLaunchDetector* fastLaunchDetector)
     : BaseStateMachine(STATE_ARMED),
       dataSaver_(dataSaver),
       launchDetector_(launchDetector),
@@ -19,7 +19,7 @@ StateMachine::StateMachine(IDataSaver* dataSaver,
 {
 }
 
-int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
+int BasicStateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt) {
     // Update the state.
     switch (getFlightState()) {
         case STATE_ARMED:
