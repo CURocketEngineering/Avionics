@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classAdafruit__LIS2MDL.html#a9d955e5b1e43f201b903b50e784283d9":[5,0,2,3],
 "classAdafruit__LIS2MDL.html#aa9d2081c2e02fbf81b771e7ccbbe9fbb":[5,0,2,2],
 "classAdafruit__LIS2MDL.html#acd79b694f521aed5cb8a4c70f843bdfd":[5,0,2,6],
 "classAdafruit__LIS2MDL.html#ad910878413adbd488b1359887ea40e66":[5,0,2,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classStream.html#a4129934be4bb6371a87e4a5bacc682f3":[5,0,43,3],
 "classStream.html#a4dcdea71acf9df53627cde6cf909c176":[5,0,43,0],
 "classStream.html#a5b609e917972b1e6f4f7d0db7419c120":[5,0,43,7],
-"classStream.html#a64edec0c108e5d71a364e3b75a9d3af0":[5,0,43,12],
-"classStream.html#a67b8c28cd8ffa7cd6a5a2057b7dbb47e":[5,0,43,6]
+"classStream.html#a64edec0c108e5d71a364e3b75a9d3af0":[5,0,43,12]
 };

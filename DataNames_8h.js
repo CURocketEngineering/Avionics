@@ -22,6 +22,7 @@ var DataNames_8h =
     [ "NUM_PACKETS_SENT", "DataNames_8h.html#aa8dc33d1e8137bfaff062c6482867f1e", null ],
     [ "PITCH", "DataNames_8h.html#acd633835a520a62245ec6cfeb6d00e97", null ],
     [ "PRESSURE", "DataNames_8h.html#a67bafb91da1f123097b90c52747bcf36", null ],
+    [ "PROBE_TEMPERATURE", "DataNames_8h.html#a83d033dd61c0372c729200a8a2fe41ad", null ],
     [ "ROLL", "DataNames_8h.html#af902416f65138704a180dbae2dc9d8f2", null ],
     [ "STATE_CHANGE", "DataNames_8h.html#a921cc0b96e9153cc7f874bd6a44b6d51", null ],
     [ "TEMPERATURE", "DataNames_8h.html#af4e8dcb1c210baad2e179d49669eabff", null ],

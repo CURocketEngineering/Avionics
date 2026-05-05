@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classStream.html#a67b8c28cd8ffa7cd6a5a2057b7dbb47e":[5,0,43,6],
 "classStream.html#a8a37da1a85cd7c2fa52f4eab9548abda":[5,0,43,1],
 "classStream.html#ab1c6ce2706588502dcb290bf99467a5f":[5,0,43,10],
 "classStream.html#abfc59a5b36c981eb794847060052c8d5":[5,0,43,2],
