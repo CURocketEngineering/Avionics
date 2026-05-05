@@ -42,4 +42,7 @@
 // Active Aero
 #define FIN_DEPLOYMENT_AMOUNT 21
 
+// Payload
+#define PROBE_TEMPERATURE 28
+
 #endif
