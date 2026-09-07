@@ -34,7 +34,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
                 Serial.println(accel.x.timestamp_ms);
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_POWERED_ASCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
 
                 // Put the data saver into post-launch mode
@@ -63,7 +63,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
                 Serial.println(accel.y.timestamp_ms);
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.y.timestamp_ms, STATE_COAST_ASCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
             }
             break;
@@ -80,7 +80,7 @@ int BurnoutStateMachine::update(const AccelerationTriplet& accel, const DataPoin
                 Serial.println(accel.x.timestamp_ms);
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_DESCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
             }
             break;

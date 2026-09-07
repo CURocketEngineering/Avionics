@@ -49,7 +49,7 @@ int DataSaverSPI::saveTimestamp(uint32_t timestamp_ms){
       return 1;  // Do not save if writes are blocked by post-launch state.
     }
 
-    TimestampRecord_t timeStampRecord = {TIMESTAMP, timestamp_ms};
+    TimestampRecord_t timeStampRecord = {CURE_TIMESTAMP, timestamp_ms};
     if (addRecordToBuffer(&timeStampRecord) != 0) {
       if (isChipFullDueToPostLaunchProtection_) {
         return 1;
