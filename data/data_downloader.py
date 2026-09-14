@@ -11,6 +11,7 @@ from pathlib import Path
 # Configuration
 # ---------------------------------------------------------
 
+
 REPO_API = (
     "https://api.github.com/repos/"
     "CURocketEngineering/Rocket-Test-Data/releases/tags/v1.0.0"
@@ -185,6 +186,7 @@ def main():
     print("========================================")
     print("Test Data Ready")
     print("========================================")
+    print("\nYou can now run the tests with: pio test -e native-for_mac_and_windows")
 
 
 if __name__ == "__main__":
