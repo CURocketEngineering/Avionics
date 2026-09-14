@@ -37,12 +37,36 @@ def run_command(command):
 
 
 # ---------------------------------------------------------
+# check if the data already exists
+#---------------------------------------------------------
+
+def check_data_exists():
+    """Check if the test data has already been downloaded."""
+    good_path = DATA_DIR / GOOD_FILENAME
+    bad_path = DATA_DIR / BAD_FILENAME
+
+    if good_path.exists():
+        print("\nTest data already exists:")
+        print(f"  {good_path}")
+        return True
+
+    if bad_path.exists():
+        print("\nTest data already exists but needs filename fixing:")
+        print(f"  {bad_path}")
+        return True
+
+    print("\nTest data not found. Downloading...")
+    return False
+
+
+
+# ---------------------------------------------------------
 # Download Rocket Test Data
 # ---------------------------------------------------------
 
 def download_test_data():
     print("\n========================================")
-    print("Downloading Rocket Test Data v1.0.0")
+    print("Downloading Rocket Test Data")
     print("========================================")
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -141,10 +165,25 @@ def main():
     print("CURE Avionics Native Test Runner")
     print("========================================")
 
+    if  check_data_exists():
+        print("========================================")
+        print("Test Data Already Exists")
+        print("========================================")
+        print("\nWould you like to download the test data again? (y/n)")
+        answer = input()
+        if answer.lower() == "y":
+            print("\n")
+
+        else:
+            print("\nexiting")
+            return
+
     download_test_data()
+
     fix_filename()
+
     print("========================================")
-    print("Data Downloaded and Renamed")
+    print("Test Data Ready")
     print("========================================")
 
 
