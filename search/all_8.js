@@ -62,8 +62,5 @@ var searchData=
   ['groundlevelestimator_59',['GroundLevelEstimator',['../classGroundLevelEstimator.html',1,'GroundLevelEstimator'],['../classGroundLevelEstimator.html#a179f187ff2015292b18f9cf3776fd60e',1,'GroundLevelEstimator::GroundLevelEstimator()']]],
   ['groundlevelestimator_2ecpp_60',['GroundLevelEstimator.cpp',['../GroundLevelEstimator_8cpp.html',1,'']]],
   ['groundlevelestimator_2eh_61',['GroundLevelEstimator.h',['../GroundLevelEstimator_8h.html',1,'']]],
-  ['gyroscope_5fx_62',['GYROSCOPE_X',['../DataNames_8h.html#a3ae8cd4b310d83020cc810a0af11ba86',1,'DataNames.h']]],
-  ['gyroscope_5fy_63',['GYROSCOPE_Y',['../DataNames_8h.html#a4436455d92842edb8627f84da219fc5a',1,'DataNames.h']]],
-  ['gyroscope_5fz_64',['GYROSCOPE_Z',['../DataNames_8h.html#a12c9d312c21607517e39e9c778cb5f2e',1,'DataNames.h']]],
-  ['gyrotriplet_65',['GyroTriplet',['../structGyroTriplet.html',1,'']]]
+  ['gyrotriplet_62',['GyroTriplet',['../structGyroTriplet.html',1,'']]]
 ];

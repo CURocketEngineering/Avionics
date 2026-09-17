@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['lis2mdl_5frate_5f100_5fhz_0',['LIS2MDL_RATE_100_HZ',['../Serial__Sim__LIS2MDL_8h.html#a71ebe59eb085389213cce273f4f0e3fc',1,'Serial_Sim_LIS2MDL.h']]],
-  ['lis3mdl_5fcontinuousmode_1',['LIS3MDL_CONTINUOUSMODE',['../Serial__Sim__LIS3MDL_8h.html#ae763f82fd817483153c5268475554415',1,'Serial_Sim_LIS3MDL.h']]],
-  ['lis3mdl_5fdatarate_5f155_5fhz_2',['LIS3MDL_DATARATE_155_HZ',['../Serial__Sim__LIS3MDL_8h.html#a3b7a0befc8e6444cb3b11fc59efa180a',1,'Serial_Sim_LIS3MDL.h']]],
-  ['lis3mdl_5fmediummode_3',['LIS3MDL_MEDIUMMODE',['../Serial__Sim__LIS3MDL_8h.html#a5aa13eefdbbab4abb877f63f1d660149',1,'Serial_Sim_LIS3MDL.h']]],
-  ['lis3mdl_5frange_5f4_5fgauss_4',['LIS3MDL_RANGE_4_GAUSS',['../Serial__Sim__LIS3MDL_8h.html#aa65f4d3da98a51cb32780467f093f5bc',1,'Serial_Sim_LIS3MDL.h']]],
-  ['lsm6ds_5faccel_5frange_5f16_5fg_5',['LSM6DS_ACCEL_RANGE_16_G',['../Serial__Sim__LSM6DSOX_8h.html#a050ff7cbc1883697a35f3361c51ddbe4',1,'Serial_Sim_LSM6DSOX.h']]],
-  ['lsm6ds_5fgyro_5frange_5f2000_5fdps_6',['LSM6DS_GYRO_RANGE_2000_DPS',['../Serial__Sim__LSM6DSOX_8h.html#a70adc0960c6c80b0f6fc81ea9aa99fa7',1,'Serial_Sim_LSM6DSOX.h']]],
-  ['lsm6ds_5frate_5f104_5fhz_7',['LSM6DS_RATE_104_HZ',['../Serial__Sim__LSM6DSOX_8h.html#ac0e79d8e724a3192144b706f098b7739',1,'Serial_Sim_LSM6DSOX.h']]]
+  ['sd_5fsck_5fmhz_0',['SD_SCK_MHZ',['../spi__mock_8h.html#a70c5e9b13d30f90dc0db5e0be615e201',1,'spi_mock.h']]],
+  ['sflash_5fblock_5fsize_1',['SFLASH_BLOCK_SIZE',['../Adafruit__SPIFlash__mock_8h.html#a2593865af20b973bb5e045c20161a0c7',1,'Adafruit_SPIFlash_mock.h']]],
+  ['sflash_5fpage_5fsize_2',['SFLASH_PAGE_SIZE',['../Adafruit__SPIFlash__mock_8h.html#a5ba554b88470fc86fbd7a030d393bb3e',1,'Adafruit_SPIFlash_mock.h']]],
+  ['sflash_5fsector_5fsize_3',['SFLASH_SECTOR_SIZE',['../Adafruit__SPIFlash__mock_8h.html#ac0feed170ef5979cd0c541cbc6989a3c',1,'Adafruit_SPIFlash_mock.h']]],
+  ['spi_5fmode0_4',['SPI_MODE0',['../spi__mock_8h.html#ac9d0bde2b42b2403d00b7a611514b006',1,'spi_mock.h']]]
 ];

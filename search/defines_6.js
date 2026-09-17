@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gyroscope_5fx_0',['GYROSCOPE_X',['../DataNames_8h.html#a3ae8cd4b310d83020cc810a0af11ba86',1,'DataNames.h']]],
-  ['gyroscope_5fy_1',['GYROSCOPE_Y',['../DataNames_8h.html#a4436455d92842edb8627f84da219fc5a',1,'DataNames.h']]],
-  ['gyroscope_5fz_2',['GYROSCOPE_Z',['../DataNames_8h.html#a12c9d312c21607517e39e9c778cb5f2e',1,'DataNames.h']]]
+  ['o_5fappend_0',['O_APPEND',['../spi__mock_8h.html#ae036f789407d21f07b211552d67b3214',1,'spi_mock.h']]],
+  ['o_5fcreat_1',['O_CREAT',['../spi__mock_8h.html#a1cf6b1de1fffedaa1d26b189e9a8d2cc',1,'spi_mock.h']]],
+  ['o_5fwrite_2',['O_WRITE',['../spi__mock_8h.html#a4ec110203cfed20252fff83d27a203f1',1,'spi_mock.h']]]
 ];
