@@ -42,7 +42,7 @@ If the data intuitively comes in groups (eg. accelerometer x, y, and z readings)
 | 1 byte | 4 bytes | 4 bytes | 4 bytes
 
  - There is no limit to the amount of numbers you can send per group.
- - The labels for these groups are not present in DataNames.h, they have their own convention, which at the time of this writing is (100 + label number of first number in group). For example, ACCELEROMETER_X is 0 so the accelerometer group label would be 100.
+ - The labels for these groups are not present in DataNames.h, they have their own convention, which at the time of this writing is (100 + label number of first number in group). For example, CURE_ACCELEROMETER_X is 0 so the accelerometer group label would be 100.
 
 ## Practical implementation notes
 

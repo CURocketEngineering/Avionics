@@ -34,7 +34,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Log the state change.
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_ASCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
 
                 // Put the data saver into post-launch mode
@@ -63,7 +63,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Log the state change.
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_SOFT_ASCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
 
                 // Put the data saver into post-launch mode
@@ -88,7 +88,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Log the state change.
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_ASCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
 
                 // Start the apogee detection system
@@ -108,7 +108,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Log the state change.
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_ARMED),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
 
                 // Clear post-launch mode
@@ -128,7 +128,7 @@ int StateMachine::update(const AccelerationTriplet& accel, const DataPoint& alt)
                 // Log the state change.
                 dataSaver_->saveDataPoint(
                     DataPoint(accel.x.timestamp_ms, STATE_DESCENT),
-                    STATE_CHANGE
+                    CURE_STATE_CHANGE
                 );
             }
             return 0;
