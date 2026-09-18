@@ -46,17 +46,17 @@
 #define PROBE_TEMPERATURE 28
 
 // JEM
-#define BMI_ACCEL_X 29
-#define BMI_ACCEL_Y 30
-#define BMI_ACCEL_Z 31
-#define BMI_GYRO_X 32
-#define BMI_GYRO_Y 33
-#define BMI_GYRO_Z 34
-#define MS5_PRESSURE 35
-#define MS5_TEMP 36
-#define MS5_ALTITUDE 37
-#define KX_ACCEL_X 38
-#define KX_ACCEL_Y 39
-#define KX_ACCEL_Z 40
+#define CURE_BMI_ACCEL_X 29
+#define CURE_BMI_ACCEL_Y 30
+#define CURE_BMI_ACCEL_Z 31
+#define CURE_BMI_GYRO_X 32
+#define CURE_BMI_GYRO_Y 33
+#define CURE_BMI_GYRO_Z 34
+#define CURE_MS5_PRESSURE 35
+#define CURE_MS5_TEMP 36
+#define CURE_MS5_ALTITUDE 37
+#define CURE_KX_ACCEL_X 38
+#define CURE_KX_ACCEL_Y 39
+#define CURE_KX_ACCEL_Z 40
 
 #endif
