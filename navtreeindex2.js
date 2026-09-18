@@ -1,5 +1,17 @@
 var NAVTREEINDEX2 =
 {
+"classStateMachine.html":[5,0,42],
+"classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e":[5,0,42,0],
+"classStateMachine.html#a552f60dab35286b089d99e530414a593":[5,0,42,1],
+"classStream.html":[5,0,43],
+"classStream.html#a1030b9ac0a221a971d1bcb2c3b6b4ef7":[5,0,43,5],
+"classStream.html#a15e1ba7504fc5be3cc85c1c612f422e1":[5,0,43,13],
+"classStream.html#a1c8cea0b8d6bbf5b5ada171c3e8c9987":[5,0,43,15],
+"classStream.html#a2e0960805370b1489bec27000aa69550":[5,0,43,11],
+"classStream.html#a4129934be4bb6371a87e4a5bacc682f3":[5,0,43,3],
+"classStream.html#a4dcdea71acf9df53627cde6cf909c176":[5,0,43,0],
+"classStream.html#a5b609e917972b1e6f4f7d0db7419c120":[5,0,43,7],
+"classStream.html#a64edec0c108e5d71a364e3b75a9d3af0":[5,0,43,12],
 "classStream.html#a67b8c28cd8ffa7cd6a5a2057b7dbb47e":[5,0,43,6],
 "classStream.html#a8a37da1a85cd7c2fa52f4eab9548abda":[5,0,43,1],
 "classStream.html#ab1c6ce2706588502dcb290bf99467a5f":[5,0,43,10],
@@ -237,12 +249,5 @@ var NAVTREEINDEX2 =
 "structSendableSensorData.html#ae39df31817df750872da52d10f19c4bf":[5,0,36,5],
 "structSendableSensorData.html#ae72555f9158634f9aa7df58df6da8e86":[5,0,36,7],
 "structSendableSensorData.html#af9e8f1dd7bed77bf0d9da47e4ba04169":[5,0,36,11],
-"structSerialData.html":[5,0,38],
-"structSerialData.html#a1781e5a619fbd1512b30929f54fdaeb5":[5,0,38,0],
-"structSerialData.html#a81ea30b9612dd2cbc70102a75740e789":[5,0,38,3],
-"structSerialData.html#aaf179e7edc75de8a1c1225b02f3b96f4":[5,0,38,1],
-"structSerialData.html#ad9984d3e2e3492fb324186a92ca7d332":[5,0,38,2],
-"structTimestampRecord__t.html":[5,0,45],
-"structTimestampRecord__t.html#a5b138fee7422bc446c83a1b82c746ecd":[5,0,45,0],
-"structTimestampRecord__t.html#a9ab5c2c21d65db74cce5b23a30eb9c35":[5,0,45,1]
+"structSerialData.html":[5,0,38]
 };

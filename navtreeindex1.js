@@ -1,5 +1,17 @@
 var NAVTREEINDEX1 =
 {
+"classAdafruit__BMP3XX.html#ae4a202899225660b62f2f6d21956d37b":[5,0,1,11],
+"classAdafruit__BMP3XX.html#ae5cee670fd254905b11ca64a4dde2f6b":[5,0,1,3],
+"classAdafruit__BMP3XX.html#aeab6d0b112e9735c98cb728593c825e3":[5,0,1,12],
+"classAdafruit__BMP3XX.html#aecdeddde028d810e1854c057ee85c667":[5,0,1,4],
+"classAdafruit__BMP3XX.html#aefb1dfa47022cbd7bb208f4a0fd10e0e":[5,0,1,10],
+"classAdafruit__BMP3XX.html#afa25e4cfaef7f1d337cede9f5d593a7a":[5,0,1,8],
+"classAdafruit__BMP3XX.html#afa4c3c155d18b4370f652845f24e5025":[5,0,1,5],
+"classAdafruit__BMP3XX.html#afa68d8bf6c6fd830c7bba4c986e2973a":[5,0,1,16],
+"classAdafruit__LIS2MDL.html":[5,0,2],
+"classAdafruit__LIS2MDL.html#a058267741955963205af1e9dcd8d9049":[5,0,2,1],
+"classAdafruit__LIS2MDL.html#a190484a091eecd50dc317c31784385b1":[5,0,2,4],
+"classAdafruit__LIS2MDL.html#a282dbbd1f18f75d81fb028096eacc26c":[5,0,2,5],
 "classAdafruit__LIS2MDL.html#a9d955e5b1e43f201b903b50e784283d9":[5,0,2,3],
 "classAdafruit__LIS2MDL.html#aa9d2081c2e02fbf81b771e7ccbbe9fbb":[5,0,2,2],
 "classAdafruit__LIS2MDL.html#acd79b694f521aed5cb8a4c70f843bdfd":[5,0,2,6],
@@ -237,17 +249,5 @@ var NAVTREEINDEX1 =
 "classSerialSim.html#aadf6b79997b4abfa134e183fcc6bde9f":[5,0,39,0],
 "classSerialSim.html#ab505f7614b6b9883f5b607af7cedf1b0":[5,0,39,1],
 "classSerialSim.html#ac408038678650962c8cfaefe9da2b361":[5,0,39,5],
-"classSerialSim.html#ae9e3099a2d388511ba261f9b8b992a18":[5,0,39,3],
-"classStateMachine.html":[5,0,42],
-"classStateMachine.html#a2cd14f5f5d9b076823ff85e221cab15e":[5,0,42,0],
-"classStateMachine.html#a552f60dab35286b089d99e530414a593":[5,0,42,1],
-"classStream.html":[5,0,43],
-"classStream.html#a1030b9ac0a221a971d1bcb2c3b6b4ef7":[5,0,43,5],
-"classStream.html#a15e1ba7504fc5be3cc85c1c612f422e1":[5,0,43,13],
-"classStream.html#a1c8cea0b8d6bbf5b5ada171c3e8c9987":[5,0,43,15],
-"classStream.html#a2e0960805370b1489bec27000aa69550":[5,0,43,11],
-"classStream.html#a4129934be4bb6371a87e4a5bacc682f3":[5,0,43,3],
-"classStream.html#a4dcdea71acf9df53627cde6cf909c176":[5,0,43,0],
-"classStream.html#a5b609e917972b1e6f4f7d0db7419c120":[5,0,43,7],
-"classStream.html#a64edec0c108e5d71a364e3b75a9d3af0":[5,0,43,12]
+"classSerialSim.html#ae9e3099a2d388511ba261f9b8b992a18":[5,0,39,3]
 };
