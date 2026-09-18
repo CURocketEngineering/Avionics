@@ -45,4 +45,18 @@
 // Payload
 #define CURE_PROBE_TEMPERATURE 28
 
+// JEM
+#define CURE_BMI_ACCEL_X 29
+#define CURE_BMI_ACCEL_Y 30
+#define CURE_BMI_ACCEL_Z 31
+#define CURE_BMI_GYRO_X 32
+#define CURE_BMI_GYRO_Y 33
+#define CURE_BMI_GYRO_Z 34
+#define CURE_MS5_PRESSURE 35
+#define CURE_MS5_TEMP 36
+#define CURE_MS5_ALTITUDE 37
+#define CURE_KX_ACCEL_X 38
+#define CURE_KX_ACCEL_Y 39
+#define CURE_KX_ACCEL_Z 40
+
 #endif
