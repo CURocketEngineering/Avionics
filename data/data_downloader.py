@@ -19,8 +19,8 @@ REPO_API = (
 
 DATA_DIR = Path("data")
 
-BAD_FILENAME = "AA.Data.Collection.-.Second.Launch.Trimmed.csv"
-GOOD_FILENAME = "AA Data Collection - Second Launch Trimmed.csv"
+OLD_FILENAME = "AA.Data.Collection.-.Second.Launch.Trimmed.csv"
+NEW_FILENAME = "AA Data Collection - Second Launch Trimmed.csv"
 
 
 # ---------------------------------------------------------
@@ -43,8 +43,8 @@ def run_command(command):
 
 def check_data_exists():
     """Check if the test data has already been downloaded."""
-    good_path = DATA_DIR / GOOD_FILENAME
-    bad_path = DATA_DIR / BAD_FILENAME
+    good_path = DATA_DIR / NEW_FILENAME
+    bad_path = DATA_DIR / OLD_FILENAME
 
     if good_path.exists():
         print("\nTest data already exists:")
@@ -129,8 +129,8 @@ def fix_filename():
     print("Fixing Test Data Filename")
     print("========================================")
 
-    old_path = DATA_DIR / BAD_FILENAME
-    new_path = DATA_DIR / GOOD_FILENAME
+    old_path = DATA_DIR / OLD_FILENAME
+    new_path = DATA_DIR / NEW_FILENAME
 
     if not old_path.exists():
         # It may already have been renamed.
