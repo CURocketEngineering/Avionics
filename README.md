@@ -95,9 +95,9 @@ The following systems integrate Avionics as a submodule:
 Unit tests are part of this repository under `test/`, and can run on a laptop/desktop without embedded hardware.
 
 1. Install PlatformIO Core (`pip install -U platformio`) or the PlatformIO IDE extension.
-2. Place test CSV files in `data/` (or let CI download them).
+2. Place test CSV files in `data/` (or either let CI download them or use the `data_downloader.py` script in the data folder).
 3. Run tests from the repo root:
-   - `pio test -e native`
+   - `pio test -e native-for_mac_and_windows` or `pio test -e native`
 
 ## Hardware Abstraction Note:
 
