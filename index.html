@@ -187,9 +187,9 @@ Unit Testing</h1>
 <p>Unit tests are part of this repository under <span class="tt">test/</span>, and can run on a laptop/desktop without embedded hardware.</p>
 <ol type="1">
 <li>Install PlatformIO Core (<span class="tt">pip install -U platformio</span>) or the PlatformIO IDE extension.</li>
-<li>Place test CSV files in <span class="tt">data/</span> (or let CI download them).</li>
+<li>Place test CSV files in <span class="tt">data/</span> (or either let CI download them or use the <span class="tt">data_downloader.py</span> script in the data folder).</li>
 <li>Run tests from the repo root:<ul>
-<li><span class="tt">pio test -e native</span></li>
+<li><span class="tt">pio test -e native-for_mac_and_windows</span> or <span class="tt">pio test -e native</span></li>
 </ul>
 </li>
 </ol>
